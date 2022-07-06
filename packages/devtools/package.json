@@ -34,7 +34,7 @@
     "build": "pnpm build:clean && pnpm build:types && pnpm build:js",
     "lint": "eslint src test --fix",
     "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
-    "test:ci": "pnpm test --ci --coverage",
+    "test:ci": "pnpm run test --ci --coverage",
     "prepare": "pnpm build",
     "prepublishOnly": "package-check"
   },
