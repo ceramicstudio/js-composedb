@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.build.json",
+  "include": ["packages"],
+  "compilerOptions": {
+    "allowJs": false,
+    "baseUrl": ".",
+    "typeRoots": ["./node_modules/@types"],
+    "paths": {
+      "@composedb/cli": ["packages/cli/src"],
+      "@composedb/client": ["packages/client/src"],
+      "@composedb/devtools": ["packages/devtools/src"],
+      "@composedb/devtools-node": ["packages/devtools-node/src"],
+      "@composedb/graphql-scalars": ["packages/graphql-scalars/src"],
+      "@composedb/types": ["packages/types/src"]
+    }
+  }
+}
