@@ -2,18 +2,22 @@
 
 Packages providing the reference TypeScript implementation of ComposeDB.
 
+## ⚠️ Preview releases
+
+ComposeDB packages and tools are still under early development, breaking changes are to be expected between releases until a stable v1 is released.
+
 ## Installation
 
 This monorepo uses [pnpm](https://pnpm.io/), make sure to install it first if you don't already have it.
 
 1. `pnpm install` to install the dependencies
-1. `pnpm build` to build all the packages
+1. `pnpm run build` to build all the packages
 
 ### Additional scripts
 
-- `pnpm lint` to run the linter in all packages
-- `pnpm test` to run tests in all packages
-- `pnpm docs` to generate API documentation
+- `pnpm run lint` to run the linter in all packages
+- `pnpm run test` to run tests in all packages
+- `pnpm run docs` to generate API documentation
 
 ## Packages
 
