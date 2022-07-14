@@ -112,21 +112,21 @@ describe('documents', () => {
 
   describe('document:content', () => {
     test('model instance document content display fails without the streamID', async () => {
-      await expect(execa('bin/run.js', ['model-instance:content'])).rejects.toThrow(
+      await expect(execa('bin/run.js', ['document:content'])).rejects.toThrow(
         /streamId {2}ID of the stream/
       )
     }, 60000)
 
     test('model instance document content display succeeds', async () => {
       const create = await execa('bin/run.js', [
-        'model-instance:create',
+        'document:create',
         modelStreamID,
         MODEL_INSTANCE_JSON,
         `--did-private-key=${midAccountSeed}`,
       ])
 
       const content = await execa('bin/run.js', [
-        `model-instance:content`,
+        `document:content`,
         create.stdout.toString().trim(),
         `--sync=sync-always`,
       ])
