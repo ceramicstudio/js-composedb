@@ -1,0 +1,132 @@
+{
+  "name": "@composedb/cli",
+  "version": "0.1.0",
+  "author": "3Box Labs",
+  "license": "(Apache-2.0 OR MIT)",
+  "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
+  "keywords": [
+    "ceramic",
+    "composedb",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ceramicstudio/js-composedb",
+    "directory": "packages/cli"
+  },
+  "type": "module",
+  "bin": {
+    "composedb": "./bin/run.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "oclif.manifest.json"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build:clean": "del dist",
+    "build:js": "swc src -d ./dist --config-file ../../.swcrc",
+    "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
+    "build": "pnpm build:clean && pnpm build:types && pnpm build:js",
+    "lint": "eslint src test --fix",
+    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test:ci": "pnpm run test --ci --coverage",
+    "prepare": "pnpm build",
+    "prepublishOnly": "package-check"
+  },
+  "oclif": {
+    "commands": "./dist/commands",
+    "bin": "composedb",
+    "topics": {
+      "did": {
+        "description": "Create DIDs."
+      },
+      "model": {
+        "description": "Create and interact with Model streams"
+      },
+      "document": {
+        "description": "Create and interact with Model Instance Document streams"
+      },
+      "composite": {
+        "description": "Interact with Model streams via Composites"
+      },
+      "graphql": {
+        "description": "Get graphql schemas from Composites and run a local graphql dev server"
+      }
+    },
+    "plugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-version"
+    ]
+  },
+  "dependencies": {
+    "@ceramicnetwork/3id-did-resolver": "^2.1.3",
+    "@ceramicnetwork/http-client": "^2.3.0",
+    "@ceramicnetwork/stream-model": "^0.3.0",
+    "@ceramicnetwork/stream-model-instance": "^0.3.0",
+    "@ceramicnetwork/streamid": "^2.2.0",
+    "@composedb/devtools": "workspace:^0.1.0",
+    "@composedb/devtools-node": "workspace:^0.1.0",
+    "@composedb/client": "workspace: ^0.1.0",
+    "@oclif/core": "^1.9.3",
+    "@oclif/plugin-help": "^5.1.11",
+    "@oclif/plugin-version": "^1.0.4",
+    "cli-table3": "^0.6.2",
+    "did-resolver": "^3.2.2",
+    "dids": "^3.2.0",
+    "env-paths": "^3.0.0",
+    "fs-extra": "^10.0.1",
+    "inquirer": "^8.2.4",
+    "key-did-provider-ed25519": "^2.0.0",
+    "key-did-resolver": "^2.0.5",
+    "listr": "^0.14.3",
+    "listr-update-renderer": "^0.5.0",
+    "ora": "^6.1.0",
+    "term-size": "^3.0.2",
+    "uint8arrays": "^3.0.0"
+  },
+  "devDependencies": {
+    "@ceramicnetwork/common": "^2.3.0",
+    "@ceramicnetwork/core": "^2.6.0",
+    "@composedb/types": "workspace:^0.1.0",
+    "@swc-node/register": "^1.5.1",
+    "@types/fs-extra": "^9.0.13",
+    "@types/inquirer": "^8.2.1",
+    "@types/jest": "^28.1.2",
+    "@types/listr": "^0.14.4",
+    "@types/node": "^18.0.1",
+    "@types/update-notifier": "^6.0.1",
+    "ajv": "^8.10.0",
+    "execa": "^6.0.0",
+    "jest-dev-server": "^6.0.3",
+    "oclif": "^3.0.1",
+    "strip-ansi": "~7.0.1"
+  },
+  "jest": {
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
+    "globalSetup": "<rootDir>/globalSetup.js",
+    "globalTeardown": "<rootDir>/globalTeardown.js",
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.(t|j)s$": [
+        "@swc/jest",
+        {
+          "root": "../.."
+        }
+      ]
+    }
+  }
+}
