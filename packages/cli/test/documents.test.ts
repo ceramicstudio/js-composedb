@@ -24,7 +24,7 @@ describe('documents', () => {
   describe('document:create', () => {
     test('model instance document creation fails without the content param', async () => {
       await expect(execa('bin/run.js', ['document:create'])).rejects.toThrow(
-        /Content of the created model instance document \(JSON encoded as string\)/
+        /Content of the created model instance document/
       )
     }, 60000)
 
@@ -82,7 +82,7 @@ describe('documents', () => {
 
     test('model instance document replace fails without the content param', async () => {
       await expect(execa('bin/run.js', ['document:replace'])).rejects.toThrow(
-        /New content of the model instance document \(JSON encoded as string\)/
+        /New content of the model instance document/
       )
     }, 60000)
 

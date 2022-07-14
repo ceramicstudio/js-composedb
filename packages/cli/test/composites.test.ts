@@ -19,8 +19,8 @@ describe('composites', () => {
 
   describe('composite:create', () => {
     test('composite creation fails without the schemaFilePath param', async () => {
-      await expect(execa('composedb', ['composite:create'])).rejects.toThrow(
-        RegExp('schemaFilePath {2}A graphQL SDL definition of the Composite encoded as a')
+      await expect(execa('bin/run.js', ['composite:create'])).rejects.toThrow(
+        RegExp('graphQL SDL definition of the Composite encoded as a')
       )
     }, 60000)
 

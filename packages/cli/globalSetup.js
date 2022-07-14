@@ -28,6 +28,7 @@ const TEST_DAEMON_CONFIG = {
   },
   indexing: {
     db: `sqlite://${INDEXING_DB_FILENAME.pathname}`,
+    "allow-queries-before-historical-sync": true,
     models: [Model.MODEL.toString()],
   },
 }
