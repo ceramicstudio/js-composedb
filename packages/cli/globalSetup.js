@@ -41,7 +41,7 @@ export default async function globalSetup() {
       `CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=\'true\' rm -rf ~/.goipfs && rm -rf ${STATE_STORE_DIRECTORY.pathname} && rm -rf ./test/test_output_files && rm -rf ${INDEXING_DB_FILENAME.pathname} && rm -rf ${CONFIG_PATH} && mkdir ./test/test_output_files  && pnpm dlx @ceramicnetwork/cli daemon
        --network inmemory --state-store-directory ./test/statestore --config ${CONFIG_PATH}`,
     debug: true,
-    launchTimeout: 60000,
+    launchTimeout: 120000,
     port: 7007,
   })
 }
