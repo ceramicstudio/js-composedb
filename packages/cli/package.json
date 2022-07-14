@@ -115,8 +115,6 @@
     "extensionsToTreatAsEsm": [
       ".ts"
     ],
-    "globalSetup": "<rootDir>/globalSetup.js",
-    "globalTeardown": "<rootDir>/globalTeardown.js",
     "moduleNameMapper": {
       "^(\\.{1,2}/.*)\\.js$": "$1"
     },
