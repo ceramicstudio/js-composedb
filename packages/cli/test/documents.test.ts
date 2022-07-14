@@ -13,7 +13,7 @@ describe('documents', () => {
   let modelStreamID: string
 
   beforeAll(async () => {
-    const create = await execa('composedb', [
+    const create = await execa('bin/run.js', [
       'model:create',
       MY_MODEL_JSON,
       `--did-private-key=${modelAccountSeed}`,
@@ -23,19 +23,19 @@ describe('documents', () => {
 
   describe('document:create', () => {
     test('model instance document creation fails without the content param', async () => {
-      await expect(execa('composedb', ['document:create'])).rejects.toThrow(
+      await expect(execa('bin/run.js', ['document:create'])).rejects.toThrow(
         /Content of the created model instance document \(JSON encoded as string\)/
       )
     }, 60000)
 
     test('model instance document creation fails without the model param', async () => {
-      await expect(execa('composedb', ['document:create'])).rejects.toThrow(
+      await expect(execa('bin/run.js', ['document:create'])).rejects.toThrow(
         /StreamID of the model whose instance is being created/
       )
     }, 60000)
 
     test('model instance document creation fails without the did-key param', async () => {
-      const create = await execa('composedb', [
+      const create = await execa('bin/run.js', [
         'document:create',
         modelStreamID,
         MODEL_INSTANCE_JSON,
@@ -49,7 +49,7 @@ describe('documents', () => {
     }, 60000)
 
     test('model instance document creation succeeds', async () => {
-      const create = await execa('composedb', [
+      const create = await execa('bin/run.js', [
         'document:create',
         modelStreamID,
         MODEL_INSTANCE_JSON,
@@ -65,7 +65,7 @@ describe('documents', () => {
     let midStreamID: string
 
     beforeAll(async () => {
-      const create = await execa('composedb', [
+      const create = await execa('bin/run.js', [
         'document:create',
         modelStreamID,
         MODEL_INSTANCE_JSON,
@@ -75,19 +75,19 @@ describe('documents', () => {
     }, 60000)
 
     test('model instance document replace fails without the streamID', async () => {
-      await expect(execa('composedb', ['document:replace'])).rejects.toThrow(
+      await expect(execa('bin/run.js', ['document:replace'])).rejects.toThrow(
         /streamId {2}ID of the stream/
       )
     }, 60000)
 
     test('model instance document replace fails without the content param', async () => {
-      await expect(execa('composedb', ['document:replace'])).rejects.toThrow(
+      await expect(execa('bin/run.js', ['document:replace'])).rejects.toThrow(
         /New content of the model instance document \(JSON encoded as string\)/
       )
     }, 60000)
 
     test('model instance document replace fails without the did-key param', async () => {
-      const replace = await execa('composedb', [
+      const replace = await execa('bin/run.js', [
         'document:replace',
         midStreamID,
         REPLACED_MODEL_INSTANCE_JSON,
@@ -96,7 +96,7 @@ describe('documents', () => {
     }, 60000)
 
     test('model instance document replace succeeds', async () => {
-      const replace = await execa('composedb', [
+      const replace = await execa('bin/run.js', [
         'document:replace',
         midStreamID,
         REPLACED_MODEL_INSTANCE_JSON,
@@ -112,20 +112,20 @@ describe('documents', () => {
 
   describe('document:content', () => {
     test('model instance document content display fails without the streamID', async () => {
-      await expect(execa('composedb', ['model-instance:content'])).rejects.toThrow(
+      await expect(execa('bin/run.js', ['model-instance:content'])).rejects.toThrow(
         /streamId {2}ID of the stream/
       )
     }, 60000)
 
     test('model instance document content display succeeds', async () => {
-      const create = await execa('composedb', [
+      const create = await execa('bin/run.js', [
         'model-instance:create',
         modelStreamID,
         MODEL_INSTANCE_JSON,
         `--did-private-key=${midAccountSeed}`,
       ])
 
-      const content = await execa('composedb', [
+      const content = await execa('bin/run.js', [
         `model-instance:content`,
         create.stdout.toString().trim(),
         `--sync=sync-always`,

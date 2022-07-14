@@ -25,13 +25,13 @@ describe('composites', () => {
     }, 60000)
 
     test('composite creation fails without the did-key param', async () => {
-      const create = await execa('composedb', ['composite:create', 'test/mocks/composite.schema'])
+      const create = await execa('bin/run.js', ['composite:create', 'test/mocks/composite.schema'])
 
       expect(create.stderr.toString().includes('No controller specified')).toBe(true)
     }, 60000)
 
     test('composite creation succeeds', async () => {
-      const create = await execa('composedb', [
+      const create = await execa('bin/run.js', [
         'composite:create',
         'test/mocks/composite.schema',
         `--did-private-key=${seed}`,
@@ -63,7 +63,7 @@ describe('composites', () => {
     }
 
     test('composite deployment fails without composite path param', async () => {
-      const deploy = await execa('composedb', ['composite:deploy'])
+      const deploy = await execa('bin/run.js', ['composite:deploy'])
       expect(
         deploy.stderr
           .toString()
@@ -81,7 +81,7 @@ describe('composites', () => {
       const doesModelExist = await checkIfModelExist(ceramic, nonExistentModelStreamID)
       expect(doesModelExist).toBeFalsy()
 
-      const deploy = await execa('composedb', [
+      const deploy = await execa('bin/run.js', [
         'composite:deploy',
         'test/mocks/encoded.composite.undeployed.json',
       ])
@@ -99,12 +99,12 @@ describe('composites', () => {
     let model2StreamID: string
 
     beforeAll(async () => {
-      const model1Create = await execa('composedb', [
+      const model1Create = await execa('bin/run.js', [
         'model:create',
         MODEL1_JSON,
         `--did-private-key=${seed}`,
       ])
-      const model2Create = await execa('composedb', [
+      const model2Create = await execa('bin/run.js', [
         'model:create',
         MODEL2_JSON,
         `--did-private-key=${seed}`,
@@ -114,12 +114,12 @@ describe('composites', () => {
     }, 60000)
 
     test('composite from model fails without the list of models', async () => {
-      const create = await execa('composedb', ['composite:from-model'])
+      const create = await execa('bin/run.js', ['composite:from-model'])
       expect(create.stderr.toString().includes('Missing list of model streamIDs')).toBe(true)
     }, 60000)
 
     test('composite from model succeeds', async () => {
-      const create = await execa('composedb', [
+      const create = await execa('bin/run.js', [
         'composite:from-model',
         model1StreamID,
         model2StreamID,
@@ -135,7 +135,7 @@ describe('composites', () => {
 
   describe('composite:models', () => {
     test('composite model listing fails without composite path param', async () => {
-      const models = await execa('composedb', ['composite:models'])
+      const models = await execa('bin/run.js', ['composite:models'])
       expect(
         models.stderr
           .toString()
@@ -146,7 +146,7 @@ describe('composites', () => {
     }, 60000)
 
     test('composite model listing succeeds without formatting params', async () => {
-      const models = await execa('composedb', [
+      const models = await execa('bin/run.js', [
         'composite:models',
         'test/mocks/encoded.composite.profiles.json',
       ])
@@ -154,7 +154,7 @@ describe('composites', () => {
     }, 60000)
 
     test('composite model listing succeeds with --id-only param', async () => {
-      const models = await execa('composedb', [
+      const models = await execa('bin/run.js', [
         'composite:models',
         'test/mocks/encoded.composite.profiles.json',
         '--id-only',
@@ -163,7 +163,7 @@ describe('composites', () => {
     }, 60000)
 
     test('composite model listing succeeds with --table', async () => {
-      const models = await execa('composedb', [
+      const models = await execa('bin/run.js', [
         'composite:models',
         'test/mocks/encoded.composite.profiles.json',
         '--table',
@@ -174,12 +174,12 @@ describe('composites', () => {
 
   describe('composite:merge', () => {
     test('composite merge fails without the list of encoded composite paths', async () => {
-      const create = await execa('composedb', ['composite:merge'])
+      const create = await execa('bin/run.js', ['composite:merge'])
       expect(create.stderr.toString().includes('Missing list of composite file paths')).toBe(true)
     }, 60000)
 
     test('composite merge succeeds', async () => {
-      const merge = await execa('composedb', [
+      const merge = await execa('bin/run.js', [
         'composite:merge',
         'test/mocks/encoded.composite.profiles.json',
         'test/mocks/encoded.composite.picture.post.json',
@@ -190,14 +190,14 @@ describe('composites', () => {
 
   describe('composite:extract-model', () => {
     test('composite by extracting models fails without the composite path and at least one model param', async () => {
-      const extractModelWithNoParams = await execa('composedb', ['composite:extract-model'])
+      const extractModelWithNoParams = await execa('bin/run.js', ['composite:extract-model'])
       expect(
         extractModelWithNoParams.stderr
           .toString()
           .includes('Missing composite path and at least one model to extract')
       ).toBe(true)
 
-      const extractModelWithJustCompositePath = await execa('composedb', [
+      const extractModelWithJustCompositePath = await execa('bin/run.js', [
         'composite:extract-model',
         'test/mocks/encoded.composite.picture.post.json',
       ])
@@ -213,7 +213,7 @@ describe('composites', () => {
       expect(Object.keys(encodedComposite.models).length).toEqual(3)
       const streamIDs = Object.keys(encodedComposite.models).sort()
 
-      const extractModel = await execa('composedb', [
+      const extractModel = await execa('bin/run.js', [
         'composite:extract-model',
         'test/mocks/encoded.composite.profiles.json',
         streamIDs[0],
@@ -240,7 +240,7 @@ describe('composites', () => {
           return modelDefinition.name
         }
       )
-      const extractModel = await execa('composedb', [
+      const extractModel = await execa('bin/run.js', [
         'composite:extract-model',
         'test/mocks/encoded.composite.profiles.json',
         modelNames[0],
@@ -267,12 +267,12 @@ describe('composites', () => {
 
   describe('composite:compile', () => {
     test('composite compilation fails without the composite path and at least one output path param', async () => {
-      const compileWithNoParams = await execa('composedb', ['composite:compile'])
+      const compileWithNoParams = await execa('bin/run.js', ['composite:compile'])
       expect(
         compileWithNoParams.stderr.toString().includes('Missing composite path and at output path')
       ).toBe(true)
 
-      const compileWithJustCompositePath = await execa('composedb', [
+      const compileWithJustCompositePath = await execa('bin/run.js', [
         'composite:compile',
         'test/mocks/encoded.composite.profiles.json',
       ])
@@ -286,7 +286,7 @@ describe('composites', () => {
     test('composite compilation succeeds', async () => {
       const dirpath = 'test/test_output_files'
       const filename = 'runtime.composite.profiles'
-      const compileWithJustCompositePath = await execa('composedb', [
+      const compileWithJustCompositePath = await execa('bin/run.js', [
         'composite:compile',
         'test/mocks/encoded.composite.profiles.json',
         `${dirpath}/${filename}.json`,

@@ -9,13 +9,13 @@ describe('models', () => {
 
   describe('model:create', () => {
     test('model creation fails without the content param', async () => {
-      await expect(execa('composedb', ['model:create'])).rejects.toThrow(
+      await expect(execa('bin/run.js', ['model:create'])).rejects.toThrow(
         /Model content \(JSON encoded as string\)/
       )
     }, 60000)
 
     test('model creation fails without the did-key param', async () => {
-      const create = await execa('composedb', ['model:create', MY_MODEL_JSON])
+      const create = await execa('bin/run.js', ['model:create', MY_MODEL_JSON])
       expect(
         create.stderr
           .toString()
@@ -26,7 +26,7 @@ describe('models', () => {
     }, 60000)
 
     test('model creation succeeds', async () => {
-      const create = await execa('composedb', [
+      const create = await execa('bin/run.js', [
         'model:create',
         MY_MODEL_JSON,
         `--did-private-key=${seed}`,
@@ -37,19 +37,19 @@ describe('models', () => {
 
   describe('model:content', () => {
     test('model content display fails without the streamID', async () => {
-      await expect(execa('composedb', ['model:content'])).rejects.toThrow(
+      await expect(execa('bin/run.js', ['model:content'])).rejects.toThrow(
         /streamId {2}ID of the stream/
       )
     }, 60000)
 
     test('model content display succeeds', async () => {
-      const create = await execa('composedb', [
+      const create = await execa('bin/run.js', [
         'model:create',
         MY_MODEL_JSON,
         `--did-private-key=${seed}`,
       ])
 
-      const content = await execa('composedb', [
+      const content = await execa('bin/run.js', [
         `model:content`,
         create.stdout.toString().trim(),
         `--sync=sync-always`,
@@ -66,19 +66,19 @@ describe('models', () => {
 
   describe('model:controller', () => {
     test('model controller display fails without the streamID', async () => {
-      await expect(execa('composedb', ['model:controller'])).rejects.toThrow(
+      await expect(execa('bin/run.js', ['model:controller'])).rejects.toThrow(
         /streamId {2}ID of the stream/
       )
     }, 60000)
 
     test('model controller display succeeds', async () => {
-      const create = await execa('composedb', [
+      const create = await execa('bin/run.js', [
         'model:create',
         MY_MODEL_JSON,
         `--did-private-key=${seed}`,
       ])
 
-      const controller = await execa('composedb', [
+      const controller = await execa('bin/run.js', [
         `model:controller`,
         create.stdout.toString().trim(),
         `--sync=sync-always`,
@@ -93,18 +93,18 @@ describe('models', () => {
 
   describe('model:list', () => {
     beforeAll(async () => {
-      await execa('composedb', ['composite:deploy', 'test/mocks/encoded.composite.profiles.json'])
+      await execa('bin/run.js', ['composite:deploy', 'test/mocks/encoded.composite.profiles.json'])
     }, 60000)
 
     test('model list succeeds', async () => {
-      const models = await execa('composedb', ['model:list'])
+      const models = await execa('bin/run.js', ['model:list'])
       expect(stripAnsi(models.stdout.toString()).includes('GenericProfile')).toBe(true)
       expect(stripAnsi(models.stdout.toString()).includes('SocialProfile')).toBe(true)
       expect(stripAnsi(models.stdout.toString()).includes('PersonProfile')).toBe(true)
     }, 60000)
 
     test('model list succeeds with --table argument', async () => {
-      const models = await execa('composedb', ['model:list', '--table'])
+      const models = await execa('bin/run.js', ['model:list', '--table'])
       expect(stripAnsi(models.stdout.toString()).includes('GenericProfile')).toBe(true)
       expect(stripAnsi(models.stdout.toString()).includes('SocialProfile')).toBe(true)
       expect(stripAnsi(models.stdout.toString()).includes('PersonProfile')).toBe(true)

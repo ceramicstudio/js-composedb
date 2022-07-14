@@ -4,7 +4,7 @@ import { Readable } from 'node:stream'
 describe('graphql', () => {
   describe('graphql:schema', () => {
     test('printing graphql schema fails without runtime definition path pram', async () => {
-      const schema = await execa('composedb', ['graphql:schema'])
+      const schema = await execa('bin/run.js', ['graphql:schema'])
       expect(
         schema.stderr
           .toString()
@@ -15,7 +15,7 @@ describe('graphql', () => {
     }, 60000)
 
     test('printing graphql schema succeeds', async () => {
-      const schema = await execa('composedb', [
+      const schema = await execa('bin/run.js', [
         'graphql:schema',
         'test/mocks/runtime.composite.picture.post.json',
       ])
@@ -23,7 +23,7 @@ describe('graphql', () => {
     }, 60000)
 
     test('printing graphql schema succeeds with --readonly flag', async () => {
-      const schema = await execa('composedb', [
+      const schema = await execa('bin/run.js', [
         'graphql:schema',
         'test/mocks/runtime.composite.picture.post.json',
         '--readonly',
@@ -34,7 +34,7 @@ describe('graphql', () => {
 
   describe('graphql:server', () => {
     test('graphql server fails without runtime definition path pram', async () => {
-      const schema = await execa('composedb', ['graphql:server'])
+      const schema = await execa('bin/run.js', ['graphql:server'])
       expect(
         schema.stderr
           .toString()
@@ -45,7 +45,7 @@ describe('graphql', () => {
     }, 60000)
 
     test('graphql server starts', async () => {
-      const serverProcess = execa('composedb', [
+      const serverProcess = execa('bin/run.js', [
         'graphql:server',
         'test/mocks/runtime.composite.picture.post.json',
         '--port=62433',
@@ -75,7 +75,7 @@ describe('graphql', () => {
     }, 60000)
 
     test('graphql server starts with --readonly flag', async () => {
-      const serverProcess = execa('composedb', [
+      const serverProcess = execa('bin/run.js', [
         'graphql:server',
         'test/mocks/runtime.composite.picture.post.json',
         '--port=62610',
