@@ -284,7 +284,7 @@ describe('composites', () => {
     }, 60000)
 
     test('composite compilation succeeds', async () => {
-      const dirpath = 'test/test_output_files'
+      const dirpath = `test/tmp/test_output_files`
       const filename = 'runtime.composite.profiles'
       const compileWithJustCompositePath = await execa('bin/run.js', [
         'composite:compile',

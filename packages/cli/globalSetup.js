@@ -1,13 +1,15 @@
 import { setup } from 'jest-dev-server'
 import { Model } from '@ceramicnetwork/stream-model'
-import fs from 'fs-extra';
+import fs from 'fs-extra'
+import './globalConsts.js'
+import {
+  CONFIG_DIR_PATH,
+  CONFIG_PATH,
+  INDEXING_DB_FILENAME,
+  STATE_STORE_DIRECTORY,
+  TEMP_DIR_PATH
+} from "./globalConsts.js"
 
-const CWD = new URL(`file://${process.cwd()}/`);
-const TEST_DIR_PATH = new URL('test/', CWD)
-const CONFIG_DIR_PATH = new URL('config/', TEST_DIR_PATH)
-const CONFIG_PATH = new URL('daemon.config.json', CONFIG_DIR_PATH)
-const STATE_STORE_DIRECTORY = new URL('statestore/', TEST_DIR_PATH)
-const INDEXING_DB_FILENAME = new URL('indexing.sqlite', CONFIG_DIR_PATH)
 
 // Create the custom config here to make sure that we start with a clear indexing db setup each time
 // TODO: Investigate why the indexing API throws errors when we run tests several times without cleaning the db
@@ -34,13 +36,13 @@ const TEST_DAEMON_CONFIG = {
 }
 
 export default async function globalSetup() {
+  await fs.ensureDir(TEMP_DIR_PATH)
   await fs.ensureDir(CONFIG_DIR_PATH)
   await fs.writeJson(CONFIG_PATH, TEST_DAEMON_CONFIG)
 
   await setup({
     command:
-      `CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=\'true\' rm -rf ~/.goipfs && rm -rf ${STATE_STORE_DIRECTORY.pathname} && rm -rf ./test/test_output_files && rm -rf ${INDEXING_DB_FILENAME.pathname} && rm -rf ${CONFIG_PATH} && mkdir ./test/test_output_files  && pnpm dlx @ceramicnetwork/cli@^2.4.0 daemon
-       --network inmemory --state-store-directory ./test/statestore --config ${CONFIG_PATH}`,
+      `CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=\'true\' rm -rf ~/.goipfs && rm -rf ${STATE_STORE_DIRECTORY.pathname} && rm -rf ./test/test_output_files && rm -rf ${INDEXING_DB_FILENAME.pathname} && rm -rf ${CONFIG_PATH} && mkdir ./test/test_output_files  && pnpm dlx @ceramicnetwork/cli@^2.4.0 daemon --config ${CONFIG_PATH}`,
     debug: true,
     launchTimeout: 240000,
     port: 7007,
