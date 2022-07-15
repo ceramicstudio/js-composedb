@@ -22,7 +22,7 @@ export async function createComposite(
   ceramic: CeramicClient | string,
   path: PathInput
 ): Promise<Composite> {
-  const client = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
+  const client = ceramic instanceof CeramicClient ? ceramic : new CeramicClient(ceramic)
   const file = await readFile(getFilePath(path))
   return await Composite.create({ ceramic: client, schema: file.toString() })
 }
@@ -34,7 +34,7 @@ export async function readEncodedComposite(
   ceramic: CeramicClient | string,
   path: PathInput
 ): Promise<Composite> {
-  const client = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
+  const client = ceramic instanceof CeramicClient ? ceramic : new CeramicClient(ceramic)
   const file = getFilePath(path)
   const definition = (await readJSON(file)) as EncodedCompositeDefinition
   return Composite.fromJSON({ ceramic: client, definition })
