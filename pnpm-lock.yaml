@@ -46,7 +46,6 @@ importers:
 
   examples/next-notes:
     specifiers:
-      '@babel/core': '>=7.0.0 <8.0.0'
       '@ceramicnetwork/http-client': ^2.2.1
       '@composedb/client': workspace:^0.1.0
       '@composedb/devtools': workspace:^0.1.0
@@ -56,10 +55,9 @@ importers:
       '@mui/icons-material': ^5.8.2
       '@mui/material': ^5.8.7
       '@mui/styles': ^5.8.7
-      '@opentelemetry/api': '>=1.0.0 <1.2.0'
       '@swc/helpers': ^0.4.3
       '@types/node': ^18.0.1
-      '@types/react': ^17.0.0
+      '@types/react': ^18.0.14
       '@types/react-relay': ^13.0.1
       '@types/relay-runtime': ^13.0.2
       dids: ^3.2.0
@@ -77,15 +75,13 @@ importers:
       typescript: ^4.7.4
       uint8arrays: ^3.0.0
     dependencies:
-      '@babel/core': 7.18.6
-      '@ceramicnetwork/http-client': 2.3.0_@opentelemetry+api@1.1.0
+      '@ceramicnetwork/http-client': 2.3.0
       '@composedb/client': link:../../packages/client
-      '@emotion/react': 11.9.3_hszxbvtkrbiogp66pfduqrogei
-      '@emotion/styled': 11.9.3_2i7k3kxlr5yg4nzzxewgody7mq
-      '@mui/icons-material': 5.8.4_isfih4okafm7oxlwhamtnhvbeu
-      '@mui/material': 5.8.7_cmng6vezloiu2kriozxz3fehfy
-      '@mui/styles': 5.8.7_issp6eja53bx2taimj6tb2noxy
-      '@opentelemetry/api': 1.1.0
+      '@emotion/react': 11.9.3_dlcr7kzjh265l7kenqxjsvuiz4
+      '@emotion/styled': 11.9.3_xorl7rqfpn4gtnla4dfecagcw4
+      '@mui/icons-material': 5.8.4_3qrniyd4fth4fdw4jngl7l7ure
+      '@mui/material': 5.8.7_bl6qrq6463ovzmqn4cmwv7vydq
+      '@mui/styles': 5.8.7_3hx2ussxxho4jajbwrd6gq34qe
       '@swc/helpers': 0.4.3
       dids: 3.2.0
       jotai: 1.7.3_2sb3a56iojvze2npkgcccbebf4
@@ -101,7 +97,7 @@ importers:
       '@composedb/devtools': link:../../packages/devtools
       '@composedb/devtools-node': link:../../packages/devtools-node
       '@types/node': 18.0.3
-      '@types/react': 17.0.47
+      '@types/react': 18.0.15
       '@types/react-relay': 13.0.2
       '@types/relay-runtime': 13.0.3
       eslint: 8.19.0
@@ -112,7 +108,6 @@ importers:
   examples/webpack-notes:
     specifiers:
       '@apollo/client': ^3.6.8
-      '@babel/core': '>=7.0.0 <8.0.0'
       '@ceramicnetwork/common': ^2.2.0
       '@ceramicnetwork/http-client': ^2.2.0
       '@composedb/client': workspace:^0.1.0
@@ -123,7 +118,6 @@ importers:
       '@mui/icons-material': ^5.8.2
       '@mui/material': ^5.8.7
       '@mui/styles': ^5.8.7
-      '@opentelemetry/api': '>=1.0.0 <1.2.0'
       '@stablelib/random': ^1.0.1
       '@swc/core': ^1.2.209
       '@types/node': ^18.0.1
@@ -132,7 +126,6 @@ importers:
       css-loader: ^6.6.0
       del-cli: ^4.0.1
       dids: ^3.2.0
-      graphql: '>=14.0.0 <15.0.0 || >=15.0.0 <16.0.0 || >=16.0.0 <17.0.0'
       html-webpack-plugin: ^5.5.0
       jotai: ^1.7.3
       key-did-provider-ed25519: ^2.0.0
@@ -149,7 +142,6 @@ importers:
       webpack-dev-server: ^4.9.3
     dependencies:
       '@apollo/client': 3.6.9_aez2jvt6lsvokp3l4ousdbdxf4
-      '@babel/core': 7.18.6
       '@ceramicnetwork/http-client': 2.3.0_@opentelemetry+api@1.1.0
       '@composedb/client': link:../../packages/client
       '@emotion/react': 11.9.3_dlcr7kzjh265l7kenqxjsvuiz4
@@ -157,10 +149,8 @@ importers:
       '@mui/icons-material': 5.8.4_3qrniyd4fth4fdw4jngl7l7ure
       '@mui/material': 5.8.7_bl6qrq6463ovzmqn4cmwv7vydq
       '@mui/styles': 5.8.7_3hx2ussxxho4jajbwrd6gq34qe
-      '@opentelemetry/api': 1.1.0
       '@stablelib/random': 1.0.1
       dids: 3.2.0
-      graphql: 16.5.0
       jotai: 1.7.3_2sb3a56iojvze2npkgcccbebf4
       key-did-provider-ed25519: 2.0.0
       key-did-resolver: 2.0.5
@@ -202,7 +192,6 @@ importers:
       '@oclif/core': ^1.9.3
       '@oclif/plugin-help': ^5.1.11
       '@oclif/plugin-version': ^1.0.4
-      '@opentelemetry/api': '>=1.0.0 <1.2.0'
       '@swc-node/register': ^1.5.1
       '@types/fs-extra': ^9.0.13
       '@types/inquirer': ^8.2.1
@@ -223,12 +212,10 @@ importers:
       key-did-resolver: ^2.0.5
       listr: ^0.14.3
       listr-update-renderer: ^0.5.0
-      node-fetch: '*'
       oclif: ^3.0.1
       ora: ^6.1.0
       strip-ansi: ~7.0.1
       term-size: ^3.0.2
-      typescript: '>= 4.3'
       uint8arrays: ^3.0.0
     dependencies:
       '@ceramicnetwork/3id-did-resolver': 2.1.3_@opentelemetry+api@1.1.0
@@ -242,7 +229,6 @@ importers:
       '@oclif/core': 1.9.5
       '@oclif/plugin-help': 5.1.12
       '@oclif/plugin-version': 1.1.1
-      '@opentelemetry/api': 1.1.0
       cli-table3: 0.6.2
       did-resolver: 3.2.2
       dids: 3.2.0
@@ -253,10 +239,8 @@ importers:
       key-did-resolver: 2.0.5
       listr: 0.14.3
       listr-update-renderer: 0.5.0_listr@0.14.3
-      node-fetch: 2.6.7
       ora: 6.1.2
       term-size: 3.0.2
-      typescript: 4.7.4
       uint8arrays: 3.0.0
     devDependencies:
       '@ceramicnetwork/common': 2.3.0_@opentelemetry+api@1.1.0
@@ -285,7 +269,6 @@ importers:
       '@composedb/graphql-scalars': workspace:^0.1.0
       '@composedb/test-schemas': workspace:^0.1.0
       '@composedb/types': workspace:^0.1.0
-      '@opentelemetry/api': '>=1.0.0 <1.2.0'
       dataloader: ^2.1.0
       dids: ^3.2.0
       graphql: ^16.3.0
@@ -296,7 +279,6 @@ importers:
       '@ceramicnetwork/stream-model-instance': 0.3.0_@opentelemetry+api@1.1.0
       '@ceramicnetwork/streamid': 2.2.0
       '@composedb/graphql-scalars': link:../graphql-scalars
-      '@opentelemetry/api': 1.1.0
       dataloader: 2.1.0
       graphql: 16.5.0
       graphql-relay: 0.10.0_graphql@16.5.0
@@ -318,7 +300,6 @@ importers:
       '@composedb/types': workspace:^0.1.0
       '@graphql-tools/schema': ^8.5.0
       '@graphql-tools/utils': ^8.8.0
-      '@opentelemetry/api': '>=1.0.0 <1.2.0'
       '@types/jest': ^28.1.2
       '@types/lodash-es': ^4.17.6
       '@types/object-hash': ^2.2.1
@@ -339,7 +320,6 @@ importers:
       '@composedb/graphql-scalars': link:../graphql-scalars
       '@graphql-tools/schema': 8.5.0_graphql@16.5.0
       '@graphql-tools/utils': 8.8.0_graphql@16.5.0
-      '@opentelemetry/api': 1.1.0
       change-case: 4.1.2
       json-ptr: 3.1.0
       lodash-es: 4.17.21
@@ -363,11 +343,10 @@ importers:
 
   packages/devtools-node:
     specifiers:
-      '@ceramicnetwork/http-client': ^2.3.0
+      '@ceramicnetwork/http-client': ^2.2.1
       '@composedb/client': workspace:^0.1.0
       '@composedb/devtools': workspace:^0.1.0
       '@composedb/types': workspace:^0.1.0
-      '@opentelemetry/api': '>=1.0.0 <1.2.0'
       '@types/express': ^4.17.13
       '@types/fs-extra': ^9.0.13
       dids: ^3.1.0
@@ -377,10 +356,9 @@ importers:
       get-port: ^6.1.2
       graphql: ^16.5.0
     dependencies:
-      '@ceramicnetwork/http-client': 2.3.0_@opentelemetry+api@1.1.0
+      '@ceramicnetwork/http-client': 2.3.0
       '@composedb/client': link:../client
       '@composedb/devtools': link:../devtools
-      '@opentelemetry/api': 1.1.0
       express: 4.18.1
       express-graphql: 0.12.0_graphql@16.5.0
       fs-extra: 10.1.0
@@ -407,34 +385,22 @@ importers:
   packages/jest-environment-composedb:
     specifiers:
       '@ceramicnetwork/core': ^2.6.0
-      '@opentelemetry/api': '>=1.0.0 <1.2.0'
-      '@types/node': '*'
       dids: ^3.2.0
       ipfs-core: ^0.15.4
       jest-environment-node: ^28.1.2
       key-did-provider-ed25519: ^2.0.0
       key-did-resolver: ^2.0.5
-      mocha: ^3.X.X || ^4.X.X || ^5.X.X || ^6.X.X || ^7.X.X || ^8.X.X || ^9.X.X
-      node-fetch: '*'
       tmp-promise: ^3.0.3
-      typescript: ^4.7.4
       uint8arrays: ^3.0.0
-      undici: '*'
     dependencies:
       '@ceramicnetwork/core': 2.6.0_qiypw7nvnvnkmm4lzw22tposhq
-      '@opentelemetry/api': 1.1.0
-      '@types/node': 18.0.4
       dids: 3.2.0
       ipfs-core: 0.15.4_qcljrmelg44npv67cycxllnz6i
       jest-environment-node: 28.1.2
       key-did-provider-ed25519: 2.0.0
       key-did-resolver: 2.0.5
-      mocha: 9.2.2
-      node-fetch: 2.6.7
       tmp-promise: 3.0.3
-      typescript: 4.7.4
       uint8arrays: 3.0.0
-      undici: 5.7.0
 
   packages/test-schemas:
     specifiers: {}
@@ -443,13 +409,11 @@ importers:
     specifiers:
       '@ceramicnetwork/stream-model': ^0.3.0
       '@ceramicnetwork/stream-model-instance': ^0.3.0
-      '@opentelemetry/api': '>=1.0.0 <1.2.0'
       dids: ^3.2.0
       json-schema-typed: ^8.0.1
     dependencies:
       '@ceramicnetwork/stream-model': 0.3.0_@opentelemetry+api@1.1.0
       '@ceramicnetwork/stream-model-instance': 0.3.0_@opentelemetry+api@1.1.0
-      '@opentelemetry/api': 1.1.0
       dids: 3.2.0
       json-schema-typed: 8.0.1
 
@@ -941,6 +905,28 @@ packages:
       - encoding
       - utf-8-validate
 
+  /@ceramicnetwork/common/2.3.0:
+    resolution: {integrity: sha512-/0uqKpCCIEXijWF1ShMXj+IcvlAD3O10f7va9gMM/XMEXr5hYSrUdPqLcjxxvJJHhzQSCZBZSkAorTWgEnsoIg==}
+    dependencies:
+      '@ceramicnetwork/streamid': 2.2.0
+      '@opentelemetry/exporter-prometheus': 0.28.0
+      '@opentelemetry/sdk-metrics-base': 0.28.0
+      '@opentelemetry/semantic-conventions': 1.4.0
+      caip: 1.1.0
+      ceramic-cacao: 1.2.1
+      cross-fetch: 3.1.5
+      flat: 5.0.2
+      jet-logger: 1.1.5
+      lodash.clonedeep: 4.5.0
+      logfmt: 1.3.2
+      multiformats: 9.7.0
+      rxjs: 7.5.6
+      uint8arrays: 3.0.0
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - encoding
+    dev: false
+
   /@ceramicnetwork/common/2.3.0_@opentelemetry+api@1.1.0:
     resolution: {integrity: sha512-/0uqKpCCIEXijWF1ShMXj+IcvlAD3O10f7va9gMM/XMEXr5hYSrUdPqLcjxxvJJHhzQSCZBZSkAorTWgEnsoIg==}
     dependencies:
@@ -1012,6 +998,22 @@ packages:
       - tedious
       - utf-8-validate
 
+  /@ceramicnetwork/http-client/2.3.0:
+    resolution: {integrity: sha512-nc+m0m/aPRGEA3CesN0yV4zoQrHtxhXDw9S76PxC2k6yF3fiu6PWlhb0911CwOM5/kYLzUGwT15XQxx7+weTpw==}
+    dependencies:
+      '@ceramicnetwork/common': 2.3.0
+      '@ceramicnetwork/stream-caip10-link': 2.1.0
+      '@ceramicnetwork/stream-model': 0.3.0
+      '@ceramicnetwork/stream-model-instance': 0.3.0
+      '@ceramicnetwork/stream-tile': 2.3.0
+      '@ceramicnetwork/streamid': 2.2.0
+      query-string: 7.1.1
+      rxjs: 7.5.5
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - encoding
+    dev: false
+
   /@ceramicnetwork/http-client/2.3.0_@opentelemetry+api@1.1.0:
     resolution: {integrity: sha512-nc+m0m/aPRGEA3CesN0yV4zoQrHtxhXDw9S76PxC2k6yF3fiu6PWlhb0911CwOM5/kYLzUGwT15XQxx7+weTpw==}
     dependencies:
@@ -1075,6 +1077,19 @@ packages:
       - encoding
       - utf-8-validate
 
+  /@ceramicnetwork/stream-caip10-link/2.1.0:
+    resolution: {integrity: sha512-lAmgmDwsbshg2KDXyg3YJst+yZleFXAmkhUyOKHVn5tGQqn+cy/4lQfIhIETRHIpHUpwCVEN/+RgVLMZtFUUxQ==}
+    dependencies:
+      '@ceramicnetwork/common': 2.3.0
+      '@ceramicnetwork/streamid': 2.2.0
+      caip: 1.1.0
+      did-resolver: 3.2.2
+      lodash.clonedeep: 4.5.0
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - encoding
+    dev: false
+
   /@ceramicnetwork/stream-caip10-link/2.1.0_@opentelemetry+api@1.1.0:
     resolution: {integrity: sha512-lAmgmDwsbshg2KDXyg3YJst+yZleFXAmkhUyOKHVn5tGQqn+cy/4lQfIhIETRHIpHUpwCVEN/+RgVLMZtFUUxQ==}
     dependencies:
@@ -1117,6 +1132,20 @@ packages:
       - '@opentelemetry/api'
       - encoding
 
+  /@ceramicnetwork/stream-model-instance/0.3.0:
+    resolution: {integrity: sha512-9Wq+RJgh57l7TlQq3va8QVha0hVgBM9ppMbNlackA8M7EvK/jQUl6I+p+L3Vm479TIxLqrUSqIUbQ6vdlmCIYA==}
+    dependencies:
+      '@ceramicnetwork/common': 2.3.0
+      '@ceramicnetwork/streamid': 2.2.0
+      '@ipld/dag-cbor': 7.0.2
+      '@stablelib/random': 1.0.1
+      fast-json-patch: 3.1.1
+      uint8arrays: 3.0.0
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - encoding
+    dev: false
+
   /@ceramicnetwork/stream-model-instance/0.3.0_@opentelemetry+api@1.1.0:
     resolution: {integrity: sha512-9Wq+RJgh57l7TlQq3va8QVha0hVgBM9ppMbNlackA8M7EvK/jQUl6I+p+L3Vm479TIxLqrUSqIUbQ6vdlmCIYA==}
     dependencies:
@@ -1129,6 +1158,22 @@ packages:
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - encoding
+
+  /@ceramicnetwork/stream-model/0.3.0:
+    resolution: {integrity: sha512-8lBLv7ds1fvmDPw2INZNTHvSs79m5jiqnM+e1jdJlz9DE36z7gEPnva5O93jg0/PlJmDXZlYdeAM0yVgnVBRZA==}
+    dependencies:
+      '@ceramicnetwork/common': 2.3.0
+      '@ceramicnetwork/streamid': 2.2.0
+      '@ipld/dag-cbor': 7.0.2
+      '@stablelib/random': 1.0.1
+      fast-json-patch: 3.1.1
+      json-schema-typed: 8.0.1
+      multihashes: 4.0.3
+      uint8arrays: 3.0.0
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - encoding
+    dev: false
 
   /@ceramicnetwork/stream-model/0.3.0_@opentelemetry+api@1.1.0:
     resolution: {integrity: sha512-8lBLv7ds1fvmDPw2INZNTHvSs79m5jiqnM+e1jdJlz9DE36z7gEPnva5O93jg0/PlJmDXZlYdeAM0yVgnVBRZA==}
@@ -1158,6 +1203,21 @@ packages:
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - encoding
+
+  /@ceramicnetwork/stream-tile/2.3.0:
+    resolution: {integrity: sha512-rRUUrrH9tOIT7wHpOGHE1+ftDUQFkk1iZr6w/54BkNhbAOYWldIZqX2JYRhI7QmTe+vKzdh6fDI6pHbaTJBfyg==}
+    dependencies:
+      '@ceramicnetwork/common': 2.3.0
+      '@ceramicnetwork/streamid': 2.2.0
+      '@ipld/dag-cbor': 7.0.2
+      '@stablelib/random': 1.0.1
+      fast-json-patch: 3.1.1
+      lodash.clonedeep: 4.5.0
+      uint8arrays: 3.0.0
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
+      - encoding
+    dev: false
 
   /@ceramicnetwork/stream-tile/2.3.0_@opentelemetry+api@1.1.0:
     resolution: {integrity: sha512-rRUUrrH9tOIT7wHpOGHE1+ftDUQFkk1iZr6w/54BkNhbAOYWldIZqX2JYRhI7QmTe+vKzdh6fDI6pHbaTJBfyg==}
@@ -1512,30 +1572,6 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@emotion/react/11.9.3_hszxbvtkrbiogp66pfduqrogei:
-    resolution: {integrity: sha512-g9Q1GcTOlzOEjqwuLF/Zd9LC+4FljjPjDfxSM7KmEakm+hsHXk+bYZ2q+/hTJzr0OUNkujo72pXLQvXj6H+GJQ==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      '@types/react': '*'
-      react: '>=16.8.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/core': 7.18.6
-      '@babel/runtime': 7.18.6
-      '@emotion/babel-plugin': 11.9.2_@babel+core@7.18.6
-      '@emotion/cache': 11.9.3
-      '@emotion/serialize': 1.0.4
-      '@emotion/utils': 1.1.0
-      '@emotion/weak-memoize': 0.2.5
-      '@types/react': 17.0.47
-      hoist-non-react-statics: 3.3.2
-      react: 18.2.0
-    dev: false
-
   /@emotion/serialize/1.0.4:
     resolution: {integrity: sha512-1JHamSpH8PIfFwAMryO2bNka+y8+KA5yga5Ocf2d7ZEiJjb7xlLW7aknBGZqJLajuLOvJ+72vN+IBSwPlXD1Pg==}
     dependencies:
@@ -1548,30 +1584,6 @@ packages:
 
   /@emotion/sheet/1.1.1:
     resolution: {integrity: sha512-J3YPccVRMiTZxYAY0IOq3kd+hUP8idY8Kz6B/Cyo+JuXq52Ek+zbPbSQUrVQp95aJ+lsAW7DPL1P2Z+U1jGkKA==}
-    dev: false
-
-  /@emotion/styled/11.9.3_2i7k3kxlr5yg4nzzxewgody7mq:
-    resolution: {integrity: sha512-o3sBNwbtoVz9v7WB1/Y/AmXl69YHmei2mrVnK7JgyBJ//Rst5yqPZCecEJlMlJrFeWHp+ki/54uN265V2pEcXA==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-      '@emotion/react': ^11.0.0-rc.0
-      '@types/react': '*'
-      react: '>=16.8.0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/core': 7.18.6
-      '@babel/runtime': 7.18.6
-      '@emotion/babel-plugin': 11.9.2_@babel+core@7.18.6
-      '@emotion/is-prop-valid': 1.1.3
-      '@emotion/react': 11.9.3_hszxbvtkrbiogp66pfduqrogei
-      '@emotion/serialize': 1.0.4
-      '@emotion/utils': 1.1.0
-      '@types/react': 17.0.47
-      react: 18.2.0
     dev: false
 
   /@emotion/styled/11.9.3_xorl7rqfpn4gtnla4dfecagcw4:
@@ -2078,7 +2090,7 @@ packages:
     dependencies:
       '@jest/fake-timers': 28.1.2
       '@jest/types': 28.1.1
-      '@types/node': 18.0.4
+      '@types/node': 18.0.3
       jest-mock: 28.1.1
     dev: false
 
@@ -2115,7 +2127,7 @@ packages:
     dependencies:
       '@jest/types': 28.1.1
       '@sinonjs/fake-timers': 9.1.2
-      '@types/node': 18.0.4
+      '@types/node': 18.0.3
       jest-message-util: 28.1.1
       jest-mock: 28.1.1
       jest-util: 28.1.1
@@ -2265,7 +2277,7 @@ packages:
       '@jest/schemas': 28.0.2
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 18.0.4
+      '@types/node': 18.0.3
       '@types/yargs': 17.0.10
       chalk: 4.1.2
     dev: false
@@ -2952,30 +2964,6 @@ packages:
       react-is: 17.0.2
     dev: false
 
-  /@mui/base/5.0.0-alpha.88_h3umwasw2xj55xde6qtxq6tis4:
-    resolution: {integrity: sha512-uL7ej2F/3GUnZewsDQSHUVHoSBT3AQcTIdfdy6QeCHy7X26mtbcIvTRcjl2PzbbNQplppavSTibPiQG/giJ+ng==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      '@types/react': ^17.0.0 || ^18.0.0
-      react: ^17.0.0 || ^18.0.0
-      react-dom: ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.18.6
-      '@emotion/is-prop-valid': 1.1.3
-      '@mui/types': 7.1.4_@types+react@17.0.47
-      '@mui/utils': 5.8.6_react@18.2.0
-      '@popperjs/core': 2.11.5
-      '@types/react': 17.0.47
-      clsx: 1.2.1
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-      react-is: 17.0.2
-    dev: false
-
   /@mui/icons-material/5.8.4_3qrniyd4fth4fdw4jngl7l7ure:
     resolution: {integrity: sha512-9Z/vyj2szvEhGWDvb+gG875bOGm8b8rlHBKOD1+nA3PcgC3fV6W1AU6pfOorPeBfH2X4mb9Boe97vHvaSndQvA==}
     engines: {node: '>=12.0.0'}
@@ -2990,23 +2978,6 @@ packages:
       '@babel/runtime': 7.18.6
       '@mui/material': 5.8.7_bl6qrq6463ovzmqn4cmwv7vydq
       '@types/react': 18.0.15
-      react: 18.2.0
-    dev: false
-
-  /@mui/icons-material/5.8.4_isfih4okafm7oxlwhamtnhvbeu:
-    resolution: {integrity: sha512-9Z/vyj2szvEhGWDvb+gG875bOGm8b8rlHBKOD1+nA3PcgC3fV6W1AU6pfOorPeBfH2X4mb9Boe97vHvaSndQvA==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      '@mui/material': ^5.0.0
-      '@types/react': ^17.0.0 || ^18.0.0
-      react: ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.18.6
-      '@mui/material': 5.8.7_cmng6vezloiu2kriozxz3fehfy
-      '@types/react': 17.0.47
       react: 18.2.0
     dev: false
 
@@ -3045,41 +3016,6 @@ packages:
       react-transition-group: 4.4.2_biqbaboplfbrettd7655fr4n2y
     dev: false
 
-  /@mui/material/5.8.7_cmng6vezloiu2kriozxz3fehfy:
-    resolution: {integrity: sha512-Oo62UhrgEi+BMLr3nUEASJgScE2/hhq14CbBUmrVV3GQlEGtqMZsy26Vb0AqEmphFeN3TXlsbM9aeW5yq8ZFlw==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      '@emotion/react': ^11.5.0
-      '@emotion/styled': ^11.3.0
-      '@types/react': ^17.0.0 || ^18.0.0
-      react: ^17.0.0 || ^18.0.0
-      react-dom: ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      '@emotion/react':
-        optional: true
-      '@emotion/styled':
-        optional: true
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.18.6
-      '@emotion/react': 11.9.3_hszxbvtkrbiogp66pfduqrogei
-      '@emotion/styled': 11.9.3_2i7k3kxlr5yg4nzzxewgody7mq
-      '@mui/base': 5.0.0-alpha.88_h3umwasw2xj55xde6qtxq6tis4
-      '@mui/system': 5.8.7_jofqrr5molpxc7xdoz2vqjd66m
-      '@mui/types': 7.1.4_@types+react@17.0.47
-      '@mui/utils': 5.8.6_react@18.2.0
-      '@types/react': 17.0.47
-      '@types/react-transition-group': 4.4.5
-      clsx: 1.2.1
-      csstype: 3.1.0
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-      react-is: 17.0.2
-      react-transition-group: 4.4.2_biqbaboplfbrettd7655fr4n2y
-    dev: false
-
   /@mui/private-theming/5.8.6_3hx2ussxxho4jajbwrd6gq34qe:
     resolution: {integrity: sha512-yHsJk1qU9r/q0DlnxGRJPHyM0Y/nUv8FTNgDTiI9I58GWuVuZqeTUr7JRvPh6ybeP/FLtW5eXEavRK9wxVk4uQ==}
     engines: {node: '>=12.0.0'}
@@ -3093,23 +3029,6 @@ packages:
       '@babel/runtime': 7.18.6
       '@mui/utils': 5.8.6_react@18.2.0
       '@types/react': 18.0.15
-      prop-types: 15.8.1
-      react: 18.2.0
-    dev: false
-
-  /@mui/private-theming/5.8.6_issp6eja53bx2taimj6tb2noxy:
-    resolution: {integrity: sha512-yHsJk1qU9r/q0DlnxGRJPHyM0Y/nUv8FTNgDTiI9I58GWuVuZqeTUr7JRvPh6ybeP/FLtW5eXEavRK9wxVk4uQ==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      '@types/react': ^17.0.0 || ^18.0.0
-      react: ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.18.6
-      '@mui/utils': 5.8.6_react@18.2.0
-      '@types/react': 17.0.47
       prop-types: 15.8.1
       react: 18.2.0
     dev: false
@@ -3129,8 +3048,8 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.6
       '@emotion/cache': 11.9.3
-      '@emotion/react': 11.9.3_hszxbvtkrbiogp66pfduqrogei
-      '@emotion/styled': 11.9.3_2i7k3kxlr5yg4nzzxewgody7mq
+      '@emotion/react': 11.9.3_dlcr7kzjh265l7kenqxjsvuiz4
+      '@emotion/styled': 11.9.3_xorl7rqfpn4gtnla4dfecagcw4
       csstype: 3.1.0
       prop-types: 15.8.1
       react: 18.2.0
@@ -3167,67 +3086,6 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@mui/styles/5.8.7_issp6eja53bx2taimj6tb2noxy:
-    resolution: {integrity: sha512-TMP3TL7P/9tJXOkthUHT9uuuBf4d0PzkrzHyU3q3qyoMBs0sMyoSsNOJAKkbG5DUCcSEGbmbarYItHH4Y/6vOg==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      '@types/react': ^17.0.0
-      react: ^17.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.18.6
-      '@emotion/hash': 0.8.0
-      '@mui/private-theming': 5.8.6_issp6eja53bx2taimj6tb2noxy
-      '@mui/types': 7.1.4_@types+react@17.0.47
-      '@mui/utils': 5.8.6_react@18.2.0
-      '@types/react': 17.0.47
-      clsx: 1.2.1
-      csstype: 3.1.0
-      hoist-non-react-statics: 3.3.2
-      jss: 10.9.0
-      jss-plugin-camel-case: 10.9.0
-      jss-plugin-default-unit: 10.9.0
-      jss-plugin-global: 10.9.0
-      jss-plugin-nested: 10.9.0
-      jss-plugin-props-sort: 10.9.0
-      jss-plugin-rule-value-function: 10.9.0
-      jss-plugin-vendor-prefixer: 10.9.0
-      prop-types: 15.8.1
-      react: 18.2.0
-    dev: false
-
-  /@mui/system/5.8.7_jofqrr5molpxc7xdoz2vqjd66m:
-    resolution: {integrity: sha512-yFoFbfO42FWeSUDrFPixYjpqySQMqVMOSbSlAxiKnwFpvXGGn/bkfQTboCRNO31fvES29FJLQd4mwwMHd5mXng==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      '@emotion/react': ^11.5.0
-      '@emotion/styled': ^11.3.0
-      '@types/react': ^17.0.0 || ^18.0.0
-      react: ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      '@emotion/react':
-        optional: true
-      '@emotion/styled':
-        optional: true
-      '@types/react':
-        optional: true
-    dependencies:
-      '@babel/runtime': 7.18.6
-      '@emotion/react': 11.9.3_hszxbvtkrbiogp66pfduqrogei
-      '@emotion/styled': 11.9.3_2i7k3kxlr5yg4nzzxewgody7mq
-      '@mui/private-theming': 5.8.6_issp6eja53bx2taimj6tb2noxy
-      '@mui/styled-engine': 5.8.7_fdnqutfacy7v3gmlcm66flps3q
-      '@mui/types': 7.1.4_@types+react@17.0.47
-      '@mui/utils': 5.8.6_react@18.2.0
-      '@types/react': 17.0.47
-      clsx: 1.2.1
-      csstype: 3.1.0
-      prop-types: 15.8.1
-      react: 18.2.0
-    dev: false
-
   /@mui/system/5.8.7_kgoqblbzxlux4bm4vftowiq75m:
     resolution: {integrity: sha512-yFoFbfO42FWeSUDrFPixYjpqySQMqVMOSbSlAxiKnwFpvXGGn/bkfQTboCRNO31fvES29FJLQd4mwwMHd5mXng==}
     engines: {node: '>=12.0.0'}
@@ -3256,17 +3114,6 @@ packages:
       csstype: 3.1.0
       prop-types: 15.8.1
       react: 18.2.0
-    dev: false
-
-  /@mui/types/7.1.4_@types+react@17.0.47:
-    resolution: {integrity: sha512-uveM3byMbthO+6tXZ1n2zm0W3uJCQYtwt/v5zV5I77v2v18u0ITkb8xwhsDD2i3V2Kye7SaNR6FFJ6lMuY/WqQ==}
-    peerDependencies:
-      '@types/react': '*'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@types/react': 17.0.47
     dev: false
 
   /@mui/types/7.1.4_@types+react@18.0.15:
@@ -3846,6 +3693,15 @@ packages:
     resolution: {integrity: sha512-hf+3bwuBwtXsugA2ULBc95qxrOqP2pOekLz34BJhcAKawt94vfeNyUKpYc0lZQ/3sCP6LqRa7UAdHA7i5UODzQ==}
     engines: {node: '>=8.0.0'}
 
+  /@opentelemetry/core/1.2.0:
+    resolution: {integrity: sha512-QiKp8fBbT9ZhRTP+ZVVMyqH62tD/ZQa4gWPi+GnpNetvK1SWPO/8DmRpaSXHwAhu5FWUDJrbFgpLsrDd1zGPOw==}
+    engines: {node: '>=8.12.0'}
+    peerDependencies:
+      '@opentelemetry/api': '>=1.0.0 <1.2.0'
+    dependencies:
+      '@opentelemetry/semantic-conventions': 1.2.0
+    dev: false
+
   /@opentelemetry/core/1.2.0_@opentelemetry+api@1.1.0:
     resolution: {integrity: sha512-QiKp8fBbT9ZhRTP+ZVVMyqH62tD/ZQa4gWPi+GnpNetvK1SWPO/8DmRpaSXHwAhu5FWUDJrbFgpLsrDd1zGPOw==}
     engines: {node: '>=8.12.0'}
@@ -3854,6 +3710,17 @@ packages:
     dependencies:
       '@opentelemetry/api': 1.1.0
       '@opentelemetry/semantic-conventions': 1.2.0
+
+  /@opentelemetry/exporter-prometheus/0.28.0:
+    resolution: {integrity: sha512-1PpJk0xFwVIRXb1vUEDWb+cV2Z8m/5YkZ+zL3+u58iZBiNn5t5VMHQ7iNPE+sV6Hr2BG8X7PtNzIIuJQKXrqsw==}
+    engines: {node: '>=8.12.0'}
+    peerDependencies:
+      '@opentelemetry/api': ^1.0.0
+    dependencies:
+      '@opentelemetry/api-metrics': 0.28.0
+      '@opentelemetry/core': 1.2.0
+      '@opentelemetry/sdk-metrics-base': 0.28.0
+    dev: false
 
   /@opentelemetry/exporter-prometheus/0.28.0_@opentelemetry+api@1.1.0:
     resolution: {integrity: sha512-1PpJk0xFwVIRXb1vUEDWb+cV2Z8m/5YkZ+zL3+u58iZBiNn5t5VMHQ7iNPE+sV6Hr2BG8X7PtNzIIuJQKXrqsw==}
@@ -3866,6 +3733,16 @@ packages:
       '@opentelemetry/core': 1.2.0_@opentelemetry+api@1.1.0
       '@opentelemetry/sdk-metrics-base': 0.28.0_@opentelemetry+api@1.1.0
 
+  /@opentelemetry/resources/1.2.0:
+    resolution: {integrity: sha512-S5ZlZa2JF+1qhiF7eb3tTtDfKmTODO//pvam9vEyZvr+/At45rIQ7cyznRdMWCppZbholwXWXnrKml29IIG9vQ==}
+    engines: {node: '>=8.12.0'}
+    peerDependencies:
+      '@opentelemetry/api': '>=1.0.0 <1.2.0'
+    dependencies:
+      '@opentelemetry/core': 1.2.0
+      '@opentelemetry/semantic-conventions': 1.2.0
+    dev: false
+
   /@opentelemetry/resources/1.2.0_@opentelemetry+api@1.1.0:
     resolution: {integrity: sha512-S5ZlZa2JF+1qhiF7eb3tTtDfKmTODO//pvam9vEyZvr+/At45rIQ7cyznRdMWCppZbholwXWXnrKml29IIG9vQ==}
     engines: {node: '>=8.12.0'}
@@ -3875,6 +3752,18 @@ packages:
       '@opentelemetry/api': 1.1.0
       '@opentelemetry/core': 1.2.0_@opentelemetry+api@1.1.0
       '@opentelemetry/semantic-conventions': 1.2.0
+
+  /@opentelemetry/sdk-metrics-base/0.28.0:
+    resolution: {integrity: sha512-PFjk9+WWU6Y51ZjxClnPW1rzTtcT79pR1FTiFjTsNmKSG0zU3qvUHAoTo0+jvvrO0Djihj7AE+iIG2xLWY4GNQ==}
+    engines: {node: '>=8.12.0'}
+    peerDependencies:
+      '@opentelemetry/api': ^1.0.0
+    dependencies:
+      '@opentelemetry/api-metrics': 0.28.0
+      '@opentelemetry/core': 1.2.0
+      '@opentelemetry/resources': 1.2.0
+      lodash.merge: 4.6.2
+    dev: false
 
   /@opentelemetry/sdk-metrics-base/0.28.0_@opentelemetry+api@1.1.0:
     resolution: {integrity: sha512-PFjk9+WWU6Y51ZjxClnPW1rzTtcT79pR1FTiFjTsNmKSG0zU3qvUHAoTo0+jvvrO0Djihj7AE+iIG2xLWY4GNQ==}
@@ -4860,7 +4749,6 @@ packages:
 
   /@types/node/18.0.3:
     resolution: {integrity: sha512-HzNRZtp4eepNitP+BD6k2L6DROIDG4Q0fm4x+dwfsr6LGmROENnok75VGw40628xf+iR24WeMFcHuuBDUAzzsQ==}
-    dev: true
 
   /@types/node/18.0.4:
     resolution: {integrity: sha512-M0+G6V0Y4YV8cqzHssZpaNCqvYwlCiulmm0PwpNLF55r/+cT8Ol42CHRU1SEaYFH2rTwiiE1aYg/2g2rrtGdPA==}
@@ -4916,13 +4804,6 @@ packages:
     dependencies:
       '@types/react': 18.0.15
     dev: false
-
-  /@types/react/17.0.47:
-    resolution: {integrity: sha512-mk0BL8zBinf2ozNr3qPnlu1oyVTYq+4V7WA76RgxUAtf0Em/Wbid38KN6n4abEkvO4xMTBWmnP1FtQzgkEiJoA==}
-    dependencies:
-      '@types/prop-types': 15.7.5
-      '@types/scheduler': 0.16.2
-      csstype: 3.1.0
 
   /@types/react/18.0.15:
     resolution: {integrity: sha512-iz3BtLuIYH1uWdsv6wXYdhozhqj20oD4/Hk2DNXIn1kFsmp9x8d9QB6FnPhfkbhd2PgEONt9Q1x/ebkwjfFLow==}
@@ -10665,7 +10546,7 @@ packages:
       '@jest/environment': 28.1.2
       '@jest/fake-timers': 28.1.2
       '@jest/types': 28.1.1
-      '@types/node': 18.0.4
+      '@types/node': 18.0.3
       jest-mock: 28.1.1
       jest-util: 28.1.1
     dev: false
@@ -10769,7 +10650,7 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
       '@jest/types': 28.1.1
-      '@types/node': 18.0.4
+      '@types/node': 18.0.3
     dev: false
 
   /jest-mock/28.1.3:
@@ -10917,7 +10798,7 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
       '@jest/types': 28.1.1
-      '@types/node': 18.0.4
+      '@types/node': 18.0.3
       chalk: 4.1.2
       ci-info: 3.3.2
       graceful-fs: 4.2.10

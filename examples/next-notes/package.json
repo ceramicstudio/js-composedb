@@ -10,7 +10,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@babel/core": ">=7.0.0 <8.0.0",
     "@ceramicnetwork/http-client": "^2.2.1",
     "@composedb/client": "workspace:^0.1.0",
     "@emotion/react": "^11.8.1",
@@ -18,7 +17,6 @@
     "@mui/icons-material": "^5.8.2",
     "@mui/material": "^5.8.7",
     "@mui/styles": "^5.8.7",
-    "@opentelemetry/api": ">=1.0.0 <1.2.0",
     "@swc/helpers": "^0.4.3",
     "dids": "^3.2.0",
     "jotai": "^1.7.3",
@@ -35,7 +33,7 @@
     "@composedb/devtools": "workspace:^0.1.0",
     "@composedb/devtools-node": "workspace:^0.1.0",
     "@types/node": "^18.0.1",
-    "@types/react": "^17.0.0",
+    "@types/react": "^18.0.14",
     "@types/react-relay": "^13.0.1",
     "@types/relay-runtime": "^13.0.2",
     "eslint": "^8.19.0",
