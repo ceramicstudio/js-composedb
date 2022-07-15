@@ -43,6 +43,7 @@
     "@ceramicnetwork/stream-model-instance": "^0.3.0",
     "@ceramicnetwork/streamid": "^2.1.0",
     "@composedb/graphql-scalars": "workspace:^0.1.0",
+    "@opentelemetry/api": ">=1.0.0 <1.2.0",
     "dataloader": "^2.1.0",
     "graphql": "^16.3.0",
     "graphql-relay": "^0.10.0"

@@ -24,12 +24,18 @@
   },
   "dependencies": {
     "@ceramicnetwork/core": "^2.6.0",
+    "@opentelemetry/api": ">=1.0.0 <1.2.0",
+    "@types/node": "*",
     "dids": "^3.2.0",
     "ipfs-core": "^0.15.4",
     "jest-environment-node": "^28.1.2",
     "key-did-provider-ed25519": "^2.0.0",
     "key-did-resolver": "^2.0.5",
+    "mocha": "^3.X.X || ^4.X.X || ^5.X.X || ^6.X.X || ^7.X.X || ^8.X.X || ^9.X.X",
+    "node-fetch": "*",
     "tmp-promise": "^3.0.3",
-    "uint8arrays": "^3.0.0"
+    "typescript": "^4.7.4",
+    "uint8arrays": "^3.0.0",
+    "undici": "*"
   }
 }
