@@ -6,8 +6,9 @@ import {
   CONFIG_DIR_PATH,
   CONFIG_PATH,
   INDEXING_DB_FILENAME,
-  STATE_STORE_DIRECTORY,
-  TEMP_DIR_PATH
+  STATE_STORE_DIR_PATH,
+  TEMP_DIR_PATH,
+  TEST_OUTPUT_DIR_PATH,
 } from "./globalConsts.js"
 
 
@@ -26,7 +27,7 @@ const TEST_DAEMON_CONFIG = {
   node: {},
   'state-store': {
     mode: 'fs',
-    'local-directory': STATE_STORE_DIRECTORY.pathname,
+    'local-directory': STATE_STORE_DIR_PATH.pathname,
   },
   indexing: {
     db: `sqlite://${INDEXING_DB_FILENAME.pathname}`,
@@ -36,13 +37,19 @@ const TEST_DAEMON_CONFIG = {
 }
 
 export default async function globalSetup() {
+  if (await fs.exists(TEMP_DIR_PATH)) {
+    await fs.rm(TEMP_DIR_PATH, { force: true, recursive: true })
+  }
+
   await fs.ensureDir(TEMP_DIR_PATH)
+  await fs.ensureDir(TEST_OUTPUT_DIR_PATH)
   await fs.ensureDir(CONFIG_DIR_PATH)
+  await fs.ensureDir(STATE_STORE_DIR_PATH)
   await fs.writeJson(CONFIG_PATH, TEST_DAEMON_CONFIG)
 
   await setup({
     command:
-      `CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=\'true\' rm -rf ~/.goipfs && rm -rf ${STATE_STORE_DIRECTORY.pathname} && rm -rf ./test/test_output_files && rm -rf ${INDEXING_DB_FILENAME.pathname} && rm -rf ${CONFIG_PATH} && mkdir ./test/test_output_files  && pnpm dlx @ceramicnetwork/cli@^2.4.0 daemon --config ${CONFIG_PATH}`,
+      `CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=\'true\' rm -rf ~/.goipfs && pnpm dlx @ceramicnetwork/cli@^2.4.0 daemon --config ${CONFIG_PATH}`,
     debug: true,
     launchTimeout: 240000,
     port: 7007,
