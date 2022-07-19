@@ -1,11 +1,6 @@
 {
   "extends": "./tsconfig.build.json",
-  "include": [
-    "./packages/client/src",
-    "./packages/devtools/src",
-    "./packages/devtools-node/src",
-    "./packages/types/src"
-  ],
+  "include": ["./packages/client/src", "./packages/devtools/src", "./packages/devtools-node/src"],
   "compilerOptions": {
     "jsx": "preserve",
     "lib": ["DOM", "ES2020"],
@@ -14,12 +9,11 @@
   "typedocOptions": {
     "name": "ComposeDB API",
     "readme": "none",
-    "entryDocument": "overview.md",
+    "entryDocument": "index.md",
     "entryPoints": [
       "./packages/client/src/index.ts",
       "./packages/devtools/src/index.ts",
-      "./packages/devtools-node/src/index.ts",
-      "./packages/types/src/index.ts"
+      "./packages/devtools-node/src/index.ts"
     ],
     "disableSources": true,
     "excludeExternals": true,

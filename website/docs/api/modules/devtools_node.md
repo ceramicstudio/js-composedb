@@ -1,4 +1,8 @@
-# Module: devtools-node
+---
+id: "devtools_node"
+title: "Module: devtools-node"
+custom_edit_url: null
+---
 
 Node.js-specific development tools.
 
