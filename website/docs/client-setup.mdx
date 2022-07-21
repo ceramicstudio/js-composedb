@@ -1,0 +1,68 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Client setup
+
+## Compiling the Composite
+
+In order to interact with a Composite at runtime, it is first necessary to create a runtime Composite definition file that will be used to configure the client.
+
+<Tabs
+  defaultValue="api"
+  groupId="api-or-cli"
+  values={[
+    {label: 'Using the API', value: 'api'},
+    {label: 'Using the CLI', value: 'cli'},
+  ]}>
+  <TabItem value="api">
+
+```js
+import { CeramicClient } from '@ceramicnetwork/http-client'
+import { writeEncodedCompositeRuntime } from '@composedb/devtools-node'
+
+// Replace by the URL of the Ceramic node you want to deploy the Models to
+const ceramic = new CeramicClient('http://localhost:7007')
+
+// Replace by the path to the local encoded Composite file
+await writeEncodedCompositeRuntime(
+  ceramic,
+  'my-first-composite.json',
+  'src/__generated__/definition.js'
+)
+```
+
+  </TabItem>
+  <TabItem value="cli">
+
+```sh
+composedb composite:compile my-first-composite.json src/__generated__/definition.js --ceramic-url=http://localhost:7007
+```
+
+  </TabItem>
+</Tabs>
+
+## Configuring the Client
+
+Once the Composite definition file is written, for example in `src/__generated__/definition.js` using the example above, it can be imported in the app to configure the client:
+
+```js title="src/compose.js"
+import { ComposeClient } from '@composedb/client'
+
+import { definition } from './__generated__/definition.js'
+
+export const compose = new ComposeClient({ ceramic: 'http://localhost:7007', definition })
+```
+
+## Executing queries
+
+The `ComposeClient` instance created in the previous step can be used to execute GraphQL queries using a schema automatically generated from the runtime Composite definition.
+
+```js
+await compose.executeQuery(`
+query {
+  viewer {
+    id
+  }
+}
+`)
+```

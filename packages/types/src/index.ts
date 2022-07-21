@@ -175,7 +175,7 @@ export type RuntimeViewReferenceType = 'connection' | 'node'
 export type RuntimeViewReference = { type: RuntimeViewReferenceType; name: string }
 
 /**
- * Runtime composite definition, used by the {@linkcode graph.GraphClient GraphClient class} to
+ * Runtime composite definition, used by the {@linkcode client.ComposeClient ComposeClient class} to
  * create a GraphQL schema to interact with.
  */
 export type RuntimeCompositeDefinition = {

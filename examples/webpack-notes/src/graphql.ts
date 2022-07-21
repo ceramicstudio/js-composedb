@@ -8,9 +8,9 @@ export const compose = new ComposeClient({ ceramic: 'http://localhost:7007', def
 
 const cache = new InMemoryCache({
   typePolicies: {
-    CeramicAccountData: {
+    CeramicAccount: {
       fields: {
-        noteCollection: relayStylePagination(),
+        noteList: relayStylePagination(),
       },
     },
   },

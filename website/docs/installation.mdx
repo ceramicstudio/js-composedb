@@ -1,0 +1,152 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Installation
+
+## Requirements
+
+ComposeDB runs on top of Ceramic. Running a local Ceramic node is needed for app development.
+
+## Development tools
+
+ComposeDB provides libraries and a CLI to help support common development needs.
+
+The CLI provides commands for the most common flows, while the libraries can be used in scripts to support more complex use-cases.
+
+### CLI
+
+<Tabs
+  defaultValue="pnpm"
+  groupId="package-manager"
+  values={[
+    {label: 'pnpm', value: 'pnpm'},
+    {label: 'npm', value: 'npm'},
+    {label: 'Yarn', value: 'yarn'},
+  ]}>
+  <TabItem value="pnpm">
+
+```sh
+pnpm add -g @composedb/cli
+```
+
+  </TabItem>
+  <TabItem value="npm">
+
+```sh
+npm install --location=global @composedb/cli
+```
+
+  </TabItem>
+  <TabItem value="yarn">
+
+```sh
+yarn add -g @composedb/cli
+```
+
+  </TabItem>
+</Tabs>
+
+### Libraries
+
+ComposeDB exposes two complementary development libraries: `@composedb/devtools` for generic interactions with Composites, and `@composedb/devtools-node` with additional functions to interact with the local file system and start a local HTTP server.
+
+<Tabs
+  defaultValue="pnpm"
+  groupId="package-manager"
+  values={[
+    {label: 'pnpm', value: 'pnpm'},
+    {label: 'npm', value: 'npm'},
+    {label: 'Yarn', value: 'yarn'},
+  ]}>
+  <TabItem value="pnpm">
+
+```sh
+pnpm add -D @composedb/devtools @composedb/devtools-node
+```
+
+  </TabItem>
+  <TabItem value="npm">
+
+```sh
+npm install -D @composedb/devtools @composedb/devtools-node
+```
+
+  </TabItem>
+  <TabItem value="yarn">
+
+```sh
+yarn add -D @composedb/devtools @composedb/devtools-node
+```
+
+  </TabItem>
+</Tabs>
+
+## Runtime libraries
+
+The `@composedb/client` package exposes the primary APIs to interact with Ceramic based on a Composite definition.
+
+<Tabs
+  defaultValue="pnpm"
+  groupId="package-manager"
+  values={[
+    {label: 'pnpm', value: 'pnpm'},
+    {label: 'npm', value: 'npm'},
+    {label: 'Yarn', value: 'yarn'},
+  ]}>
+  <TabItem value="pnpm">
+
+```sh
+pnpm add @composedb/client
+```
+
+  </TabItem>
+  <TabItem value="npm">
+
+```sh
+npm install @composedb/client
+```
+
+  </TabItem>
+  <TabItem value="yarn">
+
+```sh
+yarn add @composedb/client
+```
+
+  </TabItem>
+</Tabs>
+
+## Using TypeScript
+
+You may need to install the `@composedb/types` package used by the different libraries if you use TypeScript.
+
+<Tabs
+  defaultValue="pnpm"
+  groupId="package-manager"
+  values={[
+    {label: 'pnpm', value: 'pnpm'},
+    {label: 'npm', value: 'npm'},
+    {label: 'Yarn', value: 'yarn'},
+  ]}>
+  <TabItem value="pnpm">
+
+```sh
+pnpm add -D @composedb/types
+```
+
+  </TabItem>
+  <TabItem value="npm">
+
+```sh
+npm install -D @composedb/types
+```
+
+  </TabItem>
+  <TabItem value="yarn">
+
+```sh
+yarn add -D @composedb/types
+```
+
+  </TabItem>
+</Tabs>

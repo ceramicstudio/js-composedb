@@ -212,7 +212,7 @@ export type FromModelsParams = CompositeOptions & {
  * The Composite class provides APIs for managing composites (sets of Model streams) through their
  * development lifecycle, including the creation of new Models, import and export of existing
  * composites encoded as JSON, and compilation to the runtime format used by the
- * {@linkcode graph.GraphClient GraphClient class}.
+ * {@linkcode client.ComposeClient ComposeClient class}.
  *
  * Composite instances are **immutable**, so methods affecting the contents of the internal
  * composite definition will **return new instances** of the Composite class.
@@ -274,8 +274,7 @@ export class Composite {
   }
 
   /**
-   * Create a Composite instance from a JSON-encoded
-   * {@linkcode types.EncodedCompositeDefinition CompositeDefinition}.
+   * Create a Composite instance from a JSON-encoded `CompositeDefinition`.
    */
   static async fromJSON(params: FromJSONParams): Promise<Composite> {
     const { models, ...definition } = params.definition
@@ -334,6 +333,13 @@ export class Composite {
       this.#hash = createObjectHash(this.#definition)
     }
     return this.#hash
+  }
+
+  /**
+   * StreamID of the Models used in the Composite.
+   */
+  get modelIDs(): Array<string> {
+    return Object.keys(this.#definition.models)
   }
 
   /**
@@ -477,8 +483,7 @@ export class Composite {
   }
 
   /**
-   * Return a JSON-encoded {@linkcode types.EncodedCompositeDefinition CompositeDefinition}
-   * structure that can be shared and reused.
+   * Return a JSON-encoded `CompositeDefinition` structure that can be shared and reused.
    */
   toJSON(): EncodedCompositeDefinition {
     return {
@@ -500,8 +505,8 @@ export class Composite {
   }
 
   /**
-   * Return a {@linkcode types.RuntimeCompositeDefinition RuntimeCompositeDefinition} to be used
-   * at runtime by the {@linkcode graph.GraphClient GraphClient}.
+   * Return a `RuntimeCompositeDefinition` to be used at runtime by the
+   * {@linkcode client.ComposeClient ComposeClient}.
    */
   toRuntime(): RuntimeCompositeDefinition {
     return createRuntimeDefinition(this.#definition)

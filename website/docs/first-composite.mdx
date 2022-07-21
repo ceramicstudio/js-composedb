@@ -1,0 +1,172 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Your first Composite
+
+TODO: Quick intro to composites as set of models, focus on usage.
+
+## Importing a Model
+
+TODO: Model ID and URL of Ceramic node with model stored
+
+<Tabs
+  defaultValue="api"
+  groupId="api-or-cli"
+  values={[
+    {label: 'Using the API', value: 'api'},
+    {label: 'Using the CLI', value: 'cli'},
+  ]}>
+  <TabItem value="api">
+
+```js
+import { CeramicClient } from '@ceramicnetwork/http-client'
+import { Composite } from '@composedb/devtools'
+import { writeEncodedComposite } from '@composedb/devtools-node'
+
+const ceramic = new CeramicClient('https://gateway-clay.ceramic.network')
+const composite = await Composite.fromModels({ ceramic, models: [''] })
+
+await writeEncodedComposite(composite, 'my-first-composite.json')
+```
+
+  </TabItem>
+  <TabItem value="cli">
+
+```sh
+composedb composite:from-model <model ID> --ceramic-url=https://gateway-clay.ceramic.network --output=my-first-composite.json
+```
+
+  </TabItem>
+</Tabs>
+
+## Deploying to a local node
+
+The following step requires a local Ceramic node to be running. If you do not already have it running, you can use the following command:
+
+<Tabs
+  defaultValue="pnpm"
+  groupId="package-manager"
+  values={[
+    {label: 'pnpm', value: 'pnpm'},
+    {label: 'npm', value: 'npm'},
+    {label: 'Yarn', value: 'yarn'},
+  ]}>
+  <TabItem value="pnpm">
+
+```sh
+pnpm dlx @ceramicnetwork/cli daemon
+```
+
+  </TabItem>
+  <TabItem value="npm">
+
+```sh
+npx @ceramicnetwork/cli daemon
+```
+
+  </TabItem>
+  <TabItem value="yarn">
+
+```sh
+yarn dlx @ceramicnetwork/cli daemon
+```
+
+  </TabItem>
+</Tabs>
+
+Then the Composite can be deployed from a script or the CLI:
+
+<Tabs
+  defaultValue="api"
+  groupId="api-or-cli"
+  values={[
+    {label: 'Using the API', value: 'api'},
+    {label: 'Using the CLI', value: 'cli'},
+  ]}>
+  <TabItem value="api">
+
+```js
+import { CeramicClient } from '@ceramicnetwork/http-client'
+import { readEncodedComposite } from '@composedb/devtools-node'
+
+// Replace by the URL of the Ceramic node you want to deploy the Models to
+const ceramic = new CeramicClient('http://localhost:7007')
+
+// Replace by the path to the local encoded Composite file
+const composite = await readEncodedComposite(ceramic, 'my-first-composite.json')
+
+console.log('Model IDs to set in configuration:', composite.modelIDs)
+```
+
+  </TabItem>
+  <TabItem value="cli">
+
+First, we need to ensure the Models streams are available on the target Ceramic node:
+
+```sh
+composedb composite:deploy my-first-composite.json --ceramic-url=http://localhost:7007
+```
+
+Then we need to get the list of Models that need to be set for indexing in the Ceramic node configuration:
+
+```sh
+composedb composite:models my-first-composite.json
+```
+
+  </TabItem>
+</Tabs>
+
+## Configuring Ceramic
+
+- Edit config file to add model ID to index
+- Restart Ceramic node
+
+## Interacting using GraphiQL
+
+Once the Composite is deployed and the Ceramic node configured, it is possible to start a local HTTP server to interact with the generated GraphQL schema, notably using GraphiQL:
+
+<Tabs
+  defaultValue="api"
+  groupId="api-or-cli"
+  values={[
+    {label: 'Using the API', value: 'api'},
+    {label: 'Using the CLI', value: 'cli'},
+  ]}>
+  <TabItem value="api">
+
+```js
+import { serveEncodedDefinition } from '@composedb/devtools-node'
+
+const server = await serveEncodedDefinition({
+  ceramicURL: 'http://localhost:7007',
+  graphiql: true,
+  path: new URL('my-first-composite.json', import.meta.url),
+  port: 5000,
+})
+
+console.log(`Server started on ${server.url}`)
+
+process.on('SIGTERM', () => {
+  server.close(() => {
+    console.log('Server stopped')
+  })
+})
+```
+
+  </TabItem>
+  <TabItem value="cli">
+
+First, we need to compile the encoded Composite definition to a runtime definition:
+
+```sh
+composedb composite:compile my-first-composite.json runtime-composite.json
+```
+
+Then we can start the local server with GraphiQL using the runtime composite:
+
+```sh
+composedb graphql:server --ceramic-url=http://localhost:7007 --graphiql --port=5000 runtime-composite.json
+```
+
+  </TabItem>
+</Tabs>
