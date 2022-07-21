@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'ComposeDB',
-  tagline: 'Dinosaurs are cool',
+  tagline: 'Composable data on Ceramic',
   url: 'https://your-docusaurus-test-site.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -98,22 +98,26 @@ const config = {
             title: 'Community',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                label: 'Forum',
+                href: 'https://forum.ceramic.network/',
               },
               {
                 label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
+                href: 'http://chat.ceramic.network/',
               },
               {
                 label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
+                href: 'https://twitter.com/ceramicnetwork',
               },
             ],
           },
           {
             title: 'More',
             items: [
+              {
+                label: 'Ceramic documentation',
+                href: 'https://developers.ceramic.network',
+              },
               {
                 label: 'GitHub',
                 href: 'https://github.com/ceramicstudio/js-composedb',

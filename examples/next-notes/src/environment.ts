@@ -1,4 +1,3 @@
-import { CeramicClient } from '@ceramicnetwork/http-client'
 import { ComposeClient } from '@composedb/client'
 import { DID } from 'dids'
 import { Ed25519Provider } from 'key-did-provider-ed25519'

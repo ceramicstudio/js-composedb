@@ -45,7 +45,6 @@ const sidebars = {
           items: [
             { type: 'doc', id: 'guides/interacting/queries' },
             { type: 'doc', id: 'guides/interacting/mutations' },
-            { type: 'doc', id: 'guides/interacting/using-graphiql' },
             { type: 'doc', id: 'guides/interacting/using-apollo' },
             { type: 'doc', id: 'guides/interacting/using-relay' },
           ],

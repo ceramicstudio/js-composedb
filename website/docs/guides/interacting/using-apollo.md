@@ -7,7 +7,7 @@ import { ApolloClient, ApolloLink, InMemoryCache, Observable } from '@apollo/cli
 import { ComposeClient } from '@composedb/client'
 
 // Path to the generated runtime composite definition
-import { definition } from './__generated__/definition'
+import { definition } from './__generated__/definition.js'
 
 const compose = new ComposeClient({ ceramic: 'http://localhost:7007', definition })
 
