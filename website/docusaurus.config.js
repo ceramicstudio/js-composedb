@@ -8,14 +8,15 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 const config = {
   title: 'ComposeDB',
   tagline: 'Composable data on Ceramic',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  url: 'https://ceramicstudio.github.io',
+  baseUrl: '/js-composedb/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   // GitHub pages deployment config.
   organizationName: 'ceramicstudio',
   projectName: 'js-composedb',
+  trailingSlash: false,
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
