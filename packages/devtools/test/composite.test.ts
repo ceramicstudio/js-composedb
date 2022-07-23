@@ -56,6 +56,20 @@ describe('composite', () => {
       expect(source.hash).toBe(hash)
     })
 
+    test('modelIDs() getter returns the list of model IDs', () => {
+      const composite = new Composite({
+        commits: { fooID: [], barID: [] },
+        definition: {
+          version: '1.0',
+          models: {
+            fooID: { name: 'Foo', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+            barID: { name: 'Bar', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+          },
+        },
+      })
+      expect(composite.modelIDs).toEqual(['fooID', 'barID'])
+    })
+
     describe('equals()', () => {
       const params: CompositeParams = {
         commits: { fooID: [], barID: [] },

@@ -1,4 +1,8 @@
-# Module: client
+---
+id: "client"
+title: "Module: client"
+custom_edit_url: null
+---
 
 ComposeDB client.
 

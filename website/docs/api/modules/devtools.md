@@ -1,4 +1,8 @@
-# Module: devtools
+---
+id: "devtools"
+title: "Module: devtools"
+custom_edit_url: null
+---
 
 Development tools library.
 
