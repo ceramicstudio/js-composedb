@@ -11,6 +11,15 @@
 
 * Compile the schema to [format]
 
+This creates the models on ceramic:
+
+`composedb composite:create [graphql_def_file]`
+
+This compiles to a representation which can be deployed to a ceramic node for indexing
+
+`composedb composite:compile`
+
+
 
 ## Run a Ceramic node with indexing on
 
