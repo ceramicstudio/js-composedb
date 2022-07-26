@@ -2,24 +2,37 @@
 
 ## Create a schema
 
-* Create a graphQL compatible composite schema, such as
+* Write a graphQL compatible composite schema in a text file, such as
+
+example: task.schema
+```
+type Task @model(
+    accountRelation: LIST,
+    description: "Basic task"
+) {
+    assignee: String! @length(min:1, max: 30)
+    completed: Boolean
+    content: String! @length(max:2000)
+}
 
 ```
 
+* generate a DID key 
 
+If you do not already have a DID key handy, you will need to create one 
+
+If you have downloaded and installed this repo or the [js-glaze](https://github.com/ceramicstudio/js-glaze) repo you can run
 ```
+cd packages/cli
+node bin/run.js did:generate-seed
+```
+save this result for use as the did key in the next step.
 
-* Compile the schema to [format]
+* Create schema and output encoded composite
 
-This creates the models on ceramic:
+`composedb composite:create [graphql_def_file] -k [didkey] -o [output_file.json]`
 
-`composedb composite:create [graphql_def_file]`
-
-This compiles to a representation which can be deployed to a ceramic node for indexing
-
-`composedb composite:compile`
-
-
+Inspect the output file for the model id(s), to use in the next step
 
 ## Run a Ceramic node with indexing on
 
@@ -49,6 +62,6 @@ Note that *kh4q0kq8h3j3zb52p8gjcayuwrdpt* is the stream id for the all-models st
 
 ## Deploy your compiled schema to ceramic
 
-`composedb composite:deploy YOUR-COMPILED-SCHEMA.json --ceramic-url=http://localhost:7007`
+`composedb composite:deploy [output_file.json] --ceramic-url=http://localhost:7007`
 
 
