@@ -75,11 +75,11 @@ export class ComposeClient {
   }
 
   /**
-   * ID of the DID attached to the Ceramic client instance used internally. If `undefined`, the
+   * ID of the DID attached to the Ceramic client instance used internally. If `null`, the
    * Ceramic instance is not authenticated and mutations will fail.
    */
-  get id(): string | undefined {
-    return this.did?.id
+  get id(): string | null {
+    return this.#context.viewerID
   }
 
   /**

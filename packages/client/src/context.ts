@@ -64,7 +64,8 @@ export class Context {
    * ID of the current viewer (authenticated DID), if set.
    */
   get viewerID(): string | null {
-    return this.#ceramic.did?.id ?? null
+    const did = this.#ceramic.did
+    return did?.hasParent ? did.parent : did?.id ?? null
   }
 
   /**
