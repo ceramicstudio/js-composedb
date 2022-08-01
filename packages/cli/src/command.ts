@@ -28,7 +28,7 @@ export interface CommandFlags {
 }
 
 export type QueryCommandFlags = CommandFlags & {
-  sync?: SyncOptions
+  sync?: string
 }
 
 export const STREAM_ID_ARG = {
@@ -37,13 +37,22 @@ export const STREAM_ID_ARG = {
   description: 'ID of the stream',
 }
 
-export const SYNC_OPTION_FLAG = Flags.integer({
+/* Not using Flags.string.parse, because it's not supported anymore to either:
+   a. have a Flags.integer flag with a string input and parse(...) returning an integer
+   b. have a Flags.string flag with and parse(...) returning an integer
+   , and the httpClient expects an integer, while we want to have this option as a string flag in the cli
+**/
+export const parseSyncFlag = (value: string | undefined) => {
+  if (value === undefined || SYNC_OPTIONS_MAP[value] === undefined) {
+    return SyncOptions.PREFER_CACHE
+  }
+  return SYNC_OPTIONS_MAP[value]
+}
+
+export const SYNC_OPTION_FLAG = Flags.string({
   required: false,
   options: Object.keys(SYNC_OPTIONS_MAP),
   description: `Controls if the current stream state should be synced over the network or not. 'prefer-cache' will return the state from the node's local cache if present, and will sync from the network if the stream isn't in the cache. 'always-sync' always syncs from the network, even if there is cached state for the stream. 'never-sync' never syncs from the network.`,
-  parse: (input: string) => {
-    return Promise.resolve(SYNC_OPTIONS_MAP[input] ?? SyncOptions.PREFER_CACHE)
-  },
 })
 
 const readPipe: () => Promise<string | undefined> = () => {
