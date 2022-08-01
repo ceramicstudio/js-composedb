@@ -1,10 +1,14 @@
-# Class: ComposeClient
+---
+id: "client.ComposeClient"
+title: "Class: ComposeClient"
+custom_edit_url: null
+---
 
 [client](../modules/client.md).ComposeClient
 
 The ComposeClient class provides APIs to execute queries on a GraphQL schema generated from a
-[`RuntimeCompositeDefinition`](../modules/types.md#runtimecompositedefinition). It allows applications
-to interact with documents using known models on a Ceramic node.
+`RuntimeCompositeDefinition`. It allows applications to interact with documents using known
+models on a Ceramic node.
 
 It is exported by the [`client`](../modules/client.md) module.
 
@@ -52,14 +56,14 @@ ___
 
 ### id
 
-• `get` **id**(): `undefined` \| `string`
+• `get` **id**(): ``null`` \| `string`
 
-ID of the DID attached to the Ceramic client instance used internally. If `undefined`, the
+ID of the DID attached to the Ceramic client instance used internally. If `null`, the
 Ceramic instance is not authenticated and mutations will fail.
 
 #### Returns
 
-`undefined` \| `string`
+``null`` \| `string`
 
 ___
 

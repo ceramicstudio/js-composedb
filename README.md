@@ -26,6 +26,7 @@ This monorepo uses [pnpm](https://pnpm.io/), make sure to install it first if yo
 | **Client libraries**                                       |
 | [`@composedb/client`](./packages/client)                   | ComposeDB client for executing GraphQL query on a Ceramic node | ![npm version](https://img.shields.io/npm/v/@composedb/client.svg)          |
 | **Developer tools**                                        |
+| [`@composedb/cli`](./packages/cli)                         | Command Line Interface                                         | ![npm version](https://img.shields.io/npm/v/@composedb/cli.svg)             |
 | [`@composedb/devtools`](./packages/devtools)               | Development tools library                                      | ![npm version](https://img.shields.io/npm/v/@composedb/devtools.svg)        |
 | [`@composedb/devtools-node`](./packages/devtools-node)     | Node.js-specific development tools library                     | ![npm version](https://img.shields.io/npm/v/@composedb/devtools-node.svg)   |
 | **Shared libraries**                                       |

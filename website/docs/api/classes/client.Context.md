@@ -1,4 +1,8 @@
-# Class: Context
+---
+id: "client.Context"
+title: "Class: Context"
+custom_edit_url: null
+---
 
 [client](../modules/client.md).Context
 

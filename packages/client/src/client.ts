@@ -35,8 +35,8 @@ export type ComposeClientParams = {
 
 /**
  * The ComposeClient class provides APIs to execute queries on a GraphQL schema generated from a
- * {@linkcode types.RuntimeCompositeDefinition RuntimeCompositeDefinition}. It allows applications
- * to interact with documents using known models on a Ceramic node.
+ * `RuntimeCompositeDefinition`. It allows applications to interact with documents using known
+ * models on a Ceramic node.
  *
  * It is exported by the {@linkcode client} module.
  *
@@ -75,11 +75,11 @@ export class ComposeClient {
   }
 
   /**
-   * ID of the DID attached to the Ceramic client instance used internally. If `undefined`, the
+   * ID of the DID attached to the Ceramic client instance used internally. If `null`, the
    * Ceramic instance is not authenticated and mutations will fail.
    */
-  get id(): string | undefined {
-    return this.did?.id
+  get id(): string | null {
+    return this.#context.viewerID
   }
 
   /**

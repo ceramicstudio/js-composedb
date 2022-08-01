@@ -1,0 +1,52 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Composites deployment
+
+Valid Composites can be deployed to any supporting Ceramic node, by ensuring the Model streams described in the Composite are available on the node, and that the node is configured to index theses models.
+
+## Models deployment
+
+<Tabs
+  defaultValue="api"
+  groupId="api-or-cli"
+  values={[
+    {label: 'Using the API', value: 'api'},
+    {label: 'Using the CLI', value: 'cli'},
+  ]}>
+  <TabItem value="api">
+
+```js
+import { CeramicClient } from '@ceramicnetwork/http-client'
+import { readEncodedComposite } from '@composedb/devtools-node'
+
+// Replace by the URL of the Ceramic node you want to deploy the Models to
+const ceramic = new CeramicClient('http://localhost:7007')
+
+// Replace by the path to the local encoded Composite file
+const composite = await readEncodedComposite(ceramic, 'my-composite.json')
+
+console.log('Model IDs to set in configuration:', composite.modelIDs)
+```
+
+  </TabItem>
+  <TabItem value="cli">
+
+First, we need to ensure the Models streams are available on the target Ceramic node:
+
+```sh
+composedb composite:deploy my-composite.json --ceramic-url=http://localhost:7007
+```
+
+Then, we need to get the list of Models that need to be set for indexing in the Ceramic node configuration:
+
+```sh
+composedb composite:models my-composite.json
+```
+
+  </TabItem>
+</Tabs>
+
+## Ceramic node configuration
+
+TODO: based on list of models from step above, add to the Ceramic node config file.
