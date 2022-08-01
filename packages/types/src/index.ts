@@ -120,6 +120,7 @@ export type CustomRuntimeScalarType =
   | 'datetime'
   | 'did'
   | 'id'
+  | 'streamid'
   | 'time'
 
 type RuntimeStringScalarType<Type extends CustomRuntimeScalarType> = RuntimeScalarCommon & {
