@@ -41,12 +41,12 @@
   "dependencies": {
     "@ceramicnetwork/stream-model": "^0.3.0",
     "@composedb/graphql-scalars": "workspace:^0.1.0",
-    "@graphql-tools/schema": "^8.5.0",
-    "@graphql-tools/utils": "^8.8.0",
+    "@graphql-tools/schema": "^8.5.1",
+    "@graphql-tools/utils": "^8.9.0",
     "change-case": "^4.1.2",
     "json-ptr": "^3.1.1",
     "lodash-es": "^4.17.21",
-    "multiformats": "^9.7.0",
+    "multiformats": "^9.7.1",
     "object-hash": "^3.0.0",
     "uint8arrays": "^3.0.0"
   },
@@ -62,7 +62,7 @@
     "dids": "^3.2.0",
     "fs-extra": "^10.1.0",
     "graphql": "^16.5.0",
-    "graphql-tools": "^8.3.0",
+    "graphql-tools": "^8.3.1",
     "jest-environment-composedb": "workspace:^0.1.0"
   },
   "jest": {

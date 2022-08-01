@@ -56,14 +56,14 @@ ___
 
 ### id
 
-• `get` **id**(): `undefined` \| `string`
+• `get` **id**(): ``null`` \| `string`
 
-ID of the DID attached to the Ceramic client instance used internally. If `undefined`, the
+ID of the DID attached to the Ceramic client instance used internally. If `null`, the
 Ceramic instance is not authenticated and mutations will fail.
 
 #### Returns
 
-`undefined` \| `string`
+``null`` \| `string`
 
 ___
 
