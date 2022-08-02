@@ -318,6 +318,7 @@ importers:
       lodash-es: ^4.17.21
       multiformats: ^9.7.1
       object-hash: ^3.0.0
+      type-fest: ^2.18.0
       uint8arrays: ^3.0.0
     dependencies:
       '@ceramicnetwork/stream-model': 0.3.0
@@ -329,6 +330,7 @@ importers:
       lodash-es: 4.17.21
       multiformats: 9.7.1
       object-hash: 3.0.0
+      type-fest: 2.18.0
       uint8arrays: 3.0.0
     devDependencies:
       '@ceramicnetwork/common': 2.3.0
@@ -612,6 +614,7 @@ packages:
 
   /@apollo/client/3.6.9_graphql@16.5.0:
     resolution: {integrity: sha512-Y1yu8qa2YeaCUBVuw08x8NHenFi0sw2I3KCu7Kw9mDSu86HmmtHJkCAifKVrN2iPgDTW/BbP3EpSV8/EQCcxZA==}
+    requiresBuild: true
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
       graphql-ws: ^5.5.5

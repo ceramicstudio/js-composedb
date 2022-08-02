@@ -48,6 +48,7 @@
     "lodash-es": "^4.17.21",
     "multiformats": "^9.7.1",
     "object-hash": "^3.0.0",
+    "type-fest": "^2.18.0",
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {

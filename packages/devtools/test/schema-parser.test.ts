@@ -4,10 +4,10 @@ import { ImageMetadataType, mediaSchema, profilesSchema } from '@composedb/test-
 import ajv from 'ajv/dist/2020'
 import { inspect } from 'node:util'
 
-import { SchemaParser } from '../src'
+import { SchemaParser } from '../src/schema/parser.js'
 
 describe('schema parser', () => {
-  test.only('media schema', () => {
+  test('media schema', () => {
     const parser = new SchemaParser(mediaSchema)
     const defs = parser.parse()
     console.log(inspect(defs, { colors: true, depth: null }))

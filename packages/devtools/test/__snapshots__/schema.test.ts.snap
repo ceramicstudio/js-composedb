@@ -1,14 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`schema parseCompositeSchema creates an InternalCompositeDefinition for profiles from schema 1`] = `
+exports[`schema createAbstractCompositeDefinition creates an InternalCompositeDefinition for profiles from schema 1`] = `
 Object {
   "commonEmbeds": Array [
-    "ImageSources",
     "ImageMetadata",
+    "ImageSources",
   ],
-  "models": Array [
-    Object {
-      "accountRelation": "single",
+  "commonEnums": Array [],
+  "commonUnions": Array [],
+  "modelUnions": Object {},
+  "models": Object {
+    "GenericProfile": Object {
+      "accountRelation": "SINGLE",
       "description": "A model to store common profile-related properties",
       "name": "GenericProfile",
       "schema": Object {
@@ -22,7 +25,6 @@ Object {
               },
               "mimeType": Object {
                 "maxLength": 50,
-                "minLength": 0,
                 "type": "string",
               },
               "size": Object {
@@ -31,7 +33,6 @@ Object {
               },
               "src": Object {
                 "maxLength": 150,
-                "minLength": 0,
                 "type": "string",
               },
               "width": Object {
@@ -39,12 +40,6 @@ Object {
                 "type": "integer",
               },
             },
-            "required": Array [
-              "src",
-              "mimeType",
-              "width",
-              "height",
-            ],
             "title": "ImageMetadata",
             "type": "object",
           },
@@ -62,9 +57,6 @@ Object {
                 "$ref": "#/$defs/ImageMetadata",
               },
             },
-            "required": Array [
-              "original",
-            ],
             "title": "ImageSources",
             "type": "object",
           },
@@ -77,16 +69,71 @@ Object {
           },
           "name": Object {
             "maxLength": 150,
-            "minLength": 0,
             "type": "string",
           },
         },
+        "title": "GenericProfile",
         "type": "object",
       },
-      "views": Object {},
     },
-    Object {
-      "accountRelation": "single",
+    "PersonProfile": Object {
+      "accountRelation": "SINGLE",
+      "description": "A model to store accounts' personal data",
+      "name": "PersonProfile",
+      "schema": Object {
+        "$defs": Object {
+          "GraphQLCountryCode": Object {
+            "maxLength": 2,
+            "pattern": "^(AD|AE|AF|AG|AI|AL|AM|AO|AQ|AR|AS|AT|AU|AW|AX|AZ|BA|BB|BD|BE|BF|BG|BH|BI|BJ|BL|BM|BN|BO|BQ|BR|BS|BT|BV|BW|BY|BZ|CA|CC|CD|CF|CG|CH|CI|CK|CL|CM|CN|CO|CR|CU|CV|CW|CX|CY|CZ|DE|DJ|DK|DM|DO|DZ|EC|EE|EG|EH|ER|ES|ET|FI|FJ|FK|FM|FO|FR|GA|GB|GD|GE|GF|GG|GH|GI|GL|GM|GN|GP|GQ|GR|GS|GT|GU|GW|GY|HK|HM|HN|HR|HT|HU|ID|IE|IL|IM|IN|IO|IQ|IR|IS|IT|JE|JM|JO|JP|KE|KG|KH|KI|KM|KN|KP|KR|KW|KY|KZ|LA|LB|LC|LI|LK|LR|LS|LT|LU|LV|LY|MA|MC|MD|ME|MF|MG|MH|MK|ML|MM|MN|MO|MP|MQ|MR|MS|MT|MU|MV|MW|MX|MY|MZ|NA|NC|NE|NF|NG|NI|NL|NO|NP|NR|NU|NZ|OM|PA|PE|PF|PG|PH|PK|PL|PM|PN|PR|PS|PT|PW|PY|QA|RE|RO|RS|RU|RW|SA|SB|SC|SD|SE|SG|SH|SI|SJ|SK|SL|SM|SN|SO|SR|SS|ST|SV|SX|SY|SZ|TC|TD|TF|TG|TH|TJ|TK|TL|TM|TN|TO|TR|TT|TV|TW|TZ|UA|UG|UM|US|UY|UZ|VA|VC|VE|VG|VI|VN|VU|WF|WS|YE|YT|ZA|ZM|ZW)$",
+            "title": "GraphQLCountryCode",
+            "type": "string",
+          },
+          "GraphQLDate": Object {
+            "format": "date",
+            "maxLength": 100,
+            "title": "GraphQLDate",
+            "type": "string",
+          },
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": Object {
+          "affiliations": Object {
+            "items": Object {
+              "maxLength": 140,
+              "type": "string",
+            },
+            "maxItems": 20,
+            "type": "array",
+          },
+          "birthDate": Object {
+            "$ref": "#/$defs/GraphQLDate",
+          },
+          "gender": Object {
+            "maxLength": 42,
+            "type": "string",
+          },
+          "homeLocation": Object {
+            "maxLength": 140,
+            "type": "string",
+          },
+          "nationalities": Object {
+            "items": Object {
+              "$ref": "#/$defs/GraphQLCountryCode",
+            },
+            "maxItems": 5,
+            "type": "array",
+          },
+          "residenceCountry": Object {
+            "$ref": "#/$defs/GraphQLCountryCode",
+          },
+        },
+        "title": "PersonProfile",
+        "type": "object",
+      },
+    },
+    "SocialProfile": Object {
+      "accountRelation": "SINGLE",
       "description": "A model to store properties that accounts would like to share on social media",
       "name": "SocialProfile",
       "schema": Object {
@@ -100,7 +147,6 @@ Object {
               },
               "mimeType": Object {
                 "maxLength": 50,
-                "minLength": 0,
                 "type": "string",
               },
               "size": Object {
@@ -109,7 +155,6 @@ Object {
               },
               "src": Object {
                 "maxLength": 150,
-                "minLength": 0,
                 "type": "string",
               },
               "width": Object {
@@ -117,12 +162,6 @@ Object {
                 "type": "integer",
               },
             },
-            "required": Array [
-              "src",
-              "mimeType",
-              "width",
-              "height",
-            ],
             "title": "ImageMetadata",
             "type": "object",
           },
@@ -140,9 +179,6 @@ Object {
                 "$ref": "#/$defs/ImageMetadata",
               },
             },
-            "required": Array [
-              "original",
-            ],
             "title": "ImageSources",
             "type": "object",
           },
@@ -155,78 +191,21 @@ Object {
           },
           "description": Object {
             "maxLength": 420,
-            "minLength": 0,
             "type": "string",
           },
           "emoji": Object {
             "maxLength": 2,
-            "minLength": 0,
             "type": "string",
           },
           "url": Object {
             "maxLength": 240,
-            "minLength": 0,
             "type": "string",
           },
         },
+        "title": "SocialProfile",
         "type": "object",
       },
-      "views": Object {},
     },
-    Object {
-      "accountRelation": "single",
-      "description": "A model to store accounts' personal data",
-      "name": "PersonProfile",
-      "schema": Object {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "additionalProperties": false,
-        "properties": Object {
-          "affiliations": Object {
-            "items": Object {
-              "maxLength": 140,
-              "minLength": 0,
-              "type": "string",
-            },
-            "maxItems": 20,
-            "type": "array",
-          },
-          "birthDate": Object {
-            "format": "date",
-            "maxLength": 100,
-            "title": "GraphQLDate",
-            "type": "string",
-          },
-          "gender": Object {
-            "maxLength": 42,
-            "minLength": 0,
-            "type": "string",
-          },
-          "homeLocation": Object {
-            "maxLength": 140,
-            "minLength": 0,
-            "type": "string",
-          },
-          "nationalities": Object {
-            "items": Object {
-              "maxLength": 2,
-              "pattern": "^(AD|AE|AF|AG|AI|AL|AM|AO|AQ|AR|AS|AT|AU|AW|AX|AZ|BA|BB|BD|BE|BF|BG|BH|BI|BJ|BL|BM|BN|BO|BQ|BR|BS|BT|BV|BW|BY|BZ|CA|CC|CD|CF|CG|CH|CI|CK|CL|CM|CN|CO|CR|CU|CV|CW|CX|CY|CZ|DE|DJ|DK|DM|DO|DZ|EC|EE|EG|EH|ER|ES|ET|FI|FJ|FK|FM|FO|FR|GA|GB|GD|GE|GF|GG|GH|GI|GL|GM|GN|GP|GQ|GR|GS|GT|GU|GW|GY|HK|HM|HN|HR|HT|HU|ID|IE|IL|IM|IN|IO|IQ|IR|IS|IT|JE|JM|JO|JP|KE|KG|KH|KI|KM|KN|KP|KR|KW|KY|KZ|LA|LB|LC|LI|LK|LR|LS|LT|LU|LV|LY|MA|MC|MD|ME|MF|MG|MH|MK|ML|MM|MN|MO|MP|MQ|MR|MS|MT|MU|MV|MW|MX|MY|MZ|NA|NC|NE|NF|NG|NI|NL|NO|NP|NR|NU|NZ|OM|PA|PE|PF|PG|PH|PK|PL|PM|PN|PR|PS|PT|PW|PY|QA|RE|RO|RS|RU|RW|SA|SB|SC|SD|SE|SG|SH|SI|SJ|SK|SL|SM|SN|SO|SR|SS|ST|SV|SX|SY|SZ|TC|TD|TF|TG|TH|TJ|TK|TL|TM|TN|TO|TR|TT|TV|TW|TZ|UA|UG|UM|US|UY|UZ|VA|VC|VE|VG|VI|VN|VU|WF|WS|YE|YT|ZA|ZM|ZW)$",
-              "title": "GraphQLCountryCode",
-              "type": "string",
-            },
-            "maxItems": 5,
-            "type": "array",
-          },
-          "residenceCountry": Object {
-            "maxLength": 2,
-            "pattern": "^(AD|AE|AF|AG|AI|AL|AM|AO|AQ|AR|AS|AT|AU|AW|AX|AZ|BA|BB|BD|BE|BF|BG|BH|BI|BJ|BL|BM|BN|BO|BQ|BR|BS|BT|BV|BW|BY|BZ|CA|CC|CD|CF|CG|CH|CI|CK|CL|CM|CN|CO|CR|CU|CV|CW|CX|CY|CZ|DE|DJ|DK|DM|DO|DZ|EC|EE|EG|EH|ER|ES|ET|FI|FJ|FK|FM|FO|FR|GA|GB|GD|GE|GF|GG|GH|GI|GL|GM|GN|GP|GQ|GR|GS|GT|GU|GW|GY|HK|HM|HN|HR|HT|HU|ID|IE|IL|IM|IN|IO|IQ|IR|IS|IT|JE|JM|JO|JP|KE|KG|KH|KI|KM|KN|KP|KR|KW|KY|KZ|LA|LB|LC|LI|LK|LR|LS|LT|LU|LV|LY|MA|MC|MD|ME|MF|MG|MH|MK|ML|MM|MN|MO|MP|MQ|MR|MS|MT|MU|MV|MW|MX|MY|MZ|NA|NC|NE|NF|NG|NI|NL|NO|NP|NR|NU|NZ|OM|PA|PE|PF|PG|PH|PK|PL|PM|PN|PR|PS|PT|PW|PY|QA|RE|RO|RS|RU|RW|SA|SB|SC|SD|SE|SG|SH|SI|SJ|SK|SL|SM|SN|SO|SR|SS|ST|SV|SX|SY|SZ|TC|TD|TF|TG|TH|TJ|TK|TL|TM|TN|TO|TR|TT|TV|TW|TZ|UA|UG|UM|US|UY|UZ|VA|VC|VE|VG|VI|VN|VU|WF|WS|YE|YT|ZA|ZM|ZW)$",
-            "title": "GraphQLCountryCode",
-            "type": "string",
-          },
-        },
-        "type": "object",
-      },
-      "views": Object {},
-    },
-  ],
+  },
 }
 `;

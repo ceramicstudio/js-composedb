@@ -1,4 +1,4 @@
-import type { ModelAccountRelation, ModelViewsDefinition } from '@ceramicnetwork/stream-model'
+import { ModelAccountRelation } from '@ceramicnetwork/stream-model'
 import type { JSONSchema } from '@composedb/types'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import {
@@ -29,79 +29,25 @@ import type { ScalarSchema } from '../types.js'
 
 import { getScalarSchema } from './scalars.js'
 import { typeDefinitions } from './typeDefinitions.js'
+import type {
+  AbstractModelDefinition,
+  ItemDefinition,
+  ListFieldDefinition,
+  ObjectDefinition,
+  ReferenceFieldType,
+  SchemaDefinition,
+  ViewFieldDefinition,
+} from './types.js'
 
-type CreateModelDirectiveDefinition = {
-  type: 'create'
-  accountRelation: ModelAccountRelation
-  description: string
-  interface: boolean
-  interfaces: Array<string>
-  // relations: Record<string, unknown>
-  // views: ModelViewsDefinition
+const ACCOUNT_RELATIONS: Record<string, ModelAccountRelation> = {
+  LIST: ModelAccountRelation.LIST,
+  SINGLE: ModelAccountRelation.SINGLE,
 }
 
-type LoadModelDirectiveDefinition = {
-  type: 'load'
-  id: string
-}
-
-type ModelDirectiveDefinition = CreateModelDirectiveDefinition | LoadModelDirectiveDefinition
-
-type FieldCommonDefinition = {
-  required: boolean
-}
-
-type EnumFieldDefinition = FieldCommonDefinition & {
-  type: 'enum'
-  name: string
-}
-
-type InterfaceFieldDefinition = FieldCommonDefinition & {
-  type: 'interface'
-  name: string
-}
-
-type ObjectReferenceFieldDefinition = FieldCommonDefinition & {
-  type: 'object'
-  name: string
-}
-
-type UnionFieldDefinition = FieldCommonDefinition & {
-  type: 'union'
-  name: string
-}
-
-type ReferenceFieldDefinition =
-  | EnumFieldDefinition
-  | InterfaceFieldDefinition
-  | ObjectReferenceFieldDefinition
-  | UnionFieldDefinition
-
-type ReferenceFieldType = ReferenceFieldDefinition['type']
-
-type ScalarFieldDefinition = FieldCommonDefinition & {
-  type: 'scalar'
-  schema: ScalarSchema
-}
-
-type ItemDefinition = ReferenceFieldDefinition | ScalarFieldDefinition
-
-type ListFieldDefinition = FieldCommonDefinition & {
-  type: 'list'
-  item: ItemDefinition
-  maxLength: number
-  minLength?: number
-}
-
-type ObjectFieldDefinition = ItemDefinition | ListFieldDefinition
-
-type ObjectDefinition = Record<string, ObjectFieldDefinition>
-
-type SchemaDefinition = {
-  enums: Record<string, Array<string>>
-  models: Record<string, ModelDirectiveDefinition>
-  objects: Record<string, ObjectDefinition>
-  unions: Record<string, Array<string>>
+type NumberDirectiveArguments = {
+  default?: number
+  max?: number
+  min?: number
 }
 
 export class SchemaParser {
@@ -111,7 +57,6 @@ export class SchemaParser {
     objects: {},
     unions: {},
   }
-
   #schema: GraphQLSchema
 
   constructor(schema: string) {
@@ -121,11 +66,9 @@ export class SchemaParser {
   parse(): SchemaDefinition {
     mapSchema(this.#schema, {
       [MapperKind.ENUM_TYPE]: (type: GraphQLEnumType) => {
-        console.log('ENUM_TYPE', type)
         return type
       },
       [MapperKind.INTERFACE_TYPE]: (type: GraphQLInterfaceType) => {
-        console.log('INTERFACE_TYPE', type)
         const model = this._parseModelDirective(type)
         if (model == null) {
           throw new Error(`Missing @createModel or @loadModel directive for interface ${type.name}`)
@@ -134,7 +77,6 @@ export class SchemaParser {
         return type
       },
       [MapperKind.OBJECT_TYPE]: (type: GraphQLObjectType) => {
-        console.log('OBJECT_TYPE', type)
         this.#def.objects[type.name] = this._parseObjectFields(type)
         const model = this._parseModelDirective(type)
         if (model != null) {
@@ -147,17 +89,20 @@ export class SchemaParser {
         return type
       },
     })
+
+    if (Object.keys(this.#def.models).length === 0) {
+      throw new Error('No models found in Composite Definition Schema')
+    }
+
     return this.#def
   }
 
   _parseModelDirective(
     type: GraphQLInterfaceType | GraphQLObjectType
-  ): ModelDirectiveDefinition | void {
+  ): AbstractModelDefinition | void {
     const directives = getDirectives(this.#schema, type)
     const createModel = directives.find((d) => d.name === 'createModel')
     const loadModel = directives.find((d) => d.name === 'loadModel')
-
-    const interfaces = type.getInterfaces().map((i) => i.name)
 
     if (loadModel != null) {
       const id = loadModel.args?.id
@@ -173,18 +118,23 @@ export class SchemaParser {
     if (createModel != null) {
       const { accountRelation, description } = createModel.args ?? {}
       if (accountRelation == null) {
-        throw new Error('Missing accountRelation value for @model directive')
+        throw new Error('Missing accountRelation value for @createModel directive')
+      }
+      const accountRelationValue = ACCOUNT_RELATIONS[accountRelation]
+      if (accountRelationValue == null) {
+        throw new Error(
+          `Unsupported accountRelation value ${accountRelation} for @createModel directive`
+        )
       }
       if (description == null || description === '') {
-        throw new Error('Missing description value for @model directive')
+        throw new Error('Missing description value for @createModel directive')
       }
-
       return {
         type: 'create',
-        accountRelation,
+        accountRelation: accountRelationValue,
         description,
         interface: isInterfaceType(type),
-        interfaces,
+        implements: type.getInterfaces().map((i) => i.name),
       }
     }
   }
@@ -192,15 +142,42 @@ export class SchemaParser {
   _parseObjectFields(type: GraphQLObjectType): ObjectDefinition {
     const fields: ObjectDefinition = {}
     for (const [key, value] of Object.entries(type.getFields())) {
+      const directives = getDirectives(this.#schema, value)
+
+      const view = this._parseViews(value.type, directives)
+      if (view != null) {
+        fields[key] = view
+        continue
+      }
+
       const [innerType, required] = isNonNullType(value.type)
         ? [value.type.ofType, true]
         : [value.type, false]
-      const fieldDirectives = getDirectives(this.#schema, value)
       fields[key] = isListType(innerType)
-        ? this._parseListType(innerType, required, fieldDirectives)
-        : this._parseItemType(innerType, fieldDirectives)
+        ? this._parseListType(innerType, required, directives)
+        : this._parseItemType(value.type, directives)
     }
     return fields
+  }
+
+  _parseViews(
+    type: GraphQLType,
+    directives: Array<DirectiveAnnotation>
+  ): ViewFieldDefinition | void {
+    for (const directive of directives) {
+      switch (directive.name) {
+        case 'documentAccount':
+          if (!isScalarType(type) || type.name !== 'DID') {
+            throw new Error('@documentAccount directive can only be set on a DID scalar')
+          }
+          return { type: 'view', required: true, viewType: 'documentAccount' }
+        case 'documentVersion':
+          if (!isScalarType(type) || type.name !== 'CommitID') {
+            throw new Error('@documentVersion directive can only be set on a CommitID scalar')
+          }
+          return { type: 'view', required: true, viewType: 'documentVersion' }
+      }
+    }
   }
 
   _parseListType(
@@ -208,24 +185,24 @@ export class SchemaParser {
     required: boolean,
     directives: Array<DirectiveAnnotation>
   ): ListFieldDefinition {
-    const arrayLength = directives.find((d) => d.name === 'arrayLength')
-    if (arrayLength == null) {
-      throw new Error('Missing @arrayLength directive on list field')
+    const list = directives.find((d) => d.name === 'list')
+    if (list == null) {
+      throw new Error('Missing @list directive on list field')
     }
-    if (arrayLength.args?.max == null) {
-      throw new Error('Missing max value for @arrayLength directive')
+    if (list.args?.maxLength == null) {
+      throw new Error('Missing maxLength value for @list directive')
     }
 
-    const list: ListFieldDefinition = {
+    const definition: ListFieldDefinition = {
       type: 'list',
       required,
       item: this._parseItemType(type.ofType, directives),
-      maxLength: arrayLength.args.max,
+      maxLength: list.args.maxLength,
     }
-    if (arrayLength.args?.min != null) {
-      list.minLength = arrayLength.args.min
+    if (list.args?.minLength != null) {
+      definition.minLength = list.args.minLength
     }
-    return list
+    return definition
   }
 
   _parseItemType(type: GraphQLType, directives: Array<DirectiveAnnotation>): ItemDefinition {
@@ -266,30 +243,36 @@ export class SchemaParser {
     schema: JSONSchema.Integer,
     directives: Array<DirectiveAnnotation>
   ): JSONSchema.Integer {
-    const intRange = directives.find((d) => d.name === 'intRange')
-    if (intRange?.args != null) {
-      if (intRange.args.max != null) {
-        schema.minimum = intRange.args.min
-      }
-      if (intRange.args.min != null) {
-        schema.minimum = intRange.args.min
-      }
-    }
-    return schema
+    const args = directives.find((d) => d.name === 'int')?.args
+    return args ? this._validateNumberArguments(schema, args) : schema
   }
 
   _validateNumberSchema(
     schema: JSONSchema.Number,
     directives: Array<DirectiveAnnotation>
   ): JSONSchema.Number {
-    const floatRange = directives.find((d) => d.name === 'floatRange')
-    if (floatRange?.args != null) {
-      if (floatRange.args.max != null) {
-        schema.minimum = floatRange.args.min
+    const args = directives.find((d) => d.name === 'float')?.args
+    return args ? this._validateNumberArguments(schema, args) : schema
+  }
+
+  _validateNumberArguments<T extends JSONSchema.Integer | JSONSchema.Number>(
+    schema: T,
+    args: NumberDirectiveArguments
+  ): T {
+    if (args.max != null) {
+      schema.minimum = args.min
+    }
+    if (args.min != null) {
+      schema.minimum = args.min
+    }
+    if (args.default != null) {
+      if (args.max != null && args.default > args.max) {
+        throw new Error('Default value is higher than max constraint')
       }
-      if (floatRange.args.min != null) {
-        schema.minimum = floatRange.args.min
+      if (args.min != null && args.default < args.min) {
+        throw new Error('Default value is lower than min constraint')
       }
+      schema.default = args.default
     }
     return schema
   }
@@ -298,30 +281,39 @@ export class SchemaParser {
     schema: JSONSchema.String,
     directives: Array<DirectiveAnnotation>
   ): JSONSchema.String {
-    const lengthDirective = directives.find((d) => d.name === 'length')
-    const length = {
-      max: lengthDirective?.args?.max ?? schema.maxLength,
-      min: lengthDirective?.args?.min ?? schema.minLength,
-    }
-    if (length.max == null) {
-      if (lengthDirective == null) {
-        throw new Error('Missing @length directive for field of type String')
+    const string = directives.find((d) => d.name === 'string')
+    const defaultValue = string?.args?.default ?? schema.default
+    const maxLength = string?.args?.maxLength ?? schema.maxLength
+    const minLength = string?.args?.minLength ?? schema.minLength
+
+    if (maxLength == null) {
+      if (string == null) {
+        throw new Error('Missing @string directive for field of type String')
       }
-      throw new Error('Missing max value for @length directive')
+      throw new Error('Missing maxLength value for @string directive')
     }
-    schema.maxLength = length.max
-    if (length.min != null) {
-      schema.minLength = length.min
+    schema.maxLength = maxLength
+
+    if (minLength != null) {
+      schema.minLength = minLength
     }
+
+    if (defaultValue != null) {
+      if (defaultValue.length > maxLength) {
+        throw new Error('Length of default value is higher than maxLength constraint')
+      }
+      if (minLength != null && defaultValue.length < minLength) {
+        throw new Error('Length of default value is lower than minLength constraint')
+      }
+      schema.default = defaultValue
+    }
+
     return schema
   }
 
   _getReferenceFieldType(type: GraphQLType): ReferenceFieldType | void {
     if (isEnumType(type)) {
       return 'enum'
-    }
-    if (isInterfaceType(type)) {
-      return 'interface'
     }
     if (isObjectType(type)) {
       return 'object'
@@ -330,4 +322,8 @@ export class SchemaParser {
       return 'union'
     }
   }
+}
+
+export function parseSchema(schema: string): SchemaDefinition {
+  return new SchemaParser(schema).parse()
 }

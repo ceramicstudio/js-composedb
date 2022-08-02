@@ -9,15 +9,16 @@ export const typeDefinitions = `
 
 ${scarlarDefinitions}
 
-# Field validation directives
+# Field validation and configuration
 
-# For strings
-directive @length(min: Int, max: Int!) on FIELD_DEFINITION
-# For arrays
-directive @arrayLength(min: Int, max: Int!) on FIELD_DEFINITION
-# For numbers
-directive @intRange(min: Int, max: Int) on FIELD_DEFINITION
-directive @floatRange(min: Float, max: Float) on FIELD_DEFINITION
+directive @boolean(default: Boolean) on FIELD_DEFINITION
+directive @float(min: Float, max: Float, default: Float) on FIELD_DEFINITION
+directive @int(min: Int, max: Int, default: Int) on FIELD_DEFINITION
+directive @string(minLength: Int, maxLength: Int!, default: String) on FIELD_DEFINITION
+
+# List validation
+
+directive @list(minLength: Int, maxLength: Int!) on FIELD_DEFINITION
 
 # Views
 
