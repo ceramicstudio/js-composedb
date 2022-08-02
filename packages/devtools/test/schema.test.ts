@@ -46,6 +46,26 @@ describe('schema', () => {
     }).toThrow('GraphQL interfaces are not supported')
   })
 
+  it("parseCompositeSchema doesn't parse relations between models", () => {
+    expect(() => {
+      parseCompositeSchema(`
+      type Post @model(
+        accountRelation: LIST,
+        description: "A Post model"
+      ) {
+        text: String! @length(max: 960)
+      }
+      type PostComment @model(
+        accountRelation: LIST,
+        description: "A Comment model for Posts"
+      ) {
+        post: Post!
+        text: String! @length(max: 240)
+      }
+      `)
+    }).toThrow('Relations between models are not supported')
+  })
+
   it('parseCompositeSchema creates an InternalCompositeDefinition for profiles from schema', () => {
     expect(parseCompositeSchema(profilesSchema)).toMatchSnapshot()
   })
