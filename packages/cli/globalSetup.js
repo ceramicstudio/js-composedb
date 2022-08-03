@@ -50,7 +50,7 @@ export default async function globalSetup() {
 
   await setup({
     command:
-      `CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=\'true\' rm -rf ~/.goipfs && pnpm dlx @ceramicnetwork/cli@^2.4.0 daemon --config ${CONFIG_PATH}`,
+      `CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=\'true\' rm -rf ~/.goipfs && pnpm dlx @ceramicnetwork/cli daemon --config ${CONFIG_PATH}`,
     debug: true,
     launchTimeout: 240000,
     port: 7007,
