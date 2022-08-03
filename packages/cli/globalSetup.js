@@ -1,7 +1,6 @@
 import { setup } from 'jest-dev-server'
 import { Model } from '@ceramicnetwork/stream-model'
 import fs from 'fs-extra'
-import './globalConsts.js'
 import {
   CONFIG_DIR_PATH,
   CONFIG_PATH,
@@ -37,9 +36,7 @@ const TEST_DAEMON_CONFIG = {
 }
 
 export default async function globalSetup() {
-  if (await fs.exists(TEMP_DIR_PATH)) {
-    await fs.rm(TEMP_DIR_PATH, { force: true, recursive: true })
-  }
+  await fs.rm(TEMP_DIR_PATH, { force: true, recursive: true })
 
   await fs.ensureDir(TEMP_DIR_PATH)
   await fs.ensureDir(TEST_OUTPUT_DIR_PATH)

@@ -1,5 +1,3 @@
-import process from 'node:process'
-
 export const CWD = new URL(`file://${process.cwd()}/`);
 export const TEST_DIR_PATH = new URL('test/', CWD)
 export const TEMP_DIR_PATH = new URL('tmp/', TEST_DIR_PATH)
