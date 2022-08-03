@@ -105,7 +105,7 @@ export class SchemaParser {
     const loadModel = directives.find((d) => d.name === 'loadModel')
 
     if (loadModel != null) {
-      const id = loadModel.args?.id
+      const id = loadModel.args?.id as string | void
       if (id == null) {
         throw new Error(`Missing id value for @loadModel directive on object ${type.name}`)
       }
@@ -118,7 +118,10 @@ export class SchemaParser {
     }
 
     if (createModel != null) {
-      const { accountRelation, description } = createModel.args ?? {}
+      const { accountRelation, description } = (createModel.args ?? {}) as {
+        accountRelation?: string
+        description?: string
+      }
       if (accountRelation == null) {
         throw new Error(
           `Missing accountRelation value for @createModel directive on object ${type.name}`
@@ -217,10 +220,10 @@ export class SchemaParser {
       type: 'list',
       required,
       item: this._parseItemType(objectName, fieldName, type.ofType, directives),
-      maxLength: list.args.maxLength,
+      maxLength: list.args.maxLength as number,
     }
     if (list.args?.minLength != null) {
-      definition.minLength = list.args.minLength
+      definition.minLength = list.args.minLength as number
     }
     return definition
   }
@@ -362,9 +365,9 @@ export class SchemaParser {
     schema: JSONSchema.String,
     string: DirectiveAnnotation | undefined
   ): JSONSchema.String {
-    const defaultValue = string?.args?.default ?? schema.default
-    const maxLength = string?.args?.maxLength ?? schema.maxLength
-    const minLength = string?.args?.minLength ?? schema.minLength
+    const defaultValue = (string?.args?.default ?? schema.default) as string | void
+    const maxLength = (string?.args?.maxLength ?? schema.maxLength) as number | void
+    const minLength = (string?.args?.minLength ?? schema.minLength) as number | void
 
     if (maxLength == null) {
       if (string == null) {

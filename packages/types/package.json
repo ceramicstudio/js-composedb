@@ -29,7 +29,7 @@
   "scripts": {
     "build:clean": "del dist",
     "build:js": "swc src -d ./dist --config-file ../../.swcrc",
-    "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
+    "build:types": "tsc --emitDeclarationOnly",
     "build": "pnpm build:clean && pnpm build:types && pnpm build:js",
     "lint": "eslint src --fix",
     "prepare": "pnpm build",
