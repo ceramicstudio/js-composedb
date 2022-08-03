@@ -47,6 +47,9 @@ export function parseCompositeSchema(schema: string | GraphQLSchema): ModelsWith
   // Extract names of embeds (definitions) used in more than one model
   const commonEmbeds = commonEmbedNamesFromModels(models)
 
+  // Throw an error, if there are any relations between models
+  checkForUnsupportedRealationsBetweenModels(models)
+
   const result: ModelsWithEmbeds = {
     models: models,
   }
@@ -72,6 +75,17 @@ function checkForUnsupportedTypes(schema: GraphQLSchema) {
       }
       return objectConfig
     },
+  })
+}
+
+/** @internal */
+function checkForUnsupportedRealationsBetweenModels(models: Array<ModelDefinition>) {
+  const modelNames = new Set(models.map((modelDefinition) => { return modelDefinition.name }))
+
+  models.forEach((modelDefinition) => {
+    for (let propertyName in modelDefinition.schema.properties) {
+      
+    }
   })
 }
 
