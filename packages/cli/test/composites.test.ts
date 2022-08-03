@@ -305,9 +305,11 @@ describe('composites', () => {
         compileWithJustCompositePath.stderr.toString().includes('Compiling the composite... Done!')
       ).toBe(true)
 
-      const jsonRepresentation = await fs.readFile(`${dirpath}/${filename}.json`)
-      const jsRepresentation = await fs.readFile(`${dirpath}/${filename}.js`)
-      const tsRepresentation = await fs.readFile(`${dirpath}/${filename}.ts`)
+      const [jsonRepresentation, jsRepresentation, tsRepresentation] = await Promise.all([
+        fs.readFile(`${dirpath}/${filename}.json`),
+        fs.readFile(`${dirpath}/${filename}.js`),
+        fs.readFile(`${dirpath}/${filename}.ts`),
+      ])
 
       expect(jsonRepresentation).toMatchSnapshot()
       expect(jsRepresentation).toMatchSnapshot()
