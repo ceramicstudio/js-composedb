@@ -38,10 +38,14 @@ const TEST_DAEMON_CONFIG = {
 export default async function globalSetup() {
   await fs.rm(TEMP_DIR_PATH, { force: true, recursive: true })
 
-  await fs.ensureDir(TEMP_DIR_PATH)
-  await fs.ensureDir(TEST_OUTPUT_DIR_PATH)
-  await fs.ensureDir(CONFIG_DIR_PATH)
-  await fs.ensureDir(STATE_STORE_DIR_PATH)
+  // Create all of the dirs required for testing
+  await  Promise.all([
+    fs.ensureDir(TEST_OUTPUT_DIR_PATH),
+    fs.ensureDir(CONFIG_DIR_PATH),
+    fs.ensureDir(STATE_STORE_DIR_PATH),
+  ])
+
+  // Write the config file so that its path can be passed to deamon below
   await fs.writeJson(CONFIG_PATH, TEST_DAEMON_CONFIG)
 
   await setup({
