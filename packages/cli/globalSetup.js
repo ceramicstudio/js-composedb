@@ -6,6 +6,7 @@ import {
   CONFIG_PATH,
   INDEXING_DB_FILENAME,
   STATE_STORE_DIR_PATH,
+  GOIPFS_DIR_PATH,
   TEMP_DIR_PATH,
   TEST_OUTPUT_DIR_PATH,
 } from "./globalConsts.js"
@@ -43,6 +44,7 @@ export default async function globalSetup() {
     fs.ensureDir(TEST_OUTPUT_DIR_PATH),
     fs.ensureDir(CONFIG_DIR_PATH),
     fs.ensureDir(STATE_STORE_DIR_PATH),
+    fs.ensureDir(GOIPFS_DIR_PATH),
   ])
 
   // Write the config file so that its path can be passed to deamon below
@@ -50,7 +52,7 @@ export default async function globalSetup() {
 
   await setup({
     command:
-      `CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=\'true\' rm -rf ~/.goipfs && pnpm dlx @ceramicnetwork/cli daemon --config ${CONFIG_PATH}`,
+      `IPFS_PATH=\'${GOIPFS_DIR_PATH}\' CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=\'true\' rm -rf ~/.goipfs && pnpm dlx @ceramicnetwork/cli daemon --config ${CONFIG_PATH}`,
     debug: true,
     launchTimeout: 240000,
     port: 7007,
