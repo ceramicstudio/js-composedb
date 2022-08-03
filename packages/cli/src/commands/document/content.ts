@@ -41,7 +41,6 @@ export default class DocumentContent extends Command<DocumentContentFlags, { str
         this.log(JSON.stringify(mid.content))
       }
     } catch (e) {
-      console.error(e)
       this.spinner.fail((e as Error).message)
       return
     }
