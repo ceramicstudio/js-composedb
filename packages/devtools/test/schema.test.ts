@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import type { ModelDefinition } from '@ceramicnetwork/stream-model'
 import { ImageMetadataType, profilesSchema } from '@composedb/test-schemas'
 import Ajv from 'ajv/dist/2020'
 
 import { createAbstractCompositeDefinition } from '../src'
+import type { AbstractModelDefinition, CreateModelDefinition } from '../src/schema/types'
+
+function getSchema(modelDefinition: AbstractModelDefinition) {
+  return (modelDefinition as CreateModelDefinition).definition.schema
+}
 
 describe('schema', () => {
   it("createAbstractCompositeDefinition throws when there's no top-level model object", () => {
@@ -53,14 +57,10 @@ describe('schema', () => {
 
   it('createAbstractCompositeDefinition creates models whose schemas conform to JSON Schema standard', () => {
     const { models } = createAbstractCompositeDefinition(profilesSchema)
-    const genericSchema = (models.GenericProfile as ModelDefinition).schema
-    const socialSchema = (models.SocialProfile as ModelDefinition).schema
-    const personSchema = (models.PersonProfile as ModelDefinition).schema
-
     const validator = new Ajv()
-    expect(validator.validateSchema(genericSchema, true)).toBe(true)
-    expect(validator.validateSchema(socialSchema, true)).toBe(true)
-    expect(validator.validateSchema(personSchema, true)).toBe(true)
+    expect(validator.validateSchema(getSchema(models.GenericProfile), true)).toBe(true)
+    expect(validator.validateSchema(getSchema(models.SocialProfile), true)).toBe(true)
+    expect(validator.validateSchema(getSchema(models.PersonProfile), true)).toBe(true)
   })
 
   it('DID scalar is supported and properly converted to ICD', () => {
@@ -77,25 +77,29 @@ describe('schema', () => {
     ).toMatchObject({
       models: {
         ModelWithDIDProp: {
-          name: 'ModelWithDIDProp',
-          accountRelation: 'single',
-          schema: {
-            $schema: 'https://json-schema.org/draft/2020-12/schema',
-            type: 'object',
-            properties: {
-              didValue: { $ref: '#/$defs/GraphQLDID' },
-              requiredDidValue: { $ref: '#/$defs/GraphQLDID' },
-            },
-            $defs: {
-              GraphQLDID: {
-                type: 'string',
-                title: 'GraphQLDID',
-                pattern: "^did:[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+:[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+$",
-                maxLength: 100,
+          action: 'create',
+          definition: {
+            name: 'ModelWithDIDProp',
+            accountRelation: 'single',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: {
+                didValue: { $ref: '#/$defs/GraphQLDID' },
+                requiredDidValue: { $ref: '#/$defs/GraphQLDID' },
               },
+              $defs: {
+                GraphQLDID: {
+                  type: 'string',
+                  title: 'GraphQLDID',
+                  pattern:
+                    "^did:[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+:[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+$",
+                  maxLength: 100,
+                },
+              },
+              additionalProperties: false,
+              required: ['requiredDidValue'],
             },
-            additionalProperties: false,
-            required: ['requiredDidValue'],
           },
         },
       },
@@ -112,10 +116,12 @@ describe('schema', () => {
         nonDIDValue: String @documentAccount
       }
       `)
-    }).toThrow('@documentAccount directive can only be set on a DID scalar')
+    }).toThrow(
+      'Unsupported @documentAccount directive on field nonDIDValue of object ModelWithInvalidDocumentAccountProp, @documentAccount can only be set on a DID scalar'
+    )
   })
 
-  it.only('fields annotated with @documentAccount are not added to the resulting schema', () => {
+  it('fields annotated with @documentAccount are not added to the resulting schema', () => {
     const { models } = createAbstractCompositeDefinition(`
       type ModelWithDocumentVersionProp @createModel(
         accountRelation: SINGLE,
@@ -127,8 +133,7 @@ describe('schema', () => {
       `)
 
     expect(Object.keys(models)).toHaveLength(1)
-    const properties =
-      (models.ModelWithDocumentVersionProp as ModelDefinition).schema.properties ?? {}
+    const properties = getSchema(models.ModelWithDocumentVersionProp).properties ?? {}
     expect(properties).not.toBeFalsy()
     expect(Object.keys(properties)).toHaveLength(1)
     expect(Object.keys(properties)[0]).toEqual('floatProp')
@@ -146,30 +151,32 @@ describe('schema', () => {
       }
       `)
     ).toMatchObject({
-      models: [
-        {
-          name: 'ModelWithCommitIDProp',
-          accountRelation: 'single',
-          schema: {
-            $schema: 'https://json-schema.org/draft/2020-12/schema',
-            type: 'object',
-            properties: {
-              commitIDValue: {
-                type: 'string',
-                title: 'CeramicCommitID',
-                maxLength: 200,
+      models: {
+        ModelWithCommitIDProp: {
+          action: 'create',
+          definition: {
+            name: 'ModelWithCommitIDProp',
+            accountRelation: 'single',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              $defs: {
+                CeramicCommitID: {
+                  type: 'string',
+                  title: 'CeramicCommitID',
+                  maxLength: 200,
+                },
               },
-              requiredCommitIDValue: {
-                type: 'string',
-                title: 'CeramicCommitID',
-                maxLength: 200,
+              properties: {
+                commitIDValue: { $ref: '#/$defs/CeramicCommitID' },
+                requiredCommitIDValue: { $ref: '#/$defs/CeramicCommitID' },
               },
+              additionalProperties: false,
+              required: ['requiredCommitIDValue'],
             },
-            additionalProperties: false,
-            required: ['requiredCommitIDValue'],
           },
         },
-      ],
+      },
     })
   })
 
@@ -180,10 +187,12 @@ describe('schema', () => {
         accountRelation: SINGLE,
         description: "Test model with an invalid @documentVersion directive"
       ) {
-        nonDIDValue: Int @documentVersion
+        nonCommitIDValue: Int @documentVersion
       }
       `)
-    }).toThrow('@documentVersion can only be applied to CommitIDs')
+    }).toThrow(
+      'Unsupported @documentVersion directive on field nonCommitIDValue of object ModelWithInvalidDocumentVersionProp, @documentVersion can only be set on a CommitID scalar'
+    )
   })
 
   it('fields annotated with @documentVersion are not added to the resulting schema', () => {
@@ -197,8 +206,7 @@ describe('schema', () => {
       }
       `)
     expect(Object.keys(models)).toHaveLength(1)
-    const properties =
-      (models.ModelWithDocumentVersionProp as ModelDefinition).schema.properties ?? {}
+    const properties = getSchema(models.ModelWithDocumentVersionProp).properties ?? {}
     expect(Object.keys(properties)).toHaveLength(1)
     expect(Object.keys(properties)[0]).toEqual('numberProp')
   })
@@ -215,26 +223,30 @@ describe('schema', () => {
       }
       `)
     ).toMatchObject({
-      models: [
-        {
-          name: 'ModelWithBooleanProp',
-          accountRelation: 'single',
-          schema: {
-            $schema: 'https://json-schema.org/draft/2020-12/schema',
-            type: 'object',
-            properties: {
-              booleanValue: {
-                type: 'boolean',
+      models: {
+        ModelWithBooleanProp: {
+          action: 'create',
+          definition: {
+            name: 'ModelWithBooleanProp',
+            accountRelation: 'single',
+            description: 'Test model with boolean properties',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: {
+                booleanValue: {
+                  type: 'boolean',
+                },
+                requiredBooleanValue: {
+                  type: 'boolean',
+                },
               },
-              requiredBooleanValue: {
-                type: 'boolean',
-              },
+              additionalProperties: false,
+              required: ['requiredBooleanValue'],
             },
-            additionalProperties: false,
-            required: ['requiredBooleanValue'],
           },
         },
-      ],
+      },
     })
   })
 
@@ -250,26 +262,30 @@ describe('schema', () => {
       }
       `)
     ).toMatchObject({
-      models: [
-        {
-          name: 'ModelWithIntProp',
-          accountRelation: 'single',
-          schema: {
-            $schema: 'https://json-schema.org/draft/2020-12/schema',
-            type: 'object',
-            properties: {
-              intValue: {
-                type: 'integer',
+      models: {
+        ModelWithIntProp: {
+          action: 'create',
+          definition: {
+            name: 'ModelWithIntProp',
+            accountRelation: 'single',
+            description: 'Test model with int properties',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: {
+                intValue: {
+                  type: 'integer',
+                },
+                requiredIntValue: {
+                  type: 'integer',
+                },
               },
-              requiredIntValue: {
-                type: 'integer',
-              },
+              additionalProperties: false,
+              required: ['requiredIntValue'],
             },
-            additionalProperties: false,
-            required: ['requiredIntValue'],
           },
         },
-      ],
+      },
     })
   })
 
@@ -285,26 +301,30 @@ describe('schema', () => {
       }
       `)
     ).toMatchObject({
-      models: [
-        {
-          name: 'ModelWithFloatProp',
-          accountRelation: 'single',
-          schema: {
-            $schema: 'https://json-schema.org/draft/2020-12/schema',
-            type: 'object',
-            properties: {
-              floatValue: {
-                type: 'number',
+      models: {
+        ModelWithFloatProp: {
+          action: 'create',
+          definition: {
+            name: 'ModelWithFloatProp',
+            accountRelation: 'single',
+            description: 'Test model with float properties',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: {
+                floatValue: {
+                  type: 'number',
+                },
+                requiredFloatValue: {
+                  type: 'number',
+                },
               },
-              requiredFloatValue: {
-                type: 'number',
-              },
+              additionalProperties: false,
+              required: ['requiredFloatValue'],
             },
-            additionalProperties: false,
-            required: ['requiredFloatValue'],
           },
         },
-      ],
+      },
     })
   })
 
@@ -315,48 +335,54 @@ describe('schema', () => {
         accountRelation: SINGLE,
         description: "Test model with string properties"
       ) {
-        stringValue: String @length(max: 3)
-        requiredStringValue: String! @length(max: 3)
+        stringValue: String @string(maxLength: 3)
+        requiredStringValue: String! @string(maxLength: 3)
       }
       `)
     ).toMatchObject({
-      models: [
-        {
-          name: 'ModelWithStringProp',
-          accountRelation: 'single',
-          schema: {
-            $schema: 'https://json-schema.org/draft/2020-12/schema',
-            type: 'object',
-            properties: {
-              stringValue: {
-                type: 'string',
+      models: {
+        ModelWithStringProp: {
+          action: 'create',
+          definition: {
+            name: 'ModelWithStringProp',
+            accountRelation: 'single',
+            description: 'Test model with string properties',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: {
+                stringValue: {
+                  type: 'string',
+                },
+                requiredStringValue: {
+                  type: 'string',
+                },
               },
-              requiredStringValue: {
-                type: 'string',
-              },
+              additionalProperties: false,
+              required: ['requiredStringValue'],
             },
-            additionalProperties: false,
-            required: ['requiredStringValue'],
           },
         },
-      ],
+      },
     })
   })
 
-  it('@length is required for Strings', () => {
+  it('@string is required for Strings', () => {
     expect(() => {
       createAbstractCompositeDefinition(`
       type ModelWithStringPropWithoutLengthDirective @createModel(
         accountRelation: SINGLE,
-        description: "Test model with string property without @length directive"
+        description: "Test model with string property without @string directive"
       ) {
         stringValue: String
       }
       `)
-    }).toThrow('Missing @length directive')
+    }).toThrow(
+      'Missing @string directive on string field stringValue of object ModelWithStringPropWithoutLengthDirective'
+    )
   })
 
-  it('@length is required for arrays Strings', () => {
+  it('@string is required for arrays Strings', () => {
     expect(() => {
       createAbstractCompositeDefinition(`
       type ModelWithStringArrayPropWithoutLengthDirective @createModel(
@@ -366,7 +392,9 @@ describe('schema', () => {
         stringArrayValue: [String] @list(maxLength: 1)
       }
       `)
-    }).toThrow('Missing @length directive')
+    }).toThrow(
+      'Missing @string directive on string field stringArrayValue of object ModelWithStringArrayPropWithoutLengthDirective'
+    )
   })
 
   it('ID scalar is supported and properly converted to ICD', () => {
@@ -376,33 +404,39 @@ describe('schema', () => {
         accountRelation: SINGLE,
         description: "Test model with GraphQL ID property"
       ) {
-        idValue: ID
-        requiredIdValue: ID!
+        idValue: ID @string(maxLength: 30)
+        requiredIdValue: ID! @string(maxLength: 50)
       }
       `)
     ).toMatchObject({
-      models: [
-        {
-          name: 'ModelWithIDProp',
-          accountRelation: 'single',
-          schema: {
-            $schema: 'https://json-schema.org/draft/2020-12/schema',
-            type: 'object',
-            properties: {
-              idValue: {
-                type: 'string',
-                title: 'GraphQLID',
+      models: {
+        ModelWithIDProp: {
+          action: 'create',
+          definition: {
+            name: 'ModelWithIDProp',
+            accountRelation: 'single',
+            description: 'Test model with GraphQL ID property',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: {
+                idValue: {
+                  type: 'string',
+                  title: 'GraphQLID',
+                  maxLength: 30,
+                },
+                requiredIdValue: {
+                  type: 'string',
+                  title: 'GraphQLID',
+                  maxLength: 50,
+                },
               },
-              requiredIdValue: {
-                type: 'string',
-                title: 'GraphQLID',
-              },
+              additionalProperties: false,
+              required: ['requiredIdValue'],
             },
-            additionalProperties: false,
-            required: ['requiredIdValue'],
           },
         },
-      ],
+      },
     })
   })
 
@@ -411,39 +445,45 @@ describe('schema', () => {
       createAbstractCompositeDefinition(`
       type ModelWithArrayProp @createModel(
         accountRelation: SINGLE,
-        description: "Test model with GraphQL ID property"
+        description: "Test model with list property"
       ) {
         arrayValue: [Int] @list(maxLength: 3)
-        requiredArrayValue: [Int]! @list(maxLength: 3)
+        requiredArrayValue: [Int]! @list(maxLength: 5)
       }
       `)
     ).toMatchObject({
-      models: [
-        {
-          name: 'ModelWithArrayProp',
-          accountRelation: 'single',
-          schema: {
-            $schema: 'https://json-schema.org/draft/2020-12/schema',
-            type: 'object',
-            properties: {
-              arrayValue: {
-                type: 'array',
-                items: {
-                  type: 'integer',
+      models: {
+        ModelWithArrayProp: {
+          action: 'create',
+          definition: {
+            name: 'ModelWithArrayProp',
+            accountRelation: 'single',
+            description: 'Test model with list property',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: {
+                arrayValue: {
+                  type: 'array',
+                  items: {
+                    type: 'integer',
+                  },
+                  maxItems: 3,
+                },
+                requiredArrayValue: {
+                  type: 'array',
+                  items: {
+                    type: 'integer',
+                  },
+                  maxItems: 5,
                 },
               },
-              requiredArrayValue: {
-                type: 'array',
-                items: {
-                  type: 'integer',
-                },
-              },
+              additionalProperties: false,
+              required: ['requiredArrayValue'],
             },
-            additionalProperties: false,
-            required: ['requiredArrayValue'],
           },
         },
-      ],
+      },
     })
   })
 
@@ -458,24 +498,28 @@ describe('schema', () => {
       }
       `)
     ).toMatchObject({
-      models: [
-        {
-          name: 'ModelWithStringProp',
-          accountRelation: 'single',
-          schema: {
-            $schema: 'https://json-schema.org/draft/2020-12/schema',
-            type: 'object',
-            properties: {
-              stringValue: {
-                type: 'string',
-                minLength: 1,
-                maxLength: 140,
+      models: {
+        ModelWithStringProp: {
+          action: 'create',
+          definition: {
+            name: 'ModelWithStringProp',
+            accountRelation: 'single',
+            description: 'Test model with a constrained string property',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: {
+                stringValue: {
+                  type: 'string',
+                  minLength: 1,
+                  maxLength: 140,
+                },
               },
+              additionalProperties: false,
             },
-            additionalProperties: false,
           },
         },
-      ],
+      },
     })
   })
 
@@ -486,10 +530,12 @@ describe('schema', () => {
         accountRelation: SINGLE,
         description: "Test model with incorrectly constrained string property"
       ) {
-        intValue: String @int(min: 1)
+        intValue: String @int(min: 1) @string(maxLength: 3)
       }
       `)
-    }).toThrow('@intRange can only be applied to integers or arrays of integers')
+    }).toThrow(
+      'Unexpected @int directive with type String on field intValue of object ModelWithStringProp'
+    )
   })
 
   it('@float(min: Float, max: Float) can be applied to Float, Float! or [Float] properties', () => {
@@ -502,7 +548,9 @@ describe('schema', () => {
         intValue: Int @float(max: 1)
       }
       `)
-    }).toThrow('@floatRange can only be applied to floats or arrays of floats')
+    }).toThrow(
+      'Unexpected @float directive with type Int on field intValue of object ModelWithIntProp'
+    )
   })
 
   it('@string(minLength: Int, maxLength: Int!) can be applied to strings or arrays of strings', () => {
@@ -515,7 +563,7 @@ describe('schema', () => {
         intValue: [Int] @string(minLength: 10, maxLength: 140)
       }
       `)
-    }).toThrow('@length can only be applied to strings or arrays of strings')
+    }).toThrow('Missing @list directive on list field intValue of object ModelWithArrayProp')
   })
 
   it('@list(minLength: Int, maxLength: Int!) can be applied to lists', () => {
@@ -525,10 +573,10 @@ describe('schema', () => {
         accountRelation: SINGLE,
         description: "Test model with incorrectly constrained strings property"
       ) {
-        intValue: String @list(maxLength: 140)
+        intValue: String @list(maxLength: 140) @string(maxLength: 10)
       }
       `)
-    }).toThrow('@list can only be applied to arrays')
+    }).toThrow('Unexpected @list directive on field intValue of object ModelWithStringProp')
   })
 
   it('@list(minLength: Int, maxLength: Int!) directive is supported for arrays and properly converted to ICD', () => {
@@ -542,27 +590,32 @@ describe('schema', () => {
       }
       `)
     ).toMatchObject({
-      models: [
-        {
-          name: 'ModelWithArrayProp',
-          accountRelation: 'single',
-          schema: {
-            $schema: 'https://json-schema.org/draft/2020-12/schema',
-            type: 'object',
-            properties: {
-              arrayValue: {
-                type: 'array',
-                minItems: 10,
-                maxItems: 15,
-                items: {
-                  type: 'string',
+      models: {
+        ModelWithArrayProp: {
+          action: 'create',
+          definition: {
+            name: 'ModelWithArrayProp',
+            accountRelation: 'single',
+            description: 'Test model with a constrained array property',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: {
+                arrayValue: {
+                  type: 'array',
+                  minItems: 10,
+                  maxItems: 15,
+                  items: {
+                    type: 'string',
+                    maxLength: 5,
+                  },
                 },
               },
+              additionalProperties: false,
             },
-            additionalProperties: false,
           },
         },
-      ],
+      },
     })
   })
 
@@ -577,27 +630,31 @@ describe('schema', () => {
       }
       `)
     ).toMatchObject({
-      models: [
-        {
-          name: 'ModelWithArrayProp',
-          accountRelation: 'single',
-          schema: {
-            $schema: 'https://json-schema.org/draft/2020-12/schema',
-            type: 'object',
-            properties: {
-              arrayValue: {
-                type: 'array',
-                items: {
-                  type: 'string',
-                  minLength: 4,
-                  maxLength: 440,
+      models: {
+        ModelWithArrayProp: {
+          action: 'create',
+          definition: {
+            name: 'ModelWithArrayProp',
+            accountRelation: 'single',
+            description: 'Test model with an array property with constrained items',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: {
+                arrayValue: {
+                  type: 'array',
+                  items: {
+                    type: 'string',
+                    minLength: 4,
+                    maxLength: 440,
+                  },
                 },
               },
+              additionalProperties: false,
             },
-            additionalProperties: false,
           },
         },
-      ],
+      },
     })
   })
 
@@ -611,7 +668,9 @@ describe('schema', () => {
         arrayValue: [Int]
       }
       `)
-    }).toThrow('Missing @list directive')
+    }).toThrow(
+      'Missing @list directive on list field arrayValue of object ModelWithArrayPropWithoutArrayLengthDirective'
+    )
   })
 
   it('@int(min: Int, max: Int) directive is supported and properly converted to ICD', () => {
@@ -625,24 +684,28 @@ describe('schema', () => {
       }
       `)
     ).toMatchObject({
-      models: [
-        {
-          name: 'ModelWithIntProp',
-          accountRelation: 'single',
-          schema: {
-            $schema: 'https://json-schema.org/draft/2020-12/schema',
-            type: 'object',
-            properties: {
-              intValue: {
-                type: 'integer',
-                minimum: 5,
-                maximum: 10,
+      models: {
+        ModelWithIntProp: {
+          action: 'create',
+          definition: {
+            name: 'ModelWithIntProp',
+            accountRelation: 'single',
+            description: 'Test model with a constreained int property',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: {
+                intValue: {
+                  type: 'integer',
+                  minimum: 5,
+                  maximum: 10,
+                },
               },
+              additionalProperties: false,
             },
-            additionalProperties: false,
           },
         },
-      ],
+      },
     })
   })
 
@@ -657,24 +720,28 @@ describe('schema', () => {
       }
       `)
     ).toMatchObject({
-      models: [
-        {
-          name: 'ModelWithFloatProp',
-          accountRelation: 'single',
-          schema: {
-            $schema: 'https://json-schema.org/draft/2020-12/schema',
-            type: 'object',
-            properties: {
-              floatValue: {
-                type: 'number',
-                minimum: 5.0,
-                maximum: 10.0,
+      models: {
+        ModelWithFloatProp: {
+          action: 'create',
+          definition: {
+            name: 'ModelWithFloatProp',
+            accountRelation: 'single',
+            description: 'Test model with a constrained float property',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: {
+                floatValue: {
+                  type: 'number',
+                  minimum: 5.0,
+                  maximum: 10.0,
+                },
               },
+              additionalProperties: false,
             },
-            additionalProperties: false,
           },
         },
-      ],
+      },
     })
   })
 })

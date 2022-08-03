@@ -2,15 +2,17 @@
 
 import { noteSchema, profilesSchema } from '@composedb/test-schemas'
 
-import { createRuntimeDefinition, getName, parseCompositeSchema } from '../src'
+import { createRuntimeDefinition, getName, createAbstractCompositeDefinition } from '../src'
+import type { CreateModelDefinition } from '../src/schema/types'
 
 describe('Runtime format', () => {
-  const parsedProfiles = parseCompositeSchema(profilesSchema)
+  const parsedProfiles = createAbstractCompositeDefinition(profilesSchema)
   const profilesDefinition = {
     version: '1.0',
     commonEmbeds: parsedProfiles.commonEmbeds,
-    models: parsedProfiles.models.reduce((acc, model) => {
-      acc[`${model.name}ID`] = model
+    models: Object.values(parsedProfiles.models).reduce((acc, model) => {
+      const definition = (model as CreateModelDefinition).definition
+      acc[`${definition.name}ID`] = definition
       return acc
     }, {}),
   }
@@ -46,11 +48,12 @@ describe('Runtime format', () => {
   })
 
   test('Note model definition with views', () => {
-    const { models } = parseCompositeSchema(noteSchema)
+    const { models } = createAbstractCompositeDefinition(noteSchema)
     const runtime = createRuntimeDefinition({
       version: '1.0',
-      models: models.reduce((acc, model) => {
-        acc[`${model.name}ID`] = model
+      models: Object.values(models).reduce((acc, model) => {
+        const definition = (model as CreateModelDefinition).definition
+        acc[`${definition.name}ID`] = definition
         return acc
       }, {}),
     })

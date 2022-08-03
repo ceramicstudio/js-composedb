@@ -1,4 +1,5 @@
 import { GraphQLScalarType } from 'graphql'
+import { isEqual } from 'lodash-es'
 
 import type { ScalarSchema } from '../types.js'
 
@@ -43,4 +44,19 @@ export function getScalarSchema(scalar: GraphQLScalarType | string): ScalarSchem
     throw new Error(`Unsupported scalar name: ${name}`)
   }
   return { ...schema }
+}
+
+const scalarsByTitle = Object.values(scalars).reduce((acc, schema) => {
+  if (schema.title != null) {
+    acc[schema.title] = schema
+  }
+  return acc
+}, {} as Record<string, ScalarSchema>)
+
+export function isCommonScalar(schema: ScalarSchema): boolean {
+  if (schema.title == null) {
+    return false
+  }
+  const scalar = scalarsByTitle[schema.title]
+  return isEqual(scalar, schema)
 }

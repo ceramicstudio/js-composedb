@@ -14,6 +14,7 @@ import createObjectHash from 'object-hash'
 import { decodeSignedMap, encodeSignedMap } from './formats/json.js'
 import { createRuntimeDefinition } from './formats/runtime.js'
 import { createAbstractCompositeDefinition } from './schema/compiler.js'
+import type { AbstractModelDefinition } from './schema/types.js'
 
 const MODEL_GENESIS_OPTS = {
   anchor: true,
@@ -90,13 +91,13 @@ export function setDefinitionViews(
 }
 
 /** @internal */
-export async function createOrLoadModel(
+export async function fromAbstractModel(
   ceramic: CeramicApi,
-  model: string | ModelDefinition
+  model: AbstractModelDefinition
 ): Promise<Model> {
-  return typeof model === 'string'
-    ? await Model.load(ceramic, model)
-    : await Model.create(ceramic, model)
+  return model.action === 'create'
+    ? await Model.create(ceramic, model.definition)
+    : await Model.load(ceramic, model.id)
 }
 
 async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
@@ -254,9 +255,9 @@ export class Composite {
     // TODO: once interfaces are supported, they need to be loaded or created first
     await Promise.all(
       // For each model definition...
-      Object.values(models).map(async (definitionOrID) => {
+      Object.values(models).map(async (abstractModel) => {
         // Create or load the model stream
-        const model = await createOrLoadModel(params.ceramic, definitionOrID)
+        const model = await fromAbstractModel(params.ceramic, abstractModel)
         const id = model.id.toString()
         definition.models[id] = model.content
 

@@ -1,15 +1,18 @@
-import type { ModelDefinition, ModelViewsDefinition } from '@ceramicnetwork/stream-model'
+import type { ModelViewsDefinition } from '@ceramicnetwork/stream-model'
 import type { JSONSchema } from '@composedb/types'
 import type { SetRequired } from 'type-fest'
 
 import type { AnySchema, ScalarSchema } from '../types.js'
 
 import { parseSchema } from './parser.js'
+import { isCommonScalar } from './scalars.js'
 import type {
+  AbstractCompositeDefinition,
   AbstractModelDefinition,
   ListFieldDefinition,
   ObjectDefinition,
   ObjectReferenceFieldDefinition,
+  ParsedModelDefinition,
   ScalarFieldDefinition,
   SchemaDefinition,
 } from './types.js'
@@ -21,14 +24,6 @@ type JSONSchemaReference = { $ref: string }
 type ReferencedSchema = ScalarSchema | JSONSchema.Object
 
 type SchemaWithRefs<T extends AnySchema = AnySchema> = { schema: T; refs: Array<string> }
-
-export type AbstractCompositeDefinition = {
-  models: Record<string, string | ModelDefinition>
-  modelUnions: Record<string, Array<string>>
-  commonEmbeds: Array<string>
-  commonEnums: Array<string>
-  commonUnions: Array<string>
-}
 
 export function createReference(name: string): JSONSchemaReference {
   return { $ref: `#/$defs/${name}` }
@@ -94,15 +89,12 @@ export class SchemaCompiler {
     return this.#def
   }
 
-  // TODO: split logic between compileEmbedObject and _compileModel
   _compileEmbedObject(name: string, definition: ObjectDefinition): SchemaWithRefs<CompileObject> {
     const existing = this.#refs[name]
     if (existing) {
-      console.log('_compileEmbedObject existing', name)
       return existing as SchemaWithRefs<CompileObject>
     }
 
-    console.log('_compileEmbedObject create', name, definition)
     const object: CompileObject = {
       type: 'object',
       title: name,
@@ -116,8 +108,6 @@ export class SchemaCompiler {
       if (field.required) {
         required.push(key)
       }
-
-      console.log('compile field', key, field)
 
       let value: SchemaWithRefs | void
       switch (field.type) {
@@ -219,10 +209,11 @@ export class SchemaCompiler {
 
   _compileScalar(definition: ScalarFieldDefinition): SchemaWithRefs {
     const title = definition.schema.title
-    // Scalars without title are injected directly as they are not reusable
-    if (title == null) {
+    // Scalars without title or that have properties changed from the defaults are injected directly as they are not reusable
+    if (title == null || !isCommonScalar(definition.schema)) {
       return { schema: definition.schema, refs: [] }
     }
+
     // Scalars with title are injected in definitions and referenced
     if (this.#refs[title] == null) {
       this.#refs[title] = { schema: definition.schema, refs: [] }
@@ -232,11 +223,11 @@ export class SchemaCompiler {
 
   _compileModel(
     name: string,
-    definition: AbstractModelDefinition,
+    definition: ParsedModelDefinition,
     objectDefinition: ObjectDefinition
-  ): ModelDefinition | string {
-    if (definition.type === 'load') {
-      return definition.id
+  ): AbstractModelDefinition {
+    if (definition.action === 'load') {
+      return definition
     }
 
     const views: ModelViewsDefinition = {}
@@ -253,8 +244,6 @@ export class SchemaCompiler {
       if (field.required) {
         required.push(key)
       }
-
-      console.log('compile field', key, field)
 
       let value: SchemaWithRefs | void
       switch (field.type) {
@@ -295,13 +284,17 @@ export class SchemaCompiler {
     }
 
     return {
-      name,
-      description: definition.description,
-      accountRelation: definition.accountRelation,
-      // TODO: add once supported in model definition
-      // interface: definition.interface,
-      // implements: definition.implements,
-      schema: object,
+      action: 'create',
+      definition: {
+        name,
+        description: definition.description,
+        accountRelation: definition.accountRelation,
+        // TODO: add once supported in model definition
+        // interface: definition.interface,
+        // implements: definition.implements,
+        schema: object,
+        views,
+      },
     }
   }
 }
