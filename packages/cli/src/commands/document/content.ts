@@ -1,5 +1,5 @@
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
-import { Command, type QueryCommandFlags, STREAM_ID_ARG, SYNC_OPTION_FLAG } from '../../command.js'
+import {Command, parseSyncFlag, type QueryCommandFlags, STREAM_ID_ARG, SYNC_OPTION_FLAG} from '../../command.js'
 import { Flags } from '@oclif/core'
 import { write } from '../../fs.js'
 
@@ -26,7 +26,9 @@ export default class DocumentContent extends Command<DocumentContentFlags, { str
   async run(): Promise<void> {
     try {
       this.spinner.start('Loading the model instance...')
-      const mid = await ModelInstanceDocument.load(this.ceramic, this.args.streamId)
+      const mid = await ModelInstanceDocument.load(this.ceramic, this.args.streamId, {
+        sync: parseSyncFlag(this.flags.sync),
+      })
       if (this.flags.output != null) {
         const output = this.flags.output
         await write(output, mid.content)

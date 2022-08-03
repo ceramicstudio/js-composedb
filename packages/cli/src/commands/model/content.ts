@@ -1,5 +1,5 @@
 import { Model } from '@ceramicnetwork/stream-model'
-import { Command, type QueryCommandFlags, STREAM_ID_ARG, SYNC_OPTION_FLAG } from '../../command.js'
+import {Command, parseSyncFlag, type QueryCommandFlags, STREAM_ID_ARG, SYNC_OPTION_FLAG} from '../../command.js'
 import { Flags } from '@oclif/core'
 import { write } from '../../fs.js'
 
@@ -25,7 +25,9 @@ export default class ModelContent extends Command<ModelContentFlags, { streamId:
   async run(): Promise<void> {
     try {
       this.spinner.start('Loading model...')
-      const model = await Model.load(this.ceramic, this.args.streamId)
+      const model = await Model.load(this.ceramic, this.args.streamId, {
+        sync: parseSyncFlag(this.flags.sync),
+      })
       if (this.flags.output != null) {
         const output = this.flags.output
         await write(output, model.content)

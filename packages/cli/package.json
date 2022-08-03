@@ -95,6 +95,7 @@
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
+    "@ceramicnetwork/cli": "^2.4.0",
     "@ceramicnetwork/common": "^2.3.0",
     "@ceramicnetwork/core": "^2.6.0",
     "@composedb/types": "workspace:^0.1.0",
@@ -115,6 +116,8 @@
     "extensionsToTreatAsEsm": [
       ".ts"
     ],
+    "globalSetup": "<rootDir>/globalSetup.js",
+    "globalTeardown": "<rootDir>/globalTeardown.js",
     "moduleNameMapper": {
       "^(\\.{1,2}/.*)\\.js$": "$1"
     },
