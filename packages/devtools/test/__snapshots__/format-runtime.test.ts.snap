@@ -8,6 +8,7 @@ Object {
       "type": "connection",
     },
   },
+  "enums": Object {},
   "models": Object {
     "Note": "NoteID",
   },
@@ -50,6 +51,7 @@ Object {
       "type": "node",
     },
   },
+  "enums": Object {},
   "models": Object {
     "GenericProfile": "GenericProfileID",
     "PersonProfile": "PersonProfileID",
@@ -182,6 +184,7 @@ Object {
       "type": "node",
     },
   },
+  "enums": Object {},
   "models": Object {
     "GenericProfile": "GenericProfileID",
     "PersonProfile": "PersonProfileID",

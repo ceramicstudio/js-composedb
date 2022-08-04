@@ -95,6 +95,4 @@ type VideoMedia implements MediaMetadata & VisualMedia & TimeMedia @createModel(
   width: Int! @int(min: 1)
   height: Int! @int(min: 1)
 }
-
-union MediaObject = ImageMedia | AudioMedia | VideoMedia
 `

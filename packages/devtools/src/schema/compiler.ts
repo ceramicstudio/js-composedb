@@ -2,6 +2,7 @@ import type { ModelViewsDefinition } from '@ceramicnetwork/stream-model'
 import type { JSONSchema } from '@composedb/types'
 import type { SetRequired } from 'type-fest'
 
+import { DOC_ID_FIELD } from '../constants.js'
 import type { AnySchema, ScalarSchema } from '../types.js'
 
 import { parseSchema } from './parser.js'
@@ -9,6 +10,7 @@ import { isCommonScalar } from './scalars.js'
 import type {
   AbstractCompositeDefinition,
   AbstractModelDefinition,
+  EnumFieldDefinition,
   ListFieldDefinition,
   ObjectDefinition,
   ObjectReferenceFieldDefinition,
@@ -40,10 +42,7 @@ export function extractReference(ref: JSONSchemaReference): string {
 export class SchemaCompiler {
   #def: AbstractCompositeDefinition = {
     models: {},
-    modelUnions: {},
     commonEmbeds: [],
-    commonEnums: [],
-    commonUnions: [],
   }
   #refs: Record<string, SchemaWithRefs<ReferencedSchema>> = {}
   #src: SchemaDefinition
@@ -70,6 +69,10 @@ export class SchemaCompiler {
   }
 
   compile(): AbstractCompositeDefinition {
+    // Ensure enums are tracked in common embeds
+    for (const name of Object.keys(this.#src.enums)) {
+      this.#def.commonEmbeds.push(name)
+    }
     // Only compile embedded objects in first pass so they can be added to models in second pass
     for (const [name, definition] of Object.entries(this.#src.objects)) {
       if (this.#src.models[name] == null) {
@@ -77,6 +80,7 @@ export class SchemaCompiler {
         this.#def.commonEmbeds.push(name)
       }
     }
+    // Compile models
     for (const [name, definition] of Object.entries(this.#src.models)) {
       const object = this.#src.objects[name]
       if (object == null) {
@@ -85,7 +89,6 @@ export class SchemaCompiler {
       // Compile object schema with embedded references for model
       this.#def.models[name] = this._compileModel(name, definition, object)
     }
-
     return this.#def
   }
 
@@ -104,7 +107,7 @@ export class SchemaCompiler {
     const required: Array<string> = []
     let refs: Array<string> = []
 
-    for (const [key, field] of Object.entries(definition)) {
+    for (const [key, field] of Object.entries(definition.properties)) {
       if (field.required) {
         required.push(key)
       }
@@ -112,7 +115,7 @@ export class SchemaCompiler {
       let value: SchemaWithRefs | void
       switch (field.type) {
         case 'enum':
-          // TODO
+          value = this._compileEnum(name, key, field)
           break
         case 'list':
           value = this._compileList(name, key, field)
@@ -122,9 +125,6 @@ export class SchemaCompiler {
           break
         case 'scalar':
           value = this._compileScalar(field)
-          break
-        case 'union':
-          // TODO
           break
         case 'view':
           throw new Error(
@@ -162,16 +162,13 @@ export class SchemaCompiler {
     let item: SchemaWithRefs | void
     switch (definition.item.type) {
       case 'enum':
-        // TODO
+        item = this._compileEnum(objectName, fieldName, definition.item)
         break
       case 'object':
         item = this._compileObjectReference(objectName, fieldName, definition.item)
         break
       case 'scalar':
         item = this._compileScalar(definition.item)
-        break
-      case 'union':
-        // TODO
         break
     }
 
@@ -207,6 +204,26 @@ export class SchemaCompiler {
     return { schema: { $ref: `#/$defs/${definition.name}` }, refs: [definition.name] }
   }
 
+  _compileEnum(
+    objectName: string,
+    fieldName: string,
+    definition: EnumFieldDefinition
+  ): SchemaWithRefs {
+    const values = this.#src.enums[definition.name]
+    if (values == null) {
+      throw new Error(
+        `Missing enum ${definition.name} referenced in field ${fieldName} of object ${objectName}`
+      )
+    }
+    if (this.#refs[definition.name] == null) {
+      this.#refs[definition.name] = {
+        schema: { type: 'string', title: definition.name, enum: values },
+        refs: [],
+      }
+    }
+    return { schema: { $ref: `#/$defs/${definition.name}` }, refs: [definition.name] }
+  }
+
   _compileScalar(definition: ScalarFieldDefinition): SchemaWithRefs {
     const title = definition.schema.title
     // Scalars without title or that have properties changed from the defaults are injected directly as they are not reusable
@@ -223,11 +240,17 @@ export class SchemaCompiler {
 
   _compileModel(
     name: string,
-    definition: ParsedModelDefinition,
+    modelDefinition: ParsedModelDefinition,
     objectDefinition: ObjectDefinition
   ): AbstractModelDefinition {
-    if (definition.action === 'load') {
-      return definition
+    if (modelDefinition.action === 'load') {
+      return modelDefinition
+    }
+
+    if (objectDefinition.properties[DOC_ID_FIELD] != null) {
+      throw new Error(
+        `Unsupported ${DOC_ID_FIELD} field on model ${name}, the ${DOC_ID_FIELD} field is reserved by ComposeDB`
+      )
     }
 
     const views: ModelViewsDefinition = {}
@@ -240,7 +263,7 @@ export class SchemaCompiler {
     const required: Array<string> = []
     let refs: Array<string> = []
 
-    for (const [key, field] of Object.entries(objectDefinition)) {
+    for (const [key, field] of Object.entries(objectDefinition.properties)) {
       if (field.required) {
         required.push(key)
       }
@@ -248,7 +271,7 @@ export class SchemaCompiler {
       let value: SchemaWithRefs | void
       switch (field.type) {
         case 'enum':
-          // TODO
+          value = this._compileEnum(name, key, field)
           break
         case 'list':
           value = this._compileList(name, key, field)
@@ -258,9 +281,6 @@ export class SchemaCompiler {
           break
         case 'scalar':
           value = this._compileScalar(field)
-          break
-        case 'union':
-          // TODO
           break
         case 'view':
           views[key] = { type: field.viewType }
@@ -287,8 +307,8 @@ export class SchemaCompiler {
       action: 'create',
       definition: {
         name,
-        description: definition.description,
-        accountRelation: definition.accountRelation,
+        description: modelDefinition.description,
+        accountRelation: modelDefinition.accountRelation,
         // TODO: add once supported in model definition
         // interface: definition.interface,
         // implements: definition.implements,

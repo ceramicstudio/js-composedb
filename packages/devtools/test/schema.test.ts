@@ -17,7 +17,7 @@ describe('schema', () => {
     }).toThrow('No models found in Composite Definition Schema')
   })
 
-  it.skip("createAbstractCompositeDefinition doesn't parse unions", () => {
+  it("createAbstractCompositeDefinition doesn't parse unions", () => {
     expect(() => {
       createAbstractCompositeDefinition(`
       union IntOrString = Int | String
@@ -32,7 +32,7 @@ describe('schema', () => {
     }).toThrow('GraphQL unions are not supported')
   })
 
-  it.skip("createAbstractCompositeDefinition doesn't parse interfaces", () => {
+  it("createAbstractCompositeDefinition doesn't parse interfaces", () => {
     expect(() => {
       createAbstractCompositeDefinition(`
       interface GenericProfile {

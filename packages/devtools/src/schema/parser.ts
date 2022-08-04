@@ -15,14 +15,12 @@ import {
   type GraphQLScalarType,
   type GraphQLSchema,
   type GraphQLType,
-  type GraphQLUnionType,
   isEnumType,
   isInterfaceType,
   isListType,
   isNonNullType,
   isObjectType,
   isScalarType,
-  isUnionType,
 } from 'graphql'
 
 import type { ScalarSchema } from '../types.js'
@@ -33,6 +31,7 @@ import type {
   ItemDefinition,
   ListFieldDefinition,
   ObjectDefinition,
+  ObjectFieldsDefinition,
   ParsedModelDefinition,
   ReferenceFieldType,
   SchemaDefinition,
@@ -50,12 +49,17 @@ type NumberDirectiveArguments = {
   min?: number
 }
 
+type DefinitionWithReferences<T> = {
+  definition: T
+  references: Array<string>
+}
+
 export class SchemaParser {
   #def: SchemaDefinition = {
     enums: {},
+    interfaces: {},
     models: {},
     objects: {},
-    unions: {},
   }
   #schema: GraphQLSchema
 
@@ -66,27 +70,33 @@ export class SchemaParser {
   parse(): SchemaDefinition {
     mapSchema(this.#schema, {
       [MapperKind.ENUM_TYPE]: (type: GraphQLEnumType) => {
+        if (type.name !== 'ModelAccountRelation') {
+          // throw new Error('GraphQL enums are not supported')
+          this.#def.enums[type.name] = type.getValues().map((v) => v.name)
+        }
         return type
       },
-      [MapperKind.INTERFACE_TYPE]: (type: GraphQLInterfaceType) => {
-        const model = this._parseModelDirective(type)
-        if (model == null) {
-          throw new Error(`Missing @createModel or @loadModel directive for interface ${type.name}`)
-        }
-        this.#def.models[type.name] = model
-        return type
+      [MapperKind.INTERFACE_TYPE]: (_type: GraphQLInterfaceType) => {
+        throw new Error('GraphQL interfaces are not supported')
+        // const model = this._parseModelDirective(type)
+        // if (model == null) {
+        //   // throw new Error(`Missing @createModel or @loadModel directive for interface ${type.name}`)
+        //   this.#def.interfaces[type.name] = this._parseObject(type)
+        // } else {
+        //   this.#def.models[type.name] = model
+        // }
+        // return type
       },
       [MapperKind.OBJECT_TYPE]: (type: GraphQLObjectType) => {
-        this.#def.objects[type.name] = this._parseObjectFields(type)
+        this.#def.objects[type.name] = this._parseObject(type)
         const model = this._parseModelDirective(type)
         if (model != null) {
           this.#def.models[type.name] = model
         }
         return type
       },
-      [MapperKind.UNION_TYPE]: (type: GraphQLUnionType) => {
-        this.#def.unions[type.name] = type.getTypes().map((t) => t.name)
-        return type
+      [MapperKind.UNION_TYPE]: () => {
+        throw new Error('GraphQL unions are not supported')
       },
     })
 
@@ -148,8 +158,21 @@ export class SchemaParser {
     }
   }
 
-  _parseObjectFields(type: GraphQLObjectType): ObjectDefinition {
-    const fields: ObjectDefinition = {}
+  _parseObject(type: GraphQLInterfaceType | GraphQLObjectType): ObjectDefinition {
+    const { definition, references } = this._parseObjectFields(type)
+    return {
+      implements: type.getInterfaces().map((i) => i.name),
+      properties: definition,
+      references: Array.from(new Set(references)),
+    }
+  }
+
+  _parseObjectFields(
+    type: GraphQLInterfaceType | GraphQLObjectType
+  ): DefinitionWithReferences<ObjectFieldsDefinition> {
+    const fields: ObjectFieldsDefinition = {}
+    let references: Array<string> = []
+
     for (const [key, value] of Object.entries(type.getFields())) {
       const directives = getDirectives(this.#schema, value)
 
@@ -161,16 +184,21 @@ export class SchemaParser {
       if (view != null) {
         fields[key] = view
       } else if (isListType(innerType)) {
-        fields[key] = this._parseListType(type.name, key, innerType, required, directives)
+        const list = this._parseListType(type.name, key, innerType, required, directives)
+        fields[key] = list.definition
+        references = [...references, ...list.references]
       } else {
-        const list = directives.find((d) => d.name === 'list')
-        if (list != null) {
+        const listDirective = directives.find((d) => d.name === 'list')
+        if (listDirective != null) {
           throw new Error(`Unexpected @list directive on field ${key} of object ${type.name}`)
         }
-        fields[key] = this._parseItemType(type.name, key, value.type, directives)
+        const item = this._parseItemType(type.name, key, value.type, directives)
+        fields[key] = item.definition
+        references = [...references, ...item.references]
       }
     }
-    return fields
+
+    return { definition: fields, references }
   }
 
   _parseViews(
@@ -205,7 +233,7 @@ export class SchemaParser {
     type: GraphQLList<GraphQLType>,
     required: boolean,
     directives: Array<DirectiveAnnotation>
-  ): ListFieldDefinition {
+  ): DefinitionWithReferences<ListFieldDefinition> {
     const list = directives.find((d) => d.name === 'list')
     if (list == null) {
       throw new Error(`Missing @list directive on list field ${fieldName} of object ${objectName}`)
@@ -216,16 +244,17 @@ export class SchemaParser {
       )
     }
 
+    const item = this._parseItemType(objectName, fieldName, type.ofType, directives)
     const definition: ListFieldDefinition = {
       type: 'list',
       required,
-      item: this._parseItemType(objectName, fieldName, type.ofType, directives),
+      item: item.definition,
       maxLength: list.args.maxLength as number,
     }
     if (list.args?.minLength != null) {
       definition.minLength = list.args.minLength as number
     }
-    return definition
+    return { definition, references: item.references }
   }
 
   _parseItemType(
@@ -233,7 +262,7 @@ export class SchemaParser {
     fieldName: string,
     type: GraphQLType,
     directives: Array<DirectiveAnnotation>
-  ): ItemDefinition {
+  ): DefinitionWithReferences<ItemDefinition> {
     const required = isNonNullType(type)
     const innerType = required ? type.ofType : type
     if (isListType(innerType)) {
@@ -242,14 +271,20 @@ export class SchemaParser {
 
     const referenceType = this._getReferenceFieldType(innerType)
     if (referenceType != null) {
-      return { type: referenceType, required, name: innerType.name }
+      return {
+        definition: { type: referenceType, required, name: innerType.name },
+        references: [innerType.name],
+      }
     }
 
     if (isScalarType(innerType)) {
       return {
-        type: 'scalar',
-        required,
-        schema: this._parseScalarSchema(objectName, fieldName, innerType, directives),
+        definition: {
+          type: 'scalar',
+          required,
+          schema: this._parseScalarSchema(objectName, fieldName, innerType, directives),
+        },
+        references: [],
       }
     }
     throw new Error(
@@ -408,9 +443,6 @@ export class SchemaParser {
     }
     if (isObjectType(type)) {
       return 'object'
-    }
-    if (isUnionType(type)) {
-      return 'union'
     }
   }
 }

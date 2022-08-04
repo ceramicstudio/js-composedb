@@ -11,15 +11,15 @@ The Schema Definition Language (SDL) allows to represent scalars (primitive valu
 An example Composite Schema can look like the following:
 
 ```graphql
-type Profile @model(accountRelation: SINGLE, description: "Very basic profile") {
-  displayName: String! @length(min: 3, max: 50)
+type Profile @createModel(accountRelation: SINGLE, description: "Very basic profile") {
+  displayName: String! @string(minLength: 3, maxLength: 50)
 }
 
-type Note @model(accountRelation: LIST, description: "Very basic note") {
+type Note @createModel(accountRelation: LIST, description: "Very basic note") {
   author: DID! @documentAuthor
   version: CommitID! @documentVersion
-  title: String! @length(min: 10, max: 100)
-  text: String @length(max: 2000)
+  title: String! @string(minLength: 10, maxLength: 100)
+  text: String @string(maxLength: 2000)
 }
 ```
 
@@ -58,16 +58,16 @@ Scalars and shapes can be composed together in lists and other shapes, such as t
 
 ```graphql
 type ImageMetadata {
-  src: String! @length(max: 150)
-  mimeType: String! @length(max: 50)
-  width: Int! @intRange(min: 1)
-  height: Int! @intRange(min: 1)
-  size: Int @intRange(min: 1)
+  src: String! @string(maxLength: 150)
+  mimeType: String! @string(maxLength: 50)
+  width: Int! @int(min: 1)
+  height: Int! @int(min: 1)
+  size: Int @int(min: 1)
 }
 
 type ImageSources {
   original: ImageMetadata!
-  alternatives: [ImageMetadata] @arrayLength(max: 20)
+  alternatives: [ImageMetadata] @list(maxLength: 20)
 }
 ```
 
@@ -77,9 +77,9 @@ Directives provide extra metadata when declaring scalars, lists and shapes.
 
 ### Model identification
 
-The `@model` directive applies to shapes, indicating the shape needs to be created as a Model. A Composite must contain at least one Model to be valid, otherwise there would be nothing to interact with.
+The `@createModel` directive applies to shapes, indicating the shape needs to be created as a Model. A Composite must contain at least one Model to be valid, otherwise there would be nothing to interact with.
 
-When using the `@model` directive, two parameters must be provided:
+When using the `@createModel` directive, two parameters must be provided:
 
 - `accountRelation`: the type of relation between documents created using the Model and the account controlling the document, which can be `SINGLE` for a single document of the given Model (for example profile information), or `LIST` for a potentially infinite list of documents.
 - `description`: a string describing the Model, to help with discovery.
@@ -88,10 +88,10 @@ When using the `@model` directive, two parameters must be provided:
 
 The following directives provide validation information on primitive scalars and lists:
 
-- `@intRange`: defines the required `max` and optional `min` value for `Int` scalars.
-- `@floatRange`: defines the required `max` and optional `min` value for `Float` scalars.
-- `@length`: defines the required `max` and optional `min` value for `String` scalars.
-- `@arrayLength`: defines the required `max` and optional `min` numbers of items in a list.
+- `@int`: defines the optional `max` and `min` value for `Int` scalars.
+- `@float`: defines the optional `max` and `min` value for `Float` scalars.
+- `@string`: defines the required `maxLength` and optional `minLength` value for `String` scalars and scalars extending `String`.
+- `@list`: defines the required `maxLength` and optional `minLength` numbers of items in a list.
 
 ### Views
 

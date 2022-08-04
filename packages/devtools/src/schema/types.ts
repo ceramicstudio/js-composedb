@@ -35,15 +35,7 @@ export type ObjectReferenceFieldDefinition = FieldCommonDefinition & {
   name: string
 }
 
-export type UnionFieldDefinition = FieldCommonDefinition & {
-  type: 'union'
-  name: string
-}
-
-export type ReferenceFieldDefinition =
-  | EnumFieldDefinition
-  | ObjectReferenceFieldDefinition
-  | UnionFieldDefinition
+export type ReferenceFieldDefinition = EnumFieldDefinition | ObjectReferenceFieldDefinition
 
 export type ReferenceFieldType = ReferenceFieldDefinition['type']
 
@@ -65,13 +57,19 @@ export type ViewFieldDefinition = FieldCommonDefinition & RuntimeViewField
 
 export type ObjectFieldDefinition = ItemDefinition | ListFieldDefinition | ViewFieldDefinition
 
-export type ObjectDefinition = Record<string, ObjectFieldDefinition>
+export type ObjectFieldsDefinition = Record<string, ObjectFieldDefinition>
+
+export type ObjectDefinition = {
+  implements: Array<string> // Interface names
+  properties: ObjectFieldsDefinition
+  references: Array<string> // Embedded objects and enums
+}
 
 export type SchemaDefinition = {
   enums: Record<string, Array<string>>
+  interfaces: Record<string, ObjectDefinition>
   models: Record<string, ParsedModelDefinition>
   objects: Record<string, ObjectDefinition>
-  unions: Record<string, Array<string>>
 }
 
 export type CreateModelDefinition = { action: 'create'; definition: ModelDefinition }
@@ -80,8 +78,5 @@ export type AbstractModelDefinition = CreateModelDefinition | LoadModelDefinitio
 
 export type AbstractCompositeDefinition = {
   models: Record<string, AbstractModelDefinition>
-  modelUnions: Record<string, Array<string>>
   commonEmbeds: Array<string>
-  commonEnums: Array<string>
-  commonUnions: Array<string>
 }

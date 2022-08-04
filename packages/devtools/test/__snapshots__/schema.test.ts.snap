@@ -6,9 +6,6 @@ Object {
     "ImageMetadata",
     "ImageSources",
   ],
-  "commonEnums": Array [],
-  "commonUnions": Array [],
-  "modelUnions": Object {},
   "models": Object {
     "GenericProfile": Object {
       "action": "create",

@@ -190,21 +190,21 @@ type CreateGenericProfilePayload {
 }
 
 input CreateGenericProfileInput {
-  content: RequiredGenericProfileInput!
+  content: GenericProfileInput!
   clientMutationId: String
 }
 
-input RequiredGenericProfileInput {
+input GenericProfileInput {
   name: String
-  image: RequiredImageSourcesInput
+  image: ImageSourcesInput
 }
 
-input RequiredImageSourcesInput {
-  original: RequiredImageMetadataInput!
-  alternatives: [RequiredImageMetadataInput]
+input ImageSourcesInput {
+  original: ImageMetadataInput!
+  alternatives: [ImageMetadataInput]
 }
 
-input RequiredImageMetadataInput {
+input ImageMetadataInput {
   src: String!
   mimeType: String!
   width: Int!
@@ -225,27 +225,14 @@ type UpdateGenericProfilePayload {
 
 input UpdateGenericProfileInput {
   id: ID!
-  content: GenericProfileInput!
+  content: PartialGenericProfileInput!
   options: UpdateOptionsInput
   clientMutationId: String
 }
 
-input GenericProfileInput {
+input PartialGenericProfileInput {
   name: String
   image: ImageSourcesInput
-}
-
-input ImageSourcesInput {
-  original: ImageMetadataInput
-  alternatives: [ImageMetadataInput]
-}
-
-input ImageMetadataInput {
-  src: String
-  mimeType: String
-  width: Int
-  height: Int
-  size: Int
 }
 
 input UpdateOptionsInput {
@@ -268,14 +255,14 @@ type CreateSocialProfilePayload {
 }
 
 input CreateSocialProfileInput {
-  content: RequiredSocialProfileInput!
+  content: SocialProfileInput!
   clientMutationId: String
 }
 
-input RequiredSocialProfileInput {
+input SocialProfileInput {
   description: String
   emoji: String
-  background: RequiredImageSourcesInput
+  background: ImageSourcesInput
   url: String
 }
 
@@ -292,12 +279,12 @@ type UpdateSocialProfilePayload {
 
 input UpdateSocialProfileInput {
   id: ID!
-  content: SocialProfileInput!
+  content: PartialSocialProfileInput!
   options: UpdateOptionsInput
   clientMutationId: String
 }
 
-input SocialProfileInput {
+input PartialSocialProfileInput {
   description: String
   emoji: String
   background: ImageSourcesInput
@@ -316,11 +303,11 @@ type CreatePersonProfilePayload {
 }
 
 input CreatePersonProfileInput {
-  content: RequiredPersonProfileInput!
+  content: PersonProfileInput!
   clientMutationId: String
 }
 
-input RequiredPersonProfileInput {
+input PersonProfileInput {
   birthDate: String
   gender: String
   homeLocation: String
@@ -342,12 +329,12 @@ type UpdatePersonProfilePayload {
 
 input UpdatePersonProfileInput {
   id: ID!
-  content: PersonProfileInput!
+  content: PartialPersonProfileInput!
   options: UpdateOptionsInput
   clientMutationId: String
 }
 
-input PersonProfileInput {
+input PartialPersonProfileInput {
   birthDate: String
   gender: String
   homeLocation: String
@@ -465,11 +452,11 @@ type CreateNotePayload {
 }
 
 input CreateNoteInput {
-  content: RequiredNoteInput!
+  content: NoteInput!
   clientMutationId: String
 }
 
-input RequiredNoteInput {
+input NoteInput {
   title: String!
   text: String!
 }
@@ -487,12 +474,12 @@ type UpdateNotePayload {
 
 input UpdateNoteInput {
   id: ID!
-  content: NoteInput!
+  content: PartialNoteInput!
   options: UpdateOptionsInput
   clientMutationId: String
 }
 
-input NoteInput {
+input PartialNoteInput {
   title: String
   text: String
 }

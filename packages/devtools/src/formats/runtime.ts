@@ -19,6 +19,8 @@ import { JsonReference } from 'json-ptr'
 
 import type { AnySchema, ScalarSchema } from '../types.js'
 
+type EnumSchema = JSONSchema.String & { title: string; enum: Array<string> }
+
 /** @internal */
 export function getName(base: string, prefix = ''): string {
   const withCase = pascalCase(base)
@@ -46,6 +48,12 @@ type ExtractSchemaParams = {
   localRef?: boolean
 }
 
+type RuntimeModelDefinition = {
+  objects: Record<string, RuntimeObjectFields>
+  enums: Record<string, Array<string>>
+  unions: Record<string, Array<string>>
+}
+
 /** @internal */
 export class RuntimeModelBuilder {
   #commonEmbeds: Array<string>
@@ -53,6 +61,8 @@ export class RuntimeModelBuilder {
   #modelSchema: JSONSchema.Object
   #modelViews: ModelViewsDefinition
   #objects: Record<string, RuntimeObjectFields> = {}
+  #enums: Record<string, Array<string>> = {}
+  #unions: Record<string, Array<string>> = {}
 
   constructor(params: RuntimeModelBuilderParams) {
     this.#commonEmbeds = params.commonEmbeds ?? []
@@ -61,12 +71,16 @@ export class RuntimeModelBuilder {
     this.#modelViews = params.views
   }
 
-  build(): Record<string, RuntimeObjectFields> {
+  build(): RuntimeModelDefinition {
     const modelObject = this._buildObject(this.#modelSchema)
     this.#objects[this.#modelName] = modelObject
     // TODO (post-MVP): build relations
     this._buildViews(modelObject, this.#modelViews)
-    return this.#objects
+    return {
+      objects: this.#objects,
+      enums: this.#enums,
+      unions: this.#unions,
+    }
   }
 
   _getName(schema: AnySchema, params: ExtractSchemaParams, isReference = false): string {
@@ -130,7 +144,7 @@ export class RuntimeModelBuilder {
       throw new Error('Missing schema $ref or type for array items')
     }
 
-    let item: RuntimeScalar | RuntimeReference<'object'>
+    let item: RuntimeScalar | RuntimeReference<'enum' | 'object'>
     switch (items.type) {
       case 'array':
         throw new Error('Unsupported array in array')
@@ -147,13 +161,17 @@ export class RuntimeModelBuilder {
   _buildListReference(
     reference: string,
     params: ExtractSchemaParams = {}
-  ): RuntimeScalar | RuntimeReference<'object'> {
+  ): RuntimeScalar | RuntimeReference<'enum' | 'object'> {
     const schema = this._getReferenceSchema(reference)
     switch (schema.type) {
       case 'array':
         throw new Error('Unsupported array in array reference')
       case 'object':
         return this._buildObjectReferenceField(schema, params)
+      case 'string':
+        return schema.enum != null && schema.title != null
+          ? this._buildEnumReferenceField(schema as EnumSchema)
+          : this._buildScalar(schema, params)
       default:
         return this._buildScalar(schema as ScalarSchema, params)
     }
@@ -175,6 +193,22 @@ export class RuntimeModelBuilder {
     }
   }
 
+  _buildEnumReferenceField(
+    schema: EnumSchema,
+    params: ExtractSchemaParams = {}
+  ): RuntimeReference<'enum'> {
+    const ownName = this._getName(schema, params, true)
+    if (this.#enums[ownName] == null) {
+      this.#enums[ownName] = schema.enum
+    }
+    return {
+      type: 'reference',
+      refType: 'enum',
+      refName: ownName,
+      required: params.required ?? false,
+    }
+  }
+
   _buildReferenceSchema(reference: string, params: ExtractSchemaParams = {}): RuntimeObjectField {
     const schema = this._getReferenceSchema(reference)
     switch (schema.type) {
@@ -182,6 +216,10 @@ export class RuntimeModelBuilder {
         return this._buildList(schema, params)
       case 'object':
         return this._buildObjectReferenceField(schema, params)
+      case 'string':
+        return schema.enum != null && schema.title != null
+          ? this._buildEnumReferenceField(schema as EnumSchema)
+          : this._buildScalar(schema, params)
       default:
         return this._buildScalar(schema as ScalarSchema, params)
     }
@@ -230,6 +268,7 @@ export function createRuntimeDefinition(
   const runtime: RuntimeCompositeDefinition = {
     models: {},
     objects: {},
+    enums: {},
     accountData: {},
   }
 
@@ -237,7 +276,7 @@ export function createRuntimeDefinition(
     const modelName = definition.aliases?.[modelID] ?? modelDefinition.name
     // Add name to model ID mapping
     runtime.models[modelName] = modelID
-    // Extract objects from model schema, relations and views
+    // Extract objects, enums, relations and views from model schema
     const modelViews = modelDefinition.views ?? {}
     const compositeModelViews = definition.views?.models?.[modelID] ?? {}
     const modelBuilder = new RuntimeModelBuilder({
@@ -246,7 +285,10 @@ export function createRuntimeDefinition(
       definition: modelDefinition,
       views: { ...modelViews, ...compositeModelViews },
     })
-    Object.assign(runtime.objects, modelBuilder.build())
+    const builtModel = modelBuilder.build()
+    // Inject extracted types to runtime definition
+    Object.assign(runtime.objects, builtModel.objects)
+    Object.assign(runtime.enums, builtModel.enums)
     // Attach entry-point to account store based on relation type
     if (modelDefinition.accountRelation != null) {
       const key = camelCase(modelName)
