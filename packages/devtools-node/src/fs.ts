@@ -6,13 +6,20 @@ import fs from 'fs-extra'
 import { resolve } from 'path'
 import { cwd } from 'process'
 // // fs-extra is a CommonJS module
-const { readFile, readJSON, writeFile, writeJSON } = fs
+const { readFile, readJSON, writeFile, writeJSON, ensureDir } = fs
+import * as pathModule from 'path'
 
 import type { PathInput } from './types.js'
 
 /** @internal */
 export function getFilePath(path: PathInput): string {
   return path instanceof URL ? path.pathname : resolve(cwd(), path)
+}
+
+/** @internal */
+export function getDirPath(path: PathInput): string {
+  const pathString = getFilePath(path)
+  return pathModule.dirname(pathString)
 }
 
 /**
@@ -22,7 +29,7 @@ export async function createComposite(
   ceramic: CeramicClient | string,
   path: PathInput
 ): Promise<Composite> {
-  const client = ceramic instanceof CeramicClient ? ceramic : new CeramicClient(ceramic)
+  const client = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
   const file = await readFile(getFilePath(path))
   return await Composite.create({ ceramic: client, schema: file.toString() })
 }
@@ -34,7 +41,7 @@ export async function readEncodedComposite(
   ceramic: CeramicClient | string,
   path: PathInput
 ): Promise<Composite> {
-  const client = ceramic instanceof CeramicClient ? ceramic : new CeramicClient(ceramic)
+  const client = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
   const file = getFilePath(path)
   const definition = (await readJSON(file)) as EncodedCompositeDefinition
   return Composite.fromJSON({ ceramic: client, definition })
@@ -48,6 +55,7 @@ export async function writeEncodedComposite(
   path: PathInput
 ): Promise<string> {
   const file = getFilePath(path)
+  await ensureDir(getDirPath(file))
   await writeJSON(file, composite.toJSON())
   return file
 }
@@ -61,6 +69,7 @@ export async function writeGraphQLSchema(
   readonly?: boolean
 ): Promise<string> {
   const file = getFilePath(path)
+  await ensureDir(getDirPath(file))
   await writeFile(file, printGraphQLSchema(definition, readonly))
   return file
 }
@@ -74,7 +83,7 @@ export async function writeRuntimeDefinition(
   path: PathInput
 ): Promise<string> {
   const file = getFilePath(path)
-
+  await ensureDir(getDirPath(file))
   if (file.endsWith('.json')) {
     await writeJSON(file, definition)
   } else if (file.endsWith('.js')) {

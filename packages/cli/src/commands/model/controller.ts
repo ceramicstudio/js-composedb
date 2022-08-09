@@ -1,5 +1,11 @@
 import { Model } from '@ceramicnetwork/stream-model'
-import { Command, type QueryCommandFlags, STREAM_ID_ARG, SYNC_OPTION_FLAG } from '../../command.js'
+import {
+  Command,
+  parseSyncFlag,
+  type QueryCommandFlags,
+  STREAM_ID_ARG,
+  SYNC_OPTION_FLAG,
+} from '../../command.js'
 
 export default class ModelController extends Command<QueryCommandFlags, { streamId: string }> {
   static description = 'load a model stream with a given stream id and display its controller'
@@ -14,7 +20,9 @@ export default class ModelController extends Command<QueryCommandFlags, { stream
   async run(): Promise<void> {
     this.spinner.start('Loading the model...')
     try {
-      const model = await Model.load(this.ceramic, this.args.streamId)
+      const model = await Model.load(this.ceramic, this.args.streamId, {
+        sync: parseSyncFlag(this.flags.sync),
+      })
       this.spinner.succeed(`Loading the model... Done!`)
       // Logging the controller to stdout, so that it can be piped using standard I/O or redirected to a file
       this.log(model.metadata.controller.toString())
