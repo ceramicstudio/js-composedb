@@ -50,9 +50,10 @@ export default async function globalSetup() {
   // Write the config file so that its path can be passed to deamon below
   await fs.writeJson(CONFIG_PATH, TEST_DAEMON_CONFIG)
 
+  //FIXME: Don't hardcode the @ceramicnetwork/cli version. Remove the hard-coded version once we update js-composedb to work with the latest version
   await setup({
     command:
-      `IPFS_PATH=\'${GOIPFS_DIR_PATH}\' CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=\'true\' rm -rf ~/.goipfs && pnpm dlx @ceramicnetwork/cli daemon --config ${CONFIG_PATH}`,
+      `IPFS_PATH=\'${GOIPFS_DIR_PATH}\' CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=\'true\' && pnpm dlx @ceramicnetwork/cli@2.4.0 daemon --config ${CONFIG_PATH}`,
     debug: true,
     launchTimeout: 240000,
     port: 7007,
