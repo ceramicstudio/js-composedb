@@ -426,10 +426,17 @@ type NoteEdge {
 
 type Note implements Node {
   id: ID!
+  status: NoteStatus
   title: String!
   text: String!
   author: CeramicAccount!
   version: CeramicCommitID!
+}
+
+enum NoteStatus {
+  DEFAULT
+  IMPORTANT
+  ARCHIVE
 }
 
 \\"\\"\\"A Ceramic Commit ID\\"\\"\\"
@@ -457,6 +464,7 @@ input CreateNoteInput {
 }
 
 input NoteInput {
+  status: NoteStatus
   title: String!
   text: String!
 }
@@ -480,6 +488,7 @@ input UpdateNoteInput {
 }
 
 input PartialNoteInput {
+  status: NoteStatus
   title: String
   text: String
 }

@@ -106,7 +106,7 @@ export abstract class Command<
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { args, flags } = await this.parse(this.constructor)
     this.args = args as Args
-    this.flags = flags as Flags
+    this.flags = flags as unknown as Flags
     this.spinner = ora()
     this.stdin = await readPipe()
     // Authenticate the Ceramic instance whenever a key is provided

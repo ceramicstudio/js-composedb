@@ -33,13 +33,13 @@
     "build:types": "tsc --emitDeclarationOnly",
     "build": "pnpm build:clean && pnpm build:types && pnpm build:js",
     "lint": "eslint src test --fix",
-    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test": "CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=true node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
     "test:ci": "pnpm run test --ci --coverage",
     "prepare": "pnpm build",
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/stream-model": "^0.3.0",
+    "@ceramicnetwork/stream-model": "^0.4.0",
     "@composedb/graphql-scalars": "workspace:^0.1.0",
     "@graphql-tools/schema": "^8.5.1",
     "@graphql-tools/utils": "^8.9.0",
@@ -52,13 +52,13 @@
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^2.3.0",
-    "@ceramicnetwork/streamid": "^2.2.0",
+    "@ceramicnetwork/common": "^2.4.0",
+    "@ceramicnetwork/streamid": "^2.3.0",
     "@composedb/test-schemas": "workspace:^0.1.0",
     "@composedb/types": "workspace:^0.1.0",
     "@types/jest": "^28.1.6",
     "@types/lodash-es": "^4.17.6",
-    "@types/node": "^18.6.3",
+    "@types/node": "^18.6.5",
     "@types/object-hash": "^2.2.1",
     "ajv": "^8.11.0",
     "dids": "^3.2.0",

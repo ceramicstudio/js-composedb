@@ -264,7 +264,7 @@ export class SchemaCompiler {
     let refs: Array<string> = []
 
     for (const [key, field] of Object.entries(objectDefinition.properties)) {
-      if (field.required) {
+      if (field.required && field.type !== 'view') {
         required.push(key)
       }
 

@@ -8,7 +8,13 @@ Object {
       "type": "connection",
     },
   },
-  "enums": Object {},
+  "enums": Object {
+    "NoteStatus": Array [
+      "DEFAULT",
+      "IMPORTANT",
+      "ARCHIVE",
+    ],
+  },
   "models": Object {
     "Note": "NoteID",
   },
@@ -17,6 +23,12 @@ Object {
       "author": Object {
         "type": "view",
         "viewType": "documentAccount",
+      },
+      "status": Object {
+        "refName": "NoteStatus",
+        "refType": "enum",
+        "required": false,
+        "type": "reference",
       },
       "text": Object {
         "required": true,

@@ -95,6 +95,7 @@ class SchemaBuilder {
   }
 
   build(): GraphQLSchema {
+    this._buildEnums()
     const definitions = this._createSharedDefinitions()
     this._buildObjects(definitions)
     this._buildConnections()
