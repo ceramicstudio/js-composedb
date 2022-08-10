@@ -23,7 +23,7 @@ const TEST_DAEMON_CONFIG = {
     'metrics-exporter-enabled': false,
     'metrics-port': 9090,
   },
-  network: { name: 'testnet-clay' },
+  network: { name: 'inmemory' },
   node: {},
   'state-store': {
     mode: 'fs',
