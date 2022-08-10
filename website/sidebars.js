@@ -71,6 +71,19 @@ const sidebars = {
     {
       type: 'category',
       collapsed: false,
+      label: 'CLI module',
+      items: [
+        { type: 'doc', id: 'api/modules/cli', label: 'Overview' },
+        { type: 'doc', id: 'api/commands/cli.did', label: 'did:* commands' },
+        { type: 'doc', id: 'api/commands/cli.composite', label: 'composite:* commands' },
+        { type: 'doc', id: 'api/commands/cli.model', label: 'model:* commands' },
+        { type: 'doc', id: 'api/commands/cli.document', label: 'document:* commands' },
+        { type: 'doc', id: 'api/commands/cli.graphql', label: 'graphql:* commands' },
+      ],
+    },
+    {
+      type: 'category',
+      collapsed: false,
       label: 'Client module',
       items: [
         { type: 'doc', id: 'api/modules/client', label: 'Overview' },
