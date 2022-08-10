@@ -1,5 +1,13 @@
 # Using Apollo
 
+:::tip What is Apollo?
+
+[Apollo](https://www.apollographql.com/docs/react/api/core/ApolloClient) is a popular GraphQL client for React and other platforms.
+
+It is **not necessary to use it** to [execute queries](queries.md) and [mutations](mutations.mdx) on ComposeDB, but it can help simplify the developer experience for common use-cases.
+
+:::
+
 The ComposeDB client can be used with the [Apollo client](https://www.apollographql.com/docs/react/api/core/ApolloClient) by creating a custom [Apollo link](https://www.apollographql.com/docs/react/api/link/introduction), as shown in the example below:
 
 ```js

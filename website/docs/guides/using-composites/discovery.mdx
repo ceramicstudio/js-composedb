@@ -3,21 +3,25 @@ import TabItem from '@theme/TabItem'
 
 # Composites discovery
 
-ComposeDB does not yet provide a way to discover Composites directly, however it is possible to create Composites from known Models.
+ComposeDB does not yet provide a way to discover composites directly, however it is possible to create composites from known models.
 
 ## Models discovery
 
-The ComposeDB CLI can be used to list the Models known by a given node of the network.
+The ComposeDB CLI can be used to list the models known by a given node of the network.
 
-TODO: public 3Box Labs node to use for discovery
+:::danger TODO
+
+Public 3Box Labs node to use for discovery
+
+:::
 
 ```sh
 composedb model:list --ceramic-url=https://gateway-clay.ceramic.network --table
 ```
 
-## Creating a Composite from known Models
+## Creating a composite from known models
 
-When Models are available on a Ceramic network, it is possible to load them into a Composite so they can be easily reused.
+When models are available on a Ceramic network, it is possible to load them into a composite so they can be easily reused.
 
 <Tabs
   defaultValue="api"
