@@ -4,5 +4,126 @@ title: "CLI: composite:* commands"
 custom_edit_url: null
 ---
 
-[cli](../modules/cli.md).composite
+The group of [CLI](../modules/cli.md) `composite:*` commands enables the creation and interactions with Composites
+
+## Command List
+
+- [`composedb composite:create INPUT`](#composedb-compositecreate)
+- [`composedb composite:from-model STREAMIDS`](#composedb-compositefrom-model)
+- [`composedb composite:extract-model PATH MODELS`](#composedb-compositeextract-model)
+- [`composedb composite:merge PATHS`](#composedb-compositemerge)
+- [`composedb composite:models PATH`](#composedb-compositemodels)
+- [`composedb composite:deploy PATH`](#composedb-compositedeploy)
+- [`composedb composite:compile PATH OUTPUTPATHS`](#composedb-compositecompile)
+
+## Usage
+
+### `composedb composite:create`
+
+create an encoded composite definition from GraphQL schema
+
+```
+USAGE
+  $ composedb composite:create INPUT
+
+ARGUMENTS
+  INPUT                    a path to file containing valid ceramic composite definition in GraphQL Schema Definition Language
+
+OPTIONS
+  -c, --ceramic-url        Ceramic API URL
+  -k, --did-private-key    DID Private Key
+  -o, --output             a path to file where the resulting encoded composite definition should be saved
+```
+
+### `composedb composite:from-model`
+
+create an encoded composite definition from a list of model stream ids
+
+```
+USAGE
+  $ composedb composite:from-model PATH MODELS
+
+ARGUMENTS
+  PATH                     a path to an encoded composite definition file
+  MODELS                   a list of models (identified by names of stream IDs) to extract from the given composite
+
+OPTIONS
+  -k, --did-private-key    DID Private Key
+  -o, --output             a path to file where the resulting encoded composite definition should be saved
+```
+
+### `composedb composite:extract-model`
+
+create an encoded composite definition from another one by extracting given models
+
+```
+USAGE
+  $ composedb composite:extract-model PATH MODELS
+
+ARGUMENTS
+  PATH                     a path to encoded representation of a composite
+  MODELS                   one or more models to use when extracting a new composite, identified by name or stream ID
+
+OPTIONS
+  -k, --did-private-key    DID Private Key
+  -o, --output             a path to file where the resulting encoded composite definition should be saved
+```
+
+### `composedb composite:merge`
+
+create an encoded composite definition by merging other composites
+
+```
+USAGE
+  $ composedb composite:merge PATHS
+
+ARGUMENTS
+  PATHS                    a list of paths to files containing encoded composites, separated by spaces
+
+OPTIONS
+  -k, --did-private-key    DID Private Key
+  -e, --common-embeds      'all','none' or a list of comma-separated embeds to extract from input composites into the output composite
+  -o, --output             a path to file where the resulting encoded composite definition should be saved
+```
+
+### `composedb composite:models`
+
+display the list of models included in a composite
+
+```
+USAGE
+  $ composedb composite:models PATH
+
+ARGUMENTS
+  PATH                     a path to a file containing a composite's encoded definition
+
+OPTIONS
+  --id-only                display only the stream IDs of models included in the composite (exclusive to --table)
+  --table                  display the models in a table (excusive to --id-only)
+```
+
+### `composedb composite:deploy`
+
+deploy models included in the composite on connected ceramic node
+
+```
+USAGE
+  $ composedb composite:deploy PATH
+
+ARGUMENTS
+  PATH                     a path to a file containing a composite's encoded definition
+```
+
+### `composedb composite:compile`
+
+creates a runtime representation of the composite and saves it in given path(s)
+
+```
+USAGE
+  $ composedb composite:compile PATH OUTPUTPATHS
+
+ARGUMENTS
+  PATH                     a path to a file containing a composite's encoded definition
+  OUTPUTPATHS              one or more paths to save runtime representation in. Supported extensions: .json, .js and .ts
+```
 
