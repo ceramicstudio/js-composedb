@@ -1,7 +1,7 @@
 import { execa } from 'execa'
-// import { Model } from '@ceramicnetwork/stream-model'
+import { Model } from '@ceramicnetwork/stream-model'
 import { CeramicClient } from '@ceramicnetwork/http-client'
-// import undeployedComposite from './mocks/encoded.composite.undeployed.json'
+import undeployedComposite from './mocks/encoded.composite.undeployed.json'
 import encodedProfilesComposite from './mocks/encoded.composite.profiles.json'
 import { EncodedCompositeDefinition } from '@composedb/types'
 import { Composite } from '@composedb/devtools'
@@ -28,7 +28,7 @@ describe('composites', () => {
     }, 60000)
 
     test('composite creation fails without the did-key param', async () => {
-      const create = await execa('bin/run.js', ['composite:create', 'test/mocks/composite.schema'])
+      const create = await execa('bin/run.js', ['composite:create', 'test/mocks/composite.profile.post.schema'])
 
       expect(create.stderr.toString().includes('No controller specified')).toBe(true)
     }, 60000)
@@ -36,7 +36,7 @@ describe('composites', () => {
     test('composite creation succeeds', async () => {
       const create = await execa('bin/run.js', [
         'composite:create',
-        'test/mocks/composite.schema',
+        'test/mocks/composite.profile.post.schema',
         `--did-private-key=${seed}`,
       ])
       expect(create.stdout.toString().includes('"version":"1.0"')).toBe(true)
@@ -46,28 +46,28 @@ describe('composites', () => {
   })
 
   describe('composite:deploy', () => {
-    // const checkIfModelExist = async (
-    //   ceramic: CeramicClient,
-    //   modelStreamID: string
-    // ): Promise<boolean> => {
-    //   // There's no API to check whether a model exists. What happens when a node is queried about
-    //   // a model that doesn't exist is that you just get an IPFS timout
-    //   // So in this function we basically ask the node if the model exists, wait for 20s for a response and if
-    //   // we don't get it, we assume that it doesn't exist
-    //   let wasModelLoaded = false
-    //   await Promise.race([
-    //     new Promise((resolve) =>
-    //       setTimeout(() => {
-    //         resolve(false)
-    //       }, 20000)
-    //     ),
-    //     Model.load(ceramic, modelStreamID).then((model) => {
-    //       wasModelLoaded = true
-    //       return model
-    //     }),
-    //   ])
-    //   return wasModelLoaded
-    // }
+    const checkIfModelExist = async (
+      ceramic: CeramicClient,
+      modelStreamID: string
+    ): Promise<boolean> => {
+      // There's no API to check whether a model exists. What happens when a node is queried about
+      // a model that doesn't exist is that you just get an IPFS timout
+      // So in this function we basically ask the node if the model exists, wait for 20s for a response and if
+      // we don't get it, we assume that it doesn't exist
+      let wasModelLoaded = false
+      await Promise.race([
+        new Promise((resolve) =>
+          setTimeout(() => {
+            resolve(false)
+          }, 20000)
+        ),
+        Model.load(ceramic, modelStreamID).then((model) => {
+          wasModelLoaded = true
+          return model
+        }),
+      ])
+      return wasModelLoaded
+    }
 
     test('composite deployment fails without composite path param', async () => {
       const deploy = await execa('bin/run.js', ['composite:deploy'])
@@ -80,26 +80,24 @@ describe('composites', () => {
       ).toBe(true)
     }, 60000)
 
-    // Can't make this test work for now, as the model is found on the node even before the composite is deployed.
-    // test('composite deployment succeeds', async () => {
-    //   const nonExistentModelStreamID = Object.keys(
-    //     (undeployedComposite as EncodedCompositeDefinition).models
-    //   )[0]
-    //   const ceramic = new CeramicClient()
-    //   const doesModelExist = await checkIfModelExist(ceramic, nonExistentModelStreamID)
-    //   expect(doesModelExist).toBeFalsy()
-    //   console.log('DEPLOYING THE MODEL')
-    //   const deploy = await execa('bin/run.js', [
-    //     'composite:deploy',
-    //     'test/mocks/encoded.composite.undeployed.json',
-    //   ])
-    //   expect(deploy.stderr.toString().includes(`Deploying the composite... Done!`)).toBe(true)
-    //
-    //   expect(deploy.stdout.toString().includes(nonExistentModelStreamID)).toBe(true)
-    //
-    //   const doesModelExistNow = await checkIfModelExist(ceramic, nonExistentModelStreamID)
-    //   expect(doesModelExistNow).toBeTruthy()
-    // }, 60000)
+    test('composite deployment succeeds', async () => {
+      const nonExistentModelStreamID = Object.keys(
+        (undeployedComposite as EncodedCompositeDefinition).models
+      )[0]
+      const ceramic = new CeramicClient()
+      const doesModelExist = await checkIfModelExist(ceramic, nonExistentModelStreamID)
+      expect(doesModelExist).toBeFalsy()
+      const deploy = await execa('bin/run.js', [
+        'composite:deploy',
+        'test/mocks/encoded.composite.undeployed.json',
+      ])
+      expect(deploy.stderr.toString().includes(`Deploying the composite... Done!`)).toBe(true)
+
+      expect(deploy.stdout.toString().includes(nonExistentModelStreamID)).toBe(true)
+
+      const doesModelExistNow = await checkIfModelExist(ceramic, nonExistentModelStreamID)
+      expect(doesModelExistNow).toBeTruthy()
+    }, 60000)
   })
 
   describe('composite:from-model', () => {
@@ -292,7 +290,7 @@ describe('composites', () => {
     }, 60000)
 
     test('composite compilation succeeds', async () => {
-      const dirpath = TEST_OUTPUT_DIR_PATH.path as string
+      const dirpath = TEST_OUTPUT_DIR_PATH.pathname
       const filename = 'runtime.composite.profiles'
       const compileWithJustCompositePath = await execa('bin/run.js', [
         'composite:compile',
