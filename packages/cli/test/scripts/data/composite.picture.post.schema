@@ -1,0 +1,7 @@
+type Picture @model(accountRelation: LIST, description: "A Picture model") {
+  url: String! @length(min: 0, max: 140)
+}
+
+type Post @model(accountRelation: LIST, description: "A Post model") {
+  text: String! @length(max: 5000)
+}
