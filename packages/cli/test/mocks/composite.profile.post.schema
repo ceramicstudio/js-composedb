@@ -1,7 +1,7 @@
-type Profile @model(accountRelation: SINGLE, description:"Profile model") { 
-  name: String @length(max: 150)
+type Profile @createModel(accountRelation: SINGLE, description:"Profile model") { 
+  name: String @string(maxLength: 150)
 }
 
-type Post @model(accountRelation: LIST, description:"Post model") {
-  text: String! @length(max: 5000)
+type Post @createModel(accountRelation: LIST, description:"Post model") {
+  text: String! @string(maxLength: 5000)
 }

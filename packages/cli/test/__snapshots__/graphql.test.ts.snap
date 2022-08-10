@@ -153,11 +153,11 @@ type CreatePicturePayload {
 }
 
 input CreatePictureInput {
-  content: RequiredPictureInput!
+  content: PictureInput!
   clientMutationId: String
 }
 
-input RequiredPictureInput {
+input PictureInput {
   url: String!
 }
 
@@ -174,12 +174,12 @@ type UpdatePicturePayload {
 
 input UpdatePictureInput {
   id: ID!
-  content: PictureInput!
+  content: PartialPictureInput!
   options: UpdateOptionsInput
   clientMutationId: String
 }
 
-input PictureInput {
+input PartialPictureInput {
   url: String
 }
 
@@ -203,11 +203,11 @@ type CreatePostPayload {
 }
 
 input CreatePostInput {
-  content: RequiredPostInput!
+  content: PostInput!
   clientMutationId: String
 }
 
-input RequiredPostInput {
+input PostInput {
   text: String!
 }
 
@@ -224,12 +224,12 @@ type UpdatePostPayload {
 
 input UpdatePostInput {
   id: ID!
-  content: PostInput!
+  content: PartialPostInput!
   options: UpdateOptionsInput
   clientMutationId: String
 }
 
-input PostInput {
+input PartialPostInput {
   text: String
 }"
 `;

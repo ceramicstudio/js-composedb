@@ -95,6 +95,7 @@
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
+    "@ceramicnetwork/cli": "^2.5.0",
     "@ceramicnetwork/common": "^2.4.0",
     "@ceramicnetwork/core": "^2.7.0",
     "@composedb/types": "workspace:^0.1.0",

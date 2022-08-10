@@ -9,8 +9,7 @@ import {
   GOIPFS_DIR_PATH,
   TEMP_DIR_PATH,
   TEST_OUTPUT_DIR_PATH,
-} from "./globalConsts.js"
-
+} from './globalConsts.js'
 
 // Create the custom config here to make sure that we start with a clear indexing db setup each time
 // TODO: Investigate why the indexing API throws errors when we run tests several times without cleaning the db
@@ -31,7 +30,7 @@ const TEST_DAEMON_CONFIG = {
   },
   indexing: {
     db: `sqlite://${INDEXING_DB_FILENAME.pathname}`,
-    "allow-queries-before-historical-sync": true,
+    'allow-queries-before-historical-sync': true,
     models: [Model.MODEL.toString()],
   },
 }
@@ -40,7 +39,7 @@ export default async function globalSetup() {
   await fs.rm(TEMP_DIR_PATH, { force: true, recursive: true })
 
   // Create all of the dirs required for testing
-  await  Promise.all([
+  await Promise.all([
     fs.ensureDir(TEST_OUTPUT_DIR_PATH),
     fs.ensureDir(CONFIG_DIR_PATH),
     fs.ensureDir(STATE_STORE_DIR_PATH),
@@ -51,8 +50,7 @@ export default async function globalSetup() {
   await fs.writeJson(CONFIG_PATH, TEST_DAEMON_CONFIG)
 
   await setup({
-    command:
-      `IPFS_PATH=\'${GOIPFS_DIR_PATH.pathname}\' CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=\'true\' pnpm dlx @ceramicnetwork/cli daemon --config ${CONFIG_PATH.pathname}`,
+    command: `IPFS_PATH=\'${GOIPFS_DIR_PATH.pathname}\' CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=\'true\' ./node_modules/.bin/ceramic daemon --config ${CONFIG_PATH.pathname}`,
     debug: true,
     launchTimeout: 240000,
     port: 7007,
