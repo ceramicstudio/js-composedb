@@ -56,11 +56,13 @@ export default class GraphQLServer extends Command<
         port: this.flags.port,
       })
       this.spinner.info(`GraphQL server is listening on ${handler.url}`)
-      process.on('SIGTERM', () => {
+      const handleProcessKillGracefully = () => {
         handler.stop(() => {
           this.spinner.succeed('Server stopped')
         })
-      })
+      }
+      process.on('SIGTERM', handleProcessKillGracefully)
+      process.on('SIGINT', handleProcessKillGracefully)
       // oclix/core has started to force kill all the commands after 10s, without an option to change this behaviour
       // Issue with more context: https://github.com/oclif/core/issues/464
       // Update in their docs making it clear (in response to the issue above): https://github.com/oclif/oclif.github.io/pull/166/files
