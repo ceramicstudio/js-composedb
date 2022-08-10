@@ -1,0 +1,6 @@
+type UndeployedModel @model(
+  accountRelation: LIST,
+  description: "A model that hasn't been deployed yet"
+) {
+  number: Int!
+}

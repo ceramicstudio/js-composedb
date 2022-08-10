@@ -45,7 +45,7 @@ interface Node {
 type CeramicAccount implements Node {
   id: ID!
   isViewer: Boolean!
-  pictureCollection(
+  pictureList(
     \\"\\"\\"Returns the items in the list that come after the specified cursor.\\"\\"\\"
     after: String
 
@@ -58,7 +58,7 @@ type CeramicAccount implements Node {
     \\"\\"\\"Returns the last n items from the list.\\"\\"\\"
     last: Int
   ): PictureConnection
-  postCollection(
+  postList(
     \\"\\"\\"Returns the items in the list that come after the specified cursor.\\"\\"\\"
     after: String
 
@@ -279,7 +279,7 @@ interface Node {
 type CeramicAccount implements Node {
   id: ID!
   isViewer: Boolean!
-  pictureCollection(
+  pictureList(
     \\"\\"\\"Returns the items in the list that come after the specified cursor.\\"\\"\\"
     after: String
 
@@ -292,7 +292,7 @@ type CeramicAccount implements Node {
     \\"\\"\\"Returns the last n items from the list.\\"\\"\\"
     last: Int
   ): PictureConnection
-  postCollection(
+  postList(
     \\"\\"\\"Returns the items in the list that come after the specified cursor.\\"\\"\\"
     after: String
 

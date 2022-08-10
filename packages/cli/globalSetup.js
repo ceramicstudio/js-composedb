@@ -23,7 +23,7 @@ const TEST_DAEMON_CONFIG = {
     'metrics-exporter-enabled': false,
     'metrics-port': 9090,
   },
-  network: { name: 'testnet-clay' },
+  network: { name: 'inmemory' },
   node: {},
   'state-store': {
     mode: 'fs',
@@ -52,7 +52,7 @@ export default async function globalSetup() {
 
   await setup({
     command:
-      `IPFS_PATH=\'${GOIPFS_DIR_PATH}\' CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=\'true\' rm -rf ~/.goipfs && pnpm dlx @ceramicnetwork/cli daemon --config ${CONFIG_PATH}`,
+      `IPFS_PATH=\'${GOIPFS_DIR_PATH.pathname}\' CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=\'true\' pnpm dlx @ceramicnetwork/cli daemon --config ${CONFIG_PATH.pathname}`,
     debug: true,
     launchTimeout: 240000,
     port: 7007,
