@@ -1,4 +1,4 @@
-type UndeployedModel @model(
+type UndeployedModel @createModel(
   accountRelation: LIST,
   description: "A model that hasn't been deployed yet"
 ) {

@@ -28,7 +28,10 @@ describe('composites', () => {
     }, 60000)
 
     test('composite creation fails without the did-key param', async () => {
-      const create = await execa('bin/run.js', ['composite:create', 'test/mocks/composite.profile.post.schema'])
+      const create = await execa('bin/run.js', [
+        'composite:create',
+        'test/mocks/composite.profile.post.schema',
+      ])
 
       expect(create.stderr.toString().includes('No controller specified')).toBe(true)
     }, 60000)

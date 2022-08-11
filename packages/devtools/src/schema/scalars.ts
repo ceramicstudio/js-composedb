@@ -1,4 +1,5 @@
 import { GraphQLScalarType } from 'graphql'
+import { isEqual } from 'lodash-es'
 
 import type { ScalarSchema } from '../types.js'
 
@@ -21,6 +22,7 @@ export const extraScalars: Record<string, ScalarSchema> = {
     pattern: "^did:[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+:[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+$",
     maxLength: 100,
   },
+  StreamID: { type: 'string', title: 'CeramicStreamID', maxLength: 100 },
   Time: { type: 'string', title: 'GraphQLTime', format: 'time', maxLength: 100 },
 }
 
@@ -42,4 +44,19 @@ export function getScalarSchema(scalar: GraphQLScalarType | string): ScalarSchem
     throw new Error(`Unsupported scalar name: ${name}`)
   }
   return { ...schema }
+}
+
+const scalarsByTitle = Object.values(scalars).reduce((acc, schema) => {
+  if (schema.title != null) {
+    acc[schema.title] = schema
+  }
+  return acc
+}, {} as Record<string, ScalarSchema>)
+
+export function isCommonScalar(schema: ScalarSchema): boolean {
+  if (schema.title == null) {
+    return false
+  }
+  const scalar = scalarsByTitle[schema.title]
+  return isEqual(scalar, schema)
 }

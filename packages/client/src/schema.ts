@@ -1,6 +1,6 @@
+import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { CeramicCommitID, getScalar } from '@composedb/graphql-scalars'
 import type {
-  ModelInstanceDocument,
   RuntimeCompositeDefinition,
   RuntimeList,
   RuntimeObjectFields,
@@ -10,6 +10,8 @@ import type {
 } from '@composedb/types'
 import {
   GraphQLBoolean,
+  GraphQLEnumType,
+  type GraphQLEnumValueConfigMap,
   type GraphQLFieldConfig,
   type GraphQLFieldConfigMap,
   type GraphQLInputFieldConfigMap,
@@ -19,6 +21,7 @@ import {
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
+  type GraphQLOutputType,
   GraphQLSchema,
   assertValidSchema,
 } from 'graphql'
@@ -33,6 +36,8 @@ import {
 
 import type { Context } from './context.js'
 import type { UpdateDocOptions } from './loader.js'
+
+type EmbeddedObject = { __type: string; [key: string]: unknown }
 
 type GraphQLNodeDefinitions = {
   nodeInterface: GraphQLInterfaceType
@@ -49,6 +54,7 @@ type BuildObjectParams = {
   fields: RuntimeObjectFields
   definitions: SharedDefinitions
 }
+type BuildDocumentObjectParams = BuildObjectParams & { modelID: string }
 
 const UpdateOptionsInput = new GraphQLInputObjectType({
   name: 'UpdateOptionsInput',
@@ -79,7 +85,7 @@ class SchemaBuilder {
   // Schema options
   #isReadonly: boolean
   // Internal records
-  #types: Record<string, GraphQLObjectType> = {}
+  #types: Record<string, GraphQLEnumType | GraphQLObjectType> = {}
   #inputObjects: Record<string, GraphQLInputObjectType> = {}
   #mutations: Record<string, GraphQLFieldConfig<any, Context>> = {}
 
@@ -89,6 +95,7 @@ class SchemaBuilder {
   }
 
   build(): GraphQLSchema {
+    this._buildEnums()
     const definitions = this._createSharedDefinitions()
     this._buildObjects(definitions)
     this._buildConnections()
@@ -173,40 +180,70 @@ class SchemaBuilder {
     return { ...nodeDefs, accountObject, queryFields }
   }
 
+  _buildEnums() {
+    for (const [name, values] of Object.entries(this.#def.enums)) {
+      this.#types[name] = new GraphQLEnumType({
+        name,
+        values: values.reduce((acc, value) => {
+          acc[value] = { value }
+          return acc
+        }, {} as GraphQLEnumValueConfigMap),
+      })
+    }
+  }
+
   _buildObjects(definitions: SharedDefinitions) {
     for (const [name, fields] of Object.entries(this.#def.objects)) {
       this._buildObjectType({ definitions, name, fields })
     }
   }
 
-  _buildObjectType({ definitions, name, fields }: BuildObjectParams) {
-    const modelID = this.#def.models[name]
+  _buildObjectType(params: BuildObjectParams) {
+    const modelID = this.#def.models[params.name]
+    return modelID
+      ? this._buildDocumentObjectType({ modelID, ...params })
+      : this._buildEmbeddedObjectType(params)
+  }
 
+  _buildDocumentObjectType({ modelID, definitions, name, fields }: BuildDocumentObjectParams) {
     this.#types[name] = new GraphQLObjectType<ModelInstanceDocument>({
       name,
-      interfaces: modelID ? [definitions.nodeInterface] : [],
+      interfaces: [definitions.nodeInterface],
+      isTypeOf: (value: ModelInstanceDocument) => {
+        return value instanceof ModelInstanceDocument
+          ? value.metadata.model.toString() === modelID
+          : false
+      },
       fields: () => {
-        const config: GraphQLFieldConfigMap<ModelInstanceDocument, Context> = {}
-        if (modelID != null) {
-          config.id = {
+        const config: GraphQLFieldConfigMap<ModelInstanceDocument, Context> = {
+          id: {
             // Use GraphQLID here for Relay compliance
             type: new GraphQLNonNull(GraphQLID),
             resolve: (doc) => doc.id.toString(),
-          }
+          },
         }
         for (const [key, field] of Object.entries(fields)) {
           switch (field.type) {
+            case 'meta':
+              // Don't show meta fields in schema
+              continue
             case 'reference':
-              config[key] = this._buildObjectReferenceField(key, field)
+              config[key] = this._buildDocumentObjectReferenceField(key, field)
               break
             case 'list':
-              config[key] = this._buildObjectListField(definitions, key, field)
+              config[key] = {
+                type: this._buildObjectListFieldType(definitions, field),
+                resolve: (doc) => doc.content?.[key] as unknown,
+              }
               break
             case 'view':
-              config[key] = this._buildObjectViewField(definitions, field)
+              config[key] = this._buildDocumentObjectViewField(definitions, field)
               break
             default:
-              config[key] = this._buildObjectScalarField(definitions, key, field)
+              config[key] = {
+                type: this._buildScalarFieldType(definitions, field),
+                resolve: (obj) => obj.content?.[key] as unknown,
+              }
           }
         }
         return config
@@ -215,9 +252,44 @@ class SchemaBuilder {
 
     if (!this.#isReadonly) {
       this._buildInputObjectType(name, fields)
-      if (modelID != null) {
-        this._buildNodeMutations(definitions.queryFields, name, modelID)
-      }
+      this._buildNodeMutations(definitions.queryFields, name, modelID)
+    }
+  }
+
+  _buildEmbeddedObjectType({ definitions, name, fields }: BuildObjectParams) {
+    this.#types[name] = new GraphQLObjectType<EmbeddedObject>({
+      name,
+      fields: () => {
+        const config: GraphQLFieldConfigMap<EmbeddedObject, Context> = {}
+        for (const [key, field] of Object.entries(fields)) {
+          switch (field.type) {
+            case 'meta':
+              // Don't show meta fields in schema
+              continue
+            case 'reference':
+              config[key] = this._buildEmbeddedObjectReferenceField(key, field)
+              break
+            case 'list':
+              config[key] = {
+                type: this._buildObjectListFieldType(definitions, field),
+                resolve: (obj) => obj[key],
+              }
+              break
+            case 'view':
+              throw new Error(`Unsupported view field ${key} on embedded object ${name}`)
+            default:
+              config[key] = {
+                type: this._buildScalarFieldType(definitions, field),
+                resolve: (obj) => obj[key],
+              }
+          }
+        }
+        return config
+      },
+    })
+
+    if (!this.#isReadonly) {
+      this._buildInputObjectType(name, fields)
     }
   }
 
@@ -233,7 +305,7 @@ class SchemaBuilder {
     }
   }
 
-  _buildObjectReferenceField(
+  _buildDocumentObjectReferenceField(
     key: string,
     field: RuntimeReference
   ): GraphQLFieldConfig<ModelInstanceDocument, Context> {
@@ -261,19 +333,38 @@ class SchemaBuilder {
             return await ctx.loadDoc(doc.content[key] as string)
           },
         }
+      case 'enum':
       case 'object':
         return { type, resolve: (doc) => doc.content[key] as unknown }
       default:
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        throw new Error(`Unsupported reference type: ${field.refType}`)
+        throw new Error(`Unsupported reference type on document object: ${field.refType}`)
     }
   }
 
-  _buildObjectListField(
-    definitions: SharedDefinitions,
+  _buildEmbeddedObjectReferenceField(
     key: string,
+    field: RuntimeReference
+  ): GraphQLFieldConfig<EmbeddedObject, Context> {
+    const ref = this.#types[field.refName]
+    if (ref == null) {
+      throw new Error(`Missing type: ${field.refName}`)
+    }
+    const type = field.required ? new GraphQLNonNull(ref) : ref
+
+    switch (field.refType) {
+      case 'enum':
+      case 'object':
+        return { type, resolve: (obj) => obj[key] }
+      default:
+        throw new Error(`Unsupported reference type on embedded object: ${field.refType}`)
+    }
+  }
+
+  _buildObjectListFieldType(
+    definitions: SharedDefinitions,
     field: RuntimeList
-  ): GraphQLFieldConfig<ModelInstanceDocument, Context> {
+  ): GraphQLList<GraphQLOutputType> | GraphQLNonNull<GraphQLList<GraphQLOutputType>> {
     let itemType
     if (field.item.type === 'reference') {
       itemType = this.#types[field.item.refName]
@@ -289,15 +380,12 @@ class SchemaBuilder {
     if (field.item.required) {
       itemType = new GraphQLNonNull(itemType)
     }
-    const type = new GraphQLList(itemType)
 
-    return {
-      type: field.required ? new GraphQLNonNull(type) : type,
-      resolve: (doc): unknown => doc.content?.[key],
-    }
+    const type = new GraphQLList(itemType)
+    return field.required ? new GraphQLNonNull(type) : type
   }
 
-  _buildObjectViewField(
+  _buildDocumentObjectViewField(
     definitions: SharedDefinitions,
     field: RuntimeViewField
   ): GraphQLFieldConfig<ModelInstanceDocument, Context> {
@@ -318,34 +406,33 @@ class SchemaBuilder {
     throw new Error(`Unsupported view type: ${field.viewType}`)
   }
 
-  _buildObjectScalarField(
-    definitions: SharedDefinitions,
-    key: string,
-    field: RuntimeScalar
-  ): GraphQLFieldConfig<ModelInstanceDocument, Context> {
+  _buildScalarFieldType(definitions: SharedDefinitions, field: RuntimeScalar): GraphQLOutputType {
     const type = field.type === 'did' ? definitions.accountObject : getScalar(field.type)
-    return {
-      type: field.required ? new GraphQLNonNull(type) : type,
-      resolve: (doc): unknown => doc.content?.[key],
-    }
+    return field.required ? new GraphQLNonNull(type) : type
   }
 
   _buildInputObjectType(name: string, fields: RuntimeObjectFields) {
+    const isDocument = this.#def.models[name] != null
+
     const buildFields = (required: boolean): GraphQLInputFieldConfigMap => {
       const config: GraphQLInputFieldConfigMap = {}
-      const inputPrefix = required ? 'Required' : ''
+      const inputPrefix = isDocument || required ? '' : 'Partial'
 
       for (const [key, field] of Object.entries(fields)) {
         let type
         switch (field.type) {
+          case 'meta':
           case 'view':
-            // Views can't be set in inputs
+            // Meta and views can't be set in inputs
             continue
           case 'reference':
             switch (field.refType) {
               case 'connection':
                 // Ignore connections from inputs, should be derived
                 continue
+              case 'enum':
+                type = this.#types[field.refName] as GraphQLEnumType
+                break
               case 'node':
                 type = GraphQLID
                 break
@@ -354,6 +441,7 @@ class SchemaBuilder {
                 if (type == null) {
                   throw new Error(`Missing referenced input type: ${inputPrefix + field.refName}`)
                 }
+                break
               }
             }
             break
@@ -375,20 +463,24 @@ class SchemaBuilder {
           default:
             type = getScalar(field.type)
         }
-        config[key] = { type: required && field.required ? new GraphQLNonNull(type) : type }
+        if (type != null) {
+          config[key] = { type: required && field.required ? new GraphQLNonNull(type) : type }
+        }
       }
 
       return config
     }
 
-    this.#inputObjects[`Required${name}`] = new GraphQLInputObjectType({
-      name: `Required${name}Input`,
-      fields: () => buildFields(true),
-    })
     this.#inputObjects[name] = new GraphQLInputObjectType({
       name: `${name}Input`,
-      fields: () => buildFields(false),
+      fields: () => buildFields(true),
     })
+    if (isDocument) {
+      this.#inputObjects[`Partial${name}`] = new GraphQLInputObjectType({
+        name: `Partial${name}Input`,
+        fields: () => buildFields(false),
+      })
+    }
   }
 
   _buildNodeMutations(
@@ -399,7 +491,7 @@ class SchemaBuilder {
     this.#mutations[`create${name}`] = mutationWithClientMutationId({
       name: `Create${name}`,
       inputFields: () => ({
-        content: { type: new GraphQLNonNull(this.#inputObjects[`Required${name}`]) },
+        content: { type: new GraphQLNonNull(this.#inputObjects[name]) },
       }),
       outputFields: () => ({
         ...queryFields,
@@ -417,7 +509,7 @@ class SchemaBuilder {
       name: `Update${name}`,
       inputFields: () => ({
         id: { type: new GraphQLNonNull(GraphQLID) },
-        content: { type: new GraphQLNonNull(this.#inputObjects[name]) },
+        content: { type: new GraphQLNonNull(this.#inputObjects[`Partial${name}`]) },
         options: { type: UpdateOptionsInput },
       }),
       outputFields: () => ({

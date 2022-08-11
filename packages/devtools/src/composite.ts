@@ -8,13 +8,13 @@ import type {
   RuntimeCompositeDefinition,
   StreamCommits,
 } from '@composedb/types'
-import type { GraphQLSchema } from 'graphql'
 import { cloneDeep, merge } from 'lodash-es'
 import createObjectHash from 'object-hash'
 
 import { decodeSignedMap, encodeSignedMap } from './formats/json.js'
 import { createRuntimeDefinition } from './formats/runtime.js'
-import { parseCompositeSchema } from './schema.js'
+import { createAbstractCompositeDefinition } from './schema/compiler.js'
+import type { AbstractModelDefinition } from './schema/types.js'
 
 const MODEL_GENESIS_OPTS = {
   anchor: true,
@@ -88,6 +88,16 @@ export function setDefinitionViews(
   const existing = replace ? {} : definition.views
   definition.views = merge(existing, views)
   return definition
+}
+
+/** @internal */
+export async function fromAbstractModel(
+  ceramic: CeramicApi,
+  model: AbstractModelDefinition
+): Promise<Model> {
+  return model.action === 'create'
+    ? await Model.create(ceramic, model.definition)
+    : await Model.load(ceramic, model.id)
 }
 
 async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
@@ -175,9 +185,9 @@ export type CreateParams = {
    */
   ceramic: CeramicApi
   /**
-   * Composite schema string or GraphQLSchema object.
+   * Composite schema string.
    */
-  schema: string | GraphQLSchema
+  schema: string
 }
 
 /**
@@ -234,21 +244,22 @@ export class Composite {
    * wrapped in a Composite instance.
    */
   static async create(params: CreateParams): Promise<Composite> {
-    const { models, commonEmbeds } = parseCompositeSchema(params.schema)
-
+    const { commonEmbeds, models } = createAbstractCompositeDefinition(params.schema)
     const definition: InternalCompositeDefinition = {
       version: Composite.VERSION,
       models: {},
       commonEmbeds,
     }
     const commits: Record<string, any> = {}
+
+    // TODO: once interfaces are supported, they need to be loaded or created first
     await Promise.all(
       // For each model definition...
-      models.map(async (modelDefinition) => {
-        // create the model stream,
-        const model = await Model.create(params.ceramic, modelDefinition)
+      Object.values(models).map(async (abstractModel) => {
+        // Create or load the model stream
+        const model = await fromAbstractModel(params.ceramic, abstractModel)
         const id = model.id.toString()
-        definition.models[id] = modelDefinition
+        definition.models[id] = model.content
 
         // load stream commits for the model stream
         const streamCommits = await params.ceramic.loadStreamCommits(id)
@@ -257,7 +268,6 @@ export class Composite {
           .filter(isSignedCommit)
       })
     )
-
     return new Composite({ commits, definition })
   }
 

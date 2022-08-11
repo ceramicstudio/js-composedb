@@ -1,232 +1,235 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`schema parseCompositeSchema creates an InternalCompositeDefinition for profiles from schema 1`] = `
+exports[`schema createAbstractCompositeDefinition creates an InternalCompositeDefinition for profiles from schema 1`] = `
 Object {
   "commonEmbeds": Array [
-    "ImageSources",
     "ImageMetadata",
+    "ImageSources",
   ],
-  "models": Array [
-    Object {
-      "accountRelation": "single",
-      "description": "A model to store common profile-related properties",
-      "name": "GenericProfile",
-      "schema": Object {
-        "$defs": Object {
-          "ImageMetadata": Object {
-            "additionalProperties": false,
-            "properties": Object {
-              "height": Object {
-                "minimum": 1,
-                "type": "integer",
+  "models": Object {
+    "GenericProfile": Object {
+      "action": "create",
+      "definition": Object {
+        "accountRelation": "single",
+        "description": "A model to store common profile-related properties",
+        "name": "GenericProfile",
+        "schema": Object {
+          "$defs": Object {
+            "ImageMetadata": Object {
+              "additionalProperties": false,
+              "properties": Object {
+                "height": Object {
+                  "minimum": 1,
+                  "type": "integer",
+                },
+                "mimeType": Object {
+                  "maxLength": 50,
+                  "type": "string",
+                },
+                "size": Object {
+                  "minimum": 1,
+                  "type": "integer",
+                },
+                "src": Object {
+                  "maxLength": 150,
+                  "type": "string",
+                },
+                "width": Object {
+                  "minimum": 1,
+                  "type": "integer",
+                },
               },
-              "mimeType": Object {
-                "maxLength": 50,
-                "minLength": 0,
-                "type": "string",
-              },
-              "size": Object {
-                "minimum": 1,
-                "type": "integer",
-              },
-              "src": Object {
-                "maxLength": 150,
-                "minLength": 0,
-                "type": "string",
-              },
-              "width": Object {
-                "minimum": 1,
-                "type": "integer",
-              },
+              "required": Array [
+                "src",
+                "mimeType",
+                "width",
+                "height",
+              ],
+              "title": "ImageMetadata",
+              "type": "object",
             },
-            "required": Array [
-              "src",
-              "mimeType",
-              "width",
-              "height",
-            ],
-            "title": "ImageMetadata",
-            "type": "object",
-          },
-          "ImageSources": Object {
-            "additionalProperties": false,
-            "properties": Object {
-              "alternatives": Object {
-                "items": Object {
+            "ImageSources": Object {
+              "additionalProperties": false,
+              "properties": Object {
+                "alternatives": Object {
+                  "items": Object {
+                    "$ref": "#/$defs/ImageMetadata",
+                  },
+                  "maxItems": 20,
+                  "type": "array",
+                },
+                "original": Object {
                   "$ref": "#/$defs/ImageMetadata",
                 },
-                "maxItems": 20,
-                "type": "array",
               },
-              "original": Object {
-                "$ref": "#/$defs/ImageMetadata",
-              },
+              "required": Array [
+                "original",
+              ],
+              "title": "ImageSources",
+              "type": "object",
             },
-            "required": Array [
-              "original",
-            ],
-            "title": "ImageSources",
-            "type": "object",
           },
-        },
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "additionalProperties": false,
-        "properties": Object {
-          "image": Object {
-            "$ref": "#/$defs/ImageSources",
-          },
-          "name": Object {
-            "maxLength": 150,
-            "minLength": 0,
-            "type": "string",
-          },
-        },
-        "type": "object",
-      },
-      "views": Object {},
-    },
-    Object {
-      "accountRelation": "single",
-      "description": "A model to store properties that accounts would like to share on social media",
-      "name": "SocialProfile",
-      "schema": Object {
-        "$defs": Object {
-          "ImageMetadata": Object {
-            "additionalProperties": false,
-            "properties": Object {
-              "height": Object {
-                "minimum": 1,
-                "type": "integer",
-              },
-              "mimeType": Object {
-                "maxLength": 50,
-                "minLength": 0,
-                "type": "string",
-              },
-              "size": Object {
-                "minimum": 1,
-                "type": "integer",
-              },
-              "src": Object {
-                "maxLength": 150,
-                "minLength": 0,
-                "type": "string",
-              },
-              "width": Object {
-                "minimum": 1,
-                "type": "integer",
-              },
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "additionalProperties": false,
+          "properties": Object {
+            "image": Object {
+              "$ref": "#/$defs/ImageSources",
             },
-            "required": Array [
-              "src",
-              "mimeType",
-              "width",
-              "height",
-            ],
-            "title": "ImageMetadata",
-            "type": "object",
-          },
-          "ImageSources": Object {
-            "additionalProperties": false,
-            "properties": Object {
-              "alternatives": Object {
-                "items": Object {
-                  "$ref": "#/$defs/ImageMetadata",
-                },
-                "maxItems": 20,
-                "type": "array",
-              },
-              "original": Object {
-                "$ref": "#/$defs/ImageMetadata",
-              },
-            },
-            "required": Array [
-              "original",
-            ],
-            "title": "ImageSources",
-            "type": "object",
-          },
-        },
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "additionalProperties": false,
-        "properties": Object {
-          "background": Object {
-            "$ref": "#/$defs/ImageSources",
-          },
-          "description": Object {
-            "maxLength": 420,
-            "minLength": 0,
-            "type": "string",
-          },
-          "emoji": Object {
-            "maxLength": 2,
-            "minLength": 0,
-            "type": "string",
-          },
-          "url": Object {
-            "maxLength": 240,
-            "minLength": 0,
-            "type": "string",
-          },
-        },
-        "type": "object",
-      },
-      "views": Object {},
-    },
-    Object {
-      "accountRelation": "single",
-      "description": "A model to store accounts' personal data",
-      "name": "PersonProfile",
-      "schema": Object {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "additionalProperties": false,
-        "properties": Object {
-          "affiliations": Object {
-            "items": Object {
-              "maxLength": 140,
-              "minLength": 0,
+            "name": Object {
+              "maxLength": 150,
               "type": "string",
             },
-            "maxItems": 20,
-            "type": "array",
           },
-          "birthDate": Object {
-            "format": "date",
-            "maxLength": 100,
-            "title": "GraphQLDate",
-            "type": "string",
-          },
-          "gender": Object {
-            "maxLength": 42,
-            "minLength": 0,
-            "type": "string",
-          },
-          "homeLocation": Object {
-            "maxLength": 140,
-            "minLength": 0,
-            "type": "string",
-          },
-          "nationalities": Object {
-            "items": Object {
+          "type": "object",
+        },
+        "views": Object {},
+      },
+    },
+    "PersonProfile": Object {
+      "action": "create",
+      "definition": Object {
+        "accountRelation": "single",
+        "description": "A model to store accounts' personal data",
+        "name": "PersonProfile",
+        "schema": Object {
+          "$defs": Object {
+            "GraphQLCountryCode": Object {
               "maxLength": 2,
               "pattern": "^(AD|AE|AF|AG|AI|AL|AM|AO|AQ|AR|AS|AT|AU|AW|AX|AZ|BA|BB|BD|BE|BF|BG|BH|BI|BJ|BL|BM|BN|BO|BQ|BR|BS|BT|BV|BW|BY|BZ|CA|CC|CD|CF|CG|CH|CI|CK|CL|CM|CN|CO|CR|CU|CV|CW|CX|CY|CZ|DE|DJ|DK|DM|DO|DZ|EC|EE|EG|EH|ER|ES|ET|FI|FJ|FK|FM|FO|FR|GA|GB|GD|GE|GF|GG|GH|GI|GL|GM|GN|GP|GQ|GR|GS|GT|GU|GW|GY|HK|HM|HN|HR|HT|HU|ID|IE|IL|IM|IN|IO|IQ|IR|IS|IT|JE|JM|JO|JP|KE|KG|KH|KI|KM|KN|KP|KR|KW|KY|KZ|LA|LB|LC|LI|LK|LR|LS|LT|LU|LV|LY|MA|MC|MD|ME|MF|MG|MH|MK|ML|MM|MN|MO|MP|MQ|MR|MS|MT|MU|MV|MW|MX|MY|MZ|NA|NC|NE|NF|NG|NI|NL|NO|NP|NR|NU|NZ|OM|PA|PE|PF|PG|PH|PK|PL|PM|PN|PR|PS|PT|PW|PY|QA|RE|RO|RS|RU|RW|SA|SB|SC|SD|SE|SG|SH|SI|SJ|SK|SL|SM|SN|SO|SR|SS|ST|SV|SX|SY|SZ|TC|TD|TF|TG|TH|TJ|TK|TL|TM|TN|TO|TR|TT|TV|TW|TZ|UA|UG|UM|US|UY|UZ|VA|VC|VE|VG|VI|VN|VU|WF|WS|YE|YT|ZA|ZM|ZW)$",
               "title": "GraphQLCountryCode",
               "type": "string",
             },
-            "maxItems": 5,
-            "type": "array",
+            "GraphQLDate": Object {
+              "format": "date",
+              "maxLength": 100,
+              "title": "GraphQLDate",
+              "type": "string",
+            },
           },
-          "residenceCountry": Object {
-            "maxLength": 2,
-            "pattern": "^(AD|AE|AF|AG|AI|AL|AM|AO|AQ|AR|AS|AT|AU|AW|AX|AZ|BA|BB|BD|BE|BF|BG|BH|BI|BJ|BL|BM|BN|BO|BQ|BR|BS|BT|BV|BW|BY|BZ|CA|CC|CD|CF|CG|CH|CI|CK|CL|CM|CN|CO|CR|CU|CV|CW|CX|CY|CZ|DE|DJ|DK|DM|DO|DZ|EC|EE|EG|EH|ER|ES|ET|FI|FJ|FK|FM|FO|FR|GA|GB|GD|GE|GF|GG|GH|GI|GL|GM|GN|GP|GQ|GR|GS|GT|GU|GW|GY|HK|HM|HN|HR|HT|HU|ID|IE|IL|IM|IN|IO|IQ|IR|IS|IT|JE|JM|JO|JP|KE|KG|KH|KI|KM|KN|KP|KR|KW|KY|KZ|LA|LB|LC|LI|LK|LR|LS|LT|LU|LV|LY|MA|MC|MD|ME|MF|MG|MH|MK|ML|MM|MN|MO|MP|MQ|MR|MS|MT|MU|MV|MW|MX|MY|MZ|NA|NC|NE|NF|NG|NI|NL|NO|NP|NR|NU|NZ|OM|PA|PE|PF|PG|PH|PK|PL|PM|PN|PR|PS|PT|PW|PY|QA|RE|RO|RS|RU|RW|SA|SB|SC|SD|SE|SG|SH|SI|SJ|SK|SL|SM|SN|SO|SR|SS|ST|SV|SX|SY|SZ|TC|TD|TF|TG|TH|TJ|TK|TL|TM|TN|TO|TR|TT|TV|TW|TZ|UA|UG|UM|US|UY|UZ|VA|VC|VE|VG|VI|VN|VU|WF|WS|YE|YT|ZA|ZM|ZW)$",
-            "title": "GraphQLCountryCode",
-            "type": "string",
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "additionalProperties": false,
+          "properties": Object {
+            "affiliations": Object {
+              "items": Object {
+                "maxLength": 140,
+                "type": "string",
+              },
+              "maxItems": 20,
+              "type": "array",
+            },
+            "birthDate": Object {
+              "$ref": "#/$defs/GraphQLDate",
+            },
+            "gender": Object {
+              "maxLength": 42,
+              "type": "string",
+            },
+            "homeLocation": Object {
+              "maxLength": 140,
+              "type": "string",
+            },
+            "nationalities": Object {
+              "items": Object {
+                "$ref": "#/$defs/GraphQLCountryCode",
+              },
+              "maxItems": 5,
+              "type": "array",
+            },
+            "residenceCountry": Object {
+              "$ref": "#/$defs/GraphQLCountryCode",
+            },
           },
+          "type": "object",
         },
-        "type": "object",
+        "views": Object {},
       },
-      "views": Object {},
     },
-  ],
+    "SocialProfile": Object {
+      "action": "create",
+      "definition": Object {
+        "accountRelation": "single",
+        "description": "A model to store properties that accounts would like to share on social media",
+        "name": "SocialProfile",
+        "schema": Object {
+          "$defs": Object {
+            "ImageMetadata": Object {
+              "additionalProperties": false,
+              "properties": Object {
+                "height": Object {
+                  "minimum": 1,
+                  "type": "integer",
+                },
+                "mimeType": Object {
+                  "maxLength": 50,
+                  "type": "string",
+                },
+                "size": Object {
+                  "minimum": 1,
+                  "type": "integer",
+                },
+                "src": Object {
+                  "maxLength": 150,
+                  "type": "string",
+                },
+                "width": Object {
+                  "minimum": 1,
+                  "type": "integer",
+                },
+              },
+              "required": Array [
+                "src",
+                "mimeType",
+                "width",
+                "height",
+              ],
+              "title": "ImageMetadata",
+              "type": "object",
+            },
+            "ImageSources": Object {
+              "additionalProperties": false,
+              "properties": Object {
+                "alternatives": Object {
+                  "items": Object {
+                    "$ref": "#/$defs/ImageMetadata",
+                  },
+                  "maxItems": 20,
+                  "type": "array",
+                },
+                "original": Object {
+                  "$ref": "#/$defs/ImageMetadata",
+                },
+              },
+              "required": Array [
+                "original",
+              ],
+              "title": "ImageSources",
+              "type": "object",
+            },
+          },
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "additionalProperties": false,
+          "properties": Object {
+            "background": Object {
+              "$ref": "#/$defs/ImageSources",
+            },
+            "description": Object {
+              "maxLength": 420,
+              "type": "string",
+            },
+            "emoji": Object {
+              "maxLength": 2,
+              "type": "string",
+            },
+            "url": Object {
+              "maxLength": 240,
+              "type": "string",
+            },
+          },
+          "type": "object",
+        },
+        "views": Object {},
+      },
+    },
+  },
 }
 `;

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7deb63f743bb4e4cd63e74c4145ca4c8>>
+ * @generated SignedSource<<07e04f80a81a119aa150b8a745c078bc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,11 +10,13 @@
 
 import { ConcreteRequest, Mutation } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
+export type NoteStatus = "ARCHIVE" | "DEFAULT" | "IMPORTANT" | "%future added value";
 export type CreateNoteInput = {
   clientMutationId?: string | null;
-  content: RequiredNoteInput;
+  content: NoteInput;
 };
-export type RequiredNoteInput = {
+export type NoteInput = {
+  status?: NoteStatus | null;
   text: string;
   title: string;
 };

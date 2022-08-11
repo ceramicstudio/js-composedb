@@ -1,5 +1,11 @@
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
-import {Command, parseSyncFlag, type QueryCommandFlags, STREAM_ID_ARG, SYNC_OPTION_FLAG} from '../../command.js'
+import {
+  Command,
+  parseSyncFlag,
+  type QueryCommandFlags,
+  STREAM_ID_ARG,
+  SYNC_OPTION_FLAG,
+} from '../../command.js'
 import { Flags } from '@oclif/core'
 import { write } from '../../fs.js'
 

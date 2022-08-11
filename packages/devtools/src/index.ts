@@ -13,5 +13,7 @@
 export * from './composite.js'
 export * from './formats/json.js'
 export { createRuntimeDefinition, getName } from './formats/runtime.js'
-export { parseCompositeSchema } from './schema.js'
+export { createAbstractCompositeDefinition } from './schema/compiler.js'
+export * from './schema/types.js'
+export * from './types.js'
 export * from './utils.js'

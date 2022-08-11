@@ -18,6 +18,31 @@ npm install --dev @composedb/devtools
 
 ## Type Aliases
 
+### AbstractCompositeDefinition
+
+Ƭ **AbstractCompositeDefinition**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `commonEmbeds` | `string`[] |
+| `models` | `Record`<`string`, [`AbstractModelDefinition`](devtools.md#abstractmodeldefinition)\> |
+
+___
+
+### AbstractModelDefinition
+
+Ƭ **AbstractModelDefinition**: [`CreateModelDefinition`](devtools.md#createmodeldefinition) \| [`LoadModelDefinition`](devtools.md#loadmodeldefinition)
+
+___
+
+### AnySchema
+
+Ƭ **AnySchema**: [`ScalarSchema`](devtools.md#scalarschema) \| `JSONSchema.Array` \| `JSONSchema.Object`
+
+___
+
 ### CompositeInput
 
 Ƭ **CompositeInput**: [`Composite`](../classes/devtools.Composite.md) \| [`CompositeParams`](devtools.md#compositeparams)
@@ -57,6 +82,19 @@ Composite instance creation parameters.
 
 ___
 
+### CreateModelDefinition
+
+Ƭ **CreateModelDefinition**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `action` | ``"create"`` |
+| `definition` | `ModelDefinition` |
+
+___
+
 ### CreateParams
 
 Ƭ **CreateParams**: `Object`
@@ -68,7 +106,41 @@ Composite creation parameters from a schema.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `ceramic` | `CeramicApi` | Ceramic instance connected to the node the new Model streams must be created on. The Ceramic instance **must have an authenticated DID attached to it** in order to create Models, using the `did:key` method. |
-| `schema` | `string` \| `GraphQLSchema` | Composite schema string or GraphQLSchema object. |
+| `schema` | `string` | Composite schema string. |
+
+___
+
+### CreateParsedModelDefinition
+
+Ƭ **CreateParsedModelDefinition**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `accountRelation` | `ModelAccountRelation` |
+| `action` | ``"create"`` |
+| `description` | `string` |
+| `implements` | `string`[] |
+| `interface` | `boolean` |
+
+___
+
+### EnumFieldDefinition
+
+Ƭ **EnumFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & { `name`: `string` ; `type`: ``"enum"``  }
+
+___
+
+### FieldCommonDefinition
+
+Ƭ **FieldCommonDefinition**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `required` | `boolean` |
 
 ___
 
@@ -92,3 +164,127 @@ ___
 Ƭ **FromModelsParams**: [`CompositeOptions`](devtools.md#compositeoptions) & { `ceramic`: `CeramicApi` ; `models`: `string`[]  }
 
 Composite creation parameters from existing models.
+
+___
+
+### ItemDefinition
+
+Ƭ **ItemDefinition**: [`ReferenceFieldDefinition`](devtools.md#referencefielddefinition) \| [`ScalarFieldDefinition`](devtools.md#scalarfielddefinition)
+
+___
+
+### ListFieldDefinition
+
+Ƭ **ListFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & { `item`: [`ItemDefinition`](devtools.md#itemdefinition) ; `maxLength`: `number` ; `minLength?`: `number` ; `type`: ``"list"``  }
+
+___
+
+### LoadModelDefinition
+
+Ƭ **LoadModelDefinition**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `action` | ``"load"`` |
+| `id` | `string` |
+
+___
+
+### ObjectDefinition
+
+Ƭ **ObjectDefinition**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `implements` | `string`[] |
+| `properties` | [`ObjectFieldsDefinition`](devtools.md#objectfieldsdefinition) |
+| `references` | `string`[] |
+
+___
+
+### ObjectFieldDefinition
+
+Ƭ **ObjectFieldDefinition**: [`ItemDefinition`](devtools.md#itemdefinition) \| [`ListFieldDefinition`](devtools.md#listfielddefinition) \| [`ViewFieldDefinition`](devtools.md#viewfielddefinition)
+
+___
+
+### ObjectFieldsDefinition
+
+Ƭ **ObjectFieldsDefinition**: `Record`<`string`, [`ObjectFieldDefinition`](devtools.md#objectfielddefinition)\>
+
+___
+
+### ObjectReferenceFieldDefinition
+
+Ƭ **ObjectReferenceFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & { `name`: `string` ; `type`: ``"object"``  }
+
+___
+
+### ParsedModelDefinition
+
+Ƭ **ParsedModelDefinition**: [`CreateParsedModelDefinition`](devtools.md#createparsedmodeldefinition) \| [`LoadModelDefinition`](devtools.md#loadmodeldefinition)
+
+___
+
+### ReferenceFieldDefinition
+
+Ƭ **ReferenceFieldDefinition**: [`EnumFieldDefinition`](devtools.md#enumfielddefinition) \| [`ObjectReferenceFieldDefinition`](devtools.md#objectreferencefielddefinition)
+
+___
+
+### ReferenceFieldType
+
+Ƭ **ReferenceFieldType**: [`ReferenceFieldDefinition`](devtools.md#referencefielddefinition)[``"type"``]
+
+___
+
+### ScalarFieldDefinition
+
+Ƭ **ScalarFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & { `schema`: [`ScalarSchema`](devtools.md#scalarschema) ; `type`: ``"scalar"``  }
+
+___
+
+### ScalarSchema
+
+Ƭ **ScalarSchema**: `JSONSchema.Boolean` \| `JSONSchema.Integer` \| `JSONSchema.Number` \| `JSONSchema.String`
+
+___
+
+### SchemaDefinition
+
+Ƭ **SchemaDefinition**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `enums` | `Record`<`string`, `string`[]\> |
+| `interfaces` | `Record`<`string`, [`ObjectDefinition`](devtools.md#objectdefinition)\> |
+| `models` | `Record`<`string`, [`ParsedModelDefinition`](devtools.md#parsedmodeldefinition)\> |
+| `objects` | `Record`<`string`, [`ObjectDefinition`](devtools.md#objectdefinition)\> |
+
+___
+
+### ViewFieldDefinition
+
+Ƭ **ViewFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & `RuntimeViewField`
+
+## Functions
+
+### createAbstractCompositeDefinition
+
+▸ **createAbstractCompositeDefinition**(`schema`): [`AbstractCompositeDefinition`](devtools.md#abstractcompositedefinition)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `schema` | `string` |
+
+#### Returns
+
+[`AbstractCompositeDefinition`](devtools.md#abstractcompositedefinition)

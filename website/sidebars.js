@@ -25,23 +25,38 @@ const sidebars = {
       type: 'category',
       collapsed: false,
       label: 'Guides',
+      link: { type: 'generated-index' },
       items: [
         'guides/concepts-overview',
         'guides/data-composition',
         {
           type: 'category',
-          label: 'Using Composites',
+          label: 'Using composites',
+          link: {
+            type: 'generated-index',
+            description:
+              'Composites are the primary representation for data models used by ComposeDB. They allow developers to create, share, reuse and combine models together in a consistent way.',
+          },
           items: [
-            { type: 'doc', id: 'guides/using-composites/introduction', label: 'Introduction' },
             { type: 'doc', id: 'guides/using-composites/discovery', label: 'Discovery' },
             { type: 'doc', id: 'guides/using-composites/deployment', label: 'Deployment' },
             { type: 'doc', id: 'guides/using-composites/customization', label: 'Customization' },
           ],
         },
-        { type: 'doc', id: 'guides/creating-composites' },
+        {
+          type: 'category',
+          label: 'Creating composites',
+          link: { type: 'doc', id: 'guides/creating-composites/overview' },
+          items: [
+            { type: 'doc', id: 'guides/creating-composites/schema', label: 'Schema' },
+            { type: 'doc', id: 'guides/creating-composites/scalars', label: 'Scalars' },
+            { type: 'doc', id: 'guides/creating-composites/directives', label: 'Directives' },
+          ],
+        },
         {
           type: 'category',
           label: 'Interacting with data',
+          link: { type: 'generated-index' },
           items: [
             { type: 'doc', id: 'guides/interacting/queries' },
             { type: 'doc', id: 'guides/interacting/mutations' },

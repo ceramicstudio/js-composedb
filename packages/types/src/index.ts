@@ -76,7 +76,7 @@ export type CompositeDefinitionType<T> = {
    */
   views?: CompositeViewsDefinition
   /**
-   * Optional common embeds shared by models in the composite.
+   * Optional common embeds (enums and objects) shared by models in the composite.
    */
   commonEmbeds?: Array<string>
 }
@@ -120,6 +120,7 @@ export type CustomRuntimeScalarType =
   | 'datetime'
   | 'did'
   | 'id'
+  | 'streamid'
   | 'time'
 
 type RuntimeStringScalarType<Type extends CustomRuntimeScalarType> = RuntimeScalarCommon & {
@@ -141,9 +142,10 @@ export type RuntimeScalarType = RuntimeScalar['type']
 /** Runtime references types. */
 export type RuntimeReferenceType =
   | 'connection' // to many documents relation
+  | 'enum' // string enum
   | 'node' // to single document relation
   | 'object' // embedded object in document
-// | 'union'
+// | 'union' // embedded object union -- not supported yet
 
 /** Runtime reference representation. */
 export type RuntimeReference<T extends RuntimeReferenceType = RuntimeReferenceType> =
@@ -156,8 +158,13 @@ export type RuntimeReference<T extends RuntimeReferenceType = RuntimeReferenceTy
 /** Runtime list representation. */
 export type RuntimeList = RuntimeScalarCommon & {
   type: 'list'
-  item: RuntimeScalar | RuntimeReference<'object'>
+  item: RuntimeScalar | RuntimeReference<'enum' | 'object'>
 }
+
+/** Runtime meta types. */
+export type RuntimeMetaType = 'objectType'
+/** Runtime meta field representation. */
+export type RuntimeMetaField = { type: 'meta'; metaType: RuntimeMetaType }
 
 /** Runtime view types. */
 export type RuntimeViewType = 'documentAccount' | 'documentVersion'
@@ -165,7 +172,12 @@ export type RuntimeViewType = 'documentAccount' | 'documentVersion'
 export type RuntimeViewField = { type: 'view'; viewType: RuntimeViewType }
 
 /**Runtime object fields representations. */
-export type RuntimeObjectField = RuntimeScalar | RuntimeList | RuntimeReference | RuntimeViewField
+export type RuntimeObjectField =
+  | RuntimeScalar
+  | RuntimeList
+  | RuntimeReference
+  | RuntimeMetaField
+  | RuntimeViewField
 /** Runtime object property name to field representation mapping. */
 export type RuntimeObjectFields = Record<string, RuntimeObjectField>
 
@@ -187,6 +199,10 @@ export type RuntimeCompositeDefinition = {
    * Objects structures, keyed by name.
    */
   objects: Record<string, RuntimeObjectFields>
+  /**
+   * String enums, keyed by name.
+   */
+  enums: Record<string, Array<string>>
   /**
    * Account-based relations.
    */

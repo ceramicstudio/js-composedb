@@ -8,6 +8,13 @@ Object {
       "type": "connection",
     },
   },
+  "enums": Object {
+    "NoteStatus": Array [
+      "DEFAULT",
+      "IMPORTANT",
+      "ARCHIVE",
+    ],
+  },
   "models": Object {
     "Note": "NoteID",
   },
@@ -16,6 +23,12 @@ Object {
       "author": Object {
         "type": "view",
         "viewType": "documentAccount",
+      },
+      "status": Object {
+        "refName": "NoteStatus",
+        "refType": "enum",
+        "required": false,
+        "type": "reference",
       },
       "text": Object {
         "required": true,
@@ -50,6 +63,7 @@ Object {
       "type": "node",
     },
   },
+  "enums": Object {},
   "models": Object {
     "GenericProfile": "GenericProfileID",
     "PersonProfile": "PersonProfileID",
@@ -182,6 +196,7 @@ Object {
       "type": "node",
     },
   },
+  "enums": Object {},
   "models": Object {
     "GenericProfile": "GenericProfileID",
     "PersonProfile": "PersonProfileID",

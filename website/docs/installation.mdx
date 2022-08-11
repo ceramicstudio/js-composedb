@@ -3,9 +3,17 @@ import TabItem from '@theme/TabItem'
 
 # Installation
 
+:::caution Developer preview
+
+ComposeDB packages are still under development and only released as a developer preview, they are **not ready for production use**.
+
+There may be **breaking changes** between v0.x versions before a stable v1.0 version is released, causing models or composites created from previous versions not to be compatible.
+
+:::
+
 ## Requirements
 
-ComposeDB runs on top of Ceramic. Running a local Ceramic node is needed for app development.
+ComposeDB runs on top of [Ceramic](https://ceramic.network/). Running [a local Ceramic node](https://developers.ceramic.network/build/cli/installation/) is needed for app development.
 
 ## Development tools
 
@@ -48,7 +56,7 @@ yarn add -g @composedb/cli
 
 ### Libraries
 
-ComposeDB exposes two complementary development libraries: `@composedb/devtools` for generic interactions with Composites, and `@composedb/devtools-node` with additional functions to interact with the local file system and start a local HTTP server.
+ComposeDB exposes two complementary development libraries: [`@composedb/devtools`](./api/modules/devtools.md) for generic interactions with composites, and [`@composedb/devtools-node`](./api/modules/devtools_node.md) with additional functions to interact with the local file system and start a local HTTP server.
 
 <Tabs
   defaultValue="pnpm"
@@ -83,7 +91,7 @@ yarn add -D @composedb/devtools @composedb/devtools-node
 
 ## Runtime libraries
 
-The `@composedb/client` package exposes the primary APIs to interact with Ceramic based on a Composite definition.
+The [`@composedb/client`](./api/modules/client.md) package exposes the primary APIs to interact with Ceramic based on a Composite definition.
 
 <Tabs
   defaultValue="pnpm"

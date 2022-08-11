@@ -15,7 +15,7 @@ import {
   GraphQLTime,
 } from 'graphql-scalars'
 
-import { CeramicCommitID } from './ceramic.js'
+import { CeramicCommitID, CeramicStreamID } from './ceramic.js'
 
 export {
   GraphQLCountryCode,
@@ -24,7 +24,7 @@ export {
   GraphQLDID,
   GraphQLTime,
 } from 'graphql-scalars'
-export { CeramicCommitID } from './ceramic.js'
+export { CeramicCommitID, CeramicStreamID } from './ceramic.js'
 
 export type ScalarMap = Record<RuntimeScalarType, GraphQLScalarType>
 
@@ -38,6 +38,7 @@ export const scalars: ScalarMap = {
   float: GraphQLFloat,
   id: GraphQLID,
   integer: GraphQLInt,
+  streamid: CeramicStreamID,
   string: GraphQLString,
   time: GraphQLTime,
 }

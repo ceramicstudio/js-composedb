@@ -1,5 +1,13 @@
 # Using Relay
 
+:::tip What is Relay?
+
+[Relay](https://relay.dev/) is a popular GraphQL client for React.
+
+It is **not necessary to use it** to [execute queries](queries.md) and [mutations](mutations.mdx) on ComposeDB, but it can help simplify the developer experience for common use-cases.
+
+:::
+
 The ComposeDB client can be used with [Relay](https://relay.dev/) by creating a custom [network layer](https://relay.dev/docs/guides/network-layer/), as shown in the example below:
 
 ```js

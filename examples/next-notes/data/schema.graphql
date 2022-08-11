@@ -5,19 +5,6 @@ type Query {
     id: ID!
   ): Node
   viewer: CeramicAccount
-  profileIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-  ): ProfileConnection
   noteIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -31,6 +18,19 @@ type Query {
     """Returns the last n items from the list."""
     last: Int
   ): NoteConnection
+  profileIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): ProfileConnection
 }
 
 """An object with an ID"""
@@ -42,7 +42,6 @@ interface Node {
 type CeramicAccount implements Node {
   id: ID!
   isViewer: Boolean!
-  profile: Profile
   noteList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -56,11 +55,7 @@ type CeramicAccount implements Node {
     """Returns the last n items from the list."""
     last: Int
   ): NoteConnection
-}
-
-type Profile implements Node {
-  id: ID!
-  name: String!
+  profile: Profile
 }
 
 """A connection to a list of items."""
@@ -100,12 +95,24 @@ type Note implements Node {
   id: ID!
   text: String!
   title: String!
+  status: NoteStatus
   author: CeramicAccount!
   version: CeramicCommitID!
 }
 
+enum NoteStatus {
+  DEFAULT
+  IMPORTANT
+  ARCHIVE
+}
+
 """A Ceramic Commit ID"""
 scalar CeramicCommitID
+
+type Profile implements Node {
+  id: ID!
+  name: String!
+}
 
 """A connection to a list of items."""
 type ProfileConnection {
@@ -126,10 +133,61 @@ type ProfileEdge {
 }
 
 type Mutation {
-  createProfile(input: CreateProfileInput!): CreateProfilePayload
-  updateProfile(input: UpdateProfileInput!): UpdateProfilePayload
   createNote(input: CreateNoteInput!): CreateNotePayload
   updateNote(input: UpdateNoteInput!): UpdateNotePayload
+  createProfile(input: CreateProfileInput!): CreateProfilePayload
+  updateProfile(input: UpdateProfileInput!): UpdateProfilePayload
+}
+
+type CreateNotePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+  viewer: CeramicAccount
+  document: Note!
+  clientMutationId: String
+}
+
+input CreateNoteInput {
+  content: NoteInput!
+  clientMutationId: String
+}
+
+input NoteInput {
+  text: String!
+  title: String!
+  status: NoteStatus
+}
+
+type UpdateNotePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+  viewer: CeramicAccount
+  document: Note!
+  clientMutationId: String
+}
+
+input UpdateNoteInput {
+  id: ID!
+  content: PartialNoteInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialNoteInput {
+  text: String
+  title: String
+  status: NoteStatus
+}
+
+input UpdateOptionsInput {
+  replace: Boolean
+  version: CeramicCommitID
 }
 
 type CreateProfilePayload {
@@ -144,11 +202,11 @@ type CreateProfilePayload {
 }
 
 input CreateProfileInput {
-  content: RequiredProfileInput!
+  content: ProfileInput!
   clientMutationId: String
 }
 
-input RequiredProfileInput {
+input ProfileInput {
   name: String!
 }
 
@@ -165,60 +223,11 @@ type UpdateProfilePayload {
 
 input UpdateProfileInput {
   id: ID!
-  content: ProfileInput!
+  content: PartialProfileInput!
   options: UpdateOptionsInput
   clientMutationId: String
 }
 
-input ProfileInput {
+input PartialProfileInput {
   name: String
-}
-
-input UpdateOptionsInput {
-  replace: Boolean
-  version: CeramicCommitID
-}
-
-type CreateNotePayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-  viewer: CeramicAccount
-  document: Note!
-  clientMutationId: String
-}
-
-input CreateNoteInput {
-  content: RequiredNoteInput!
-  clientMutationId: String
-}
-
-input RequiredNoteInput {
-  text: String!
-  title: String!
-}
-
-type UpdateNotePayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-  viewer: CeramicAccount
-  document: Note!
-  clientMutationId: String
-}
-
-input UpdateNoteInput {
-  id: ID!
-  content: NoteInput!
-  options: UpdateOptionsInput
-  clientMutationId: String
-}
-
-input NoteInput {
-  text: String
-  title: String
 }
