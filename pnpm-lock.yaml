@@ -291,7 +291,7 @@ importers:
     specifiers:
       '@ceramicnetwork/common': ^2.5.0-rc.1
       '@ceramicnetwork/http-client': ^2.3.2-rc.1
-      '@ceramicnetwork/stream-model': ^0.4.0
+      '@ceramicnetwork/stream-model': ^0.4.1-rc.1
       '@ceramicnetwork/stream-model-instance': ^0.4.0-rc.0
       '@ceramicnetwork/streamid': ^2.3.1-rc.0
       '@composedb/devtools': workspace:^0.1.0
@@ -305,7 +305,7 @@ importers:
       jest-environment-composedb: workspace:^0.1.0
     dependencies:
       '@ceramicnetwork/http-client': 2.3.2-rc.1
-      '@ceramicnetwork/stream-model': 0.4.0
+      '@ceramicnetwork/stream-model': 0.4.1-rc.1
       '@ceramicnetwork/stream-model-instance': 0.4.0-rc.0
       '@ceramicnetwork/streamid': 2.3.1-rc.0
       '@composedb/graphql-scalars': link:../graphql-scalars
@@ -2302,23 +2302,6 @@ packages:
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - encoding
-
-  /@ceramicnetwork/stream-model/0.4.0:
-    resolution: {integrity: sha512-NH9ofrpj3geUE6MX+cJ18MJrZDmLCwLisdA1QR0K0ua1WdD5r52mgXqwRJa26AWCxM+juzYrPlJgMvqhVTULIg==}
-    dependencies:
-      '@ceramicnetwork/common': 2.5.0-rc.1
-      '@ceramicnetwork/streamid': 2.3.1-rc.0
-      '@ipld/dag-cbor': 7.0.2
-      '@stablelib/random': 1.0.1
-      fast-json-patch: 3.1.1
-      json-schema-typed: 8.0.1
-      multiformats: 9.7.1
-      multihashes: 4.0.3
-      uint8arrays: 3.1.0
-    transitivePeerDependencies:
-      - '@opentelemetry/api'
-      - encoding
-    dev: false
 
   /@ceramicnetwork/stream-model/0.4.1-rc.1:
     resolution: {integrity: sha512-agrNycRwYmYvQAx7AB8DhtsCDyvNnz1loqwtm2xJWjZwpn4U06G0z7Mm96Su0phktdCA46pEGu4WW0T71It36A==}
