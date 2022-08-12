@@ -29,5 +29,5 @@ describe('client', () => {
       { input: { content: { name: 'Alice' } } }
     )
     expect(res.data?.createGenericProfile.document.id).toBeDefined()
-  })
+  }, 30000)
 })
