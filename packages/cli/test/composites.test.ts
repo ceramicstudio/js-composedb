@@ -307,9 +307,9 @@ describe('composites', () => {
       ).toBe(true)
 
       const [jsonRepresentation, jsRepresentation, tsRepresentation] = await Promise.all([
-        fs.readFile(`${dirpath}/${filename}.json`),
-        fs.readFile(`${dirpath}/${filename}.js`),
-        fs.readFile(`${dirpath}/${filename}.ts`),
+        fs.readFile(`${dirpath}/${filename}.json`, 'utf8'),
+        fs.readFile(`${dirpath}/${filename}.js`, 'utf8'),
+        fs.readFile(`${dirpath}/${filename}.ts`, 'utf8'),
       ])
 
       expect(jsonRepresentation).toMatchSnapshot()

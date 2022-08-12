@@ -92,6 +92,22 @@ export class Context {
   }
 
   /**
+   * Create a new single document with the given model and content.
+   */
+  async createSingle<Content = Record<string, any>>(
+    model: string,
+    content: Content
+  ): Promise<ModelInstanceDocument<Content>> {
+    const controller = this.viewerID
+    if (controller == null) {
+      throw new Error('Document can only be created with an authenticated account')
+    }
+    const doc = await this.#loader.single<Content>(controller, model)
+    await doc.replace(content)
+    return doc
+  }
+
+  /**
    * Update an existing document.
    */
   async updateDoc<Content = Record<string, any>>(

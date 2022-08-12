@@ -1,8 +1,10 @@
-import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
+import { ModelAccountRelation } from '@ceramicnetwork/stream-model'
+import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { CeramicCommitID, getScalar } from '@composedb/graphql-scalars'
 import type {
   RuntimeCompositeDefinition,
   RuntimeList,
+  RuntimeModel,
   RuntimeObjectFields,
   RuntimeReference,
   RuntimeScalar,
@@ -54,7 +56,7 @@ type BuildObjectParams = {
   fields: RuntimeObjectFields
   definitions: SharedDefinitions
 }
-type BuildDocumentObjectParams = BuildObjectParams & { modelID: string }
+type BuildDocumentObjectParams = BuildObjectParams & { model: RuntimeModel }
 
 const UpdateOptionsInput = new GraphQLInputObjectType({
   name: 'UpdateOptionsInput',
@@ -105,8 +107,8 @@ class SchemaBuilder {
   }
 
   _createSharedDefinitions(): SharedDefinitions {
-    const modelAliases = Object.entries(this.#def.models).reduce((aliases, [alias, id]) => {
-      aliases[id] = alias
+    const modelAliases = Object.entries(this.#def.models).reduce((aliases, [alias, model]) => {
+      aliases[model.id] = alias
       return aliases
     }, {} as Record<string, string>)
 
@@ -145,7 +147,7 @@ class SchemaBuilder {
             config[alias] = {
               type: this.#types[reference.name],
               resolve: async (account, _, ctx): Promise<ModelInstanceDocument | null> => {
-                return await ctx.querySingle({ account, model })
+                return await ctx.querySingle({ account, model: model.id })
               },
             }
           } else if (reference.type === 'connection') {
@@ -157,7 +159,7 @@ class SchemaBuilder {
                 args: ConnectionArguments,
                 ctx
               ): Promise<Connection<ModelInstanceDocument> | null> => {
-                return await ctx.queryConnection({ ...args, account, model })
+                return await ctx.queryConnection({ ...args, account, model: model.id })
               },
             }
           } else {
@@ -199,20 +201,18 @@ class SchemaBuilder {
   }
 
   _buildObjectType(params: BuildObjectParams) {
-    const modelID = this.#def.models[params.name]
-    return modelID
-      ? this._buildDocumentObjectType({ modelID, ...params })
+    const model = this.#def.models[params.name]
+    return model
+      ? this._buildDocumentObjectType({ model, ...params })
       : this._buildEmbeddedObjectType(params)
   }
 
-  _buildDocumentObjectType({ modelID, definitions, name, fields }: BuildDocumentObjectParams) {
+  _buildDocumentObjectType({ model, definitions, name, fields }: BuildDocumentObjectParams) {
     this.#types[name] = new GraphQLObjectType<ModelInstanceDocument>({
       name,
       interfaces: [definitions.nodeInterface],
       isTypeOf: (value: ModelInstanceDocument) => {
-        return value instanceof ModelInstanceDocument
-          ? value.metadata.model.toString() === modelID
-          : false
+        return value.metadata.model.toString() === model.id
       },
       fields: () => {
         const config: GraphQLFieldConfigMap<ModelInstanceDocument, Context> = {
@@ -242,7 +242,7 @@ class SchemaBuilder {
             default:
               config[key] = {
                 type: this._buildScalarFieldType(definitions, field),
-                resolve: (obj) => obj.content?.[key] as unknown,
+                resolve: (doc) => doc.content?.[key] as unknown,
               }
           }
         }
@@ -252,7 +252,7 @@ class SchemaBuilder {
 
     if (!this.#isReadonly) {
       this._buildInputObjectType(name, fields)
-      this._buildNodeMutations(definitions.queryFields, name, modelID)
+      this._buildNodeMutations(definitions.queryFields, name, model)
     }
   }
 
@@ -486,7 +486,7 @@ class SchemaBuilder {
   _buildNodeMutations(
     queryFields: GraphQLFieldConfigMap<unknown, Context>,
     name: string,
-    modelID: string
+    model: RuntimeModel
   ) {
     this.#mutations[`create${name}`] = mutationWithClientMutationId({
       name: `Create${name}`,
@@ -497,11 +497,15 @@ class SchemaBuilder {
         ...queryFields,
         document: { type: new GraphQLNonNull(this.#types[name]) },
       }),
-      mutateAndGetPayload: async (input: { content: Record<string, any> }, ctx: Context) => {
+      mutateAndGetPayload: async (input: { content: Record<string, unknown> }, ctx: Context) => {
         if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
           throw new Error('Ceramic instance is not authenticated')
         }
-        return { document: await ctx.createDoc(modelID, input.content) }
+        const document =
+          model.accountRelation === ModelAccountRelation.SINGLE
+            ? await ctx.createSingle(model.id, input.content)
+            : await ctx.createDoc(model.id, input.content)
+        return { document }
       },
     })
 
@@ -517,7 +521,7 @@ class SchemaBuilder {
         document: { type: new GraphQLNonNull(this.#types[name]) },
       }),
       mutateAndGetPayload: async (
-        input: { id: string; content: Record<string, any>; options?: UpdateDocOptions },
+        input: { id: string; content: Record<string, unknown>; options?: UpdateDocOptions },
         ctx: Context
       ) => {
         if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
@@ -538,7 +542,7 @@ class SchemaBuilder {
         type: this.#types[`${alias}Connection`],
         args: connectionArgs,
         resolve: async (_, args: ConnectionArguments, ctx): Promise<Connection<any> | null> => {
-          return await ctx.queryConnection({ ...args, model })
+          return await ctx.queryConnection({ ...args, model: model.id })
         },
       }
     }

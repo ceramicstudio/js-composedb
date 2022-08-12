@@ -1,7 +1,7 @@
 import type { CeramicApi, CreateOpts, UpdateOpts } from '@ceramicnetwork/common'
 import {
   ModelInstanceDocument,
-  type ModelInstanceDocumentMetadata,
+  type ModelInstanceDocumentMetadataArgs,
 } from '@ceramicnetwork/stream-model-instance'
 import { type CommitID, StreamID, StreamRef } from '@ceramicnetwork/streamid'
 import DataLoader from 'dataloader'
@@ -120,8 +120,8 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
     content: T,
     { controller, ...options }: CreateOptions = {}
   ): Promise<ModelInstanceDocument<T>> {
-    const metadata: ModelInstanceDocumentMetadata = {
-      controller: controller as string,
+    const metadata: ModelInstanceDocumentMetadataArgs = {
+      controller,
       model: model instanceof StreamID ? model : StreamID.fromString(model),
     }
     const stream = await ModelInstanceDocument.create<T>(this.#ceramic, content, metadata, options)
@@ -136,6 +136,23 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
     id: DocID
   ): Promise<ModelInstanceDocument<T>> {
     return (await super.load(id)) as ModelInstanceDocument<T>
+  }
+
+  /**
+   * Create or load a deterministic ModelInstanceDocument and cache it.
+   */
+  async single<T extends Record<string, any> = Record<string, any>>(
+    controller: string,
+    model: string | StreamID,
+    options?: CreateOpts
+  ): Promise<ModelInstanceDocument<T>> {
+    const metadata: ModelInstanceDocumentMetadataArgs = {
+      controller,
+      model: model instanceof StreamID ? model : StreamID.fromString(model),
+    }
+    const stream = await ModelInstanceDocument.single<T>(this.#ceramic, metadata, options)
+    this.cache(stream)
+    return stream
   }
 
   /**

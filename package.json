@@ -32,6 +32,29 @@
     "typescript": "^4.7.4"
   },
   "pnpm": {
-    "overrides": {}
+    "overrides": {
+      "@ceramicnetwork/3id-did-resolver": "^2.1.5-rc.1",
+      "@ceramicnetwork/blockchain-utils-linking": "^2.0.9-rc.0",
+      "@ceramicnetwork/blockchain-utils-validation": "^2.0.10-rc.0",
+      "@ceramicnetwork/cli": "^2.6.0-rc.1",
+      "@ceramicnetwork/common": "^2.5.0-rc.1",
+      "@ceramicnetwork/core": "^2.8.0-rc.1",
+      "@ceramicnetwork/http-client": "^2.3.2-rc.1",
+      "@ceramicnetwork/ipfs-daemon": "^2.1.2-rc.1",
+      "@ceramicnetwork/ipfs-topology": "^2.1.4-rc.1",
+      "@ceramicnetwork/pinning-aggregation": "^2.0.10-rc.1",
+      "@ceramicnetwork/pinning-crust-backend": "^2.0.10-rc.1",
+      "@ceramicnetwork/pinning-ipfs-backend": "^2.0.10-rc.1",
+      "@ceramicnetwork/pinning-powergate-backend": "^2.0.10-rc.1",
+      "@ceramicnetwork/stream-caip10-link-handler": "^2.1.2-rc.1",
+      "@ceramicnetwork/stream-caip10-link": "^2.2.1-rc.1",
+      "@ceramicnetwork/stream-model-handler": "^0.4.1-rc.1",
+      "@ceramicnetwork/stream-model-instance-handler": "^0.5.0-rc.0",
+      "@ceramicnetwork/stream-model-instance": "^0.4.0-rc.0",
+      "@ceramicnetwork/stream-model": "^0.4.1-rc.1",
+      "@ceramicnetwork/stream-tile-handler": "^2.2.5-rc.1",
+      "@ceramicnetwork/stream-tile": "^2.4.1-rc.1",
+      "@ceramicnetwork/streamid": "^2.3.1-rc.0"
+    }
   }
 }
