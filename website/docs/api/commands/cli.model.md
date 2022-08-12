@@ -4,36 +4,38 @@ title: "CLI: model:* commands"
 custom_edit_url: null
 ---
 
-The group of [CLI](../modules/cli.md) `model:*` commands enables the creation and interactions with Models
+The group of [CLI](../modules/cli.md) `model:*` commands enables discovery of [Models](../../../docs/guides/concepts-overview#models), as well as their creation and interactions with them
 
 ## Command List
 
-- [`composedb model:create CONTENT`](#composedb-modelcreate-content)
+- [`composedb model:list`](#composedb-modellist)
 - [`composedb model:content STREAMID`](#composedb-modelcontent-streamid)
 - [`composedb model:controller STREAMID`](#composedb-modelcontroller-streamid)
-- [`composedb model:list`](#composedb-modellist)
+- [`composedb model:create CONTENT`](#composedb-modelcreate-content)
 
 ## Usage
 
-### `composedb model:create`
+### `composedb model:list`
 
-create a model stream with given content
+Display a paginated list of models indexed on the connected ceramic node.
+
+This currently is the main entry path to [Composites Discovery](../../../docs/guides/using-composites/discovery.mdx)
 
 ```
 USAGE
-  $ composedb model:create CONTENT
-
-ARGUMENTS
-  CONTENT                  contents of the model encoded as JSON
+  $ composedb model:list
 
 OPTIONS
+  --table                  display results as a table rather than as formatted JSON
   -c, --ceramic-url        Ceramic API URL
-  -k, --did-private-key    DID Private Key
 ```
 
 ### `composedb model:content`
 
-load the contents of a model stream with a given ID
+Load the contents of a model stream with a given ID.
+
+You should use this command to check if an existing model found through [Composites Discovery](../../../docs/guides/using-composites/discovery.mdx)
+has the fields you need.
 
 ```
 USAGE
@@ -49,7 +51,7 @@ OPTIONS
 
 ### `composedb model:controller`
 
-load the model stream with a given ID and display its controller DID
+Load the model stream with a given ID and display its controller DID (identifier for the [Ceramic Account](../../../docs/guides/concepts-overview#accounts) that owns the model)
 
 ```
 USAGE
@@ -62,17 +64,22 @@ OPTIONS
   -c, --ceramic-url        Ceramic API URL
 ```
 
-### `composedb model:list`
+### `composedb model:create`
 
-display a paginated list of models indexed on the connected ceramic node
+Create a model stream with given content.
+
+Most of the time you shouldn't be using this command directly. Instead, you should first check if a model you need
+already exists, using [Composites Discovery](../../../docs/guides/using-composites/discovery.mdx) and only if you can't
+find a model that you need, you should create one indirectly by [creating a Composite](../../../docs/guides/creating-composites/overview) from a CraphQL Composite Schema.
 
 ```
 USAGE
-  $ composedb model:list
+  $ composedb model:create CONTENT
+
+ARGUMENTS
+  CONTENT                  contents of the model encoded as JSON
 
 OPTIONS
-  --table                  display results as a table rather than as formatted JSON
   -c, --ceramic-url        Ceramic API URL
+  -k, --did-private-key    DID Private Key (you can generate a fresh private key using composedb did:generate-private-key)
 ```
-
-

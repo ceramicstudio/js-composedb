@@ -4,7 +4,7 @@ title: "CLI: document:* commands"
 custom_edit_url: null
 ---
 
-The group of [CLI](../modules/cli.md) `document:*` commands enables the creation and interactions with Documents (Instances of [Models](./cli.model))
+The group of [CLI](../modules/cli.md) `document:*` commands enables the creation and interactions with [Documents](../../../docs/guides/concepts-overview#documents)
 
 ## Command List
 
@@ -16,7 +16,10 @@ The group of [CLI](../modules/cli.md) `document:*` commands enables the creation
 
 ### `composedb document:create`
 
-create a document with given content
+Create a document with given content
+
+You can use this command to test how document creation works, but in your DApp you will use [ComposeDB GraphQL Mutations](../../../docs/guides/interacting/mutations.mdx)
+instead
 
 ```
 USAGE
@@ -27,13 +30,15 @@ ARGUMENTS
   CONTENT                  contents of the model instance encoded as JSON
 
 OPTIONS
-  -k, --did-private-key    DID Private Key
+  -k, --did-private-key    DID Private Key (you can generate a fresh private key using composedb did:generate-private-key)
   -c, --ceramic-url        Ceramic API URL
 ```
 
 ### `composedb document:replace`
 
-replace content in a document with a given streamID
+Replace content in a document with a given streamID
+
+You can use this command to test how document updates work, but in your DApp you will use [ComposeDB GraphQL Mutations](../../../docs/guides/interacting/mutations.mdx)
 
 ```
 USAGE
@@ -44,13 +49,15 @@ ARGUMENTS
   CONTENT                  new contents of the model instance encoded as JSON
 
 OPTIONS
-  -k, --did-private-key    DID Private Key
+  -k, --did-private-key    DID Private Key (you can generate a fresh private key using composedb did:generate-private-key)
   -c, --ceramic-url        Ceramic API URL
 ```
 
 ### `composedb document:content`
 
-load and display the contents of a document with a given ID
+Load and display the contents of a document with a given ID
+
+You can use this command to manually check the contents of a given document, but in your DApp you will use [ComposeDB GraphQL Queries](../../../docs/guides/interacting/queries.md)
 
 ```
 USAGE
