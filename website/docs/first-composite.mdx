@@ -3,17 +3,54 @@ import TabItem from '@theme/TabItem'
 
 # Your first composite
 
-:::danger TODO
+ComposeDB provides an abstraction on top of Ceramic streams by leveraging composites, an internal data structure referencing Ceramic model streams and associated metadata. Most of ComposeDB tools and clients interact with various representations of composites.
 
-Quick intro to composites as set of models, focus on usage.
+This page presents how to create your first composite and deploy it to your local Ceramic node, in order to interact with documents on Ceramic.
 
-:::
+## Running a local Ceramic node
+
+The following steps require a local Ceramic node to be running. If you do not already have it running, you can use the following command:
+
+<Tabs
+  defaultValue="pnpm"
+  groupId="package-manager"
+  values={[
+    {label: 'npm', value: 'npm'},
+    {label: 'pnpm', value: 'pnpm'},
+    {label: 'Yarn', value: 'yarn'},
+  ]}>
+  <TabItem value="npm">
+
+```sh
+npx @ceramicnetwork/cli daemon --network=testnet-clay
+```
+
+  </TabItem>
+  <TabItem value="pnpm">
+
+```sh
+pnpm dlx @ceramicnetwork/cli daemon --network=testnet-clay
+```
+
+  </TabItem>
+  <TabItem value="yarn">
+
+```sh
+yarn dlx @ceramicnetwork/cli daemon --network=testnet-clay
+```
+
+  </TabItem>
+</Tabs>
 
 ## Importing a model
 
-:::danger TODO
+Composites can be created by importing existing models. Here we're going to import a simple profile model with the stream ID `kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e`, that exists on the Clay testnet.
 
-Model ID and URL of Ceramic node with model stored
+:::caution
+
+Make sure your local Ceramic node is connected to the Clay testnet in order to load this model.
+
+If for some reason the model can't be loaded from the Clay testnet, you can [download the composite file directly instead](/my-first-composite.json).
 
 :::
 
@@ -21,8 +58,8 @@ Model ID and URL of Ceramic node with model stored
   defaultValue="api"
   groupId="api-or-cli"
   values={[
-    {label: 'Using the API', value: 'api'},
     {label: 'Using the CLI', value: 'cli'},
+    {label: 'Using the API', value: 'api'},
   ]}>
   <TabItem value="api">
 
@@ -31,8 +68,11 @@ import { CeramicClient } from '@ceramicnetwork/http-client'
 import { Composite } from '@composedb/devtools'
 import { writeEncodedComposite } from '@composedb/devtools-node'
 
-const ceramic = new CeramicClient('https://gateway-clay.ceramic.network')
-const composite = await Composite.fromModels({ ceramic, models: [''] })
+const ceramic = new CeramicClient('http://localhost:7007')
+const composite = await Composite.fromModels({
+  ceramic,
+  models: ['kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e'],
+})
 
 await writeEncodedComposite(composite, 'my-first-composite.json')
 ```
@@ -43,7 +83,7 @@ More details: [`Composite.fromModels`](./api/classes/devtools.Composite.md#fromm
   <TabItem value="cli">
 
 ```sh
-composedb composite:from-model <model ID> --ceramic-url=https://gateway-clay.ceramic.network --output=my-first-composite.json
+composedb composite:from-model kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e --ceramic-url=http://localhost:7007 --output=my-first-composite.json
 ```
 
   </TabItem>
@@ -51,47 +91,14 @@ composedb composite:from-model <model ID> --ceramic-url=https://gateway-clay.cer
 
 ## Deploying to a local node
 
-The following step requires a local Ceramic node to be running. If you do not already have it running, you can use the following command:
-
-<Tabs
-  defaultValue="pnpm"
-  groupId="package-manager"
-  values={[
-    {label: 'pnpm', value: 'pnpm'},
-    {label: 'npm', value: 'npm'},
-    {label: 'Yarn', value: 'yarn'},
-  ]}>
-  <TabItem value="pnpm">
-
-```sh
-pnpm dlx @ceramicnetwork/cli daemon
-```
-
-  </TabItem>
-  <TabItem value="npm">
-
-```sh
-npx @ceramicnetwork/cli daemon
-```
-
-  </TabItem>
-  <TabItem value="yarn">
-
-```sh
-yarn dlx @ceramicnetwork/cli daemon
-```
-
-  </TabItem>
-</Tabs>
-
-Then the composite can be deployed from a script or the CLI:
+The composite can be deployed from a script or the CLI using the composite file:
 
 <Tabs
   defaultValue="api"
   groupId="api-or-cli"
   values={[
-    {label: 'Using the API', value: 'api'},
     {label: 'Using the CLI', value: 'cli'},
+    {label: 'Using the API', value: 'api'},
   ]}>
   <TabItem value="api">
 
@@ -145,8 +152,8 @@ Once the composite is deployed and the Ceramic node configured, it is possible t
   defaultValue="api"
   groupId="api-or-cli"
   values={[
-    {label: 'Using the API', value: 'api'},
     {label: 'Using the CLI', value: 'cli'},
+    {label: 'Using the API', value: 'api'},
   ]}>
   <TabItem value="api">
 

@@ -14,9 +14,17 @@ npm install --dev @composedb/devtools-node
 
 ## Type Aliases
 
+### PathInput
+
+Ƭ **PathInput**: `URL` \| `string`
+
+Path to a local file. If relative, it will get resolved from the current working directory.
+
+___
+
 ### ServeDefinitionParams
 
-Ƭ **ServeDefinitionParams**: [`ServeParams`](devtools_node.md#serveparams) & { `path`: `PathInput`  }
+Ƭ **ServeDefinitionParams**: [`ServeParams`](devtools_node.md#serveparams) & { `path`: [`PathInput`](devtools_node.md#pathinput)  }
 
 ___
 
@@ -65,7 +73,7 @@ Create a Composite from a GraphQL schema path.
 | Name | Type |
 | :------ | :------ |
 | `ceramic` | `string` \| `CeramicClient` |
-| `path` | `PathInput` |
+| `path` | [`PathInput`](devtools_node.md#pathinput) |
 
 #### Returns
 
@@ -84,8 +92,8 @@ Merge the encoded `source` composite(s) to the `destination` path.
 | Name | Type |
 | :------ | :------ |
 | `ceramic` | `string` \| `CeramicClient` |
-| `source` | `PathInput` \| `PathInput`[] |
-| `destination` | `PathInput` |
+| `source` | [`PathInput`](devtools_node.md#pathinput) \| [`PathInput`](devtools_node.md#pathinput)[] |
+| `destination` | [`PathInput`](devtools_node.md#pathinput) |
 
 #### Returns
 
@@ -104,7 +112,7 @@ Create a Composite from a JSON-encoded definition path.
 | Name | Type |
 | :------ | :------ |
 | `ceramic` | `string` \| `CeramicClient` |
-| `path` | `PathInput` |
+| `path` | [`PathInput`](devtools_node.md#pathinput) |
 
 #### Returns
 
@@ -159,7 +167,7 @@ Write a JSON-encoded definition for the given composite to the given file path.
 | Name | Type |
 | :------ | :------ |
 | `composite` | `Composite` |
-| `path` | `PathInput` |
+| `path` | [`PathInput`](devtools_node.md#pathinput) |
 
 #### Returns
 
@@ -178,9 +186,9 @@ Write the runtime definition based on the encoded definition path.
 | Name | Type |
 | :------ | :------ |
 | `ceramic` | `string` \| `CeramicClient` |
-| `definitionPath` | `PathInput` |
-| `runtimePath` | `PathInput` |
-| `schemaPath?` | `PathInput` |
+| `definitionPath` | [`PathInput`](devtools_node.md#pathinput) |
+| `runtimePath` | [`PathInput`](devtools_node.md#pathinput) |
+| `schemaPath?` | [`PathInput`](devtools_node.md#pathinput) |
 
 #### Returns
 
@@ -199,7 +207,7 @@ Write the runtime GraphQL schema from the runtime composite definition.
 | Name | Type |
 | :------ | :------ |
 | `definition` | `RuntimeCompositeDefinition` |
-| `path` | `PathInput` |
+| `path` | [`PathInput`](devtools_node.md#pathinput) |
 | `readonly?` | `boolean` |
 
 #### Returns
@@ -220,7 +228,7 @@ Write the runtime definition for a given path, based on the file extension. Supp
 | Name | Type |
 | :------ | :------ |
 | `definition` | `RuntimeCompositeDefinition` |
-| `path` | `PathInput` |
+| `path` | [`PathInput`](devtools_node.md#pathinput) |
 
 #### Returns
 

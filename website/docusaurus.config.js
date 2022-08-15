@@ -12,7 +12,7 @@ const config = {
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
   // GitHub pages deployment config.
   organizationName: 'ceramicstudio',
   projectName: 'js-composedb',
@@ -52,7 +52,7 @@ const config = {
       navbar: {
         title: 'ComposeDB',
         logo: {
-          alt: 'My Site Logo',
+          alt: 'Ceramic logo',
           src: 'img/logo.svg',
         },
         items: [
@@ -87,7 +87,7 @@ const config = {
               },
               {
                 label: 'Guides',
-                to: '/docs/guides/concepts-overview',
+                to: '/docs/category/guides',
               },
               {
                 label: 'API',
