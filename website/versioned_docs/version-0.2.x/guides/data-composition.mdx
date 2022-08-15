@@ -1,0 +1,22 @@
+import useBaseUrl from '@docusaurus/useBaseUrl'
+import ThemedImage from '@theme/ThemedImage'
+
+# Data composition
+
+Data composition is at the heart of ComposeDB, using [composites](./concepts-overview.md#composites) as a proxy for datasets of [documents](./concepts-overview.md#documents) relevant to applications and services.
+
+Composites represent sets of [models](./concepts-overview.md#models) that can be used to query, create and update documents, therefore it is important for developers to identify models to use, whether by [reusing models already adopted by the ecosystem](./using-composites/discovery.mdx) in order to access the set of documents already created using these models, or [creating new models](./creating-composites/overview.mdx) that would better suit specific needs.
+
+## Models composition
+
+The following schema describes how composites can be created by [merging existing composites](./using-composites/customization.mdx#merging-composites) (composites `D` and `A'` below) and [extracting models from a composite](./using-composites/customization.mdx#extracting-models) (composites `E` and `F` below).
+
+The same datasets can be represented by different composites, such as the composites `A` and `A'` below that contain the same models.
+
+<ThemedImage
+  alt="Models composition schema"
+  sources={{
+    light: useBaseUrl('/img/models-composition-light.png'),
+    dark: useBaseUrl('/img/models-composition-dark.png'),
+  }}
+/>

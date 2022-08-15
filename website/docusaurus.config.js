@@ -28,6 +28,13 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
+          lastVersion: '0.2.x',
+          versions: {
+            '0.2.x': {
+              label: '0.2.x',
+              path: '0.2.x',
+            },
+          },
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -63,11 +70,18 @@ const config = {
             label: 'Docs',
           },
           {
-            to: 'docs/api/modules/client',
+            type: 'doc',
+            docId: 'api/modules/client',
             activeBasePath: 'docs/api',
             position: 'left',
             label: 'API',
           },
+          // {
+          //   type: 'docsVersionDropdown',
+          //   position: 'right',
+          //   dropdownItemsAfter: [{ to: '/versions', label: 'All versions' }],
+          //   dropdownActiveClassDisabled: true,
+          // },
           {
             href: 'https://github.com/ceramicstudio/js-composedb',
             label: 'GitHub',
@@ -83,15 +97,15 @@ const config = {
             items: [
               {
                 label: 'Getting Started',
-                to: '/docs/installation',
+                to: '/docs/0.2.x/installation',
               },
               {
                 label: 'Guides',
-                to: '/docs/category/guides',
+                to: '/docs/0.2.x/category/guides',
               },
               {
                 label: 'API',
-                to: '/docs/api/modules/client',
+                to: '/docs/0.2.x/api/modules/client',
               },
             ],
           },
