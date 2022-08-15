@@ -49,8 +49,16 @@ composedb composite:models my-composite.json
 
 ## Ceramic node configuration
 
-:::danger TODO
+The local Ceramic node then needs to be configured to index documents using the models listed in the previous step.
 
-Based on list of models from step above, add to the Ceramic node config file.
+This can be done by editing Ceramic's config file, which defaults to `~/.ceramic/daemon.config.json` on Linux, macOS and WSL (Windows Subsystem for Linux), adding the necessary model stream IDs to the `indexing.models` array:
 
-:::
+```json
+{
+  ...
+  "indexing": {
+    ...
+    "models": ["..."]
+  }
+}
+```

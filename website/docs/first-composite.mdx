@@ -137,12 +137,21 @@ composedb composite:models my-first-composite.json
 
 ## Configuring Ceramic
 
-:::danger TODO
+The local Ceramic node then needs to be configured to index documents using the defined model.
 
-- Edit config file to add model ID to index
-- Restart Ceramic node
+This can be done by editing Ceramic's config file, which defaults to `~/.ceramic/daemon.config.json` on Linux, macOS and WSL (Windows Subsystem for Linux), adding the necessary model stream IDs to the `indexing.models` array:
 
-:::
+```json
+{
+  ...
+  "indexing": {
+    ...
+    "models": ["kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e"]
+  }
+}
+```
+
+Once it's done, the Ceramic node needs to be restarted so the index can be queried.
 
 ## Interacting using GraphiQL
 
