@@ -36,7 +36,7 @@
     "@composedb/devtools": "workspace:^0.2.0",
     "@composedb/devtools-node": "workspace:^0.2.0",
     "@swc/core": "^1.2.233",
-    "@types/node": "^18.7.3",
+    "@types/node": "^18.7.4",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "css-loader": "^6.7.1",

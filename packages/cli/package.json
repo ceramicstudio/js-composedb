@@ -103,7 +103,7 @@
     "@types/inquirer": "^8.2.1",
     "@types/jest": "^28.1.2",
     "@types/listr": "^0.14.4",
-    "@types/node": "^18.7.3",
+    "@types/node": "^18.7.4",
     "@types/update-notifier": "^6.0.1",
     "ajv": "^8.10.0",
     "execa": "^6.0.0",

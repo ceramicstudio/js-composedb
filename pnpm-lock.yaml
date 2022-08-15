@@ -16,7 +16,7 @@ importers:
       del-cli: ^5.0.0
       eslint: ^8.22.0
       eslint-config-3box: ^0.4.1
-      eslint-plugin-jest: ^26.8.2
+      eslint-plugin-jest: ^26.8.3
       jest: ^28.1.3
       prettier: ^2.7.1
       turbo: ^1.4.3
@@ -36,7 +36,7 @@ importers:
       del-cli: 5.0.0
       eslint: 8.22.0
       eslint-config-3box: 0.4.1_evlpa6flwqjmmwc5ca6sarp7ta
-      eslint-plugin-jest: 26.8.2_t636mzpywmkpnnw42gfmhfz6k4
+      eslint-plugin-jest: 26.8.3_t636mzpywmkpnnw42gfmhfz6k4
       jest: 28.1.3
       prettier: 2.7.1
       turbo: 1.4.3
@@ -57,7 +57,7 @@ importers:
       '@mui/material': ^5.10.0
       '@mui/styles': ^5.9.2
       '@swc/helpers': ^0.4.6
-      '@types/node': ^18.7.3
+      '@types/node': ^18.7.4
       '@types/react': ^18.0.17
       '@types/react-relay': ^13.0.2
       '@types/relay-runtime': ^13.0.4
@@ -98,7 +98,7 @@ importers:
     devDependencies:
       '@composedb/devtools': link:../../packages/devtools
       '@composedb/devtools-node': link:../../packages/devtools-node
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
       '@types/react': 18.0.17
       '@types/react-relay': 13.0.2
       '@types/relay-runtime': 13.0.4
@@ -123,7 +123,7 @@ importers:
       '@mui/styles': ^5.9.2
       '@stablelib/random': ^1.0.1
       '@swc/core': ^1.2.233
-      '@types/node': ^18.7.3
+      '@types/node': ^18.7.4
       '@types/react': ^18.0.17
       '@types/react-dom': ^18.0.6
       css-loader: ^6.7.1
@@ -168,7 +168,7 @@ importers:
       '@composedb/devtools': link:../../packages/devtools
       '@composedb/devtools-node': link:../../packages/devtools-node
       '@swc/core': 1.2.233
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
       css-loader: 6.7.1_webpack@5.74.0
@@ -201,7 +201,7 @@ importers:
       '@types/inquirer': ^8.2.1
       '@types/jest': ^28.1.2
       '@types/listr': ^0.14.4
-      '@types/node': ^18.7.3
+      '@types/node': ^18.7.4
       '@types/update-notifier': ^6.0.1
       ajv: ^8.10.0
       cli-table3: ^0.6.2
@@ -255,7 +255,7 @@ importers:
       '@types/inquirer': 8.2.2
       '@types/jest': 28.1.6
       '@types/listr': 0.14.4
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
       '@types/update-notifier': 6.0.1
       ajv: 8.11.0
       execa: 6.1.0
@@ -306,7 +306,7 @@ importers:
       '@graphql-tools/utils': ^8.10.0
       '@types/jest': ^28.1.6
       '@types/lodash-es': ^4.17.6
-      '@types/node': ^18.7.3
+      '@types/node': ^18.7.4
       '@types/object-hash': ^2.2.1
       ajv: ^8.11.0
       change-case: ^4.1.2
@@ -340,7 +340,7 @@ importers:
       '@composedb/types': link:../types
       '@types/jest': 28.1.6
       '@types/lodash-es': 4.17.6
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
       '@types/object-hash': 2.2.1
       ajv: 8.11.0
       dids: 3.2.0
@@ -6703,23 +6703,23 @@ packages:
   /@types/bn.js/4.11.6:
     resolution: {integrity: sha512-pqr857jrp2kPuO9uRjZ3PwnJTjoQy+fcdxvBTvHm6dkmEL9q+hDD/2j/0ELOBPtPnS8LjCX0gI9nbl8lVkadpg==}
     dependencies:
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
 
   /@types/body-parser/1.19.2:
     resolution: {integrity: sha512-ALYone6pm6QmwZoAgeyNksccT9Q4AWZQ6PvfwR37GT6r6FWUPguq6sUmNGSMV2Wr761oQoBxwGGa6DR5o1DC9g==}
     dependencies:
       '@types/connect': 3.4.35
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
 
   /@types/bonjour/3.5.10:
     resolution: {integrity: sha512-p7ienRMiS41Nu2/igbJxxLDWrSZ0WxM8UQgCeO9KhoVF7cOVFkrKsiDr1EsJIla8vV3oEEjGcz11jc5yimhzZw==}
     dependencies:
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
 
   /@types/bs58check/2.1.0:
     resolution: {integrity: sha512-OxsysnJQh82vy9DRbOcw9m2j/WiyqZLn0YBhKxdQ+aCwoHj+tWzyCgpwAkr79IfDXZKxc6h7k89T9pwS78CqTQ==}
     dependencies:
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
 
   /@types/configstore/6.0.0:
     resolution: {integrity: sha512-GUvNiia85zTDDIx0iPrtF3pI8dwrQkfuokEqxqPDE55qxH0U5SZz4awVZjiJLWN2ZZRkXCUqgsMUbygXY+kytA==}
@@ -6729,12 +6729,12 @@ packages:
     resolution: {integrity: sha512-h8QJa8xSb1WD4fpKBDcATDNGXghFj6/3GRWG6dhmRcu0RX1Ubasur2Uvx5aeEwlf0MwblEC2bMzzMQntxnw/Cw==}
     dependencies:
       '@types/express-serve-static-core': 4.17.30
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
 
   /@types/connect/3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
 
   /@types/eslint-scope/3.7.4:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
@@ -6758,7 +6758,7 @@ packages:
   /@types/express-serve-static-core/4.17.30:
     resolution: {integrity: sha512-gstzbTWro2/nFed1WXtf+TtrpwxH7Ggs4RLYTLbeVgIkUQOI3WG/JKjgeOU1zXDvezllupjrf8OPIdvTbIaVOQ==}
     dependencies:
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.4
 
@@ -6773,14 +6773,14 @@ packages:
   /@types/fs-extra/9.0.13:
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
     dev: true
 
   /@types/glob/7.2.0:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 3.0.5
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
     dev: true
 
   /@types/graceful-fs/4.1.5:
@@ -6804,7 +6804,7 @@ packages:
   /@types/http-proxy/1.17.9:
     resolution: {integrity: sha512-QsbSjA/fSk7xB+UXlCT3wHBy5ai9wOcNDWwZAtud+jXhwOM3l+EYZh8Lng4+/6n8uar0J7xILzqftJdJ/Wdfkw==}
     dependencies:
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
 
   /@types/inquirer/8.2.2:
     resolution: {integrity: sha512-HXoFOl+KS4yvmUjisi83VpuSBOeeXIzdJfoT/v2pUruqybpHy0Dz1DyXy3E2jNH0cSVKJZV92VOnFBwJR6k83A==}
@@ -6853,7 +6853,7 @@ packages:
   /@types/listr/0.14.4:
     resolution: {integrity: sha512-+MWvidNujBUgJsi4yMVwEQQwaHe6oHedPSy+dwk3akGEeuIbvhWkK+TGsXSwbFup7Y0cCBb+wzzdD+yGKp7sOg==}
     dependencies:
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
       rxjs: 6.6.7
     dev: true
 
@@ -6909,9 +6909,10 @@ packages:
 
   /@types/node/18.6.5:
     resolution: {integrity: sha512-Xjt5ZGUa5WusGZJ4WJPbOT8QOqp6nDynVFRKcUt32bOgvXEoc6o085WNkYTMO7ifAj2isEfQQ2cseE+wT6jsRw==}
+    dev: false
 
-  /@types/node/18.7.3:
-    resolution: {integrity: sha512-LJgzOEwWuMTBxHzgBR/fhhBOWrvBjvO+zPteUgbbuQi80rYIZHrk1mNbRUqPZqSLP2H7Rwt1EFLL/tNLD1Xx/w==}
+  /@types/node/18.7.4:
+    resolution: {integrity: sha512-RzRcw8c0B8LzryWOR4Wj7YOTFXvdYKwvrb6xQQyuDfnlTxwYXGCV5RZ/TEbq5L5kn+w3rliHAUyRcG1RtbmTFg==}
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -7033,12 +7034,12 @@ packages:
     resolution: {integrity: sha512-z5xyF6uh8CbjAu9760KDKsH2FcDxZ2tFCsA4HIMWE6IkiYMXfVoa+4f9KX+FN0ZLsaMw1WNG2ETLA6N+/YA+cg==}
     dependencies:
       '@types/mime': 3.0.1
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
 
   /@types/sockjs/0.3.33:
     resolution: {integrity: sha512-f0KEEe05NvUnat+boPTZ0dgaLZ4SfSouXUgv5noUiefG2ajgKjmETo9ZJyuqsl7dfl2aHlLJUiki6B4ZYldiiw==}
     dependencies:
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
 
   /@types/stack-utils/2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
@@ -7046,7 +7047,7 @@ packages:
   /@types/through/0.0.30:
     resolution: {integrity: sha512-FvnCJljyxhPM3gkRgWmxmDZyAQSiBQQWLI0A0VFL0K7W1oRUrPJSqNO0NvTnLkBcotdlp3lKvaT0JrnyRDkzOg==}
     dependencies:
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
     dev: true
 
   /@types/unist/2.0.6:
@@ -7064,13 +7065,13 @@ packages:
     resolution: {integrity: sha512-ayJ0iOCDNHnKpKTgBG6Q6JOnHTj9zFta+3j2b8Ejza0e4cvRyMn0ZoLEmbPrTHe5YYRlDYPvPWVdV4cTaRyH7g==}
     dependencies:
       '@types/expect': 1.20.4
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
     dev: true
 
   /@types/ws/8.5.3:
     resolution: {integrity: sha512-6YOoWjruKj1uLf3INHH7D3qTXwFfEsg1kf3c0uDdSBJwfa/llkwIjrAGV7j7mVgGNbzTQ3HiHKKDXl6bJPD97w==}
     dependencies:
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
 
   /@types/yargs-parser/21.0.0:
     resolution: {integrity: sha512-iO9ZQHkZxHn4mSakYV0vFHAVDyEOIJQrV2uZ06HxEPcx+mt8swXoZHIbaaJ2crJYFfErySgktuTZ3BeLz+XmFA==}
@@ -10244,7 +10245,7 @@ packages:
       '@typescript-eslint/eslint-plugin': 5.33.0_yy5c4q6zhpajzhorvwhnwvctfe
       '@typescript-eslint/parser': 5.33.0_4rv7y5c6xz3vfxwhbrcxxi73bq
       eslint-config-prettier: 8.5.0_eslint@8.22.0
-      eslint-plugin-jest: 26.8.2_t636mzpywmkpnnw42gfmhfz6k4
+      eslint-plugin-jest: 26.8.3_t636mzpywmkpnnw42gfmhfz6k4
       eslint-plugin-prettier: 4.2.1_i2cojdczqdiurzgttlwdgf764e
       eslint-plugin-react: 7.30.1_eslint@8.22.0
       eslint-plugin-react-hooks: 4.6.0_eslint@8.22.0
@@ -10378,8 +10379,8 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-plugin-jest/26.8.2_t636mzpywmkpnnw42gfmhfz6k4:
-    resolution: {integrity: sha512-67oh0FKaku9y48OpLzL3uK9ckrgLb83Sp5gxxTbtOGDw9lq6D8jw/Psj/9CipkbK406I2M7mvx1q+pv/MdbvxA==}
+  /eslint-plugin-jest/26.8.3_t636mzpywmkpnnw42gfmhfz6k4:
+    resolution: {integrity: sha512-2roWu1MkEiihQ/qEszPPoaoqVI1x2D8Jtadk5AmoXTdEeNVPMu01Dtz7jIuTOAmdW3L+tSkPZOtEtQroYJDt0A==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       '@typescript-eslint/eslint-plugin': ^5.0.0
@@ -13775,7 +13776,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 18.7.3
+      '@types/node': 18.7.4
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -16870,7 +16871,7 @@ packages:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.2
-      '@types/node': 18.6.5
+      '@types/node': 18.7.4
       long: 4.0.0
 
   /protons-runtime/1.0.4:
