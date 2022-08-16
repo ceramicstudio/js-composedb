@@ -1,6 +1,6 @@
 {
   "name": "next-notes",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "relay": "relay-compiler",
@@ -11,19 +11,19 @@
   },
   "dependencies": {
     "@ceramicnetwork/http-client": "^2.3.1",
-    "@composedb/client": "workspace:^0.1.0",
-    "@composedb/types": "workspace:^0.1.0",
+    "@composedb/client": "workspace:^0.2.0",
+    "@composedb/types": "workspace:^0.2.0",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.10.0",
     "@mui/styles": "^5.9.2",
-    "@swc/helpers": "^0.4.3",
+    "@swc/helpers": "^0.4.6",
     "dids": "^3.2.0",
     "jotai": "^1.7.7",
     "key-did-provider-ed25519": "^2.0.1",
     "key-did-resolver": "^2.0.6",
-    "next": "^12.2.3",
+    "next": "^12.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-relay": "^14.1.0",
@@ -31,14 +31,14 @@
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
-    "@composedb/devtools": "workspace:^0.1.0",
-    "@composedb/devtools-node": "workspace:^0.1.0",
-    "@types/node": "^18.6.5",
+    "@composedb/devtools": "workspace:^0.2.0",
+    "@composedb/devtools-node": "workspace:^0.2.0",
+    "@types/node": "^18.7.4",
     "@types/react": "^18.0.17",
     "@types/react-relay": "^13.0.2",
-    "@types/relay-runtime": "^13.0.3",
-    "eslint": "^8.21.0",
-    "eslint-config-next": "^12.2.3",
+    "@types/relay-runtime": "^13.0.4",
+    "eslint": "^8.22.0",
+    "eslint-config-next": "^12.2.5",
     "relay-compiler": "^14.1.0",
     "typescript": "^4.7.4"
   }

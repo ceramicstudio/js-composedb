@@ -53,8 +53,8 @@ export default class CompositeModels extends Command<
         )
         return
       }
+      this.spinner.succeed(`Fetching composite's models... Done!`)
       if (this.flags['id-only'] === true) {
-        // Not using the spinner here, so that the output can be piped using standard I/O
         this.log(JSON.stringify(Object.keys(composite.toParams().definition.models)))
       } else if (this.flags.table === true) {
         const table = new Table({
@@ -72,7 +72,6 @@ export default class CompositeModels extends Command<
             modelDefinition.description || '',
           ])
         })
-        this.spinner.succeed(`Fetching composite's models... Done!`)
         // Logging to stdout, so that the table is laid out properly
         this.log(table.toString())
       } else {
@@ -92,13 +91,11 @@ export default class CompositeModels extends Command<
           }
           result.push(modelInfo)
         })
-        this.spinner.succeed(`Fetching composite's models... Done!`)
         // Logging the models to stdout, so that they can be piped using standard I/O or redirected to a file
         this.log(JSON.stringify(result))
       }
     } catch (e) {
       this.spinner.fail((e as Error).message)
-      return
     }
   }
 }
