@@ -56,6 +56,11 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      algolia: {
+        appId: '6U6J14O661',
+        apiKey: '4aa9e2a353cdada07c5022b78c21aa45',
+        indexName: 'composedb-js',
+      },
       navbar: {
         title: 'ComposeDB',
         logo: {
