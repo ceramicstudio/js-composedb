@@ -3,9 +3,18 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "fixed": [],
-  "linked": [],
+  "linked": [
+    [
+      "@composedb/cli",
+      "@composedb/client",
+      "@composedb/devtools",
+      "@composedb/devtools-node",
+      "@composedb/types"
+    ]
+  ],
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
+  "bumpVersionsWithWorkspaceProtocolOnly": true,
   "ignore": []
 }

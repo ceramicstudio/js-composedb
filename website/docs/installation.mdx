@@ -27,21 +27,21 @@ The CLI provides commands for the most common flows, while the libraries can be 
   defaultValue="pnpm"
   groupId="package-manager"
   values={[
-    {label: 'pnpm', value: 'pnpm'},
     {label: 'npm', value: 'npm'},
+    {label: 'pnpm', value: 'pnpm'},
     {label: 'Yarn', value: 'yarn'},
   ]}>
-  <TabItem value="pnpm">
-
-```sh
-pnpm add -g @composedb/cli
-```
-
-  </TabItem>
   <TabItem value="npm">
 
 ```sh
 npm install --location=global @composedb/cli
+```
+
+  </TabItem>
+  <TabItem value="pnpm">
+
+```sh
+pnpm add -g @composedb/cli
 ```
 
   </TabItem>
@@ -62,21 +62,21 @@ ComposeDB exposes two complementary development libraries: [`@composedb/devtools
   defaultValue="pnpm"
   groupId="package-manager"
   values={[
-    {label: 'pnpm', value: 'pnpm'},
     {label: 'npm', value: 'npm'},
+    {label: 'pnpm', value: 'pnpm'},
     {label: 'Yarn', value: 'yarn'},
   ]}>
-  <TabItem value="pnpm">
-
-```sh
-pnpm add -D @composedb/devtools @composedb/devtools-node
-```
-
-  </TabItem>
   <TabItem value="npm">
 
 ```sh
 npm install -D @composedb/devtools @composedb/devtools-node
+```
+
+  </TabItem>
+  <TabItem value="pnpm">
+
+```sh
+pnpm add -D @composedb/devtools @composedb/devtools-node
 ```
 
   </TabItem>
@@ -97,21 +97,21 @@ The [`@composedb/client`](./api/modules/client.md) package exposes the primary A
   defaultValue="pnpm"
   groupId="package-manager"
   values={[
-    {label: 'pnpm', value: 'pnpm'},
     {label: 'npm', value: 'npm'},
+    {label: 'pnpm', value: 'pnpm'},
     {label: 'Yarn', value: 'yarn'},
   ]}>
-  <TabItem value="pnpm">
-
-```sh
-pnpm add @composedb/client
-```
-
-  </TabItem>
   <TabItem value="npm">
 
 ```sh
 npm install @composedb/client
+```
+
+  </TabItem>
+  <TabItem value="pnpm">
+
+```sh
+pnpm add @composedb/client
 ```
 
   </TabItem>
@@ -132,21 +132,21 @@ You may need to install the `@composedb/types` package used by the different lib
   defaultValue="pnpm"
   groupId="package-manager"
   values={[
-    {label: 'pnpm', value: 'pnpm'},
     {label: 'npm', value: 'npm'},
+    {label: 'pnpm', value: 'pnpm'},
     {label: 'Yarn', value: 'yarn'},
   ]}>
-  <TabItem value="pnpm">
-
-```sh
-pnpm add -D @composedb/types
-```
-
-  </TabItem>
   <TabItem value="npm">
 
 ```sh
 npm install -D @composedb/types
+```
+
+  </TabItem>
+  <TabItem value="pnpm">
+
+```sh
+pnpm add -D @composedb/types
 ```
 
   </TabItem>

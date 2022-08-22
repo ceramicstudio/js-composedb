@@ -6,13 +6,14 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'ComposeDB',
-  tagline: 'Composable data on Ceramic',
+  title: 'ComposeDB on Ceramic',
+  tagline:
+    'A decentralized, composable graph database to build interoperable applications on Ceramic',
   url: 'https://composedb.js.org',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
   // GitHub pages deployment config.
   organizationName: 'ceramicstudio',
   projectName: 'js-composedb',
@@ -28,6 +29,13 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
+          lastVersion: '0.2.x',
+          versions: {
+            '0.2.x': {
+              label: '0.2.x',
+              path: '0.2.x',
+            },
+          },
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -52,7 +60,7 @@ const config = {
       navbar: {
         title: 'ComposeDB',
         logo: {
-          alt: 'My Site Logo',
+          alt: 'Ceramic logo',
           src: 'img/logo.svg',
         },
         items: [
@@ -63,11 +71,18 @@ const config = {
             label: 'Docs',
           },
           {
-            to: 'docs/api/modules/client',
+            type: 'doc',
+            docId: 'api/modules/client',
             activeBasePath: 'docs/api',
             position: 'left',
             label: 'API',
           },
+          // {
+          //   type: 'docsVersionDropdown',
+          //   position: 'right',
+          //   dropdownItemsAfter: [{ to: '/versions', label: 'All versions' }],
+          //   dropdownActiveClassDisabled: true,
+          // },
           {
             href: 'https://github.com/ceramicstudio/js-composedb',
             label: 'GitHub',
@@ -83,15 +98,15 @@ const config = {
             items: [
               {
                 label: 'Getting Started',
-                to: '/docs/installation',
+                to: '/docs/0.2.x/installation',
               },
               {
                 label: 'Guides',
-                to: '/docs/guides/concepts-overview',
+                to: '/docs/0.2.x/category/guides',
               },
               {
                 label: 'API',
-                to: '/docs/api/modules/client',
+                to: '/docs/0.2.x/api/modules/client',
               },
             ],
           },

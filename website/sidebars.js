@@ -72,6 +72,7 @@ const sidebars = {
       type: 'category',
       collapsed: false,
       label: 'Client module',
+      link: { type: 'generated-index' },
       items: [
         { type: 'doc', id: 'api/modules/client', label: 'Overview' },
         { type: 'doc', id: 'api/classes/client.ComposeClient', label: 'ComposeClient class' },
@@ -82,10 +83,25 @@ const sidebars = {
       type: 'category',
       collapsed: false,
       label: 'Developer tools',
+      link: { type: 'generated-index' },
       items: [
         { type: 'doc', id: 'api/modules/devtools', label: 'Generic developer tools' },
         { type: 'doc', id: 'api/modules/devtools_node', label: 'Node.js developer tools' },
         { type: 'doc', id: 'api/classes/devtools.Composite', label: 'Composite class' },
+      ],
+    },
+    {
+      type: 'category',
+      collapsed: false,
+      label: 'CLI',
+      link: { type: 'generated-index' },
+      items: [
+        { type: 'doc', id: 'api/modules/cli', label: 'Overview' },
+        { type: 'doc', id: 'api/commands/cli.did', label: 'did commands' },
+        { type: 'doc', id: 'api/commands/cli.composite', label: 'composite commands' },
+        { type: 'doc', id: 'api/commands/cli.model', label: 'model commands' },
+        { type: 'doc', id: 'api/commands/cli.document', label: 'document commands' },
+        { type: 'doc', id: 'api/commands/cli.graphql', label: 'graphql commands' },
       ],
     },
   ],
