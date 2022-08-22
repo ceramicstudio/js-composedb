@@ -6,8 +6,9 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'ComposeDB',
-  tagline: 'Composable data on Ceramic',
+  title: 'ComposeDB on Ceramic',
+  tagline:
+    'A decentralized, composable graph database to build interoperable applications on Ceramic',
   url: 'https://composedb.js.org',
   baseUrl: '/',
   onBrokenLinks: 'throw',
