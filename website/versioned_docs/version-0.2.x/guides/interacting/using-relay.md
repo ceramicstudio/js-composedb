@@ -29,5 +29,6 @@ const network = Network.create(async (request, variables) => {
 })
 
 // Use the created Network instance to create the Relay Environment
-export const environment = new RelayEnvironment({ network, store: new Store(new RecordSource()) })
+export const environment = new Environment({ network, store: new Store(new RecordSource()) })
 ```
+
