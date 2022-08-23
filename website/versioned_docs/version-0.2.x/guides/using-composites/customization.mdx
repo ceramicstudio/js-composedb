@@ -75,7 +75,7 @@ import { readEncodedComposite, writeEncodedComposite } from '@composedb/devtools
 const ceramic = new CeramicClient('http://localhost:7007')
 const sourceComposite = await readEncodedComposite(ceramic, 'source-composite.json')
 
-const newComposite = sourceComposite.copy(['modelID1', 'modelID2'])
+const mergedComposite = sourceComposite.copy(['modelID1', 'modelID2'])
 await writeEncodedComposite(mergedComposite, 'new-composite.json')
 ```
 
