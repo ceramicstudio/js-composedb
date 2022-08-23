@@ -146,18 +146,6 @@ export type CompositeParams = {
   definition: InternalCompositeDefinition
 }
 
-function isCompositeParams(candidate: CompositeInput): candidate is CompositeParams {
-  return (
-    (candidate as CompositeParams).commits !== undefined &&
-    (candidate as CompositeParams).definition !== undefined
-  )
-}
-
-/**
- * Supported composite input when comparing or merging composites.
- */
-export type CompositeInput = Composite | CompositeParams
-
 /**
  * Supported options for merging composites.
  */
@@ -281,13 +269,12 @@ export class Composite {
   /**
    * Create a Composite instance by merging existing composites.
    */
-  static from(composites: Iterable<CompositeInput>, options?: CompositeOptions): Composite {
+  static from(composites: Iterable<Composite>, options?: CompositeOptions): Composite {
     const [first, ...rest] = composites
     if (first == null) {
       throw new Error('Missing composites to compose')
     }
-    const composite = isCompositeParams(first) ? new Composite(first) : first
-    return composite.merge(rest, options)
+    return first.merge(rest, options)
   }
 
   /**
@@ -417,25 +404,20 @@ export class Composite {
   /**
    * Check if the composite is equal to the other one provided as input.
    */
-  equals(other: CompositeInput): boolean {
-    const otherHash = isCompositeParams(other)
-      ? createObjectHash(toStrictDefinition(other.definition))
-      : other.hash
-    return this.hash === otherHash
+  equals(other: Composite): boolean {
+    return this.hash === other.hash
   }
 
   /**
    * Merge the composite with the other one(s) into a new Composite.
    */
-  merge(other: CompositeInput | Array<CompositeInput>, options: CompositeOptions = {}): Composite {
+  merge(other: Composite | Array<Composite>, options: CompositeOptions = {}): Composite {
     const nextParams = this.toParams()
     const nextDefinition = toStrictDefinition(nextParams.definition)
     const collectedEmbeds = new Set<string>()
 
-    for (const compositeInput of Array.isArray(other) ? other : [other]) {
-      const { commits, definition } = isCompositeParams(compositeInput)
-        ? compositeInput
-        : compositeInput.toParams()
+    for (const composite of Array.isArray(other) ? other : [other]) {
+      const { commits, definition } = composite.toParams()
 
       assertSupportedVersion(nextDefinition.version, definition.version)
       assertModelsHaveCommits(definition.models, commits)

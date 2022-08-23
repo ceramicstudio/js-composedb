@@ -84,13 +84,6 @@ describe('composite', () => {
       }
       const source = new Composite(params)
 
-      test('with CompositeParams', () => {
-        expect(source.equals(params)).toBe(true)
-        expect(source.equals({ commits: {}, definition: { version: '1.0', models: {} } })).toBe(
-          false
-        )
-      })
-
       test('with Composite instance', () => {
         const clone = new Composite(source.toParams())
         expect(source.equals(clone)).toBe(true)
@@ -326,7 +319,7 @@ describe('composite', () => {
     })
 
     describe('merge() merges composites into the instance', () => {
-      test('supports Composite instances and params inputs', () => {
+      test('supports Composite instances', () => {
         const source = new Composite({
           commits: { fooID: [] },
           definition: {
@@ -345,27 +338,16 @@ describe('composite', () => {
             },
           },
         })
-        const otherParams: CompositeParams = {
-          commits: { bazID: [] },
-          definition: {
-            version: '1.0',
-            models: {
-              bazID: { name: 'Baz', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
-            },
-            aliases: { bazID: 'Test' },
-          },
-        }
-        const composite = source.merge([otherInstance, otherParams])
+        const composite = source.merge([otherInstance])
         expect(composite.toParams()).toEqual({
-          commits: { fooID: [], barID: [], bazID: [] },
+          commits: { fooID: [], barID: [] },
           definition: {
             version: '1.0',
             models: {
               fooID: { name: 'Foo', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
               barID: { name: 'Bar', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
-              bazID: { name: 'Baz', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
             },
-            aliases: { bazID: 'Test' },
+            aliases: {},
             commonEmbeds: [],
             views: {
               account: {},
@@ -376,40 +358,18 @@ describe('composite', () => {
         })
       })
 
-      test('throws if any input uses an unsupported version', () => {
-        const composite = new Composite({ commits: {}, definition: { version: '1.0', models: {} } })
-        const other = { commits: {}, definition: { version: '2.0', models: {} } }
-        expect(() => composite.merge(other)).toThrow(
-          'Unsupported Composite version 2.0, expected version 1.0'
-        )
-      })
-
-      test('throws if any input does not have matching commits', () => {
-        const composite = new Composite({ commits: {}, definition: { version: '1.0', models: {} } })
-        const other: CompositeParams = {
-          commits: {},
-          definition: {
-            version: '1.5',
-            models: {
-              fooID: { name: 'Foo', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
-            },
-          },
-        }
-        expect(() => composite.merge(other)).toThrow('Missing commits for model fooID')
-      })
-
       test('with aliases', () => {
         const source = new Composite({ commits: {}, definition: { version: '1.0', models: {} } })
         const composite = source.merge(
           [
-            {
+            new Composite({
               commits: {},
               definition: { version: '1.0', models: {}, aliases: { fooID: 'Foo', barID: 'Bar' } },
-            },
-            {
+            }),
+            new Composite({
               commits: {},
               definition: { version: '1.0', models: {}, aliases: { barID: 'Test', bazID: 'Baz' } },
-            },
+            }),
           ],
           { aliases: { bazID: 'Test' } }
         )
@@ -423,11 +383,11 @@ describe('composite', () => {
       test('with no common embeds (default)', () => {
         const source = new Composite({ commits: {}, definition: { version: '1.0', models: {} } })
         const composite = source.merge([
-          {
+          new Composite({
             commits: {},
             definition: { version: '1.0', models: {}, commonEmbeds: ['Foo', 'Bar'] },
-          },
-          { commits: {}, definition: { version: '1.0', models: {} } },
+          }),
+          new Composite({ commits: {}, definition: { version: '1.0', models: {} } }),
         ])
         expect(composite.toParams().definition.commonEmbeds).toHaveLength(0)
       })
@@ -436,14 +396,14 @@ describe('composite', () => {
         const source = new Composite({ commits: {}, definition: { version: '1.0', models: {} } })
         const composite = source.merge(
           [
-            {
+            new Composite({
               commits: {},
               definition: { version: '1.0', models: {}, commonEmbeds: ['Foo', 'Bar'] },
-            },
-            {
+            }),
+            new Composite({
               commits: {},
               definition: { version: '1.0', models: {}, commonEmbeds: ['Bar', 'Baz'] },
-            },
+            }),
           ],
           { commonEmbeds: 'all' }
         )
@@ -454,14 +414,14 @@ describe('composite', () => {
         const source = new Composite({ commits: {}, definition: { version: '1.0', models: {} } })
         const composite = source.merge(
           [
-            {
+            new Composite({
               commits: {},
               definition: { version: '1.0', models: {}, commonEmbeds: ['Foo', 'Bar'] },
-            },
-            {
+            }),
+            new Composite({
               commits: {},
               definition: { version: '1.0', models: {}, commonEmbeds: ['Bar', 'Baz'] },
-            },
+            }),
           ],
           { commonEmbeds: ['Some', 'Other'] }
         )
@@ -472,22 +432,22 @@ describe('composite', () => {
         const source = new Composite({ commits: {}, definition: { version: '1.0', models: {} } })
         const composite = source.merge(
           [
-            {
+            new Composite({
               commits: {},
               definition: {
                 version: '1.0',
                 models: {},
                 views: { account: { foo: {} }, models: {}, root: {} },
               },
-            },
-            {
+            }),
+            new Composite({
               commits: {},
               definition: {
                 version: '1.0',
                 models: {},
                 views: { account: { bar: {} }, models: {}, root: { foo: {} } },
               },
-            },
+            }),
           ],
           { views: { account: {}, models: {}, root: { foo: 'test' } } }
         )
@@ -531,9 +491,10 @@ describe('composite', () => {
         aliases: { bazID: 'Test' },
       },
     }
-    const composite = Composite.from([new Composite(first), second, third], {
-      commonEmbeds: 'all',
-    })
+    const composite = Composite.from([new Composite(first), new Composite(second), new Composite(third)], {
+        commonEmbeds: 'all',
+      }
+    )
     const params = composite.toParams()
     expect(params).toEqual({
       commits: { fooID: [], barID: [], bazID: [] },
