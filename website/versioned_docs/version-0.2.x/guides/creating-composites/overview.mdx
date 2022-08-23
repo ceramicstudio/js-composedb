@@ -28,12 +28,16 @@ Make sure you have the following packages installed, before running this code:
  * `@ceramicnetwork/http-client`
  * `@composedb/devtools-node`
 
+ In order to create a Composite using the API, you also need to have an authenticated DID instance. You can use the `did-session` package from `js-did` to achieve this: [DIDSession.DID Documentation](https://did.js.org/docs/api/classes/did_session.DIDSession#did)
+
 ```js
 import { CeramicClient } from '@ceramicnetwork/http-client'
 import { createComposite, writeEncodedComposite } from '@composedb/devtools-node'
 
 // Replace by the URL of the Ceramic node you want to deploy the models to
 const ceramic = new CeramicClient('http://localhost:7007')
+
+ceramic.setDID(<Authenticated DID instance>)
 
 // Replace by the path to the source schema file
 const composite = await createComposite(ceramic, 'source-schema.graphql')
