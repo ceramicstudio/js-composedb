@@ -146,6 +146,13 @@ export type CompositeParams = {
   definition: InternalCompositeDefinition
 }
 
+function isCompositeParams(candidate: CompositeInput): candidate is CompositeParams {
+  return (
+    (candidate as CompositeParams).commits !== undefined &&
+    (candidate as CompositeParams).definition !== undefined
+  )
+}
+
 /**
  * Supported composite input when comparing or merging composites.
  */
@@ -279,7 +286,7 @@ export class Composite {
     if (first == null) {
       throw new Error('Missing composites to compose')
     }
-    const composite = first instanceof Composite ? first : new Composite(first)
+    const composite = isCompositeParams(first) ? new Composite(first) : first
     return composite.merge(rest, options)
   }
 
@@ -411,10 +418,9 @@ export class Composite {
    * Check if the composite is equal to the other one provided as input.
    */
   equals(other: CompositeInput): boolean {
-    const otherHash =
-      other instanceof Composite
-        ? other.hash
-        : createObjectHash(toStrictDefinition(other.definition))
+    const otherHash = isCompositeParams(other)
+      ? createObjectHash(toStrictDefinition(other.definition))
+      : other.hash
     return this.hash === otherHash
   }
 
@@ -426,9 +432,11 @@ export class Composite {
     const nextDefinition = toStrictDefinition(nextParams.definition)
     const collectedEmbeds = new Set<string>()
 
-    for (const composite of Array.isArray(other) ? other : [other]) {
-      const { commits, definition } =
-        composite instanceof Composite ? composite.toParams() : composite
+    for (const compositeInput of Array.isArray(other) ? other : [other]) {
+      const { commits, definition } = isCompositeParams(compositeInput)
+        ? compositeInput
+        : compositeInput.toParams()
+
       assertSupportedVersion(nextDefinition.version, definition.version)
       assertModelsHaveCommits(definition.models, commits)
 
