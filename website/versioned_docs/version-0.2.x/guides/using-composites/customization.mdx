@@ -16,6 +16,11 @@ Multiple composites can be merged together into a single composite including all
   ]}>
   <TabItem value="api">
 
+Make sure you have the following packages installed, before running this code:
+ * `@ceramicnetwork/http-client`
+ * `@composedb/devtools`
+ * `@composedb/devtools-node`
+
 ```js
 import { CeramicClient } from '@ceramicnetwork/http-client'
 import { Composite } from '@composedb/devtools'
@@ -57,6 +62,11 @@ Composites can contain more models than useful to a given app. To avoid using un
   ]}>
   <TabItem value="api">
 
+Make sure you have the following packages installed, before running this code:
+ * `@ceramicnetwork/http-client`
+ * `@composedb/devtools`
+ * `@composedb/devtools-node`
+
 ```js
 import { CeramicClient } from '@ceramicnetwork/http-client'
 import { Composite } from '@composedb/devtools'
@@ -82,6 +92,11 @@ composedb composite:from-model source-composite.json modelID1 modelID2 --output=
 ## Aliasing Models
 
 Models can be aliases in a given composite, so that the GraphQL Schema uses the provided names instead of the ones defined in the model definition.
+
+Make sure you have the following packages installed, before running this code:
+ * `@ceramicnetwork/http-client`
+ * `@composedb/devtools`
+ * `@composedb/devtools-node`
 
 ```js
 import { CeramicClient } from '@ceramicnetwork/http-client'

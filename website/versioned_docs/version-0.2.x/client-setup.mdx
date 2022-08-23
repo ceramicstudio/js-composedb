@@ -16,6 +16,10 @@ In order to interact with a composite at runtime, it is first necessary to creat
   ]}>
   <TabItem value="api">
 
+Make sure you have the following packages installed, before running this code:
+ * `@ceramicnetwork/http-client`
+ * `@composedb/devtools-node`
+
 ```js
 import { CeramicClient } from '@ceramicnetwork/http-client'
 import { writeEncodedCompositeRuntime } from '@composedb/devtools-node'
@@ -45,7 +49,10 @@ composedb composite:compile my-first-composite.json src/__generated__/definition
 
 ## Configuring the client
 
-Once the composite definition file is written, for example in `src/__generated__/definition.js` using the example above, it can be imported in the app to configure the client:
+Once the composite definition file is written, for example in `src/__generated__/definition.js` using the example above, it can be imported in the app to configure the client.ceramicnetwork.
+
+Make sure you have the following packages installed, before running this code:
+ * `@composedb/client`
 
 ```js title="src/compose.js"
 import { ComposeClient } from '@composedb/client'
