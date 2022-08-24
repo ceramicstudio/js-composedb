@@ -43,14 +43,6 @@ ___
 
 ___
 
-### CompositeInput
-
-Ƭ **CompositeInput**: [`Composite`](../classes/devtools.Composite.md) \| [`CompositeParams`](devtools.md#compositeparams)
-
-Supported composite input when comparing or merging composites.
-
-___
-
 ### CompositeOptions
 
 Ƭ **CompositeOptions**: `Object`

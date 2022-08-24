@@ -94,7 +94,7 @@ Check if the composite is equal to the other one provided as input.
 
 | Name | Type |
 | :------ | :------ |
-| `other` | [`CompositeInput`](../modules/devtools.md#compositeinput) |
+| `other` | [`Composite`](devtools.Composite.md) |
 
 #### Returns
 
@@ -112,7 +112,7 @@ Merge the composite with the other one(s) into a new Composite.
 
 | Name | Type |
 | :------ | :------ |
-| `other` | [`CompositeInput`](../modules/devtools.md#compositeinput) \| [`CompositeInput`](../modules/devtools.md#compositeinput)[] |
+| `other` | [`Composite`](devtools.Composite.md) \| [`Composite`](devtools.Composite.md)[] |
 | `options` | [`CompositeOptions`](../modules/devtools.md#compositeoptions) |
 
 #### Returns
@@ -247,7 +247,7 @@ Create a Composite instance by merging existing composites.
 
 | Name | Type |
 | :------ | :------ |
-| `composites` | `Iterable`<[`CompositeInput`](../modules/devtools.md#compositeinput)\> |
+| `composites` | `Iterable`<[`Composite`](devtools.Composite.md)\> |
 | `options?` | [`CompositeOptions`](../modules/devtools.md#compositeoptions) |
 
 #### Returns
