@@ -152,7 +152,7 @@ composedb composite:models my-first-composite.json
 
 ## Configuring Ceramic
 
-The local Ceramic node then needs to be configured to index documents using the defined model.
+The local Ceramic node then needs to be configured to index documents using the defined model and be able to serve queries against the index.
 
 This can be done by editing Ceramic's config file, which defaults to `~/.ceramic/daemon.config.json` on Linux, macOS and WSL (Windows Subsystem for Linux), adding the necessary model stream IDs to the `indexing.models` array:
 
@@ -161,6 +161,7 @@ This can be done by editing Ceramic's config file, which defaults to `~/.ceramic
   ...
   "indexing": {
     ...
+    "allow-queries-before-historical-sync": true,
     "models": ["kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e"]
   }
 }
