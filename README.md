@@ -4,7 +4,7 @@ Packages providing the reference TypeScript implementation of ComposeDB.
 
 ## ⚠️ Preview releases
 
-ComposeDB packages and tools are still under early development, breaking changes are to be expected between releases until a stable v1 is released.
+ComposeDB packages and tools are still under early development; breaking changes are expected between releases until a stable v1 is released.
 
 ## Installation
 
