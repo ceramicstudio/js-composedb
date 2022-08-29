@@ -1,7 +1,8 @@
-import { Composite, CompositeOptions } from '@composedb/devtools'
-import { Command, type CommandFlags } from '../../command.js'
+import { Composite, type CompositeOptions } from '@composedb/devtools'
 import { Flags } from '@oclif/core'
 import { readEncodedComposite, writeEncodedComposite } from '@composedb/devtools-node'
+
+import { Command, type CommandFlags } from '../../command.js'
 
 type Flags = CommandFlags & {
   output?: string
