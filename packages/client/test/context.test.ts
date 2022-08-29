@@ -52,7 +52,7 @@ describe('context', () => {
       const context = new Context({ ceramic, loader })
 
       await expect(context.loadDoc('testID')).resolves.toBe(expectedDoc)
-      expect(load).toBeCalledWith('testID')
+      expect(load).toHaveBeenCalledWith('testID')
     })
 
     test('calls the clear() method of the loader if the fresh parameter is set', async () => {
@@ -62,8 +62,8 @@ describe('context', () => {
       const context = new Context({ ceramic, loader })
 
       await context.loadDoc('testID', true)
-      expect(clear).toBeCalledWith('testID')
-      expect(load).toBeCalledWith('testID')
+      expect(clear).toHaveBeenCalledWith('testID')
+      expect(load).toHaveBeenCalledWith('testID')
     })
   })
 
@@ -76,7 +76,7 @@ describe('context', () => {
 
     const content = {}
     await expect(context.createDoc('testID', content)).resolves.toBe(expectedDoc)
-    expect(create).toBeCalledWith('testID', content)
+    expect(create).toHaveBeenCalledWith('testID', content)
   })
 
   describe('createSingle', () => {
@@ -92,8 +92,8 @@ describe('context', () => {
       await expect(context.createSingle('testID', content)).rejects.toThrow(
         'Document can only be created with an authenticated account'
       )
-      expect(single).not.toBeCalled()
-      expect(replace).not.toBeCalled()
+      expect(single).not.toHaveBeenCalled()
+      expect(replace).not.toHaveBeenCalled()
     })
 
     test('uses the single() method of the loader and sets contents', async () => {
@@ -106,8 +106,8 @@ describe('context', () => {
 
       const content = {}
       await expect(context.createSingle('testID', content)).resolves.toBe(expectedDoc)
-      expect(single).toBeCalledWith('did:test:123', 'testID')
-      expect(replace).toBeCalledWith(content)
+      expect(single).toHaveBeenCalledWith('did:test:123', 'testID')
+      expect(replace).toHaveBeenCalledWith(content)
     })
   })
 
@@ -120,7 +120,7 @@ describe('context', () => {
 
     const content = {}
     await expect(context.updateDoc('testID', content)).resolves.toBe(expectedDoc)
-    expect(update).toBeCalledWith('testID', content, undefined)
+    expect(update).toHaveBeenCalledWith('testID', content, undefined)
   })
 
   test('queryConnection()', async () => {
@@ -150,7 +150,7 @@ describe('context', () => {
         endCursor: null,
       },
     })
-    expect(queryIndex).toBeCalledWith({ model: 'test', first: 3, after: undefined })
+    expect(queryIndex).toHaveBeenCalledWith({ model: 'test', first: 3, after: undefined })
   })
 
   test('querySingle()', async () => {
@@ -164,6 +164,6 @@ describe('context', () => {
     const context = new Context({ ceramic })
 
     await expect(context.querySingle({ model: 'test' })).resolves.toBe(expectedNode)
-    expect(queryIndex).toBeCalledWith({ model: 'test', last: 1 })
+    expect(queryIndex).toHaveBeenCalledWith({ model: 'test', last: 1 })
   })
 })
