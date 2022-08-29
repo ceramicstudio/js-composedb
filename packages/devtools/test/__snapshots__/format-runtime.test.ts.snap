@@ -16,7 +16,10 @@ Object {
     ],
   },
   "models": Object {
-    "Note": "NoteID",
+    "Note": Object {
+      "accountRelation": "list",
+      "id": "NoteID",
+    },
   },
   "objects": Object {
     "Note": Object {
@@ -65,9 +68,18 @@ Object {
   },
   "enums": Object {},
   "models": Object {
-    "GenericProfile": "GenericProfileID",
-    "PersonProfile": "PersonProfileID",
-    "SocialProfile": "SocialProfileID",
+    "GenericProfile": Object {
+      "accountRelation": "single",
+      "id": "GenericProfileID",
+    },
+    "PersonProfile": Object {
+      "accountRelation": "single",
+      "id": "PersonProfileID",
+    },
+    "SocialProfile": Object {
+      "accountRelation": "single",
+      "id": "SocialProfileID",
+    },
   },
   "objects": Object {
     "GenericProfile": Object {
@@ -198,9 +210,18 @@ Object {
   },
   "enums": Object {},
   "models": Object {
-    "GenericProfile": "GenericProfileID",
-    "PersonProfile": "PersonProfileID",
-    "SocialProfile": "SocialProfileID",
+    "GenericProfile": Object {
+      "accountRelation": "single",
+      "id": "GenericProfileID",
+    },
+    "PersonProfile": Object {
+      "accountRelation": "single",
+      "id": "PersonProfileID",
+    },
+    "SocialProfile": Object {
+      "accountRelation": "single",
+      "id": "SocialProfileID",
+    },
   },
   "objects": Object {
     "GenericProfile": Object {

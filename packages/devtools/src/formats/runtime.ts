@@ -274,8 +274,8 @@ export function createRuntimeDefinition(
 
   for (const [modelID, modelDefinition] of Object.entries(definition.models)) {
     const modelName = definition.aliases?.[modelID] ?? modelDefinition.name
-    // Add name to model ID mapping
-    runtime.models[modelName] = modelID
+    // Add name to model metadata mapping
+    runtime.models[modelName] = { id: modelID, accountRelation: modelDefinition.accountRelation }
     // Extract objects, enums, relations and views from model schema
     const modelViews = modelDefinition.views ?? {}
     const compositeModelViews = definition.views?.models?.[modelID] ?? {}

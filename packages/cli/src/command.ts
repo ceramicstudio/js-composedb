@@ -4,7 +4,7 @@ import { SyncOptions } from '@ceramicnetwork/common'
 import { getResolver as get3IDResolver } from '@ceramicnetwork/3id-did-resolver'
 import { CeramicClient } from '@ceramicnetwork/http-client'
 import { Command as CoreCommand, Flags } from '@oclif/core'
-import { DID } from 'dids'
+import { type DIDProvider, DID } from 'dids'
 import type { ResolverRegistry } from 'did-resolver'
 import { Ed25519Provider } from 'key-did-provider-ed25519'
 import { getResolver as getKeyResolver } from 'key-did-resolver'
@@ -156,8 +156,8 @@ export abstract class Command<
     return this.#resolverRegistry
   }
 
-  getProvider(seed: string): Ed25519Provider {
-    return new Ed25519Provider(fromString(seed, 'base16'))
+  getProvider(seed: string): DIDProvider {
+    return new Ed25519Provider(fromString(seed, 'base16')) as DIDProvider
   }
 
   getDID(): DID {
