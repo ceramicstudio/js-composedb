@@ -1,5 +1,5 @@
 import { Command, CommandFlags } from '../../command.js'
-import { DID } from 'dids'
+import { type DIDProvider, DID } from 'dids'
 import { Ed25519Provider } from 'key-did-provider-ed25519'
 import { fromString } from 'uint8arrays'
 
@@ -31,7 +31,10 @@ export default class DIDFromPrivateKey extends Command<CommandFlags, { didPrivat
     try {
       const hexString = possibleSeedInputs.find((input) => input !== undefined) || ''
       const seed = fromString(hexString, 'base16')
-      const did = new DID({ provider: new Ed25519Provider(seed), resolver: this.resolverRegistry })
+      const did = new DID({
+        provider: new Ed25519Provider(seed) as DIDProvider,
+        resolver: this.resolverRegistry,
+      })
       await did.authenticate()
       this.spinner.succeed(`Creating DID... Done!`)
       // Logging the DID to stdout, so that it can be piped using standard I/O or redirected to a file
