@@ -1,6 +1,6 @@
 {
   "name": "@composedb/types",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
@@ -29,16 +29,16 @@
   "scripts": {
     "build:clean": "del dist",
     "build:js": "swc src -d ./dist --config-file ../../.swcrc",
-    "build:types": "tsc --emitDeclarationOnly",
+    "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
     "build": "pnpm build:clean && pnpm build:types && pnpm build:js",
     "lint": "eslint src --fix",
     "prepare": "pnpm build",
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/stream-model": "^0.4.0",
-    "@ceramicnetwork/stream-model-instance": "^0.3.1",
-    "dids": "^3.2.0",
+    "@ceramicnetwork/stream-model": "^0.4.2",
+    "@ceramicnetwork/stream-model-instance": "^0.4.0",
+    "dids": "^3.3.0",
     "json-schema-typed": "^8.0.1"
   }
 }

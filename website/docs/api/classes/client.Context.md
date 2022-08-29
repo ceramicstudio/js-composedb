@@ -85,7 +85,32 @@ Create a new document with the given model and content.
 
 | Name | Type |
 | :------ | :------ |
-| `Content` | `Record`<`string`, `any`\> |
+| `Content` | extends `Record`<`string`, `any`\> = `Record`<`string`, `any`\> |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `model` | `string` |
+| `content` | `Content` |
+
+#### Returns
+
+`Promise`<`ModelInstanceDocument`<`Content`\>\>
+
+___
+
+### createSingle
+
+▸ **createSingle**<`Content`\>(`model`, `content`): `Promise`<`ModelInstanceDocument`<`Content`\>\>
+
+Create a new single document with the given model and content.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `Content` | extends `Record`<`string`, `any`\> = `Record`<`string`, `any`\> |
 
 #### Parameters
 
@@ -110,7 +135,7 @@ Load a document by ID, using the cache if possible.
 
 | Name | Type |
 | :------ | :------ |
-| `Content` | `Record`<`string`, `any`\> |
+| `Content` | extends `Record`<`string`, `any`\> = `Record`<`string`, `any`\> |
 
 #### Parameters
 
@@ -171,7 +196,7 @@ Update an existing document.
 
 | Name | Type |
 | :------ | :------ |
-| `Content` | `Record`<`string`, `any`\> |
+| `Content` | extends `Record`<`string`, `any`\> = `Record`<`string`, `any`\> |
 
 #### Parameters
 
