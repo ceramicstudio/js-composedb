@@ -10,7 +10,7 @@ It is **not necessary to use it** to [execute queries](queries.md) and [mutation
 
 The ComposeDB client can be used with [Relay](https://relay.dev/) by creating a custom [network layer](https://relay.dev/docs/guides/network-layer/), as shown in the example below:
 
-Make sure you have the `composedb` packages [installed](/installation.mdx), before running the code below. Additionally, you'll need the `relay-runtime` package.
+Make sure you have the `composedb` packages [installed](../../installation.mdx), before running the code below. Additionally, you'll need the `relay-runtime` package.
 
 ```js
 import { ComposeClient } from '@composedb/client'
