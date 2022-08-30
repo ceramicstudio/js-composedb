@@ -54,7 +54,7 @@ describe('query', () => {
         endCursor: null,
       },
     })
-    expect(buildStreamFromState).toBeCalledTimes(2)
+    expect(buildStreamFromState).toHaveBeenCalledTimes(2)
   })
 
   test('queryConnection()', async () => {
@@ -83,7 +83,7 @@ describe('query', () => {
         endCursor: null,
       },
     })
-    expect(queryIndex).toBeCalledWith({ model: 'test', first: 3, after: undefined })
+    expect(queryIndex).toHaveBeenCalledWith({ model: 'test', first: 3, after: undefined })
   })
 
   describe('querySingle()', () => {
@@ -97,7 +97,7 @@ describe('query', () => {
       const ceramic = { buildStreamFromState, index: { queryIndex } } as unknown as CeramicApi
 
       await expect(querySingle(ceramic, { model: 'test' })).resolves.toBe(expectedNode)
-      expect(queryIndex).toBeCalledWith({ model: 'test', last: 1 })
+      expect(queryIndex).toHaveBeenCalledWith({ model: 'test', last: 1 })
     })
 
     test('with no result', async () => {

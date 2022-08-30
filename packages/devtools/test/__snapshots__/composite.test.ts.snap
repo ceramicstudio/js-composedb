@@ -1,23 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`composite Composite instance toJSON() returns a JSON-encoded composite 1`] = `
-Object {
-  "aliases": Object {},
-  "models": Object {},
+{
+  "aliases": {},
+  "models": {},
   "version": "1.0",
-  "views": Object {
-    "account": Object {},
-    "models": Object {},
-    "root": Object {},
+  "views": {
+    "account": {},
+    "models": {},
+    "root": {},
   },
 }
 `;
 
 exports[`composite Composite instance toRuntime() returns the runtime definition for the Composite 1`] = `
-Object {
-  "accountData": Object {},
-  "enums": Object {},
-  "models": Object {},
-  "objects": Object {},
+{
+  "accountData": {},
+  "enums": {},
+  "models": {},
+  "objects": {},
 }
 `;
