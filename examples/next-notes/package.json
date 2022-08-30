@@ -10,19 +10,19 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ceramicnetwork/http-client": "^2.3.1",
+    "@ceramicnetwork/http-client": "^2.3.3",
     "@composedb/client": "workspace:^0.2.0",
     "@composedb/types": "workspace:^0.2.0",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
-    "@mui/icons-material": "^5.8.4",
-    "@mui/material": "^5.10.0",
-    "@mui/styles": "^5.9.2",
-    "@swc/helpers": "^0.4.6",
-    "dids": "^3.2.0",
-    "jotai": "^1.7.7",
+    "@mui/icons-material": "^5.10.2",
+    "@mui/material": "^5.10.2",
+    "@mui/styles": "^5.10.2",
+    "@swc/helpers": "^0.4.11",
+    "dids": "^3.3.0",
+    "jotai": "^1.8.1",
     "key-did-provider-ed25519": "^2.0.1",
-    "key-did-resolver": "^2.0.6",
+    "key-did-resolver": "^2.1.0",
     "next": "^12.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -33,13 +33,13 @@
   "devDependencies": {
     "@composedb/devtools": "workspace:^0.2.0",
     "@composedb/devtools-node": "workspace:^0.2.0",
-    "@types/node": "^18.7.4",
+    "@types/node": "^18.7.13",
     "@types/react": "^18.0.17",
-    "@types/react-relay": "^13.0.2",
-    "@types/relay-runtime": "^13.0.4",
-    "eslint": "^8.22.0",
+    "@types/react-relay": "^14.1.1",
+    "@types/relay-runtime": "^14.1.2",
+    "eslint": "^8.23.0",
     "eslint-config-next": "^12.2.5",
     "relay-compiler": "^14.1.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.8.2"
   }
 }

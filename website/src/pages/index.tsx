@@ -20,7 +20,7 @@ function HomepageHeader() {
           <Link
             className="button button--secondary button--lg"
             to={latestVersion.path + '/introduction'}>
-            ComposeDB documentation
+            Start Building
           </Link>
         </div>
       </div>
@@ -31,7 +31,7 @@ function HomepageHeader() {
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext()
   return (
-    <Layout title={siteConfig.title} description={siteConfig.tagline}>
+    <Layout description={siteConfig.tagline}>
       <HomepageHeader />
       <main>
         <HomepageFeatures />

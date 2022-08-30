@@ -79,6 +79,38 @@ describe('context', () => {
     expect(create).toBeCalledWith('testID', content)
   })
 
+  describe('createSingle', () => {
+    test('throws an error if the viewerID is not set', async () => {
+      const replace = jest.fn()
+      const expectedDoc = { replace }
+      const single = jest.fn(() => expectedDoc)
+      const loader = { single } as unknown as DocumentLoader
+      const ceramic = {} as unknown as CeramicApi
+      const context = new Context({ ceramic, loader })
+
+      const content = {}
+      await expect(context.createSingle('testID', content)).rejects.toThrow(
+        'Document can only be created with an authenticated account'
+      )
+      expect(single).not.toBeCalled()
+      expect(replace).not.toBeCalled()
+    })
+
+    test('uses the single() method of the loader and sets contents', async () => {
+      const replace = jest.fn()
+      const expectedDoc = { replace }
+      const single = jest.fn(() => expectedDoc)
+      const loader = { single } as unknown as DocumentLoader
+      const ceramic = { did: { id: 'did:test:123' } } as unknown as CeramicApi
+      const context = new Context({ ceramic, loader })
+
+      const content = {}
+      await expect(context.createSingle('testID', content)).resolves.toBe(expectedDoc)
+      expect(single).toBeCalledWith('did:test:123', 'testID')
+      expect(replace).toBeCalledWith(content)
+    })
+  })
+
   test('updateDoc()', async () => {
     const expectedDoc = {}
     const update = jest.fn(() => expectedDoc)

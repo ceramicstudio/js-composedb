@@ -102,17 +102,18 @@ export async function fromAbstractModel(
 
 async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
   ceramic: CeramicApi,
-  modelsCommits: Models
+  modelsCommits: Models & {} // eslint-disable-line @typescript-eslint/ban-types
 ): Promise<Record<keyof Models, ModelDefinition>> {
   const definitions = await Promise.all(
-    Object.values(modelsCommits).map(async ([genesis, ...updates]): Promise<Model> => {
+    Object.values(modelsCommits).map(async (commits): Promise<Model> => {
+      const [genesis, ...updates] = commits as Array<StreamCommits>
       const model = await ceramic.createStreamFromGenesis<Model>(
         Model.STREAM_TYPE_ID,
         genesis,
         MODEL_GENESIS_OPTS
       )
       for (const commit of updates) {
-        await ceramic.applyCommit(model.id, commit as SignedCommit)
+        await ceramic.applyCommit(model.id, commit as unknown as SignedCommit)
       }
       return model
     })

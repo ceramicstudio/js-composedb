@@ -54,8 +54,8 @@ export class ComposeClient {
     const ceramiClient = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
 
     this.#context = new Context({ ...contextParams, ceramic: ceramiClient })
-    this.#resources = Object.values(definition.models).map((modelID) => {
-      return `ceramic://*?model=${modelID}`
+    this.#resources = Object.values(definition.models).map((model) => {
+      return `ceramic://*?model=${model.id}`
     })
     this.#schema = createGraphQLSchema({ definition })
   }
@@ -100,34 +100,34 @@ export class ComposeClient {
   /**
    * Execute a GraphQL query from a DocumentNode and optional variables.
    */
-  async execute(
+  async execute<Data = Record<string, unknown>>(
     document: DocumentNode,
     variableValues?: Record<string, unknown>
-  ): Promise<ExecutionResult> {
+  ): Promise<ExecutionResult<Data>> {
     const errors = validate(this.#schema, document)
     return errors.length > 0
       ? { errors }
-      : await execute({
+      : ((await execute({
           document,
           variableValues,
           contextValue: this.#context,
           schema: this.#schema,
-        })
+        })) as unknown as ExecutionResult<Data>)
   }
 
   /**
    * Execute a GraphQL query from its source and optional variables.
    */
-  async executeQuery(
+  async executeQuery<Data = Record<string, unknown>>(
     source: string | Source,
     variableValues?: Record<string, unknown>
-  ): Promise<ExecutionResult> {
+  ): Promise<ExecutionResult<Data>> {
     let document: DocumentNode
     try {
       document = parse(source)
     } catch (syntaxError) {
       return { errors: [syntaxError as GraphQLError] }
     }
-    return await this.execute(document, variableValues)
+    return await this.execute<Data>(document, variableValues)
   }
 }

@@ -1,5 +1,3 @@
 # Welcome to ComposeDB
 
-ComposeDB is a set of TypeScript libraries and tools to interact with the [Dataverse](https://blog.ceramic.network/into-the-dataverse/) using the [Ceramic network](https://ceramic.network/).
-
-It aims to provide developers the ability to easily discover, create, share and reuse composable data models in order to make public datasets directly available to the entire Ceramic ecosystem, and interact with these datasets using [GraphQL](https://graphql.org/).
+ComposeDB on Ceramic is a decentralized, composable graph database. It provides a set of Typescript libraries and tools that allow developers to quickly build applications on [Ceramic](https://ceramic.network/) — including the ability to discover, create, share and reuse composable data models using [GraphQL](https://graphql.org/).

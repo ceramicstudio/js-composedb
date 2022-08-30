@@ -4,7 +4,11 @@
  * @module types
  */
 
-import type { ModelDefinition, ModelViewsDefinition } from '@ceramicnetwork/stream-model'
+import type {
+  ModelAccountRelation,
+  ModelDefinition,
+  ModelViewsDefinition,
+} from '@ceramicnetwork/stream-model'
 import type { DagJWSResult, JWSSignature } from 'dids'
 
 export type { Model, ModelDefinition } from '@ceramicnetwork/stream-model'
@@ -186,6 +190,9 @@ export type RuntimeViewReferenceType = 'connection' | 'node'
 /** Runtime view reference representation. */
 export type RuntimeViewReference = { type: RuntimeViewReferenceType; name: string }
 
+/** Runtime model information. */
+export type RuntimeModel = { id: string; accountRelation: ModelAccountRelation }
+
 /**
  * Runtime composite definition, used by the {@linkcode client.ComposeClient ComposeClient class} to
  * create a GraphQL schema to interact with.
@@ -194,7 +201,7 @@ export type RuntimeCompositeDefinition = {
   /**
    * Models names to stream IDs mapping.
    */
-  models: Record<string, string>
+  models: Record<string, RuntimeModel>
   /**
    * Objects structures, keyed by name.
    */

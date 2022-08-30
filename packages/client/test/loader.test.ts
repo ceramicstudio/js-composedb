@@ -1,5 +1,8 @@
 import type { CeramicApi } from '@ceramicnetwork/common'
-import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
+import {
+  ModelInstanceDocument,
+  type ModelInstanceDocumentMetadataArgs,
+} from '@ceramicnetwork/stream-model-instance'
 import { CommitID, StreamID } from '@ceramicnetwork/streamid'
 import { jest } from '@jest/globals'
 
@@ -159,7 +162,7 @@ describe('loader', () => {
       })
     })
 
-    test('create() method add the stream to the cache', async () => {
+    test('create() method adds the stream to the cache', async () => {
       const create = jest.fn((_ceramic, content: Record<string, unknown>) => ({
         id: testStreamID,
         content,
@@ -181,6 +184,27 @@ describe('loader', () => {
       )
 
       await expect(loader.load(testStreamID)).resolves.toEqual({ id: testStreamID, content })
+      expect(multiQuery).not.toBeCalled()
+    })
+
+    test('single() method calls ModelInstanceDocument.single() and adds the stream to the cache', async () => {
+      const single = jest.fn((_ceramic, metadata: ModelInstanceDocumentMetadataArgs) => ({
+        id: testStreamID,
+        metadata,
+      }))
+      ModelInstanceDocument.single = single as unknown as typeof ModelInstanceDocument.single
+
+      const multiQuery = jest.fn(() => ({}))
+      const ceramic = { multiQuery } as unknown as CeramicApi
+      const loader = new DocumentLoader({ cache: true, ceramic })
+
+      const metadata = { controller: 'did:test:123', model: testStreamID }
+      const options = {}
+      await loader.single('did:test:123', testStreamID, options)
+      expect(single).toBeCalledTimes(1)
+      expect(single).toBeCalledWith(ceramic, metadata, options)
+
+      await expect(loader.load(testStreamID)).resolves.toEqual({ id: testStreamID, metadata })
       expect(multiQuery).not.toBeCalled()
     })
 

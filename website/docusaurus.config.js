@@ -6,8 +6,9 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'ComposeDB',
-  tagline: 'Composable data on Ceramic',
+  title: 'ComposeDB on Ceramic',
+  tagline:
+    'A decentralized, composable graph database to build interoperable applications on Ceramic',
   url: 'https://composedb.js.org',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -56,6 +57,11 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      algolia: {
+        appId: '6U6J14O661',
+        apiKey: '4aa9e2a353cdada07c5022b78c21aa45',
+        indexName: 'composedb-js',
+      },
       navbar: {
         title: 'ComposeDB',
         logo: {

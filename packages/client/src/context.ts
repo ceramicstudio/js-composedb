@@ -71,7 +71,7 @@ export class Context {
   /**
    * Load a document by ID, using the cache if possible.
    */
-  async loadDoc<Content = Record<string, any>>(
+  async loadDoc<Content extends Record<string, any> = Record<string, any>>(
     id: string | CommitID | StreamID,
     fresh = false
   ): Promise<ModelInstanceDocument<Content>> {
@@ -84,7 +84,7 @@ export class Context {
   /**
    * Create a new document with the given model and content.
    */
-  async createDoc<Content = Record<string, any>>(
+  async createDoc<Content extends Record<string, any> = Record<string, any>>(
     model: string,
     content: Content
   ): Promise<ModelInstanceDocument<Content>> {
@@ -92,9 +92,25 @@ export class Context {
   }
 
   /**
+   * Create a new single document with the given model and content.
+   */
+  async createSingle<Content extends Record<string, any> = Record<string, any>>(
+    model: string,
+    content: Content
+  ): Promise<ModelInstanceDocument<Content>> {
+    const controller = this.viewerID
+    if (controller == null) {
+      throw new Error('Document can only be created with an authenticated account')
+    }
+    const doc = await this.#loader.single<Content>(controller, model)
+    await doc.replace(content)
+    return doc
+  }
+
+  /**
    * Update an existing document.
    */
-  async updateDoc<Content = Record<string, any>>(
+  async updateDoc<Content extends Record<string, any> = Record<string, any>>(
     id: string | StreamID,
     content: Content,
     options?: UpdateDocOptions
