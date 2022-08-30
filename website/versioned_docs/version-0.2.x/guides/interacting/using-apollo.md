@@ -10,9 +10,7 @@ It is **not necessary to use it** to [execute queries](queries.md) and [mutation
 
 The ComposeDB client can be used with the [Apollo client](https://www.apollographql.com/docs/react/api/core/ApolloClient) by creating a custom [Apollo link](https://www.apollographql.com/docs/react/api/link/introduction), as shown in the example below:
 
-Make sure you have the following packages installed, before running this code:
-* `@apollo/client`
-* `@composedb/client`
+Make sure you have the `composedb` packages [installed](/installation.mdx), before running the code below. In this case, you'll also need `@apollo/client`, as well as a [compiled](/client-setup.mdx#compiling-the-composite) runtime definition for your composite.
 
 ```js
 import { ApolloClient, ApolloLink, InMemoryCache, Observable } from '@apollo/client'
