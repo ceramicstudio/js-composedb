@@ -1,47 +1,47 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Runtime format Note model definition with views 1`] = `
-Object {
-  "accountData": Object {
-    "noteList": Object {
+{
+  "accountData": {
+    "noteList": {
       "name": "Note",
       "type": "connection",
     },
   },
-  "enums": Object {
-    "NoteStatus": Array [
+  "enums": {
+    "NoteStatus": [
       "DEFAULT",
       "IMPORTANT",
       "ARCHIVE",
     ],
   },
-  "models": Object {
-    "Note": Object {
+  "models": {
+    "Note": {
       "accountRelation": "list",
       "id": "NoteID",
     },
   },
-  "objects": Object {
-    "Note": Object {
-      "author": Object {
+  "objects": {
+    "Note": {
+      "author": {
         "type": "view",
         "viewType": "documentAccount",
       },
-      "status": Object {
+      "status": {
         "refName": "NoteStatus",
         "refType": "enum",
         "required": false,
         "type": "reference",
       },
-      "text": Object {
+      "text": {
         "required": true,
         "type": "string",
       },
-      "title": Object {
+      "title": {
         "required": true,
         "type": "string",
       },
-      "version": Object {
+      "version": {
         "type": "view",
         "viewType": "documentVersion",
       },
@@ -51,74 +51,74 @@ Object {
 `;
 
 exports[`Runtime format Profile - multiples models with common local references 1`] = `
-Object {
-  "accountData": Object {
-    "genericProfile": Object {
+{
+  "accountData": {
+    "genericProfile": {
       "name": "GenericProfile",
       "type": "node",
     },
-    "personProfile": Object {
+    "personProfile": {
       "name": "PersonProfile",
       "type": "node",
     },
-    "socialProfile": Object {
+    "socialProfile": {
       "name": "SocialProfile",
       "type": "node",
     },
   },
-  "enums": Object {},
-  "models": Object {
-    "GenericProfile": Object {
+  "enums": {},
+  "models": {
+    "GenericProfile": {
       "accountRelation": "single",
       "id": "GenericProfileID",
     },
-    "PersonProfile": Object {
+    "PersonProfile": {
       "accountRelation": "single",
       "id": "PersonProfileID",
     },
-    "SocialProfile": Object {
+    "SocialProfile": {
       "accountRelation": "single",
       "id": "SocialProfileID",
     },
   },
-  "objects": Object {
-    "GenericProfile": Object {
-      "image": Object {
+  "objects": {
+    "GenericProfile": {
+      "image": {
         "refName": "ImageSources",
         "refType": "object",
         "required": false,
         "type": "reference",
       },
-      "name": Object {
+      "name": {
         "required": false,
         "type": "string",
       },
     },
-    "ImageMetadata": Object {
-      "height": Object {
+    "ImageMetadata": {
+      "height": {
         "required": true,
         "type": "integer",
       },
-      "mimeType": Object {
+      "mimeType": {
         "required": true,
         "type": "string",
       },
-      "size": Object {
+      "size": {
         "required": false,
         "type": "integer",
       },
-      "src": Object {
+      "src": {
         "required": true,
         "type": "string",
       },
-      "width": Object {
+      "width": {
         "required": true,
         "type": "integer",
       },
     },
-    "ImageSources": Object {
-      "alternatives": Object {
-        "item": Object {
+    "ImageSources": {
+      "alternatives": {
+        "item": {
           "refName": "ImageMetadata",
           "refType": "object",
           "required": false,
@@ -127,63 +127,63 @@ Object {
         "required": false,
         "type": "list",
       },
-      "original": Object {
+      "original": {
         "refName": "ImageMetadata",
         "refType": "object",
         "required": true,
         "type": "reference",
       },
     },
-    "PersonProfile": Object {
-      "affiliations": Object {
-        "item": Object {
+    "PersonProfile": {
+      "affiliations": {
+        "item": {
           "required": false,
           "type": "string",
         },
         "required": false,
         "type": "list",
       },
-      "birthDate": Object {
+      "birthDate": {
         "required": false,
         "type": "string",
       },
-      "gender": Object {
+      "gender": {
         "required": false,
         "type": "string",
       },
-      "homeLocation": Object {
+      "homeLocation": {
         "required": false,
         "type": "string",
       },
-      "nationalities": Object {
-        "item": Object {
+      "nationalities": {
+        "item": {
           "required": false,
           "type": "string",
         },
         "required": false,
         "type": "list",
       },
-      "residenceCountry": Object {
+      "residenceCountry": {
         "required": false,
         "type": "string",
       },
     },
-    "SocialProfile": Object {
-      "background": Object {
+    "SocialProfile": {
+      "background": {
         "refName": "ImageSources",
         "refType": "object",
         "required": false,
         "type": "reference",
       },
-      "description": Object {
+      "description": {
         "required": false,
         "type": "string",
       },
-      "emoji": Object {
+      "emoji": {
         "required": false,
         "type": "string",
       },
-      "url": Object {
+      "url": {
         "required": false,
         "type": "string",
       },
@@ -193,78 +193,78 @@ Object {
 `;
 
 exports[`Runtime format Profile definition with added model view 1`] = `
-Object {
-  "accountData": Object {
-    "genericProfile": Object {
+{
+  "accountData": {
+    "genericProfile": {
       "name": "GenericProfile",
       "type": "node",
     },
-    "personProfile": Object {
+    "personProfile": {
       "name": "PersonProfile",
       "type": "node",
     },
-    "socialProfile": Object {
+    "socialProfile": {
       "name": "SocialProfile",
       "type": "node",
     },
   },
-  "enums": Object {},
-  "models": Object {
-    "GenericProfile": Object {
+  "enums": {},
+  "models": {
+    "GenericProfile": {
       "accountRelation": "single",
       "id": "GenericProfileID",
     },
-    "PersonProfile": Object {
+    "PersonProfile": {
       "accountRelation": "single",
       "id": "PersonProfileID",
     },
-    "SocialProfile": Object {
+    "SocialProfile": {
       "accountRelation": "single",
       "id": "SocialProfileID",
     },
   },
-  "objects": Object {
-    "GenericProfile": Object {
-      "image": Object {
+  "objects": {
+    "GenericProfile": {
+      "image": {
         "refName": "ImageSources",
         "refType": "object",
         "required": false,
         "type": "reference",
       },
-      "name": Object {
+      "name": {
         "required": false,
         "type": "string",
       },
-      "version": Object {
+      "version": {
         "type": "view",
         "viewType": "documentVersion",
       },
     },
-    "ImageMetadata": Object {
-      "height": Object {
+    "ImageMetadata": {
+      "height": {
         "required": true,
         "type": "integer",
       },
-      "mimeType": Object {
+      "mimeType": {
         "required": true,
         "type": "string",
       },
-      "size": Object {
+      "size": {
         "required": false,
         "type": "integer",
       },
-      "src": Object {
+      "src": {
         "required": true,
         "type": "string",
       },
-      "width": Object {
+      "width": {
         "required": true,
         "type": "integer",
       },
     },
-    "ImageSources": Object {
-      "alternatives": Object {
-        "item": Object {
+    "ImageSources": {
+      "alternatives": {
+        "item": {
           "refName": "ImageMetadata",
           "refType": "object",
           "required": false,
@@ -273,63 +273,63 @@ Object {
         "required": false,
         "type": "list",
       },
-      "original": Object {
+      "original": {
         "refName": "ImageMetadata",
         "refType": "object",
         "required": true,
         "type": "reference",
       },
     },
-    "PersonProfile": Object {
-      "affiliations": Object {
-        "item": Object {
+    "PersonProfile": {
+      "affiliations": {
+        "item": {
           "required": false,
           "type": "string",
         },
         "required": false,
         "type": "list",
       },
-      "birthDate": Object {
+      "birthDate": {
         "required": false,
         "type": "string",
       },
-      "gender": Object {
+      "gender": {
         "required": false,
         "type": "string",
       },
-      "homeLocation": Object {
+      "homeLocation": {
         "required": false,
         "type": "string",
       },
-      "nationalities": Object {
-        "item": Object {
+      "nationalities": {
+        "item": {
           "required": false,
           "type": "string",
         },
         "required": false,
         "type": "list",
       },
-      "residenceCountry": Object {
+      "residenceCountry": {
         "required": false,
         "type": "string",
       },
     },
-    "SocialProfile": Object {
-      "background": Object {
+    "SocialProfile": {
+      "background": {
         "refName": "ImageSources",
         "refType": "object",
         "required": false,
         "type": "reference",
       },
-      "description": Object {
+      "description": {
         "required": false,
         "type": "string",
       },
-      "emoji": Object {
+      "emoji": {
         "required": false,
         "type": "string",
       },
-      "url": Object {
+      "url": {
         "required": false,
         "type": "string",
       },

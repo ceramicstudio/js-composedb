@@ -43,8 +43,8 @@ describe('loader', () => {
         multiqueryTimeout,
       })
       await Promise.all([loader.load(testID1), loader.load(testID2)])
-      expect(multiQuery).toBeCalledTimes(1)
-      expect(multiQuery).toBeCalledWith(
+      expect(multiQuery).toHaveBeenCalledTimes(1)
+      expect(multiQuery).toHaveBeenCalledWith(
         [{ streamId: testID1 }, { streamId: testID2 }],
         multiqueryTimeout
       )
@@ -75,10 +75,10 @@ describe('loader', () => {
       })
 
       await loader.load(testID1)
-      expect(multiQuery).toBeCalledTimes(1)
+      expect(multiQuery).toHaveBeenCalledTimes(1)
 
       await Promise.all([loader.load(testID1), loader.load(testID2)])
-      expect(multiQuery).toBeCalledTimes(2)
+      expect(multiQuery).toHaveBeenCalledTimes(2)
       expect(multiQuery).toHaveBeenLastCalledWith(
         [{ streamId: testID1 }, { streamId: testID2 }],
         multiqueryTimeout
@@ -94,10 +94,10 @@ describe('loader', () => {
       })
 
       await loader.load(testID1)
-      expect(multiQuery).toBeCalledTimes(1)
+      expect(multiQuery).toHaveBeenCalledTimes(1)
 
       await Promise.all([loader.load(testID1), loader.load(testID2)])
-      expect(multiQuery).toBeCalledTimes(2)
+      expect(multiQuery).toHaveBeenCalledTimes(2)
       expect(multiQuery).toHaveBeenLastCalledWith([{ streamId: testID2 }], multiqueryTimeout)
     })
 
@@ -111,12 +111,12 @@ describe('loader', () => {
       })
 
       await loader.load(testID1)
-      expect(multiQuery).toBeCalledTimes(1)
+      expect(multiQuery).toHaveBeenCalledTimes(1)
       expect(cache.has(testID1)).toBe(true)
       cache.delete(testID1)
 
       await Promise.all([loader.load(testID1), loader.load(testID2)])
-      expect(multiQuery).toBeCalledTimes(2)
+      expect(multiQuery).toHaveBeenCalledTimes(2)
       expect(multiQuery).toHaveBeenLastCalledWith(
         [{ streamId: testID1 }, { streamId: testID2 }],
         multiqueryTimeout
@@ -158,7 +158,7 @@ describe('loader', () => {
         expect(loader.cache(stream2)).toBe(true)
 
         await expect(loader.load(testStreamID)).resolves.toBe(stream2)
-        expect(multiQuery).not.toBeCalled()
+        expect(multiQuery).not.toHaveBeenCalled()
       })
     })
 
@@ -175,8 +175,8 @@ describe('loader', () => {
 
       const content = { foo: 'bar' }
       await loader.create(testStreamID, content)
-      expect(create).toBeCalledTimes(1)
-      expect(create).toBeCalledWith(
+      expect(create).toHaveBeenCalledTimes(1)
+      expect(create).toHaveBeenCalledWith(
         ceramic,
         content,
         { controller: undefined, model: testStreamID },
@@ -184,7 +184,7 @@ describe('loader', () => {
       )
 
       await expect(loader.load(testStreamID)).resolves.toEqual({ id: testStreamID, content })
-      expect(multiQuery).not.toBeCalled()
+      expect(multiQuery).not.toHaveBeenCalled()
     })
 
     test('single() method calls ModelInstanceDocument.single() and adds the stream to the cache', async () => {
@@ -201,11 +201,11 @@ describe('loader', () => {
       const metadata = { controller: 'did:test:123', model: testStreamID }
       const options = {}
       await loader.single('did:test:123', testStreamID, options)
-      expect(single).toBeCalledTimes(1)
-      expect(single).toBeCalledWith(ceramic, metadata, options)
+      expect(single).toHaveBeenCalledTimes(1)
+      expect(single).toHaveBeenCalledWith(ceramic, metadata, options)
 
       await expect(loader.load(testStreamID)).resolves.toEqual({ id: testStreamID, metadata })
-      expect(multiQuery).not.toBeCalled()
+      expect(multiQuery).not.toHaveBeenCalled()
     })
 
     describe('update() method', () => {
@@ -235,15 +235,15 @@ describe('loader', () => {
         })
 
         await loader.load(testID1)
-        expect(cacheDelete).not.toBeCalled()
+        expect(cacheDelete).not.toHaveBeenCalled()
         expect(cacheMap.has(testID1)).toBe(true)
-        expect(cacheSet).toBeCalledTimes(1)
+        expect(cacheSet).toHaveBeenCalledTimes(1)
 
         await loader.update(testID1, { test: true }, { pin: true })
-        expect(replace).toBeCalledWith({ foo: 'bar', test: true }, { pin: true })
-        expect(cacheDelete).toBeCalledWith(testID1)
+        expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, { pin: true })
+        expect(cacheDelete).toHaveBeenCalledWith(testID1)
         expect(cacheMap.has(testID1)).toBe(true)
-        expect(cacheSet).toBeCalledTimes(2)
+        expect(cacheSet).toHaveBeenCalledTimes(2)
       })
 
       test('fails if the provided version does not match the loaded one', async () => {
@@ -256,7 +256,7 @@ describe('loader', () => {
         await expect(loader.update(testID1, { test: true }, { version: 'test' })).rejects.toThrow(
           'Stream version mismatch'
         )
-        expect(replace).not.toBeCalled()
+        expect(replace).not.toHaveBeenCalled()
       })
 
       test('applies the update if the provided version matches the loaded one', async () => {
@@ -267,7 +267,7 @@ describe('loader', () => {
 
         const loader = new DocumentLoader({ ceramic: { multiQuery } as unknown as CeramicApi })
         await loader.update(testID1, { test: true }, { version: testCommitID.toString() })
-        expect(replace).toBeCalledWith({ foo: 'bar', test: true }, {})
+        expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, {})
       })
 
       test('performs a full replacement if the option is set', async () => {
@@ -278,7 +278,7 @@ describe('loader', () => {
 
         const loader = new DocumentLoader({ ceramic: { multiQuery } as unknown as CeramicApi })
         await loader.update(testID1, { test: true }, { replace: true })
-        expect(replace).toBeCalledWith({ test: true }, {})
+        expect(replace).toHaveBeenCalledWith({ test: true }, {})
       })
     })
   })
