@@ -32,13 +32,16 @@ When models are available on a Ceramic network, it is possible to load them into
   ]}>
   <TabItem value="api">
 
+Make sure you have the `composedb` packages [installed](../../installation.mdx), before running the code below.
+
+
 ```js
 import { CeramicClient } from '@ceramicnetwork/http-client'
 import { Composite } from '@composedb/devtools'
 import { writeEncodedComposite } from '@composedb/devtools-node'
 
 const ceramic = new CeramicClient('https://gateway-clay.ceramic.network')
-const composite = await Composite.fromModels({ ceramic, models: [''] })
+const composite = await Composite.fromModels({ ceramic, models: ['<model ID>'] })
 
 await writeEncodedComposite(composite, 'my-composite.json')
 ```

@@ -47,8 +47,14 @@ pnpm add -g @composedb/cli@^0.2.0
   </TabItem>
   <TabItem value="yarn">
 
+:::caution
+
+Global packages are only supported for yarn 2.x and older. For yarn 3.x and newer, use `yarn dlx` to run composedb cli commands
+
+:::
+
 ```sh
-yarn add -g @composedb/cli@^0.2.0
+yarn global add @composedb/cli@^0.2.0
 ```
 
   </TabItem>

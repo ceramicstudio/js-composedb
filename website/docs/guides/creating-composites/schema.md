@@ -14,7 +14,7 @@ type Profile @createModel(accountRelation: SINGLE, description: "Very basic prof
 }
 
 type Note @createModel(accountRelation: LIST, description: "Very basic note") {
-  author: DID! @documentAuthor
+  author: DID! @documentAccount
   version: CommitID! @documentVersion
   title: String! @string(minLength: 10, maxLength: 100)
   text: String @string(maxLength: 2000)

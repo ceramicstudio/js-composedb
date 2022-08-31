@@ -9,6 +9,12 @@ This page presents how to create your first composite and deploy it to your loca
 
 ## Running a local Ceramic node
 
+:::caution
+
+Because ComposeDB is still an experimental feature set built on top of Ceramic, if you want to use it with a Ceramic node, you need to set the `CERAMIC_ENABLE_EXPERIMENTAL_INDEXING` environment variable to `true`, before running a node.
+
+:::
+
 The following steps require a local Ceramic node to be running. If you do not already have it running, you can use the following command:
 
 <Tabs
@@ -50,7 +56,7 @@ Composites can be created by importing existing models. Here we're going to impo
 
 Make sure your local Ceramic node is connected to the Clay testnet in order to load this model.
 
-If for some reason the model can't be loaded from the Clay testnet, you can [download the composite file directly instead](/my-first-composite.json).
+If for some reason the model can't be loaded from the Clay testnet, you can [download the composite file directly instead](/my-first-composite.json) and store it in `my-first-composite.json` file.
 
 :::
 
@@ -62,6 +68,8 @@ If for some reason the model can't be loaded from the Clay testnet, you can [dow
     {label: 'Using the API', value: 'api'},
   ]}>
   <TabItem value="api">
+
+Make sure you have the `composedb` packages [installed](installation.mdx), before running the code below.
 
 ```js
 import { CeramicClient } from '@ceramicnetwork/http-client'
@@ -102,6 +110,8 @@ The composite can be deployed from a script or the CLI using the composite file:
   ]}>
   <TabItem value="api">
 
+Make sure you have the `composedb` packages [installed](installation.mdx), before running the code below.
+
 ```js
 import { CeramicClient } from '@ceramicnetwork/http-client'
 import { readEncodedComposite } from '@composedb/devtools-node'
@@ -137,7 +147,7 @@ composedb composite:models my-first-composite.json
 
 ## Configuring Ceramic
 
-The local Ceramic node then needs to be configured to index documents using the defined model.
+The local Ceramic node then needs to be configured to index documents using the defined model and be able to serve queries against the index.
 
 This can be done by editing Ceramic's config file, which defaults to `~/.ceramic/daemon.config.json` on Linux, macOS and WSL (Windows Subsystem for Linux), adding the necessary model stream IDs to the `indexing.models` array:
 
@@ -146,6 +156,7 @@ This can be done by editing Ceramic's config file, which defaults to `~/.ceramic
   ...
   "indexing": {
     ...
+    "allow-queries-before-historical-sync": true,
     "models": ["kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e"]
   }
 }
@@ -165,6 +176,8 @@ Once the composite is deployed and the Ceramic node configured, it is possible t
     {label: 'Using the API', value: 'api'},
   ]}>
   <TabItem value="api">
+
+Make sure you have the `composedb` packages [installed](installation.mdx), before running the code below.
 
 ```js
 import { serveEncodedDefinition } from '@composedb/devtools-node'

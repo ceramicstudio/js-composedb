@@ -24,6 +24,8 @@ After a schema file has been created, it must be converted to a composite to be 
   ]}>
   <TabItem value="api">
 
+Make sure you have the `composedb` packages [installed](../../installation.mdx), before running the code below.
+
 ```js
 import { CeramicClient } from '@ceramicnetwork/http-client'
 import { createComposite, writeEncodedComposite } from '@composedb/devtools-node'
@@ -43,8 +45,10 @@ More details: [`createComposite`](../../api/modules/devtools_node.md#createcompo
   </TabItem>
   <TabItem value="cli">
 
+If you want to create a composite using the CLI, you need to pass the `--did-private-key` flag. More details: [`did:generate-private-key CLI command`](../../api/commands/cli.did.md#composedb-didgenerate-private-key)
+
 ```sh
-composedb composite:create source-schema.graphql --output=my-composite.json --ceramic-url=http://localhost:7007
+composedb composite:create source-schema.graphql --output=my-composite.json --did-private-key='<DID Private Key>' --ceramic-url=http://localhost:7007
 ```
 
   </TabItem>
