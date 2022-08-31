@@ -41,7 +41,7 @@ import { Composite } from '@composedb/devtools'
 import { writeEncodedComposite } from '@composedb/devtools-node'
 
 const ceramic = new CeramicClient('https://gateway-clay.ceramic.network')
-const composite = await Composite.fromModels({ ceramic, models: [''] })
+const composite = await Composite.fromModels({ ceramic, models: ['<model ID>'] })
 
 await writeEncodedComposite(composite, 'my-composite.json')
 ```
