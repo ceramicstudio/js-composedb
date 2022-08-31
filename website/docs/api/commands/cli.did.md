@@ -19,7 +19,7 @@ DIDs are identifiers for [Ceramic Accounts](../../guides/concepts-overview.md#ac
 
 Generate a new random 32 byte private key and return its base 16 representation
 
-You can use this command to generate a fresh private key which you can later use a the `--did-private-key` flag to 
+You can use this command to generate a fresh private key which you can later use a the `----did-private-key` flag to 
 authenticate other ComposeDB CLI command calls
 
 ```

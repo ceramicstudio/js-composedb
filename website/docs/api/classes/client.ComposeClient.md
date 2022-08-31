@@ -81,15 +81,9 @@ CACAO resources URLs for the models the client interacts with.
 
 ### execute
 
-▸ **execute**<`Data`\>(`document`, `variableValues?`): `Promise`<`ExecutionResult`<`Data`, `ObjMap`<`unknown`\>\>\>
+▸ **execute**(`document`, `variableValues?`): `Promise`<`ExecutionResult`<`ObjMap`<`unknown`\>, `ObjMap`<`unknown`\>\>\>
 
 Execute a GraphQL query from a DocumentNode and optional variables.
-
-#### Type parameters
-
-| Name | Type |
-| :------ | :------ |
-| `Data` | `Record`<`string`, `unknown`\> |
 
 #### Parameters
 
@@ -100,21 +94,15 @@ Execute a GraphQL query from a DocumentNode and optional variables.
 
 #### Returns
 
-`Promise`<`ExecutionResult`<`Data`, `ObjMap`<`unknown`\>\>\>
+`Promise`<`ExecutionResult`<`ObjMap`<`unknown`\>, `ObjMap`<`unknown`\>\>\>
 
 ___
 
 ### executeQuery
 
-▸ **executeQuery**<`Data`\>(`source`, `variableValues?`): `Promise`<`ExecutionResult`<`Data`, `ObjMap`<`unknown`\>\>\>
+▸ **executeQuery**(`source`, `variableValues?`): `Promise`<`ExecutionResult`<`ObjMap`<`unknown`\>, `ObjMap`<`unknown`\>\>\>
 
 Execute a GraphQL query from its source and optional variables.
-
-#### Type parameters
-
-| Name | Type |
-| :------ | :------ |
-| `Data` | `Record`<`string`, `unknown`\> |
 
 #### Parameters
 
@@ -125,7 +113,7 @@ Execute a GraphQL query from its source and optional variables.
 
 #### Returns
 
-`Promise`<`ExecutionResult`<`Data`, `ObjMap`<`unknown`\>\>\>
+`Promise`<`ExecutionResult`<`ObjMap`<`unknown`\>, `ObjMap`<`unknown`\>\>\>
 
 ___
 
