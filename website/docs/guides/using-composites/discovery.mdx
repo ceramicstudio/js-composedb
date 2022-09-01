@@ -9,14 +9,8 @@ ComposeDB does not yet provide a way to discover composites directly, however it
 
 The ComposeDB CLI can be used to list the models known by a given node of the network.
 
-:::danger TODO
-
-Public 3Box Labs node to use for discovery
-
-:::
-
 ```sh
-composedb model:list --ceramic-url=https://gateway-clay.ceramic.network --table
+composedb model:list --table
 ```
 
 ## Creating a composite from known models
@@ -33,7 +27,6 @@ When models are available on a Ceramic network, it is possible to load them into
   <TabItem value="api">
 
 Make sure you have the `composedb` packages [installed](../../installation.mdx), before running the code below.
-
 
 ```js
 import { CeramicClient } from '@ceramicnetwork/http-client'
