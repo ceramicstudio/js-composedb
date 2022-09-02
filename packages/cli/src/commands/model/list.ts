@@ -29,7 +29,6 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
       default: 'https://ceramic-private-clay.3boxlabs.com',
       char: 'i',
       description: 'URL of a Ceramic API that indexes all models',
-      env: 'INDEXER_URL',
     }),
     table: Flags.boolean({
       description: 'display the results as a table',
