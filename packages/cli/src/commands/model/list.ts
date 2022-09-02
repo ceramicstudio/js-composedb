@@ -1,9 +1,10 @@
-import { Command, type QueryCommandFlags } from '../../command.js'
+import { BaseCommand, type QueryCommandFlags } from '../../command.js'
 import { Flags, CliUx } from '@oclif/core'
 import { Model } from '@ceramicnetwork/stream-model'
 import Table from 'cli-table3'
 import { Edge, Page, PageInfo, StreamState } from '@ceramicnetwork/common'
 import terminalSize from 'term-size'
+import {CeramicClient} from "@ceramicnetwork/http-client";
 
 type PartialModelDefinition = {
   id: string
@@ -12,17 +13,24 @@ type PartialModelDefinition = {
 }
 
 type ModelListFlags = QueryCommandFlags & {
+  'indexer-url': string
   table?: boolean
 }
 
-export default class ModelList extends Command<ModelListFlags> {
+export default class ModelList extends BaseCommand<ModelListFlags> {
   fetchedFields: Array<PartialModelDefinition> = []
   lastLoadedPageInfo: PageInfo | null = null
 
   static description = 'load a list of models with pagination'
 
   static flags = {
-    ...Command.flags,
+    ...BaseCommand.flags,
+    'indexer-url': Flags.string({
+      default: 'https://ceramic-private-clay.3boxlabs.com',
+      char: 'i',
+      description: 'URL of a Ceramic API that indexes all models',
+      env: 'INDEXER_URL',
+    }),
     table: Flags.boolean({
       description: 'display the results as a table',
     }),
@@ -39,24 +47,25 @@ export default class ModelList extends Command<ModelListFlags> {
     try {
       console.clear()
       this.spinner.start('Loading models...')
-      const page = await this.ceramic.index.queryIndex({
+      const ceramicIndexer = new CeramicClient(this.flags['indexer-url'])
+      const page = await ceramicIndexer.index.queryIndex({
         first: this.getPageSize(),
         model: Model.MODEL,
       })
       this.lastLoadedPageInfo = page.pageInfo
-      this.fetchedFields = this.fetchedFields.concat(this.getFieldsFromEdges(page.edges))
+      this.fetchedFields = this.fetchedFields.concat(this.getFieldsFromEdges(ceramicIndexer, page.edges))
       this.displayPartialDefinitions(this.fetchedFields)
 
       while (this.lastLoadedPageInfo?.hasNextPage) {
         await CliUx.ux.anykey('Press any key to load more models')
         this.spinner.start('Loading models...')
-        const nextPage: Page<StreamState> = await this.ceramic.index.queryIndex({
+        const nextPage: Page<StreamState> = await ceramicIndexer.index.queryIndex({
           first: this.getPageSize(),
           model: Model.MODEL,
           after: this.lastLoadedPageInfo?.endCursor,
         })
         this.lastLoadedPageInfo = nextPage.pageInfo
-        this.fetchedFields = this.fetchedFields.concat(this.getFieldsFromEdges(nextPage.edges))
+        this.fetchedFields = this.fetchedFields.concat(this.getFieldsFromEdges(ceramicIndexer, nextPage.edges))
         this.displayPartialDefinitions(this.fetchedFields)
       }
       this.spinner.succeed('Loading models... Done')
@@ -66,9 +75,9 @@ export default class ModelList extends Command<ModelListFlags> {
     }
   }
 
-  getFieldsFromEdges(edges: Array<Edge<StreamState>>): Array<PartialModelDefinition> {
+  getFieldsFromEdges(ceramicIndexer: CeramicClient, edges: Array<Edge<StreamState>>): Array<PartialModelDefinition> {
     return edges.map((edge) => {
-      const stream = this.ceramic.buildStreamFromState(edge.node)
+      const stream = ceramicIndexer.buildStreamFromState(edge.node)
       return {
         id: stream.id.toString(),
         name: (stream.content as Record<string, any>).name as string,
