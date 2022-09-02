@@ -83,27 +83,10 @@ const readPipe: () => Promise<string | undefined> = () => {
   })
 }
 
-export abstract class Command<
-  Flags extends CommandFlags = CommandFlags,
+export abstract class BaseCommand<
+  Flags extends StringRecord = StringRecord,
   Args extends StringRecord = StringRecord
-> extends CoreCommand {
-  static flags = {
-    'ceramic-url': Flags.string({
-      char: 'c',
-      description: 'Ceramic API URL',
-      env: 'CERAMIC_URL',
-    }),
-    'did-private-key': Flags.string({
-      char: 'k',
-      description: 'DID private key',
-      env: 'DID_PRIVATE_KEY',
-    }),
-  }
-
-  #authenticatedDID: DID | null = null
-  #ceramic: CeramicClient | null = null
-  #resolverRegistry: ResolverRegistry | null = null
-
+  > extends CoreCommand {
   args!: Args
   flags!: Flags
   stdin!: string | undefined
@@ -118,6 +101,45 @@ export abstract class Command<
     this.flags = flags as unknown as Flags
     this.spinner = ora()
     this.stdin = await readPipe()
+  }
+
+  logJSON(data: unknown): void {
+    this.log(inspect(data, { colors: true, depth: null }))
+  }
+}
+
+export abstract class Command<
+  Flags extends CommandFlags = CommandFlags,
+  Args extends StringRecord = StringRecord
+> extends BaseCommand {
+  static flags = {
+    'ceramic-url': Flags.string({
+      char: 'c',
+      description: 'Ceramic API URL',
+      env: 'CERAMIC_URL',
+    }),
+    'did-private-key': Flags.string({
+      char: 'k',
+      description: 'DID private key',
+      env: 'DID_PRIVATE_KEY',
+    }),
+  }
+
+  args!: Args
+  flags!: Flags
+
+  #authenticatedDID: DID | null = null
+  #ceramic: CeramicClient | null = null
+  #resolverRegistry: ResolverRegistry | null = null
+
+  async init(): Promise<void> {
+    await super.init()
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore constructor type
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { args, flags } = await this.parse(this.constructor)
+    this.args = args as Args
+    this.flags = flags as unknown as Flags
     // Authenticate the Ceramic instance whenever a key is provided
     if (this.flags['did-private-key'] != null) {
       const did = await this.getAuthenticatedDID(this.flags['did-private-key'])
@@ -169,9 +191,5 @@ export abstract class Command<
     did.setProvider(this.getProvider(seed))
     await did.authenticate()
     return did
-  }
-
-  logJSON(data: unknown): void {
-    this.log(inspect(data, { colors: true, depth: null }))
   }
 }

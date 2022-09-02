@@ -17,7 +17,7 @@ The group of [CLI](../modules/cli.md) `model:*` commands enables discovery of [M
 
 ### `composedb model:list`
 
-Display a paginated list of models indexed on the connected ceramic node.
+Display a paginated list of models indexed on the connected ceramic node, which needs to be indexing model streams.
 
 This currently is the main entry path to [Composites Discovery](../../guides/using-composites/discovery.mdx)
 
@@ -27,7 +27,7 @@ USAGE
 
 OPTIONS
   --table                  display results as a table rather than as formatted JSON
-  -c, --ceramic-url        Ceramic API URL
+  -i, --indexer-url        URL of a Ceramic API that indexes model streams.
 ```
 
 ### `composedb model:content`
