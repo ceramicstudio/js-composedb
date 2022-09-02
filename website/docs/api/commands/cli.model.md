@@ -27,7 +27,7 @@ USAGE
 
 OPTIONS
   --table                  display results as a table rather than as formatted JSON
-  -i, --indexer-url        URL of a Ceramic API that indexes model streams. The default is https://ceramic-private-clay.3boxlabs.com
+  -i, --indexer-url        URL of a Ceramic API that indexes model streams.
 ```
 
 ### `composedb model:content`
