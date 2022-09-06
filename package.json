@@ -35,6 +35,7 @@
     "overrides": {
       "@ceramicnetwork/common": "link:../../ceramicnetwork/js-ceramic/packages/common",
       "@ceramicnetwork/core": "link:../../ceramicnetwork/js-ceramic/packages/core",
+      "@ceramicnetwork/http-client": "link:../../ceramicnetwork/js-ceramic/packages/http-client",
       "@ceramicnetwork/stream-caip10-link-handler": "link:../../ceramicnetwork/js-ceramic/packages/stream-caip10-link-handler",
       "@ceramicnetwork/stream-model": "link:../../ceramicnetwork/js-ceramic/packages/stream-model",
       "@ceramicnetwork/stream-model-handler": "link:../../ceramicnetwork/js-ceramic/packages/stream-model-handler",

@@ -30,7 +30,7 @@ const scalars: Record<string, ScalarSchema> = {
   ...extraScalars,
   Boolean: { type: 'boolean' },
   Float: { type: 'number' },
-  ID: { type: 'string', title: 'GraphQLID' },
+  ID: { type: 'string', title: 'GraphQLID', maxLength: 100 },
   Int: { type: 'integer' },
   String: { type: 'string' },
 }

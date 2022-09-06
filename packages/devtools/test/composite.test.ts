@@ -4,7 +4,13 @@
 
 import type { CeramicApi } from '@ceramicnetwork/common'
 import { ModelAccountRelation } from '@ceramicnetwork/stream-model'
-import { ImageMetadataType, profilesSchema } from '@composedb/test-schemas'
+import {
+  ImageMetadataType,
+  createCommentSchemaWithPost,
+  loadPostSchemaWithComments,
+  postSchema,
+  profilesSchema,
+} from '@composedb/test-schemas'
 import type { ModelDefinition } from '@composedb/types'
 
 import { Composite, type CompositeParams } from '../src'
@@ -571,10 +577,39 @@ describe('composite', () => {
       await expect(async () => {
         await Composite.create({ ceramic, schema: ImageMetadataType })
       }).rejects.toThrow('No models found in Composite Definition Schema')
-    }, 60000)
+    })
   })
 
   test.todo('Composite.fromJSON()')
 
   test.todo('Composite.fromModels()')
+
+  test('Relations support', async () => {
+    const postComposite = await Composite.create({ ceramic, schema: postSchema })
+    const postParams = postComposite.toParams()
+    const postID = Object.keys(postParams.definition.models)[0]
+    expect(postID).toBeDefined()
+
+    const postAndCommentComposite = await Composite.create({
+      ceramic,
+      schema: createCommentSchemaWithPost(postID),
+    })
+    const postAndCommentParams = postAndCommentComposite.toParams()
+    let commentID
+    for (const [id, definition] of Object.entries(postAndCommentParams.definition.models)) {
+      if (definition.name === 'Comment') {
+        commentID = id
+      } else {
+        expect(id).toBe(postID)
+      }
+    }
+    expect(commentID).toBeDefined()
+
+    const postWithCommentComposite = await Composite.create({
+      ceramic,
+      schema: loadPostSchemaWithComments(postID, commentID as string),
+    })
+    const { definition } = postWithCommentComposite.toParams()
+    expect(definition).toMatchSnapshot()
+  }, 60000)
 })

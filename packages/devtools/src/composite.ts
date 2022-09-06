@@ -90,16 +90,6 @@ export function setDefinitionViews(
   return definition
 }
 
-/** @internal */
-export async function fromAbstractModel(
-  ceramic: CeramicApi,
-  model: AbstractModelDefinition
-): Promise<Model> {
-  return model.action === 'create'
-    ? await Model.create(ceramic, model.definition)
-    : await Model.load(ceramic, model.id)
-}
-
 async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
   ceramic: CeramicApi,
   modelsCommits: Models & {} // eslint-disable-line @typescript-eslint/ban-types
@@ -259,9 +249,9 @@ export class Composite {
       // For each model definition...
       Object.values(models).map(async (abstractModel: AbstractModelDefinition) => {
         // Create or load the model stream
-        let model
+        let model: Model
         if (abstractModel.action === 'create') {
-          model = await Model.create(params.ceramic, abstractModel.definition)
+          model = await Model.create(params.ceramic, abstractModel.model)
         } else {
           model = await Model.load(params.ceramic, abstractModel.id)
           modelsViews[abstractModel.id] = abstractModel.views

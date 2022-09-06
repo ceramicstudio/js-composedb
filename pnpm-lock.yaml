@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 overrides:
   '@ceramicnetwork/common': link:../../ceramicnetwork/js-ceramic/packages/common
   '@ceramicnetwork/core': link:../../ceramicnetwork/js-ceramic/packages/core
+  '@ceramicnetwork/http-client': link:../../ceramicnetwork/js-ceramic/packages/http-client
   '@ceramicnetwork/stream-caip10-link-handler': link:../../ceramicnetwork/js-ceramic/packages/stream-caip10-link-handler
   '@ceramicnetwork/stream-model': link:../../ceramicnetwork/js-ceramic/packages/stream-model
   '@ceramicnetwork/stream-model-handler': link:../../ceramicnetwork/js-ceramic/packages/stream-model-handler
@@ -56,7 +57,7 @@ importers:
 
   examples/next-notes:
     specifiers:
-      '@ceramicnetwork/http-client': ^2.3.3
+      '@ceramicnetwork/http-client': link:../../../../ceramicnetwork/js-ceramic/packages/http-client
       '@composedb/client': workspace:^0.2.0
       '@composedb/devtools': workspace:^0.2.0
       '@composedb/devtools-node': workspace:^0.2.0
@@ -86,7 +87,7 @@ importers:
       typescript: ^4.8.2
       uint8arrays: ^3.0.0
     dependencies:
-      '@ceramicnetwork/http-client': 2.3.3
+      '@ceramicnetwork/http-client': link:../../../../ceramicnetwork/js-ceramic/packages/http-client
       '@composedb/client': link:../../packages/client
       '@composedb/types': link:../../packages/types
       '@emotion/react': 11.10.0_ug65io7jkbhmo4fihdmbrh3ina
@@ -121,7 +122,7 @@ importers:
     specifiers:
       '@apollo/client': ^3.6.9
       '@ceramicnetwork/common': link:../../../../ceramicnetwork/js-ceramic/packages/common
-      '@ceramicnetwork/http-client': ^2.3.3
+      '@ceramicnetwork/http-client': link:../../../../ceramicnetwork/js-ceramic/packages/http-client
       '@composedb/client': workspace:^0.2.0
       '@composedb/devtools': workspace:^0.2.0
       '@composedb/devtools-node': workspace:^0.2.0
@@ -155,7 +156,7 @@ importers:
       webpack-dev-server: ^4.10.1
     dependencies:
       '@apollo/client': 3.6.9_react@18.2.0
-      '@ceramicnetwork/http-client': 2.3.3
+      '@ceramicnetwork/http-client': link:../../../../ceramicnetwork/js-ceramic/packages/http-client
       '@composedb/client': link:../../packages/client
       '@composedb/types': link:../../packages/types
       '@emotion/react': 11.10.0_ug65io7jkbhmo4fihdmbrh3ina
@@ -195,7 +196,7 @@ importers:
       '@ceramicnetwork/3id-did-resolver': ^2.1.6
       '@ceramicnetwork/common': link:../../../../ceramicnetwork/js-ceramic/packages/common
       '@ceramicnetwork/core': link:../../../../ceramicnetwork/js-ceramic/packages/core
-      '@ceramicnetwork/http-client': ^2.3.3
+      '@ceramicnetwork/http-client': link:../../../../ceramicnetwork/js-ceramic/packages/http-client
       '@ceramicnetwork/stream-model': link:../../../../ceramicnetwork/js-ceramic/packages/stream-model
       '@ceramicnetwork/stream-model-instance': ^0.4.0
       '@ceramicnetwork/streamid': link:../../../../ceramicnetwork/js-ceramic/packages/streamid
@@ -233,7 +234,7 @@ importers:
       uint8arrays: ^3.0.0
     dependencies:
       '@ceramicnetwork/3id-did-resolver': 2.1.6
-      '@ceramicnetwork/http-client': 2.3.3
+      '@ceramicnetwork/http-client': link:../../../../ceramicnetwork/js-ceramic/packages/http-client
       '@ceramicnetwork/stream-model': link:../../../../ceramicnetwork/js-ceramic/packages/stream-model
       '@ceramicnetwork/stream-model-instance': 0.4.0
       '@ceramicnetwork/streamid': link:../../../../ceramicnetwork/js-ceramic/packages/streamid
@@ -276,7 +277,7 @@ importers:
   packages/client:
     specifiers:
       '@ceramicnetwork/common': link:../../../../ceramicnetwork/js-ceramic/packages/common
-      '@ceramicnetwork/http-client': ^2.3.3
+      '@ceramicnetwork/http-client': link:../../../../ceramicnetwork/js-ceramic/packages/http-client
       '@ceramicnetwork/stream-model': link:../../../../ceramicnetwork/js-ceramic/packages/stream-model
       '@ceramicnetwork/stream-model-instance': ^0.4.0
       '@ceramicnetwork/streamid': link:../../../../ceramicnetwork/js-ceramic/packages/streamid
@@ -290,7 +291,7 @@ importers:
       graphql-relay: ^0.10.0
       jest-environment-composedb: workspace:^0.2.0
     dependencies:
-      '@ceramicnetwork/http-client': 2.3.3
+      '@ceramicnetwork/http-client': link:../../../../ceramicnetwork/js-ceramic/packages/http-client
       '@ceramicnetwork/stream-model': link:../../../../ceramicnetwork/js-ceramic/packages/stream-model
       '@ceramicnetwork/stream-model-instance': 0.4.0
       '@ceramicnetwork/streamid': link:../../../../ceramicnetwork/js-ceramic/packages/streamid
@@ -363,7 +364,7 @@ importers:
 
   packages/devtools-node:
     specifiers:
-      '@ceramicnetwork/http-client': ^2.3.3
+      '@ceramicnetwork/http-client': link:../../../../ceramicnetwork/js-ceramic/packages/http-client
       '@composedb/client': workspace:^0.2.1
       '@composedb/devtools': workspace:^0.2.1
       '@composedb/types': workspace:^0.2.1
@@ -376,7 +377,7 @@ importers:
       get-port: ^6.1.2
       graphql: ^16.5.0
     dependencies:
-      '@ceramicnetwork/http-client': 2.3.3
+      '@ceramicnetwork/http-client': link:../../../../ceramicnetwork/js-ceramic/packages/http-client
       '@composedb/client': link:../client
       express: 4.18.1
       express-graphql: 0.12.0_graphql@16.6.0
@@ -633,6 +634,7 @@ packages:
 
   /@apollo/client/3.6.9_graphql@16.6.0:
     resolution: {integrity: sha512-Y1yu8qa2YeaCUBVuw08x8NHenFi0sw2I3KCu7Kw9mDSu86HmmtHJkCAifKVrN2iPgDTW/BbP3EpSV8/EQCcxZA==}
+    requiresBuild: true
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
       graphql-ws: ^5.5.5
@@ -2052,29 +2054,6 @@ packages:
       uint8arrays: 3.1.0
     transitivePeerDependencies:
       - encoding
-    dev: false
-
-  /@ceramicnetwork/http-client/2.3.3:
-    resolution: {integrity: sha512-ashq5yrxipYxNlsCB87fQ8z8vHm064rshb9CuI8q4kcvFxRfVb3iav1GCGQ2NtHR0ESvT1xBtryk+oJJD50mWA==}
-    dependencies:
-      '@ceramicnetwork/common': link:../../ceramicnetwork/js-ceramic/packages/common
-      '@ceramicnetwork/stream-caip10-link': 2.2.2
-      '@ceramicnetwork/stream-model': link:../../ceramicnetwork/js-ceramic/packages/stream-model
-      '@ceramicnetwork/stream-model-instance': 0.4.0
-      '@ceramicnetwork/stream-tile': 2.4.2
-      '@ceramicnetwork/streamid': link:../../ceramicnetwork/js-ceramic/packages/streamid
-      query-string: 7.1.1
-      rxjs: 7.5.6
-    dev: false
-
-  /@ceramicnetwork/stream-caip10-link/2.2.2:
-    resolution: {integrity: sha512-9wma5I4uR+ZHEQiwhRe0r/UHCkchjdOAa7yan3aqFeCwe655ovuaxydiAJtSD8w/EcTdyrKLYKqxeOFFHe8Z/A==}
-    dependencies:
-      '@ceramicnetwork/common': link:../../ceramicnetwork/js-ceramic/packages/common
-      '@ceramicnetwork/streamid': link:../../ceramicnetwork/js-ceramic/packages/streamid
-      caip: 1.1.0
-      did-resolver: 3.2.2
-      lodash.clonedeep: 4.5.0
     dev: false
 
   /@ceramicnetwork/stream-model-instance/0.4.0:
@@ -8721,11 +8700,6 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /decode-uri-component/0.2.0:
-    resolution: {integrity: sha512-hjf+xovcEn31w/EUYdTXQh/8smFL/dzYjohQGEIgjyNavaJfBY2p5F527Bo1VPATxv0VYTUC2bOcXvqFwk78Og==}
-    engines: {node: '>=0.10'}
-    dev: false
-
   /decompress-response/3.3.0:
     resolution: {integrity: sha512-BzRPQuY1ip+qDonAOz42gRm/pg9F768C+npV/4JOsxRC2sq+Rlk+Q4ZCAsOhnIaMrgarILY+RMUIvMmmX1qAEA==}
     engines: {node: '>=4'}
@@ -10048,11 +10022,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       to-regex-range: 5.0.1
-
-  /filter-obj/1.1.0:
-    resolution: {integrity: sha512-8rXg1ZnX7xzy2NGDVkBVaAy+lSlPNwad13BtgSlLuxfIslyt5Vg64U7tFcCt4WS1R0hvtnQybT/IyCkGZ3DpXQ==}
-    engines: {node: '>=0.10.0'}
-    dev: false
 
   /finalhandler/1.2.0:
     resolution: {integrity: sha512-5uXcUVftlQMFnWC9qu/svkWv3GTd2PfUhK/3PLkYNAe7FbqJMt3515HaxE6eRL74GdsriiwujiawdaB1BpEISg==}
@@ -15784,16 +15753,6 @@ packages:
     dependencies:
       side-channel: 1.0.4
 
-  /query-string/7.1.1:
-    resolution: {integrity: sha512-MplouLRDHBZSG9z7fpuAAcI7aAYjDLhtsiVZsevsfaHWDS2IDdORKbSd1kWUA+V4zyva/HZoSfpwnYMMQDhb0w==}
-    engines: {node: '>=6'}
-    dependencies:
-      decode-uri-component: 0.2.0
-      filter-obj: 1.1.0
-      split-on-first: 1.1.0
-      strict-uri-encode: 2.0.0
-    dev: false
-
   /querystring/0.2.0:
     resolution: {integrity: sha512-X/xY82scca2tau62i9mDyU9K+I+djTMUsvwf7xnUX5GLvVzgJybOJf4Y6o9Zx3oJK/LSXg5tTZBjwzqVPaPO2g==}
     engines: {node: '>=0.4.x'}
@@ -17117,11 +17076,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /split-on-first/1.1.0:
-    resolution: {integrity: sha512-43ZssAJaMusuKWL8sKUBQXHWOpq8d6CfN/u1p4gUzfJkM05C8rxTmYrkIPTXapZpORA6LkkzcUulJ8FqA7Uudw==}
-    engines: {node: '>=6'}
-    dev: false
-
   /sprintf-js/1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
 
@@ -17181,11 +17135,6 @@ packages:
     dependencies:
       mixme: 0.5.4
     dev: true
-
-  /strict-uri-encode/2.0.0:
-    resolution: {integrity: sha512-QwiXZgpRcKkhTj2Scnn++4PKtWsH0kpzZ62L2R6c/LUVYv7hVnZqcg2+sMuT6R7Jusu1vviK/MFsu6kNJfWlEQ==}
-    engines: {node: '>=4'}
-    dev: false
 
   /string-length/4.0.2:
     resolution: {integrity: sha512-+l6rNN5fYHNhZZy41RXsYptCjA2Igmq4EG7kZAYFQI1E1VTXarr6ZPXBg6eq7Y6eK4FEhY6AJlyuFIb/v/S0VQ==}

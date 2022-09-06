@@ -10,6 +10,7 @@ import { parseSchema } from './parser.js'
 import { isCommonScalar } from './scalars.js'
 import type {
   AbstractCompositeDefinition,
+  AbstractCreateModelDefinition,
   AbstractModelDefinition,
   EnumFieldDefinition,
   ListFieldDefinition,
@@ -321,21 +322,26 @@ export class SchemaCompiler {
       }
     }
 
-    return {
+    const definition: AbstractCreateModelDefinition = {
       action: 'create',
-      definition: {
+      model: {
         name,
         description: modelDefinition.description,
         // TODO: add once supported in model definition
         // interface: definition.interface,
         // implements: definition.implements,
         accountRelation: modelDefinition.accountRelation,
-        accountRelationProperty: modelDefinition.accountRelationProperty,
         schema: object,
         relations,
         views,
       },
     }
+
+    if (modelDefinition.accountRelationProperty != null) {
+      definition.model.accountRelationProperty = modelDefinition.accountRelationProperty
+    }
+
+    return definition
   }
 }
 

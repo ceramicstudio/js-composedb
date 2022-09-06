@@ -35,8 +35,6 @@ type ${commentModelName} @loadModel(id: "${commentModelID}") {
 }
 
 type Post @loadModel(id: ${id}) {
-  author: DID! @documentAccount
-  version: CommitID! @documentVersion
   commentsCount: Int! @relationCountFrom(model: "${commentModelID}", property: "${commentModelProperty}")
   comments: [${commentModelName}]! @relationFrom(model: "${commentModelID}", property: "${commentModelProperty}")
 }

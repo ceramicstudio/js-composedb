@@ -77,7 +77,7 @@ export type SchemaDefinition = {
   objects: Record<string, ObjectDefinition>
 }
 
-export type AbstractCreateModelDefinition = { action: 'create'; definition: ModelDefinition }
+export type AbstractCreateModelDefinition = { action: 'create'; model: ModelDefinition }
 
 export type AbstractLoadModelDefinition = ParsedLoadModelDefinition & {
   views: ModelViewsDefinition

@@ -21,3 +21,110 @@ exports[`composite Composite instance toRuntime() returns the runtime definition
   "objects": {},
 }
 `;
+
+exports[`composite Relations support 1`] = `
+{
+  "aliases": {},
+  "commonEmbeds": [],
+  "models": {
+    "kjzl6hvfrbw6c59y8110voyo26lpvg9c17zpgkpajg6bfacx0hdouhq09f62qvq": {
+      "accountRelation": "list",
+      "description": "Simple post",
+      "name": "Post",
+      "relations": {},
+      "schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "maxLength": 2000,
+            "type": "string",
+          },
+          "title": {
+            "maxLength": 100,
+            "minLength": 10,
+            "type": "string",
+          },
+        },
+        "required": [
+          "title",
+          "text",
+        ],
+        "type": "object",
+      },
+      "views": {
+        "author": {
+          "type": "documentAccount",
+        },
+        "version": {
+          "type": "documentVersion",
+        },
+      },
+    },
+    "kjzl6hvfrbw6c9kmet86rt25ssimdhiokyoyd39dgpsj7tchjvgeb6i6fozoqh0": {
+      "accountRelation": "list",
+      "description": "Comment on a Post",
+      "name": "Comment",
+      "relations": {},
+      "schema": {
+        "$defs": {
+          "CeramicStreamID": {
+            "maxLength": 100,
+            "title": "CeramicStreamID",
+            "type": "string",
+          },
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "postID": {
+            "$ref": "#/$defs/CeramicStreamID",
+          },
+          "text": {
+            "maxLength": 2000,
+            "type": "string",
+          },
+        },
+        "required": [
+          "postID",
+          "text",
+        ],
+        "type": "object",
+      },
+      "views": {
+        "author": {
+          "type": "documentAccount",
+        },
+        "post": {
+          "model": "kjzl6hvfrbw6c59y8110voyo26lpvg9c17zpgkpajg6bfacx0hdouhq09f62qvq",
+          "property": "postID",
+          "type": "relationDocument",
+        },
+        "version": {
+          "type": "documentVersion",
+        },
+      },
+    },
+  },
+  "version": "1.0",
+  "views": {
+    "account": {},
+    "models": {
+      "kjzl6hvfrbw6c59y8110voyo26lpvg9c17zpgkpajg6bfacx0hdouhq09f62qvq": {
+        "comments": {
+          "model": "kjzl6hvfrbw6c9kmet86rt25ssimdhiokyoyd39dgpsj7tchjvgeb6i6fozoqh0",
+          "property": "postID",
+          "type": "relationFrom",
+        },
+        "commentsCount": {
+          "model": "kjzl6hvfrbw6c9kmet86rt25ssimdhiokyoyd39dgpsj7tchjvgeb6i6fozoqh0",
+          "property": "postID",
+          "type": "relationCountFrom",
+        },
+      },
+      "kjzl6hvfrbw6c9kmet86rt25ssimdhiokyoyd39dgpsj7tchjvgeb6i6fozoqh0": {},
+    },
+    "root": {},
+  },
+}
+`;
