@@ -7,6 +7,7 @@ import type {
   RuntimeModel,
   RuntimeObjectFields,
   RuntimeReference,
+  RuntimeRelation,
   RuntimeScalar,
   RuntimeViewField,
 } from '@composedb/types'
@@ -237,7 +238,7 @@ class SchemaBuilder {
               }
               break
             case 'view':
-              config[key] = this._buildDocumentObjectViewField(definitions, field)
+              config[key] = this._buildDocumentObjectViewField(key, definitions, field, fields)
               break
             default:
               config[key] = {
@@ -385,25 +386,64 @@ class SchemaBuilder {
     return field.required ? new GraphQLNonNull(type) : type
   }
 
-  _buildDocumentObjectViewField(
-    definitions: SharedDefinitions,
-    field: RuntimeViewField
+  _buildDocumentObjectRelation(
+    key: string,
+    relation: RuntimeRelation,
+    objectFields: RuntimeObjectFields
   ): GraphQLFieldConfig<ModelInstanceDocument, Context> {
-    if (field.viewType === 'documentAccount') {
-      return {
-        type: new GraphQLNonNull(definitions.accountObject),
-        resolve: (doc): string => doc.metadata.controller,
+    switch (relation.source) {
+      case 'document': {
+        const ref = objectFields[relation.property]
+        if (ref == null) {
+          throw new Error(
+            `Missing reference field ${relation.property} for relation defined on field ${key}`
+          )
+        }
+        return {
+          type: this.#types[relation.model],
+          resolve: async (
+            doc,
+            _args,
+            ctx
+          ): Promise<ModelInstanceDocument<Record<string, any>> | null> => {
+            const id = doc.content?.[relation.property] as string | void
+            return id ? await ctx.loadDoc(id) : null
+          },
+        }
       }
+      case 'queryConnection':
+      case 'queryCount':
+      default:
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        throw new Error(`Unsupported relation source: ${relation.source}`)
     }
-    if (field.viewType === 'documentVersion') {
-      return {
-        type: new GraphQLNonNull(CeramicCommitID),
-        resolve: (doc): string => doc.commitId.toString(),
-      }
-    }
+  }
 
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    throw new Error(`Unsupported view type: ${field.viewType}`)
+  _buildDocumentObjectViewField(
+    key: string,
+    definitions: SharedDefinitions,
+    field: RuntimeViewField,
+    objectFields: RuntimeObjectFields
+  ): GraphQLFieldConfig<ModelInstanceDocument, Context> {
+    switch (field.viewType) {
+      case 'documentAccount':
+        return {
+          type: new GraphQLNonNull(definitions.accountObject),
+          resolve: (doc): string => doc.metadata.controller,
+        }
+      case 'documentVersion':
+        return {
+          type: new GraphQLNonNull(CeramicCommitID),
+          resolve: (doc): string => doc.commitId.toString(),
+        }
+      case 'relation':
+        return this._buildDocumentObjectRelation(key, field.relation, objectFields)
+      default:
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        throw new Error(`Unsupported view type: ${field.viewType}`)
+    }
   }
 
   _buildScalarFieldType(definitions: SharedDefinitions, field: RuntimeScalar): GraphQLOutputType {

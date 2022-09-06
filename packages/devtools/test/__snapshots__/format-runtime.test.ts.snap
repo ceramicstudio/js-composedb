@@ -50,6 +50,208 @@ exports[`Runtime format Note model definition with views 1`] = `
 }
 `;
 
+exports[`Runtime format Post with comments relations 1`] = `
+{
+  "accountData": {
+    "postList": {
+      "name": "Post",
+      "type": "connection",
+    },
+  },
+  "enums": {},
+  "models": {
+    "Post": {
+      "accountRelation": "list",
+      "id": "PostID",
+    },
+  },
+  "objects": {
+    "Post": {
+      "author": {
+        "type": "view",
+        "viewType": "documentAccount",
+      },
+      "text": {
+        "required": true,
+        "type": "string",
+      },
+      "title": {
+        "required": true,
+        "type": "string",
+      },
+      "version": {
+        "type": "view",
+        "viewType": "documentVersion",
+      },
+    },
+  },
+}
+`;
+
+exports[`Runtime format Post with comments relations 2`] = `
+{
+  "accountData": {
+    "commentList": {
+      "name": "Comment",
+      "type": "connection",
+    },
+    "postList": {
+      "name": "Post",
+      "type": "connection",
+    },
+  },
+  "enums": {},
+  "models": {
+    "Comment": {
+      "accountRelation": "list",
+      "id": "CommentID",
+    },
+    "Post": {
+      "accountRelation": "list",
+      "id": "PostID",
+    },
+  },
+  "objects": {
+    "Comment": {
+      "author": {
+        "type": "view",
+        "viewType": "documentAccount",
+      },
+      "post": {
+        "relation": {
+          "model": "PostID",
+          "property": "postID",
+          "source": "document",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "postID": {
+        "required": true,
+        "type": "string",
+      },
+      "text": {
+        "required": true,
+        "type": "string",
+      },
+      "version": {
+        "type": "view",
+        "viewType": "documentVersion",
+      },
+    },
+    "Post": {
+      "author": {
+        "type": "view",
+        "viewType": "documentAccount",
+      },
+      "text": {
+        "required": true,
+        "type": "string",
+      },
+      "title": {
+        "required": true,
+        "type": "string",
+      },
+      "version": {
+        "type": "view",
+        "viewType": "documentVersion",
+      },
+    },
+  },
+}
+`;
+
+exports[`Runtime format Post with comments relations 3`] = `
+{
+  "accountData": {
+    "commentList": {
+      "name": "Comment",
+      "type": "connection",
+    },
+    "postList": {
+      "name": "Post",
+      "type": "connection",
+    },
+  },
+  "enums": {},
+  "models": {
+    "Comment": {
+      "accountRelation": "list",
+      "id": "CommentID",
+    },
+    "Post": {
+      "accountRelation": "list",
+      "id": "PostID",
+    },
+  },
+  "objects": {
+    "Comment": {
+      "author": {
+        "type": "view",
+        "viewType": "documentAccount",
+      },
+      "post": {
+        "relation": {
+          "model": "PostID",
+          "property": "postID",
+          "source": "document",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "postID": {
+        "required": true,
+        "type": "string",
+      },
+      "text": {
+        "required": true,
+        "type": "string",
+      },
+      "version": {
+        "type": "view",
+        "viewType": "documentVersion",
+      },
+    },
+    "Post": {
+      "author": {
+        "type": "view",
+        "viewType": "documentAccount",
+      },
+      "comments": {
+        "relation": {
+          "model": "CommentID",
+          "property": "postID",
+          "source": "queryConnection",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "commentsCount": {
+        "relation": {
+          "model": "CommentID",
+          "property": "postID",
+          "source": "queryCount",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "text": {
+        "required": true,
+        "type": "string",
+      },
+      "title": {
+        "required": true,
+        "type": "string",
+      },
+      "version": {
+        "type": "view",
+        "viewType": "documentVersion",
+      },
+    },
+  },
+}
+`;
+
 exports[`Runtime format Profile - multiples models with common local references 1`] = `
 {
   "accountData": {

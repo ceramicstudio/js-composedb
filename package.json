@@ -32,6 +32,15 @@
     "typescript": "^4.8.2"
   },
   "pnpm": {
-    "overrides": {}
+    "overrides": {
+      "@ceramicnetwork/common": "link:../../ceramicnetwork/js-ceramic/packages/common",
+      "@ceramicnetwork/core": "link:../../ceramicnetwork/js-ceramic/packages/core",
+      "@ceramicnetwork/stream-caip10-link-handler": "link:../../ceramicnetwork/js-ceramic/packages/stream-caip10-link-handler",
+      "@ceramicnetwork/stream-model": "link:../../ceramicnetwork/js-ceramic/packages/stream-model",
+      "@ceramicnetwork/stream-model-handler": "link:../../ceramicnetwork/js-ceramic/packages/stream-model-handler",
+      "@ceramicnetwork/stream-model-instance-handler": "link:../../ceramicnetwork/js-ceramic/packages/stream-model-instance-handler",
+      "@ceramicnetwork/stream-tile-handler": "link:../../ceramicnetwork/js-ceramic/packages/stream-tile-handler",
+      "@ceramicnetwork/streamid": "link:../../ceramicnetwork/js-ceramic/packages/streamid"
+    }
   }
 }

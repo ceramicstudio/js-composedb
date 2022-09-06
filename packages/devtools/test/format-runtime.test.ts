@@ -1,21 +1,56 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { noteSchema, profilesSchema } from '@composedb/test-schemas'
+import type { ModelDefinition } from '@ceramicnetwork/stream-model'
+import {
+  createCommentSchemaWithPost,
+  loadPostSchemaWithComments,
+  noteSchema,
+  postSchema,
+  profilesSchema,
+} from '@composedb/test-schemas'
+import type { InternalCompositeDefinition } from '@composedb/types'
 
 import { createRuntimeDefinition, getName, createAbstractCompositeDefinition } from '../src'
-import type { CreateModelDefinition } from '../src/schema/types'
+import type { AbstractCompositeDefinition } from '../src/schema/types'
+
+function mockDefinition(
+  definition: AbstractCompositeDefinition,
+  providedModels: Record<string, ModelDefinition> = {}
+): InternalCompositeDefinition {
+  const models: Record<string, ModelDefinition> = {}
+  const views = { models: {} }
+
+  for (const model of Object.values(definition.models)) {
+    if (model.action === 'create') {
+      const definition = model.definition
+      models[`${definition.name}ID`] = definition
+    } else {
+      const definition = providedModels[model.id]
+      if (definition == null) {
+        throw new Error(`Missing provided model ${model.id}`)
+      }
+      models[model.id] = definition
+      views.models[model.id] = model.views
+    }
+  }
+
+  return {
+    version: '1.0',
+    commonEmbeds: definition.commonEmbeds,
+    models,
+    views,
+  }
+}
+
+function mockDefinitionFromSchema(
+  schema: string,
+  providedModels?: Record<string, ModelDefinition>
+): InternalCompositeDefinition {
+  return mockDefinition(createAbstractCompositeDefinition(schema), providedModels)
+}
 
 describe('Runtime format', () => {
-  const parsedProfiles = createAbstractCompositeDefinition(profilesSchema)
-  const profilesDefinition = {
-    version: '1.0',
-    commonEmbeds: parsedProfiles.commonEmbeds,
-    models: Object.values(parsedProfiles.models).reduce((acc, model) => {
-      const definition = (model as CreateModelDefinition).definition
-      acc[`${definition.name}ID`] = definition
-      return acc
-    }, {}),
-  }
+  const profilesDefinition = mockDefinitionFromSchema(profilesSchema)
 
   describe('getName()', () => {
     test('converts input to pascal case', () => {
@@ -48,15 +83,25 @@ describe('Runtime format', () => {
   })
 
   test('Note model definition with views', () => {
-    const { models } = createAbstractCompositeDefinition(noteSchema)
-    const runtime = createRuntimeDefinition({
-      version: '1.0',
-      models: Object.values(models).reduce((acc, model) => {
-        const definition = (model as CreateModelDefinition).definition
-        acc[`${definition.name}ID`] = definition
-        return acc
-      }, {}),
-    })
+    const noteDefinition = mockDefinitionFromSchema(noteSchema)
+    const runtime = createRuntimeDefinition(noteDefinition)
     expect(runtime).toMatchSnapshot()
+  })
+
+  test('Post with comments relations', () => {
+    const postDefinition = mockDefinitionFromSchema(postSchema)
+    expect(createRuntimeDefinition(postDefinition)).toMatchSnapshot()
+
+    const commentDefinition = mockDefinitionFromSchema(
+      createCommentSchemaWithPost('PostID'),
+      postDefinition.models
+    )
+    expect(createRuntimeDefinition(commentDefinition)).toMatchSnapshot()
+
+    const postWithCommentsDefinition = mockDefinitionFromSchema(
+      loadPostSchemaWithComments('PostID', 'CommentID'),
+      commentDefinition.models
+    )
+    expect(createRuntimeDefinition(postWithCommentsDefinition)).toMatchSnapshot()
   })
 })

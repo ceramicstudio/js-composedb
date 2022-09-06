@@ -1,4 +1,8 @@
-import { ModelAccountRelation } from '@ceramicnetwork/stream-model'
+import {
+  ModelAccountRelation,
+  type ModelRelationDefinition,
+  type ModelRelationsDefinition,
+} from '@ceramicnetwork/stream-model'
 import type { JSONSchema } from '@composedb/types'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import {
@@ -9,6 +13,7 @@ import {
 } from '@graphql-tools/utils'
 import {
   type GraphQLEnumType,
+  type GraphQLFieldMap,
   type GraphQLInterfaceType,
   GraphQLList,
   type GraphQLObjectType,
@@ -16,7 +21,6 @@ import {
   type GraphQLSchema,
   type GraphQLType,
   isEnumType,
-  isInterfaceType,
   isListType,
   isNonNullType,
   isObjectType,
@@ -40,6 +44,7 @@ import type {
 
 const ACCOUNT_RELATIONS: Record<string, ModelAccountRelation> = {
   LIST: ModelAccountRelation.LIST,
+  SET: ModelAccountRelation.SET,
   SINGLE: ModelAccountRelation.SINGLE,
 }
 
@@ -52,6 +57,10 @@ type NumberDirectiveArguments = {
 type DefinitionWithReferences<T> = {
   definition: T
   references: Array<string>
+}
+
+type IntermediaryObjectDefinition = DefinitionWithReferences<ObjectFieldsDefinition> & {
+  relations: ModelRelationsDefinition
 }
 
 export class SchemaParser {
@@ -71,7 +80,6 @@ export class SchemaParser {
     mapSchema(this.#schema, {
       [MapperKind.ENUM_TYPE]: (type: GraphQLEnumType) => {
         if (type.name !== 'ModelAccountRelation') {
-          // throw new Error('GraphQL enums are not supported')
           this.#def.enums[type.name] = type.getValues().map((v) => v.name)
         }
         return type
@@ -88,8 +96,9 @@ export class SchemaParser {
         // return type
       },
       [MapperKind.OBJECT_TYPE]: (type: GraphQLObjectType) => {
-        this.#def.objects[type.name] = this._parseObject(type)
-        const model = this._parseModelDirective(type)
+        const object = this._parseObject(type)
+        this.#def.objects[type.name] = object
+        const model = this._parseModelDirective(type, object)
         if (model != null) {
           this.#def.models[type.name] = model
         }
@@ -100,15 +109,44 @@ export class SchemaParser {
       },
     })
 
-    if (Object.keys(this.#def.models).length === 0) {
+    const modelsEntries = Object.entries(this.#def.models)
+    if (modelsEntries.length === 0) {
       throw new Error('No models found in Composite Definition Schema')
+    }
+
+    // Once all models are defined, we need to replace the model names used in relations by their ID
+    for (const [name, definition] of modelsEntries) {
+      if (definition.action === 'create') {
+        const object = this.#def.objects[name]
+        if (object == null) {
+          throw new Error(`Missing object definition for model ${name}`)
+        }
+        for (const [key, field] of Object.entries(object.properties)) {
+          if (field.type === 'view' && field.viewType === 'relation') {
+            const relatedModel = this.#def.models[field.relation.model]
+            if (relatedModel == null) {
+              throw new Error(
+                `Missing related model ${field.relation.model} for relation defined on field ${key} of object ${name}`
+              )
+            }
+            if (relatedModel.action === 'create') {
+              throw new Error(
+                `Unsupported relation to model ${field.relation.model} defined on field ${key} of object ${name}, related models must be loaded using the @loadModel directive`
+              )
+            }
+            // Replace model name by ID in definition
+            field.relation.model = relatedModel.id
+          }
+        }
+      }
     }
 
     return this.#def
   }
 
   _parseModelDirective(
-    type: GraphQLInterfaceType | GraphQLObjectType
+    type: GraphQLInterfaceType | GraphQLObjectType,
+    object: ObjectDefinition
   ): ParsedModelDefinition | void {
     const directives = getDirectives(this.#schema, type)
     const createModel = directives.find((d) => d.name === 'createModel')
@@ -128,8 +166,10 @@ export class SchemaParser {
     }
 
     if (createModel != null) {
-      const { accountRelation, description } = (createModel.args ?? {}) as {
+      const { accountRelation, accountRelationProperty, description } = (createModel.args ??
+        {}) as {
         accountRelation?: string
+        accountRelationProperty?: string
         description?: string
       }
       if (accountRelation == null) {
@@ -143,44 +183,75 @@ export class SchemaParser {
           `Unsupported accountRelation value ${accountRelation} for @createModel directive on object ${type.name}`
         )
       }
+      if (accountRelationValue === ModelAccountRelation.SET) {
+        if (accountRelationProperty == null) {
+          throw new Error(
+            `Missing accountRelationProperty value for @createModel directive on object ${type.name}`
+          )
+        }
+        const object = this.#def.objects[type.name]
+        if (object == null) {
+          throw new Error(`Missing object definition for ${type.name}`)
+        }
+        const property = object.properties[accountRelationProperty]
+        if (property == null) {
+          throw new Error(
+            `Missing property ${accountRelationProperty} defined as accountRelationProperty value for @createModel directive on object ${type.name}`
+          )
+        }
+        if (property.type !== 'scalar') {
+          throw new Error(
+            `Property ${accountRelationProperty} defined as accountRelationProperty value for @createModel directive on object ${type.name} must use a scalar type`
+          )
+        }
+      }
       if (description == null || description === '') {
         throw new Error(
           `Missing description value for @createModel directive on object ${type.name}`
         )
       }
+
       return {
         action: 'create',
-        accountRelation: accountRelationValue,
+        // interface: isInterfaceType(type),
+        // implements: type.getInterfaces().map((i) => i.name),
         description,
-        interface: isInterfaceType(type),
-        implements: type.getInterfaces().map((i) => i.name),
+        accountRelation: accountRelationValue,
+        accountRelationProperty,
+        relations: object.relations,
       }
     }
   }
 
   _parseObject(type: GraphQLInterfaceType | GraphQLObjectType): ObjectDefinition {
-    const { definition, references } = this._parseObjectFields(type)
+    const { definition, references, relations } = this._parseObjectFields(type)
     return {
-      implements: type.getInterfaces().map((i) => i.name),
+      // implements: type.getInterfaces().map((i) => i.name),
       properties: definition,
       references: Array.from(new Set(references)),
+      relations,
     }
   }
 
-  _parseObjectFields(
-    type: GraphQLInterfaceType | GraphQLObjectType
-  ): DefinitionWithReferences<ObjectFieldsDefinition> {
+  _parseObjectFields(type: GraphQLInterfaceType | GraphQLObjectType): IntermediaryObjectDefinition {
+    const objectFields = type.getFields()
     const fields: ObjectFieldsDefinition = {}
     let references: Array<string> = []
+    const relations: ModelRelationsDefinition = {}
 
-    for (const [key, value] of Object.entries(type.getFields())) {
+    for (const [key, value] of Object.entries(objectFields)) {
       const directives = getDirectives(this.#schema, value)
 
       const [innerType, required] = isNonNullType(value.type)
         ? [value.type.ofType, true]
         : [value.type, false]
 
-      const view = this._parseViews(type.name, key, innerType, directives)
+      const relation = this._parseRelations(type.name, key, innerType, directives)
+      if (relation != null) {
+        relations[key] = relation
+      }
+
+      const view = this._parseViews(type.name, key, innerType, directives, objectFields)
       if (view != null) {
         fields[key] = view
       } else if (isListType(innerType)) {
@@ -198,14 +269,41 @@ export class SchemaParser {
       }
     }
 
-    return { definition: fields, references }
+    return { definition: fields, references, relations }
+  }
+
+  _parseRelations(
+    objectName: string,
+    fieldName: string,
+    type: GraphQLType,
+    directives: Array<DirectiveAnnotation>
+  ): ModelRelationDefinition | void {
+    for (const directive of directives) {
+      switch (directive.name) {
+        case 'accountReference':
+          if (!isScalarType(type) || type.name !== 'DID') {
+            throw new Error(
+              `Unsupported @accountReference directive on field ${fieldName} of object ${objectName}, @accountReference can only be set on a DID scalar`
+            )
+          }
+          return { type: 'account' }
+        case 'documentReference':
+          if (!isScalarType(type) || type.name !== 'StreamID') {
+            throw new Error(
+              `Unsupported @documentReference directive on field ${fieldName} of object ${objectName}, @documentReference can only be set on a StreamID scalar`
+            )
+          }
+          return { type: 'document', model: directive.args?.model as string | undefined }
+      }
+    }
   }
 
   _parseViews(
     objectName: string,
     fieldName: string,
     type: GraphQLType,
-    directives: Array<DirectiveAnnotation>
+    directives: Array<DirectiveAnnotation>,
+    objectFields: GraphQLFieldMap<any, any>
   ): ViewFieldDefinition | void {
     for (const directive of directives) {
       switch (directive.name) {
@@ -223,6 +321,80 @@ export class SchemaParser {
             )
           }
           return { type: 'view', required: true, viewType: 'documentVersion' }
+        case 'relationDocument': {
+          if (!isObjectType(type)) {
+            throw new Error(
+              `Unsupported @relationDocument directive on field ${fieldName} of object ${objectName}, @relationDocument can only be set on a referenced object`
+            )
+          }
+          const property = directive.args?.property as string | void
+          if (property == null) {
+            throw new Error(
+              `Missing property argument for @relationDocument directive on field ${fieldName} of object ${objectName}`
+            )
+          }
+          if (objectFields[property] == null) {
+            throw new Error(
+              `Missing referenced property ${property} for @relationDocument directive on field ${fieldName} of object ${objectName}`
+            )
+          }
+          return {
+            type: 'view',
+            required: false,
+            viewType: 'relation',
+            relation: { source: 'document', model: type.name, property },
+          }
+        }
+        case 'relationFrom': {
+          if (!isListType(type) || !isObjectType(type.ofType)) {
+            throw new Error(
+              `Unsupported @relationFrom directive on field ${fieldName} of object ${objectName}, @relationFrom can only be set on a list of referenced object`
+            )
+          }
+          const model = directive.args?.model as string | void
+          if (model == null) {
+            throw new Error(
+              `Missing model argument for @relationFrom directive on field ${fieldName} of object ${objectName}`
+            )
+          }
+          const property = directive.args?.property as string | void
+          if (property == null) {
+            throw new Error(
+              `Missing property argument for @relationFrom directive on field ${fieldName} of object ${objectName}`
+            )
+          }
+          return {
+            type: 'view',
+            required: true,
+            viewType: 'relation',
+            relation: { source: 'queryConnection', model, property },
+          }
+        }
+        case 'relationCountFrom': {
+          if (!isScalarType(type) || type.name !== 'Int') {
+            throw new Error(
+              `Unsupported @relationCountFrom directive on field ${fieldName} of object ${objectName}, @relationCountFrom can only be set on a Int scalar`
+            )
+          }
+          const model = directive.args?.model as string | void
+          if (model == null) {
+            throw new Error(
+              `Missing model argument for @relationCountFrom directive on field ${fieldName} of object ${objectName}`
+            )
+          }
+          const property = directive.args?.property as string | void
+          if (property == null) {
+            throw new Error(
+              `Missing property argument for @relationCountFrom directive on field ${fieldName} of object ${objectName}`
+            )
+          }
+          return {
+            type: 'view',
+            required: true,
+            viewType: 'relation',
+            relation: { source: 'queryCount', model, property },
+          }
+        }
       }
     }
   }

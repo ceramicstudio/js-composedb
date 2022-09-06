@@ -1,5 +1,5 @@
 import type { CeramicApi, SignedCommit } from '@ceramicnetwork/common'
-import { Model } from '@ceramicnetwork/stream-model'
+import { Model, type ModelViewsDefinition } from '@ceramicnetwork/stream-model'
 import type {
   CompositeViewsDefinition,
   EncodedCompositeDefinition,
@@ -251,14 +251,21 @@ export class Composite {
       models: {},
       commonEmbeds,
     }
+    const modelsViews: Record<string, ModelViewsDefinition> = {}
     const commits: Record<string, any> = {}
 
     // TODO: once interfaces are supported, they need to be loaded or created first
     await Promise.all(
       // For each model definition...
-      Object.values(models).map(async (abstractModel) => {
+      Object.values(models).map(async (abstractModel: AbstractModelDefinition) => {
         // Create or load the model stream
-        const model = await fromAbstractModel(params.ceramic, abstractModel)
+        let model
+        if (abstractModel.action === 'create') {
+          model = await Model.create(params.ceramic, abstractModel.definition)
+        } else {
+          model = await Model.load(params.ceramic, abstractModel.id)
+          modelsViews[abstractModel.id] = abstractModel.views
+        }
         const id = model.id.toString()
         definition.models[id] = model.content
 
@@ -269,6 +276,8 @@ export class Composite {
           .filter(isSignedCommit)
       })
     )
+
+    definition.views = { models: modelsViews }
     return new Composite({ commits, definition })
   }
 

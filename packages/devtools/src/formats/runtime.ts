@@ -18,6 +18,7 @@ import { camelCase, pascalCase } from 'change-case'
 import { JsonReference } from 'json-ptr'
 
 import type { AnySchema, ScalarSchema } from '../types.js'
+import { viewDefinitionToRuntime } from '../utils.js'
 
 type EnumSchema = JSONSchema.String & { title: string; enum: Array<string> }
 
@@ -248,15 +249,7 @@ export class RuntimeModelBuilder {
 
   _buildViews(object: RuntimeObjectFields, views: ModelViewsDefinition = {}): void {
     for (const [key, view] of Object.entries(views)) {
-      switch (view.type) {
-        case 'documentAccount':
-        case 'documentVersion':
-          object[key] = { type: 'view', viewType: view.type }
-          continue
-        default:
-          // @ts-ignore unexpected view type
-          throw new Error(`Unsupported view type: ${view.type as string}`)
-      }
+      object[key] = viewDefinitionToRuntime(view)
     }
   }
 }

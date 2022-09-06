@@ -251,16 +251,14 @@ describe('composite', () => {
               models: {
                 model: {
                   foo: {
-                    type: 'ReferencedFrom',
+                    type: 'relationFrom',
                     model: 'foo',
                     property: 'foo',
-                    collection: false,
                   },
                   bar: {
-                    type: 'ReferencedFrom',
+                    type: 'relationFrom',
                     model: 'bar',
                     property: 'bar',
-                    collection: false,
                   },
                 },
               },
@@ -273,10 +271,9 @@ describe('composite', () => {
           models: {
             model: {
               bar: {
-                type: 'ReferencedFrom',
+                type: 'relationFrom',
                 model: 'test',
                 property: 'test',
-                collection: false,
               },
             },
           },
@@ -287,16 +284,14 @@ describe('composite', () => {
           models: {
             model: {
               foo: {
-                type: 'ReferencedFrom',
+                type: 'relationFrom',
                 model: 'foo',
                 property: 'foo',
-                collection: false,
               },
               bar: {
-                type: 'ReferencedFrom',
+                type: 'relationFrom',
                 model: 'bar',
                 property: 'bar',
-                collection: false,
               },
             },
           },
@@ -307,16 +302,14 @@ describe('composite', () => {
           models: {
             model: {
               foo: {
-                type: 'ReferencedFrom',
+                type: 'relationFrom',
                 model: 'foo',
                 property: 'foo',
-                collection: false,
               },
               bar: {
-                type: 'ReferencedFrom',
+                type: 'relationFrom',
                 model: 'test',
                 property: 'test',
-                collection: false,
               },
             },
           },
@@ -562,7 +555,7 @@ describe('composite', () => {
   describe('Composite.create()', () => {
     test('creates a new composite from valid schema', async () => {
       const composite = await Composite.create({ ceramic, schema: profilesSchema })
-      expect(composite.hash).not.toBeFalsy()
+      expect(composite.hash).toBeDefined()
       const compositeParams = composite.toParams()
       expect(Object.keys(compositeParams.commits).length).toEqual(3)
       const modelNames = ['GenericProfile', 'SocialProfile', 'PersonProfile']
