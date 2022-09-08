@@ -189,7 +189,7 @@ importers:
       '@ceramicnetwork/stream-model': ^0.4.2
       '@ceramicnetwork/stream-model-instance': ^0.4.0
       '@ceramicnetwork/streamid': ^2.3.2
-      '@composedb/client': workspace:0.2.1
+      '@composedb/client': workspace:^0.2.1
       '@composedb/devtools': workspace:^0.2.1
       '@composedb/devtools-node': workspace:^0.2.1
       '@composedb/types': workspace:^0.2.1
