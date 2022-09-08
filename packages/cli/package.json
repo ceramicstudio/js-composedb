@@ -1,6 +1,6 @@
 {
   "name": "@composedb/cli",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
@@ -69,11 +69,11 @@
     ]
   },
   "dependencies": {
-    "@ceramicnetwork/3id-did-resolver": "^2.1.6",
-    "@ceramicnetwork/http-client": "^2.3.3",
-    "@ceramicnetwork/stream-model": "^0.4.2",
-    "@ceramicnetwork/stream-model-instance": "^0.4.0",
-    "@ceramicnetwork/streamid": "^2.3.2",
+    "@ceramicnetwork/3id-did-resolver": "^2.1.7",
+    "@ceramicnetwork/http-client": "^2.3.4",
+    "@ceramicnetwork/stream-model": "^0.5.0",
+    "@ceramicnetwork/stream-model-instance": "^0.4.1",
+    "@ceramicnetwork/streamid": "^2.3.3",
     "@composedb/client": "workspace:^0.2.1",
     "@composedb/devtools": "workspace:^0.2.1",
     "@composedb/devtools-node": "workspace:^0.2.1",
@@ -87,7 +87,7 @@
     "fs-extra": "^10.0.1",
     "inquirer": "^8.2.4",
     "key-did-provider-ed25519": "^2.0.0",
-    "key-did-resolver": "^2.1.0",
+    "key-did-resolver": "^2.1.1",
     "listr": "^0.14.3",
     "listr-update-renderer": "^0.5.0",
     "ora": "^6.1.0",
@@ -96,7 +96,7 @@
   },
   "devDependencies": {
     "@ceramicnetwork/common": "^2.5.0",
-    "@ceramicnetwork/core": "^2.8.0",
+    "@ceramicnetwork/core": "^2.9.0",
     "@composedb/types": "workspace:^0.2.1",
     "@swc-node/register": "^1.5.1",
     "@types/fs-extra": "^9.0.13",

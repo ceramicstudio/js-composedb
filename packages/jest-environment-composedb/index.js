@@ -41,7 +41,7 @@ export default class ComposeEnvironment extends NodeEnvironment {
     })
 
     const stateStoreDirectory = path.join(this.tmpFolder.path, 'ceramic')
-    process.env.CERAMIC_ENABLE_EXPERIMENTAL_INDEXING = 'true'
+    process.env.CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB = 'true'
     this.global.ceramic = await Ceramic.create(this.global.ipfs, {
       stateStoreDirectory: stateStoreDirectory,
       indexing: {
@@ -59,7 +59,7 @@ export default class ComposeEnvironment extends NodeEnvironment {
   }
 
   async teardown() {
-    process.env.CERAMIC_ENABLE_EXPERIMENTAL_INDEXING = 'false'
+    process.env.CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB = 'false'
     await this.global.ceramic.close()
     await this.global.ipfs.stop()
     await this.tmpFolder.cleanup()
