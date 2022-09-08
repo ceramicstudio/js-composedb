@@ -17,6 +17,7 @@ import type {
 import { camelCase, pascalCase } from 'change-case'
 import { JsonReference } from 'json-ptr'
 
+import { type ScalarTitle, SCALAR_RUNTIME_TYPES } from '../schema/scalars.js'
 import type { AnySchema, ScalarSchema } from '../types.js'
 import { viewDefinitionToRuntime } from '../utils.js'
 
@@ -28,12 +29,10 @@ export function getName(base: string, prefix = ''): string {
   return withCase.startsWith(prefix) ? withCase : prefix + withCase
 }
 
-const CUSTOM_SCALARS_TITLES: Record<string, CustomRuntimeScalarType> = {
-  CeramicCommitID: 'commitid',
-  GraphQLDID: 'did',
-  GraphQLID: 'id',
+/** @internal */
+export function getStringScalarType(schema: JSONSchema.String): CustomRuntimeScalarType | 'string' {
+  return SCALAR_RUNTIME_TYPES[schema.title as ScalarTitle] ?? 'string'
 }
-type CustomScalarTitle = keyof typeof CUSTOM_SCALARS_TITLES
 
 type RuntimeModelBuilderParams = {
   name: string
@@ -241,7 +240,7 @@ export class RuntimeModelBuilder {
         return { type: 'float', required }
       case 'string':
         return {
-          type: CUSTOM_SCALARS_TITLES[schema.title as CustomScalarTitle] ?? 'string',
+          type: getStringScalarType(schema),
           required,
         }
     }

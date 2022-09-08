@@ -92,13 +92,21 @@ type SocialProfile implements Node {
 
 type PersonProfile implements Node {
   id: ID!
-  birthDate: String
+  birthDate: Date
   gender: String
   homeLocation: String
-  residenceCountry: String
-  nationalities: [String]
+  residenceCountry: CountryCode
+  nationalities: [CountryCode]
   affiliations: [String]
 }
+
+"""
+A date string, such as 2007-12-03, compliant with the \`full-date\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+"""A country code as defined by ISO 3166-1 alpha-2"""
+scalar CountryCode
 
 """A connection to a list of items."""
 type GenericProfileConnection {
@@ -308,11 +316,11 @@ input CreatePersonProfileInput {
 }
 
 input PersonProfileInput {
-  birthDate: String
+  birthDate: Date
   gender: String
   homeLocation: String
-  residenceCountry: String
-  nationalities: [String]
+  residenceCountry: CountryCode
+  nationalities: [CountryCode]
   affiliations: [String]
 }
 
@@ -335,11 +343,11 @@ input UpdatePersonProfileInput {
 }
 
 input PartialPersonProfileInput {
-  birthDate: String
+  birthDate: Date
   gender: String
   homeLocation: String
-  residenceCountry: String
-  nationalities: [String]
+  residenceCountry: CountryCode
+  nationalities: [CountryCode]
   affiliations: [String]
 }"
 `;
@@ -496,5 +504,275 @@ input PartialNoteInput {
 input UpdateOptionsInput {
   replace: Boolean
   version: CeramicCommitID
+}"
+`;
+
+exports[`schema printGraphQLSchema() 3`] = `
+"type Query {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+  viewer: CeramicAccount
+  commentIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): CommentConnection
+  postIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): PostConnection
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+type CeramicAccount implements Node {
+  id: ID!
+  isViewer: Boolean!
+  commentList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): CommentConnection
+  postList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): PostConnection
+}
+
+"""A connection to a list of items."""
+type CommentConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CommentEdge]
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""An edge in a connection."""
+type CommentEdge {
+  """The item at the end of the edge"""
+  node: Comment
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Comment implements Node {
+  id: ID!
+  postID: CeramicStreamID!
+  text: String!
+  author: CeramicAccount!
+  version: CeramicCommitID!
+  post: Post
+}
+
+"""A Ceramic Stream ID"""
+scalar CeramicStreamID
+
+"""A Ceramic Commit ID"""
+scalar CeramicCommitID
+
+type Post implements Node {
+  id: ID!
+  date: DateTime
+  title: String!
+  text: String!
+  author: CeramicAccount!
+  version: CeramicCommitID!
+  commentsCount: Int!
+  comments(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): CommentConnection
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the \`date-time\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+"""A connection to a list of items."""
+type PostConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PostEdge]
+}
+
+"""An edge in a connection."""
+type PostEdge {
+  """The item at the end of the edge"""
+  node: Post
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Mutation {
+  createComment(input: CreateCommentInput!): CreateCommentPayload
+  updateComment(input: UpdateCommentInput!): UpdateCommentPayload
+  createPost(input: CreatePostInput!): CreatePostPayload
+  updatePost(input: UpdatePostInput!): UpdatePostPayload
+}
+
+type CreateCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+  viewer: CeramicAccount
+  document: Comment!
+  clientMutationId: String
+}
+
+input CreateCommentInput {
+  content: CommentInput!
+  clientMutationId: String
+}
+
+input CommentInput {
+  postID: CeramicStreamID!
+  text: String!
+}
+
+type UpdateCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+  viewer: CeramicAccount
+  document: Comment!
+  clientMutationId: String
+}
+
+input UpdateCommentInput {
+  id: ID!
+  content: PartialCommentInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialCommentInput {
+  postID: CeramicStreamID
+  text: String
+}
+
+input UpdateOptionsInput {
+  replace: Boolean
+  version: CeramicCommitID
+}
+
+type CreatePostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+  viewer: CeramicAccount
+  document: Post!
+  clientMutationId: String
+}
+
+input CreatePostInput {
+  content: PostInput!
+  clientMutationId: String
+}
+
+input PostInput {
+  date: DateTime
+  title: String!
+  text: String!
+}
+
+type UpdatePostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+  viewer: CeramicAccount
+  document: Post!
+  clientMutationId: String
+}
+
+input UpdatePostInput {
+  id: ID!
+  content: PartialPostInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialPostInput {
+  date: DateTime
+  title: String
+  text: String
 }"
 `;

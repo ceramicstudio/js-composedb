@@ -20,6 +20,7 @@ import {
   type GraphQLInputFieldConfigMap,
   GraphQLID,
   GraphQLInputObjectType,
+  GraphQLInt,
   GraphQLInterfaceType,
   GraphQLList,
   GraphQLNonNull,
@@ -91,10 +92,16 @@ class SchemaBuilder {
   #types: Record<string, GraphQLEnumType | GraphQLObjectType> = {}
   #inputObjects: Record<string, GraphQLInputObjectType> = {}
   #mutations: Record<string, GraphQLFieldConfig<any, Context>> = {}
+  // Internal mapping of model IDs to object names
+  #modelAliases: Record<string, string>
 
   constructor(params: CreateSchemaParams) {
     this.#def = params.definition
     this.#isReadonly = !!params.readonly
+    this.#modelAliases = Object.entries(this.#def.models).reduce((aliases, [alias, model]) => {
+      aliases[model.id] = alias
+      return aliases
+    }, {} as Record<string, string>)
   }
 
   build(): GraphQLSchema {
@@ -108,11 +115,6 @@ class SchemaBuilder {
   }
 
   _createSharedDefinitions(): SharedDefinitions {
-    const modelAliases = Object.entries(this.#def.models).reduce((aliases, [alias, model]) => {
-      aliases[model.id] = alias
-      return aliases
-    }, {} as Record<string, string>)
-
     const nodeDefs = nodeDefinitions(
       async (id: string, ctx: Context) => {
         return id.startsWith('did:') ? id : await ctx.loadDoc(id)
@@ -120,7 +122,7 @@ class SchemaBuilder {
       (didOrDoc: string | ModelInstanceDocument) => {
         return typeof didOrDoc === 'string'
           ? 'CeramicAccount'
-          : modelAliases[didOrDoc.metadata.model?.toString()]
+          : this.#modelAliases[didOrDoc.metadata.model?.toString()]
       }
     )
 
@@ -391,6 +393,13 @@ class SchemaBuilder {
     relation: RuntimeRelation,
     objectFields: RuntimeObjectFields
   ): GraphQLFieldConfig<ModelInstanceDocument, Context> {
+    const modelAlias = this.#modelAliases[relation.model]
+    if (modelAlias == null) {
+      throw new Error(
+        `Model alias not found for relation with ID ${relation.model} on field ${key}`
+      )
+    }
+
     switch (relation.source) {
       case 'document': {
         const ref = objectFields[relation.property]
@@ -400,19 +409,53 @@ class SchemaBuilder {
           )
         }
         return {
-          type: this.#types[relation.model],
+          type: this.#types[modelAlias],
           resolve: async (
             doc,
             _args,
             ctx
           ): Promise<ModelInstanceDocument<Record<string, any>> | null> => {
             const id = doc.content?.[relation.property] as string | void
-            return id ? await ctx.loadDoc(id) : null
+            if (id == null) {
+              return null
+            }
+            const loaded = await ctx.loadDoc(id)
+            if (loaded == null) {
+              return null
+            }
+            const loadedModel = loaded.metadata.model.toString()
+            if (relation.model != null && loadedModel !== relation.model) {
+              console.warn(
+                `Ignoring unexpected model ${loadedModel} for document ${id}, expected model ${relation.model}`
+              )
+              return null
+            }
+            return loaded
           },
         }
       }
       case 'queryConnection':
+        return {
+          type: this.#types[`${modelAlias}Connection`],
+          args: connectionArgs,
+          resolve: async (doc, args: ConnectionArguments, ctx): Promise<Connection<any> | null> => {
+            return await ctx.queryConnection({
+              ...args,
+              model: relation.model,
+              criteria: { [relation.property]: doc.id.toString() },
+            })
+          },
+        }
       case 'queryCount':
+        return {
+          type: new GraphQLNonNull(GraphQLInt),
+          resolve: async (doc, _args, ctx): Promise<number> => {
+            return await ctx.queryCount({
+              model: relation.model,
+              criteria: { [relation.property]: doc.id.toString() },
+            })
+          },
+        }
       default:
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         throw new Error(`Unsupported relation source: ${relation.source}`)

@@ -59,7 +59,6 @@ export type ParsedCreateModelDefinition = {
   // implements: Array<string>
   description: string
   accountRelation: ModelAccountRelation
-  accountRelationProperty?: string
   relations: ModelRelationsDefinition
 }
 

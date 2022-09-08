@@ -4,10 +4,10 @@ import { ImageMetadataType, profilesSchema } from '@composedb/test-schemas'
 import Ajv from 'ajv/dist/2020'
 
 import { createAbstractCompositeDefinition } from '../src'
-import type { AbstractModelDefinition, CreateModelDefinition } from '../src/schema/types'
+import type { AbstractCreateModelDefinition, AbstractModelDefinition } from '../src/schema/types'
 
 function getSchema(modelDefinition: AbstractModelDefinition) {
-  return (modelDefinition as CreateModelDefinition).definition.schema
+  return (modelDefinition as AbstractCreateModelDefinition).model.schema
 }
 
 describe('schema', () => {
@@ -78,7 +78,7 @@ describe('schema', () => {
       models: {
         ModelWithDIDProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithDIDProp',
             accountRelation: 'single',
             schema: {
@@ -154,7 +154,7 @@ describe('schema', () => {
       models: {
         ModelWithCommitIDProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithCommitIDProp',
             accountRelation: 'single',
             schema: {
@@ -226,7 +226,7 @@ describe('schema', () => {
       models: {
         ModelWithBooleanProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithBooleanProp',
             accountRelation: 'single',
             description: 'Test model with boolean properties',
@@ -265,7 +265,7 @@ describe('schema', () => {
       models: {
         ModelWithIntProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithIntProp',
             accountRelation: 'single',
             description: 'Test model with int properties',
@@ -304,7 +304,7 @@ describe('schema', () => {
       models: {
         ModelWithFloatProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithFloatProp',
             accountRelation: 'single',
             description: 'Test model with float properties',
@@ -343,7 +343,7 @@ describe('schema', () => {
       models: {
         ModelWithStringProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithStringProp',
             accountRelation: 'single',
             description: 'Test model with string properties',
@@ -412,7 +412,7 @@ describe('schema', () => {
       models: {
         ModelWithIDProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithIDProp',
             accountRelation: 'single',
             description: 'Test model with GraphQL ID property',
@@ -455,7 +455,7 @@ describe('schema', () => {
       models: {
         ModelWithArrayProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithArrayProp',
             accountRelation: 'single',
             description: 'Test model with list property',
@@ -501,7 +501,7 @@ describe('schema', () => {
       models: {
         ModelWithStringProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithStringProp',
             accountRelation: 'single',
             description: 'Test model with a constrained string property',
@@ -593,7 +593,7 @@ describe('schema', () => {
       models: {
         ModelWithArrayProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithArrayProp',
             accountRelation: 'single',
             description: 'Test model with a constrained array property',
@@ -633,7 +633,7 @@ describe('schema', () => {
       models: {
         ModelWithArrayProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithArrayProp',
             accountRelation: 'single',
             description: 'Test model with an array property with constrained items',
@@ -687,7 +687,7 @@ describe('schema', () => {
       models: {
         ModelWithIntProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithIntProp',
             accountRelation: 'single',
             description: 'Test model with a constreained int property',
@@ -723,7 +723,7 @@ describe('schema', () => {
       models: {
         ModelWithFloatProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithFloatProp',
             accountRelation: 'single',
             description: 'Test model with a constrained float property',

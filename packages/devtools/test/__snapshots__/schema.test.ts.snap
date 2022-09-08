@@ -9,9 +9,8 @@ exports[`schema createAbstractCompositeDefinition creates an InternalCompositeDe
   "models": {
     "GenericProfile": {
       "action": "create",
-      "definition": {
+      "model": {
         "accountRelation": "single",
-        "accountRelationProperty": undefined,
         "description": "A model to store common profile-related properties",
         "name": "GenericProfile",
         "relations": {},
@@ -89,9 +88,8 @@ exports[`schema createAbstractCompositeDefinition creates an InternalCompositeDe
     },
     "PersonProfile": {
       "action": "create",
-      "definition": {
+      "model": {
         "accountRelation": "single",
-        "accountRelationProperty": undefined,
         "description": "A model to store accounts' personal data",
         "name": "PersonProfile",
         "relations": {},
@@ -150,9 +148,8 @@ exports[`schema createAbstractCompositeDefinition creates an InternalCompositeDe
     },
     "SocialProfile": {
       "action": "create",
-      "definition": {
+      "model": {
         "accountRelation": "single",
-        "accountRelationProperty": undefined,
         "description": "A model to store properties that accounts would like to share on social media",
         "name": "SocialProfile",
         "relations": {},

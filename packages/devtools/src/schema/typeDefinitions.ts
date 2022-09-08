@@ -40,14 +40,12 @@ directive @relationCountFrom(model: String!, property: String!) on FIELD_DEFINIT
 
 enum ModelAccountRelation {
   LIST # Account to multiple streams - default
-  SET # Account to multiple streams based on a set value
   SINGLE # Account to single stream (IDX)
 }
 
 directive @createModel(
   description: String!
   accountRelation: ModelAccountRelation!
-  accountRelationProperty: String
 ) on OBJECT
 
 directive @loadModel(id: StreamID!) on OBJECT

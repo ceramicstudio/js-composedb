@@ -71,6 +71,10 @@ exports[`Runtime format Post with comments relations 1`] = `
         "type": "view",
         "viewType": "documentAccount",
       },
+      "date": {
+        "required": false,
+        "type": "datetime",
+      },
       "text": {
         "required": true,
         "type": "string",
@@ -128,7 +132,7 @@ exports[`Runtime format Post with comments relations 2`] = `
       },
       "postID": {
         "required": true,
-        "type": "string",
+        "type": "streamid",
       },
       "text": {
         "required": true,
@@ -143,6 +147,10 @@ exports[`Runtime format Post with comments relations 2`] = `
       "author": {
         "type": "view",
         "viewType": "documentAccount",
+      },
+      "date": {
+        "required": false,
+        "type": "datetime",
       },
       "text": {
         "required": true,
@@ -201,7 +209,7 @@ exports[`Runtime format Post with comments relations 3`] = `
       },
       "postID": {
         "required": true,
-        "type": "string",
+        "type": "streamid",
       },
       "text": {
         "required": true,
@@ -234,6 +242,10 @@ exports[`Runtime format Post with comments relations 3`] = `
         },
         "type": "view",
         "viewType": "relation",
+      },
+      "date": {
+        "required": false,
+        "type": "datetime",
       },
       "text": {
         "required": true,
@@ -347,7 +359,7 @@ exports[`Runtime format Profile - multiples models with common local references 
       },
       "birthDate": {
         "required": false,
-        "type": "string",
+        "type": "date",
       },
       "gender": {
         "required": false,
@@ -360,14 +372,14 @@ exports[`Runtime format Profile - multiples models with common local references 
       "nationalities": {
         "item": {
           "required": false,
-          "type": "string",
+          "type": "countrycode",
         },
         "required": false,
         "type": "list",
       },
       "residenceCountry": {
         "required": false,
-        "type": "string",
+        "type": "countrycode",
       },
     },
     "SocialProfile": {
@@ -493,7 +505,7 @@ exports[`Runtime format Profile definition with added model view 1`] = `
       },
       "birthDate": {
         "required": false,
-        "type": "string",
+        "type": "date",
       },
       "gender": {
         "required": false,
@@ -506,14 +518,14 @@ exports[`Runtime format Profile definition with added model view 1`] = `
       "nationalities": {
         "item": {
           "required": false,
-          "type": "string",
+          "type": "countrycode",
         },
         "required": false,
         "type": "list",
       },
       "residenceCountry": {
         "required": false,
-        "type": "string",
+        "type": "countrycode",
       },
     },
     "SocialProfile": {

@@ -600,6 +600,7 @@ describe('composite', () => {
       if (definition.name === 'Comment') {
         commentID = id
       } else {
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(id).toBe(postID)
       }
     }
@@ -610,6 +611,6 @@ describe('composite', () => {
       schema: loadPostSchemaWithComments(postID, commentID as string),
     })
     const { definition } = postWithCommentComposite.toParams()
-    expect(definition).toMatchSnapshot()
+    expect(Object.keys(definition.models)).toHaveLength(2)
   }, 60000)
 })

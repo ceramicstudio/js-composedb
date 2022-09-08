@@ -166,4 +166,12 @@ describe('context', () => {
     await expect(context.querySingle({ model: 'test' })).resolves.toBe(expectedNode)
     expect(queryIndex).toHaveBeenCalledWith({ model: 'test', last: 1 })
   })
+
+  test('queryCount()', async () => {
+    const queryCount = jest.fn(() => 10)
+    const ceramic = { index: { queryCount } } as unknown as CeramicApi
+    const context = new Context({ ceramic })
+    await expect(context.queryCount({ model: 'test' })).resolves.toBe(10)
+    expect(queryCount).toHaveBeenCalledWith({ model: 'test' })
+  })
 })

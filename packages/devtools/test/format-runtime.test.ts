@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import type { ModelDefinition } from '@ceramicnetwork/stream-model'
 import {
   createCommentSchemaWithPost,
   loadPostSchemaWithComments,
@@ -8,46 +7,8 @@ import {
   postSchema,
   profilesSchema,
 } from '@composedb/test-schemas'
-import type { InternalCompositeDefinition } from '@composedb/types'
 
-import { createRuntimeDefinition, getName, createAbstractCompositeDefinition } from '../src'
-import type { AbstractCompositeDefinition } from '../src/schema/types'
-
-function mockDefinition(
-  definition: AbstractCompositeDefinition,
-  providedModels: Record<string, ModelDefinition> = {}
-): InternalCompositeDefinition {
-  const models: Record<string, ModelDefinition> = {}
-  const views = { models: {} }
-
-  for (const model of Object.values(definition.models)) {
-    if (model.action === 'create') {
-      const definition = model.definition
-      models[`${definition.name}ID`] = definition
-    } else {
-      const definition = providedModels[model.id]
-      if (definition == null) {
-        throw new Error(`Missing provided model ${model.id}`)
-      }
-      models[model.id] = definition
-      views.models[model.id] = model.views
-    }
-  }
-
-  return {
-    version: '1.0',
-    commonEmbeds: definition.commonEmbeds,
-    models,
-    views,
-  }
-}
-
-function mockDefinitionFromSchema(
-  schema: string,
-  providedModels?: Record<string, ModelDefinition>
-): InternalCompositeDefinition {
-  return mockDefinition(createAbstractCompositeDefinition(schema), providedModels)
-}
+import { createRuntimeDefinition, getName, mockDefinitionFromSchema } from '../src'
 
 describe('Runtime format', () => {
   const profilesDefinition = mockDefinitionFromSchema(profilesSchema)

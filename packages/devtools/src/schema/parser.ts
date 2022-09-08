@@ -44,7 +44,6 @@ import type {
 
 const ACCOUNT_RELATIONS: Record<string, ModelAccountRelation> = {
   LIST: ModelAccountRelation.LIST,
-  SET: ModelAccountRelation.SET,
   SINGLE: ModelAccountRelation.SINGLE,
 }
 
@@ -166,10 +165,8 @@ export class SchemaParser {
     }
 
     if (createModel != null) {
-      const { accountRelation, accountRelationProperty, description } = (createModel.args ??
-        {}) as {
+      const { accountRelation, description } = (createModel.args ?? {}) as {
         accountRelation?: string
-        accountRelationProperty?: string
         description?: string
       }
       if (accountRelation == null) {
@@ -183,28 +180,29 @@ export class SchemaParser {
           `Unsupported accountRelation value ${accountRelation} for @createModel directive on object ${type.name}`
         )
       }
-      if (accountRelationValue === ModelAccountRelation.SET) {
-        if (accountRelationProperty == null) {
-          throw new Error(
-            `Missing accountRelationProperty value for @createModel directive on object ${type.name}`
-          )
-        }
-        const object = this.#def.objects[type.name]
-        if (object == null) {
-          throw new Error(`Missing object definition for ${type.name}`)
-        }
-        const property = object.properties[accountRelationProperty]
-        if (property == null) {
-          throw new Error(
-            `Missing property ${accountRelationProperty} defined as accountRelationProperty value for @createModel directive on object ${type.name}`
-          )
-        }
-        if (property.type !== 'scalar') {
-          throw new Error(
-            `Property ${accountRelationProperty} defined as accountRelationProperty value for @createModel directive on object ${type.name} must use a scalar type`
-          )
-        }
-      }
+      // Future: handle account relation of type set
+      // if (accountRelationValue === ModelAccountRelation.SET) {
+      //   if (accountRelationProperty == null) {
+      //     throw new Error(
+      //       `Missing accountRelationProperty value for @createModel directive on object ${type.name}`
+      //     )
+      //   }
+      //   const object = this.#def.objects[type.name]
+      //   if (object == null) {
+      //     throw new Error(`Missing object definition for ${type.name}`)
+      //   }
+      //   const property = object.properties[accountRelationProperty]
+      //   if (property == null) {
+      //     throw new Error(
+      //       `Missing property ${accountRelationProperty} defined as accountRelationProperty value for @createModel directive on object ${type.name}`
+      //     )
+      //   }
+      //   if (property.type !== 'scalar') {
+      //     throw new Error(
+      //       `Property ${accountRelationProperty} defined as accountRelationProperty value for @createModel directive on object ${type.name} must use a scalar type`
+      //     )
+      //   }
+      // }
       if (description == null || description === '') {
         throw new Error(
           `Missing description value for @createModel directive on object ${type.name}`
@@ -217,7 +215,6 @@ export class SchemaParser {
         // implements: type.getInterfaces().map((i) => i.name),
         description,
         accountRelation: accountRelationValue,
-        accountRelationProperty,
         relations: object.relations,
       }
     }
