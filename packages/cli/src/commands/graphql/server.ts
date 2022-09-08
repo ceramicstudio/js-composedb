@@ -50,6 +50,7 @@ export default class GraphQLServer extends Command<
       const runtimeDefinition = JSON.parse(definitionFile.toString()) as RuntimeCompositeDefinition
       const handler = await serveGraphQL({
         ceramicURL: this.flags['ceramic-url'] || 'http://0.0.0.0:7007',
+        did: this.ceramic.did,
         definition: runtimeDefinition,
         readonly: this.flags.readonly,
         graphiql: this.flags.graphiql,
