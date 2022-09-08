@@ -37,7 +37,7 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/http-client": "^2.3.3",
+    "@ceramicnetwork/http-client": "^2.3.4",
     "@composedb/client": "workspace:^0.2.1",
     "express": "^4.18.1",
     "express-graphql": "^0.12.0",

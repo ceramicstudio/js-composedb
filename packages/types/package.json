@@ -36,8 +36,8 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/stream-model": "^0.4.2",
-    "@ceramicnetwork/stream-model-instance": "^0.4.0",
+    "@ceramicnetwork/stream-model": "^0.5.0",
+    "@ceramicnetwork/stream-model-instance": "^0.4.1",
     "dids": "^3.3.0",
     "json-schema-typed": "^8.0.1"
   }
