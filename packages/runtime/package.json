@@ -1,18 +1,18 @@
 {
-  "name": "@composedb/devtools-node",
-  "version": "0.2.1",
+  "name": "@composedb/runtime",
+  "version": "0.2.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
   "keywords": [
     "ceramic",
     "composedb",
-    "developer"
+    "runtime"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ceramicstudio/js-composedb",
-    "directory": "packages/devtools-node"
+    "directory": "packages/runtime"
   },
   "type": "module",
   "main": "dist/index.js",
@@ -32,28 +32,29 @@
     "build:js": "swc src -d ./dist --config-file ../../.swcrc",
     "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
     "build": "pnpm build:clean && pnpm build:types && pnpm build:js",
-    "lint": "eslint src --fix",
+    "lint": "eslint src test --fix",
+    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test:ci": "pnpm run test --ci --coverage",
     "prepare": "pnpm build",
     "prepublishOnly": "package-check"
   },
   "dependencies": {
     "@ceramicnetwork/http-client": "^2.3.3",
-    "@composedb/runtime": "workspace:^0.2.0",
-    "express": "^4.18.1",
-    "express-graphql": "^0.12.0",
-    "fs-extra": "^10.1.0",
-    "get-port": "^6.1.2",
-    "graphql": "^16.5.0"
-  },
-  "peerDependencies": {
-    "@composedb/devtools": "workspace:^0.2.1"
+    "@ceramicnetwork/stream-model": "^0.4.2",
+    "@ceramicnetwork/stream-model-instance": "^0.4.0",
+    "@ceramicnetwork/streamid": "^2.3.2",
+    "@composedb/graphql-scalars": "workspace:^0.2.1",
+    "dataloader": "^2.1.0",
+    "graphql": "^16.5.0",
+    "graphql-relay": "^0.10.0"
   },
   "devDependencies": {
+    "@ceramicnetwork/common": "^2.5.0",
     "@composedb/devtools": "workspace:^0.2.1",
+    "@composedb/test-schemas": "workspace:^0.2.0",
     "@composedb/types": "workspace:^0.2.1",
-    "@types/express": "^4.17.13",
-    "@types/fs-extra": "^9.0.13",
-    "dids": "^3.3.0"
+    "dids": "^3.3.0",
+    "jest-environment-composedb": "workspace:^0.2.0"
   },
   "jest": {
     "extensionsToTreatAsEsm": [

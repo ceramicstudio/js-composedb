@@ -4,7 +4,7 @@ import { Model } from '@ceramicnetwork/stream-model'
 import Table from 'cli-table3'
 import { Edge, Page, PageInfo, StreamState } from '@ceramicnetwork/common'
 import terminalSize from 'term-size'
-import {CeramicClient} from "@ceramicnetwork/http-client";
+import { CeramicClient } from '@ceramicnetwork/http-client'
 
 type PartialModelDefinition = {
   id: string
@@ -52,7 +52,9 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
         model: Model.MODEL,
       })
       this.lastLoadedPageInfo = page.pageInfo
-      this.fetchedFields = this.fetchedFields.concat(this.getFieldsFromEdges(ceramicIndexer, page.edges))
+      this.fetchedFields = this.fetchedFields.concat(
+        this.getFieldsFromEdges(ceramicIndexer, page.edges)
+      )
       this.displayPartialDefinitions(this.fetchedFields)
 
       while (this.lastLoadedPageInfo?.hasNextPage) {
@@ -64,7 +66,9 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
           after: this.lastLoadedPageInfo?.endCursor,
         })
         this.lastLoadedPageInfo = nextPage.pageInfo
-        this.fetchedFields = this.fetchedFields.concat(this.getFieldsFromEdges(ceramicIndexer, nextPage.edges))
+        this.fetchedFields = this.fetchedFields.concat(
+          this.getFieldsFromEdges(ceramicIndexer, nextPage.edges)
+        )
         this.displayPartialDefinitions(this.fetchedFields)
       }
       this.spinner.succeed('Loading models... Done')
@@ -74,7 +78,10 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
     }
   }
 
-  getFieldsFromEdges(ceramicIndexer: CeramicClient, edges: Array<Edge<StreamState>>): Array<PartialModelDefinition> {
+  getFieldsFromEdges(
+    ceramicIndexer: CeramicClient,
+    edges: Array<Edge<StreamState>>
+  ): Array<PartialModelDefinition> {
     return edges.map((edge) => {
       const stream = ceramicIndexer.buildStreamFromState(edge.node)
       return {

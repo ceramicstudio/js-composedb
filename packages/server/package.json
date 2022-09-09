@@ -1,18 +1,18 @@
 {
-  "name": "@composedb/devtools-node",
-  "version": "0.2.1",
+  "name": "@composedb/server",
+  "version": "0.2.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
   "keywords": [
     "ceramic",
     "composedb",
-    "developer"
+    "server"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ceramicstudio/js-composedb",
-    "directory": "packages/devtools-node"
+    "directory": "packages/server"
   },
   "type": "module",
   "main": "dist/index.js",
@@ -39,36 +39,13 @@
   "dependencies": {
     "@ceramicnetwork/http-client": "^2.3.3",
     "@composedb/runtime": "workspace:^0.2.0",
-    "express": "^4.18.1",
-    "express-graphql": "^0.12.0",
-    "fs-extra": "^10.1.0",
+    "fastify": "^4.5.3",
     "get-port": "^6.1.2",
-    "graphql": "^16.5.0"
-  },
-  "peerDependencies": {
-    "@composedb/devtools": "workspace:^0.2.1"
+    "graphql": "^16.5.0",
+    "graphql-helix": "^1.13.0"
   },
   "devDependencies": {
-    "@composedb/devtools": "workspace:^0.2.1",
-    "@composedb/types": "workspace:^0.2.1",
-    "@types/express": "^4.17.13",
-    "@types/fs-extra": "^9.0.13",
-    "dids": "^3.3.0"
-  },
-  "jest": {
-    "extensionsToTreatAsEsm": [
-      ".ts"
-    ],
-    "moduleNameMapper": {
-      "^(\\.{1,2}/.*)\\.js$": "$1"
-    },
-    "transform": {
-      "^.+\\.(t|j)s$": [
-        "@swc/jest",
-        {
-          "root": "../.."
-        }
-      ]
-    }
+    "@ceramicnetwork/common": "^2.5.0",
+    "@composedb/types": "workspace:^0.2.1"
   }
 }
