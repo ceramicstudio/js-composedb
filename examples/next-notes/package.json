@@ -12,6 +12,7 @@
   "dependencies": {
     "@ceramicnetwork/http-client": "^2.3.4",
     "@composedb/client": "workspace:^0.2.0",
+    "@composedb/server": "workspace:^0.2.0",
     "@composedb/types": "workspace:^0.2.0",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",

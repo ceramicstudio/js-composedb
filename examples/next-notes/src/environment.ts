@@ -6,15 +6,18 @@ import { Environment as RelayEnvironment, Network, RecordSource, Store } from 'r
 import type { GraphQLResponse } from 'relay-runtime'
 
 import { definition } from './__generated__/definition'
-
-const CERAMIC_URL = process.env.NEXT_PUBLIC_CERAMIC_URL ?? 'http://localhost:7007'
+import { CERAMIC_URL, LOCAL_URL } from './constants'
 
 export type Environment = {
   did: DID
   relay: RelayEnvironment
 }
 
-const client = new ComposeClient({ ceramic: CERAMIC_URL, definition })
+const client = new ComposeClient({
+  ceramic: CERAMIC_URL,
+  definition,
+  serverURL: `${LOCAL_URL}/api/graphql`,
+})
 
 const network = Network.create(async (request, variables) => {
   const res = (await client.executeQuery(request.text as string, variables)) as GraphQLResponse

@@ -58,7 +58,7 @@ export default class GraphQLServer extends Command<
       })
       this.spinner.info(`GraphQL server is listening on ${handler.url}`)
       const handleProcessKillGracefully = () => {
-        handler.stop(() => {
+        handler.stop().then(() => {
           this.spinner.succeed('Server stopped')
         })
       }

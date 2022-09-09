@@ -13,8 +13,8 @@
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@ceramicnetwork/http-client": "^2.3.4",
-    "@composedb/client": "workspace:^0.2.0",
-    "@composedb/types": "workspace:^0.2.0",
+    "@composedb/client": "workspace:^0.2.2",
+    "@composedb/types": "workspace:^0.2.2",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.3",
@@ -33,8 +33,8 @@
   },
   "devDependencies": {
     "@ceramicnetwork/common": "^2.6.0",
-    "@composedb/devtools": "workspace:^0.2.0",
-    "@composedb/devtools-node": "workspace:^0.2.0",
+    "@composedb/devtools": "workspace:^0.2.2",
+    "@composedb/devtools-node": "workspace:^0.2.2",
     "@swc/core": "^1.2.249",
     "@types/node": "^18.7.16",
     "@types/react": "^18.0.18",

@@ -77,6 +77,7 @@ export class ComposeServer {
 
   async handleHTTPRequest(request: Request, response: RawResponse): Promise<void> {
     if (this.#graphiql && shouldRenderGraphiQL(request)) {
+      response.setHeader('Content-Type', 'text/html')
       response.end(renderGraphiQL())
     } else {
       const result = await this.processRequest(request)
@@ -101,7 +102,6 @@ export class ComposeServer {
     })
 
     const port = await getPort({ port: params.port ?? 7077 })
-    console.log('server port', port)
     await server.listen({ port })
 
     return {

@@ -2,9 +2,16 @@ import { CeramicClient } from '@ceramicnetwork/http-client'
 import { Context, createGraphQLSchema } from '@composedb/runtime'
 import type { RuntimeCompositeDefinition } from '@composedb/types'
 import type { DID } from 'dids'
-import express from 'express'
-import { graphqlHTTP } from 'express-graphql'
+import fastify from 'fastify'
 import getPort from 'get-port'
+import {
+  type Request,
+  getGraphQLParameters,
+  processRequest,
+  renderGraphiQL,
+  sendResult,
+  shouldRenderGraphiQL,
+} from 'graphql-helix'
 
 import { readEncodedComposite } from './fs.js'
 import type { PathInput } from './types.js'
@@ -17,7 +24,7 @@ export type ServerHandler = {
   /**
    * Stop the server.
    */
-  stop: (callback?: (err?: Error | undefined) => void) => void
+  stop: () => Promise<void>
 }
 
 export type ServeParams = {
@@ -64,31 +71,48 @@ export async function serveGraphQL(params: ServeGraphQLParams): Promise<ServerHa
     ceramic.did = did
   }
 
-  const app = express()
-  app.use(
-    '/graphql',
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    graphqlHTTP({
-      context: new Context({ ceramic }),
-      schema: createGraphQLSchema({ definition, readonly }),
-      graphiql,
-    })
-  )
+  const context = new Context({ ceramic })
+  const schema = createGraphQLSchema({ definition, readonly })
+
+  const server = fastify()
+
+  server.route({
+    method: ['GET', 'POST'],
+    url: '/graphql',
+    handler: async (req, reply) => {
+      const request: Request = {
+        body: req.body,
+        headers: req.headers,
+        method: req.method,
+        query: req.query,
+      }
+      if (graphiql && shouldRenderGraphiQL(request)) {
+        reply.header('Content-Type', 'text/html')
+        reply.send(renderGraphiQL())
+      } else {
+        const { operationName, query, variables } = getGraphQLParameters(request)
+        const result = await processRequest<Context>({
+          operationName,
+          query,
+          variables,
+          request,
+          schema,
+          contextFactory: () => context,
+        })
+        await sendResult(result, reply.raw)
+      }
+    },
+  })
 
   const serverPort = await getPort({ port })
+  await server.listen({ port: serverPort })
 
-  return await new Promise((resolve, reject) => {
-    const server = app.listen(serverPort, () => {
-      const handler: ServerHandler = {
-        url: `http://localhost:${serverPort}/graphql`,
-        stop: (callback) => {
-          server.close(callback)
-        },
-      }
-      resolve(handler)
-    })
-    server.once('error', reject)
-  })
+  return {
+    url: `http://localhost:${serverPort}/graphql`,
+    stop: async () => {
+      await server.close()
+    },
+  }
 }
 
 /**
