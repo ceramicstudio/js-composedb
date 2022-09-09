@@ -37,7 +37,7 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/http-client": "^2.3.3",
+    "@ceramicnetwork/http-client": "^2.3.4",
     "@composedb/runtime": "workspace:^0.2.0",
     "fastify": "^4.5.3",
     "get-port": "^6.1.2",
@@ -45,7 +45,7 @@
     "graphql-helix": "^1.13.0"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^2.5.0",
+    "@ceramicnetwork/common": "^2.6.0",
     "@composedb/types": "workspace:^0.2.1"
   }
 }
