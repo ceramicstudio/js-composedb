@@ -41,16 +41,15 @@
   "dependencies": {
     "@ceramicnetwork/common": "^2.6.0",
     "@ceramicnetwork/http-client": "^2.3.4",
+    "@composedb/constants": "workspace:^0.2.0",
     "@composedb/runtime": "workspace:^0.2.0",
     "@graphql-tools/stitch": "^8.7.9",
-    "@graphql-tools/wrap": "^9.1.0",
     "graphql": "^16.5.0"
   },
   "devDependencies": {
     "@composedb/devtools": "workspace:^0.2.1",
     "@composedb/test-schemas": "workspace:^0.2.0",
     "@composedb/types": "workspace:^0.2.1",
-    "@graphql-tools/delegate": "^9.0.5",
     "@graphql-tools/utils": "^8.11.0",
     "dids": "^3.3.0",
     "jest-environment-composedb": "workspace:^0.2.0"

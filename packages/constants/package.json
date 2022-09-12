@@ -1,18 +1,17 @@
 {
-  "name": "@composedb/server",
+  "name": "@composedb/constants",
   "version": "0.2.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
   "keywords": [
     "ceramic",
-    "composedb",
-    "server"
+    "composedb"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ceramicstudio/js-composedb",
-    "directory": "packages/server"
+    "directory": "packages/constants"
   },
   "type": "module",
   "main": "dist/index.js",
@@ -35,18 +34,5 @@
     "lint": "eslint src --fix",
     "prepare": "pnpm build",
     "prepublishOnly": "package-check"
-  },
-  "dependencies": {
-    "@ceramicnetwork/http-client": "^2.3.4",
-    "@composedb/constants": "workspace:^0.2.0",
-    "@composedb/runtime": "workspace:^0.2.0",
-    "fastify": "^4.5.3",
-    "get-port": "^6.1.2",
-    "graphql": "^16.5.0",
-    "graphql-helix": "^1.13.0"
-  },
-  "devDependencies": {
-    "@ceramicnetwork/common": "^2.6.0",
-    "@composedb/types": "workspace:^0.2.1"
   }
 }

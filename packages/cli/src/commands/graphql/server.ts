@@ -56,11 +56,16 @@ export default class GraphQLServer extends Command<
         graphiql: this.flags.graphiql,
         port: this.flags.port,
       })
-      this.spinner.info(`GraphQL server is listening on ${handler.url}`)
+      this.spinner.info(`GraphQL server is listening on http://localhost:${handler.port}/graphql`)
       const handleProcessKillGracefully = () => {
-        handler.stop().then(() => {
-          this.spinner.succeed('Server stopped')
-        })
+        handler.stop().then(
+          () => {
+            this.spinner.succeed('Server stopped')
+          },
+          () => {
+            this.spinner.fail('Failed to stop server')
+          }
+        )
       }
       process.on('SIGTERM', handleProcessKillGracefully)
       process.on('SIGINT', handleProcessKillGracefully)

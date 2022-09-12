@@ -269,32 +269,33 @@ importers:
     specifiers:
       '@ceramicnetwork/common': ^2.6.0
       '@ceramicnetwork/http-client': ^2.3.4
+      '@composedb/constants': workspace:^0.2.0
       '@composedb/devtools': workspace:^0.2.1
       '@composedb/runtime': workspace:^0.2.0
       '@composedb/test-schemas': workspace:^0.2.0
       '@composedb/types': workspace:^0.2.1
-      '@graphql-tools/delegate': ^9.0.5
       '@graphql-tools/stitch': ^8.7.9
       '@graphql-tools/utils': ^8.11.0
-      '@graphql-tools/wrap': ^9.1.0
       dids: ^3.3.0
       graphql: ^16.5.0
       jest-environment-composedb: workspace:^0.2.0
     dependencies:
       '@ceramicnetwork/common': 2.6.0
       '@ceramicnetwork/http-client': 2.3.4
+      '@composedb/constants': link:../constants
       '@composedb/runtime': link:../runtime
       '@graphql-tools/stitch': 8.7.9_graphql@16.6.0
-      '@graphql-tools/wrap': 9.1.0_graphql@16.6.0
       graphql: 16.6.0
     devDependencies:
       '@composedb/devtools': link:../devtools
       '@composedb/test-schemas': link:../test-schemas
       '@composedb/types': link:../types
-      '@graphql-tools/delegate': 9.0.5_graphql@16.6.0
       '@graphql-tools/utils': 8.11.0_graphql@16.6.0
       dids: 3.3.0
       jest-environment-composedb: link:../jest-environment-composedb
+
+  packages/constants:
+    specifiers: {}
 
   packages/devtools:
     specifiers:
@@ -356,23 +357,17 @@ importers:
       '@ceramicnetwork/http-client': ^2.3.4
       '@composedb/devtools': workspace:^0.2.1
       '@composedb/runtime': workspace:^0.2.0
+      '@composedb/server': workspace:^0.2.0
       '@composedb/types': workspace:^0.2.1
       '@types/express': ^4.17.13
       '@types/fs-extra': ^9.0.13
       dids: ^3.3.0
-      fastify: ^4.5.3
       fs-extra: ^10.1.0
-      get-port: ^6.1.2
-      graphql: ^16.5.0
-      graphql-helix: ^1.13.0
     dependencies:
       '@ceramicnetwork/http-client': 2.3.4
       '@composedb/runtime': link:../runtime
-      fastify: 4.5.3
+      '@composedb/server': link:../server
       fs-extra: 10.1.0
-      get-port: 6.1.2
-      graphql: 16.6.0
-      graphql-helix: 1.13.0_graphql@16.6.0
     devDependencies:
       '@composedb/devtools': link:../devtools
       '@composedb/types': link:../types
@@ -449,6 +444,7 @@ importers:
     specifiers:
       '@ceramicnetwork/common': ^2.6.0
       '@ceramicnetwork/http-client': ^2.3.4
+      '@composedb/constants': workspace:^0.2.0
       '@composedb/runtime': workspace:^0.2.0
       '@composedb/types': workspace:^0.2.1
       fastify: ^4.5.3
@@ -457,6 +453,7 @@ importers:
       graphql-helix: ^1.13.0
     dependencies:
       '@ceramicnetwork/http-client': 2.3.4
+      '@composedb/constants': link:../constants
       '@composedb/runtime': link:../runtime
       fastify: 4.5.3
       get-port: 6.1.2
@@ -4005,6 +4002,7 @@ packages:
       graphql: 16.6.0
       tslib: 2.4.0
       value-or-promise: 1.0.11
+    dev: false
 
   /@graphql-tools/delegate/9.0.5_graphql@16.6.0:
     resolution: {integrity: sha512-oUowVftgjYmJ7JeByBN8b6twliYh1Kn1tzMGVrwnx8ESZmY75MIZJqo5Uz7y7ioRopGrWPEyNpkJE5sDccqrMg==}
@@ -4018,6 +4016,7 @@ packages:
       graphql: 16.6.0
       tslib: 2.4.0
       value-or-promise: 1.0.11
+    dev: false
 
   /@graphql-tools/merge/8.3.5_graphql@16.6.0:
     resolution: {integrity: sha512-NunMCiYNK5GVJewhqQKsUnTFKSsScmZX6Lvf/LLxCDwczMH2Xi4ifRtb2GSQaX1+TYV4Rj/BAE8VUvO3tKIUhQ==}
@@ -9464,6 +9463,7 @@ packages:
 
   /dataloader/2.1.0:
     resolution: {integrity: sha512-qTcEYLen3r7ojZNgVUaRggOI+KM7jrKxXeSHhogh/TWxYMeONEMqY+hmkobiYQozsGIyg9OYVzO4ZIfoB4I0pQ==}
+    dev: false
 
   /datastore-core/7.0.3:
     resolution: {integrity: sha512-DmPsUux63daOfCszxLkcp6LjdJ0k/BQNhIMtoAi5mbraYQnEQkFtKORmTu6XmDX6ujbtaBkeuJAiCBNI7MZklw==}

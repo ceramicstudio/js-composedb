@@ -1,24 +1,49 @@
-import type { CeramicApi } from '@ceramicnetwork/common'
+import { type CeramicApi, fetchJson } from '@ceramicnetwork/common'
 import { CeramicClient } from '@ceramicnetwork/http-client'
-import { ComposeRuntime, Context, type DocumentCache } from '@composedb/runtime'
+import {
+  ComposeRuntime,
+  type ComposeRuntimeParams,
+  Context,
+  type DocumentCache,
+} from '@composedb/runtime'
 import type { RuntimeCompositeDefinition } from '@composedb/types'
 import type { DID } from 'dids'
 import type { DocumentNode, ExecutionResult, Source } from 'graphql'
 
 import { createHybridSchema } from './remote.js'
 
-export type CreateRuntimeParams = {
-  ceramic: CeramicApi
-  context: Context
+export type FromServerParams = {
+  /**
+   * Optional cache for documents.
+   */
+  cache?: DocumentCache
+  /**
+   * Server config URL.
+   */
+  url: string
+}
+
+export type FromServerConfig = {
+  /**
+   * Ceramic server URL.
+   */
+  ceramic: string
+  /**
+   * Runtime composite definition, created using the {@linkcode devtools.Composite Composite}
+   * development tools.
+   */
   definition: RuntimeCompositeDefinition
-  serverURL?: string
+  /**
+   * Query server URL.
+   */
+  serverURL: string
 }
 
 export type ComposeClientParams = {
   /**
    * Optional cache for documents.
    */
-  cache?: DocumentCache | boolean
+  cache?: DocumentCache
   /**
    * Ceramic client instance or HTTP URL.
    */
@@ -46,9 +71,14 @@ export type ComposeClientParams = {
  * ```
  */
 export class ComposeClient {
+  static async fromServer(params: FromServerParams): Promise<ComposeClient> {
+    const config = (await fetchJson(params.url)) as FromServerConfig
+    return new ComposeClient({ ...config, cache: params.cache })
+  }
+
   #context: Context
   #resources: Array<string>
-  #runtimePromise: Promise<ComposeRuntime>
+  #runtime: ComposeRuntime
 
   constructor(params: ComposeClientParams) {
     const { ceramic, definition, serverURL, ...contextParams } = params
@@ -57,23 +87,19 @@ export class ComposeClient {
     this.#resources = Object.values(definition.models).map((model) => {
       return `ceramic://*?model=${model.id}`
     })
-    this.#runtimePromise = this._createRuntime({
+    const runtimeParams: ComposeRuntimeParams = {
       ceramic: ceramicClient,
       context: this.#context,
       definition,
-      serverURL,
-    })
-  }
-
-  async _createRuntime(params: CreateRuntimeParams): Promise<ComposeRuntime> {
-    const { ceramic, context, definition, serverURL } = params
-    if (serverURL == null) {
-      // Client-only execution
-      return new ComposeRuntime({ ceramic, context, definition })
     }
-    // Hybrid execution between client (mutations) and server (queries)
-    const schema = await createHybridSchema({ definition, serverURL })
-    return new ComposeRuntime({ ceramic, context, schema })
+    if (serverURL != null) {
+      runtimeParams.schema = createHybridSchema({
+        definition,
+        getViewerID: () => this.id,
+        serverURL,
+      })
+    }
+    this.#runtime = new ComposeRuntime(runtimeParams)
   }
 
   /**
@@ -120,8 +146,7 @@ export class ComposeClient {
     document: DocumentNode,
     variableValues?: Record<string, unknown>
   ): Promise<ExecutionResult<Data>> {
-    const runtime = await this.#runtimePromise
-    return await runtime.execute<Data>(document, variableValues)
+    return await this.#runtime.execute<Data>(document, variableValues)
   }
 
   /**
@@ -131,7 +156,6 @@ export class ComposeClient {
     source: string | Source,
     variableValues?: Record<string, unknown>
   ): Promise<ExecutionResult<Data>> {
-    const runtime = await this.#runtimePromise
-    return await runtime.executeQuery<Data>(source, variableValues)
+    return await this.#runtime.executeQuery<Data>(source, variableValues)
   }
 }

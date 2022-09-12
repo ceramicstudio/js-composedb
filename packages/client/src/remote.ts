@@ -1,40 +1,46 @@
 import { fetchJson } from '@ceramicnetwork/common'
+import { VIEWER_ID_HEADER } from '@composedb/constants'
 import { createGraphQLSchema } from '@composedb/runtime'
 import type { RuntimeCompositeDefinition } from '@composedb/types'
-import type { SubschemaConfig } from '@graphql-tools/delegate'
 import { stitchSchemas } from '@graphql-tools/stitch'
 import type { AsyncExecutor } from '@graphql-tools/utils'
-import { introspectSchema } from '@graphql-tools/wrap'
 import { type GraphQLSchema, print } from 'graphql'
 
-export function createRemoteExecutor(url: string): AsyncExecutor {
-  return async function remoteExecutor({ document, variables }) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return await fetchJson(url, { method: 'POST', body: { query: print(document), variables } })
-  }
-}
+export type GetViewerID = () => string | null | undefined
 
-export async function createRemoteSchema(url: string): Promise<SubschemaConfig> {
-  const remoteExecutor = createRemoteExecutor(url)
-  return {
-    schema: await introspectSchema(remoteExecutor),
-    executor: remoteExecutor,
+export function createRemoteExecutor(url: string, getViewerID: GetViewerID): AsyncExecutor {
+  return async function remoteExecutor({ document, variables }) {
+    const viewerID = getViewerID()
+    const headers = viewerID ? { [VIEWER_ID_HEADER]: viewerID } : {}
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await fetchJson(url, {
+      method: 'POST',
+      headers,
+      body: { query: print(document), variables },
+    })
   }
 }
 
 export type HybridSchemaParams = {
   definition: RuntimeCompositeDefinition
+  getViewerID: GetViewerID
   serverURL: string
 }
 
-export async function createHybridSchema(params: HybridSchemaParams): Promise<GraphQLSchema> {
-  const localSchema = createGraphQLSchema({ definition: params.definition })
-  const remoteSchema = await createRemoteSchema(params.serverURL)
+export function createHybridSchema(params: HybridSchemaParams): GraphQLSchema {
+  const { definition, getViewerID, serverURL } = params
+  const localSchema = createGraphQLSchema({ definition })
+  const remoteSchemaConfig = {
+    executor: createRemoteExecutor(serverURL, getViewerID),
+    schema: createGraphQLSchema({ definition, readonly: true }),
+  }
+
   return stitchSchemas({
-    subschemas: [localSchema, remoteSchema],
+    subschemas: [localSchema, remoteSchemaConfig],
     mergeTypes: false,
     onTypeConflict: (left, right, info) => {
-      return info?.left.subschema === remoteSchema ? left : right
+      return info?.left.subschema === remoteSchemaConfig ? left : right
     },
   })
 }

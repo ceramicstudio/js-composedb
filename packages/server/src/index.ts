@@ -1,11 +1,18 @@
 import type { CeramicApi } from '@ceramicnetwork/common'
 import { CeramicClient } from '@ceramicnetwork/http-client'
-import { Context, type DocumentCache, createGraphQLSchema } from '@composedb/runtime'
+import { VIEWER_ID_HEADER } from '@composedb/constants'
+import { Context, type DocumentCache, getSchema } from '@composedb/runtime'
 import type { RuntimeCompositeDefinition } from '@composedb/types'
-import fastify, { type FastifyServerOptions } from 'fastify'
+import fastify, {
+  type FastifyInstance,
+  type FastifyServerOptions,
+  type HTTPMethods,
+  type RouteOptions,
+} from 'fastify'
 import getPort from 'get-port'
 import type { GraphQLSchema } from 'graphql'
 import {
+  type ExecutionContext,
   type ProcessRequestResult,
   type Request,
   type RawResponse,
@@ -16,7 +23,15 @@ import {
   shouldRenderGraphiQL,
 } from 'graphql-helix'
 
-export type HTTPServerParams = {
+export type ContextFactoryFunction = (executionContext: ExecutionContext) => Context
+
+export function getViewerID(request: Request): string | null | undefined {
+  return typeof request.headers.get === 'function'
+    ? request.headers.get(VIEWER_ID_HEADER)
+    : (request.headers as Record<string, string>)[VIEWER_ID_HEADER]
+}
+
+export type GraphQLServerParams = {
   options?: FastifyServerOptions
   port?: number | Array<number>
 }
@@ -26,41 +41,67 @@ export type HTTPServerHandler = {
   stop: () => Promise<void>
 }
 
+export async function startHTTPServer(
+  server: FastifyInstance,
+  listenOnPort?: number | Array<number>
+): Promise<HTTPServerHandler> {
+  const port = await getPort({ port: listenOnPort })
+  await server.listen({ port })
+  return {
+    port,
+    stop: async () => {
+      await server.close()
+    },
+  }
+}
+
 export type ComposeServerParams = {
   /**
    * Optional cache for documents.
    */
-  cache?: DocumentCache | boolean
+  cache?: DocumentCache
   /**
    * Ceramic client instance or HTTP URL.
    */
   ceramic: CeramicApi | string
   /**
-   * Optional context to use.
+   * Per-request context factory.
    */
-  context?: Context
+  contextFactory?: ContextFactoryFunction
   /**
    * Runtime composite definition, created using the {@linkcode devtools.Composite Composite}
    * development tools.
    */
-  definition: RuntimeCompositeDefinition
+  definition?: RuntimeCompositeDefinition
   /**
    * Enable GraphiQL support.
    */
   graphiql?: boolean
+  /**
+   * GraphQL Schema to use, ignores the `definition` parameter if provided.
+   */
+  schema?: GraphQLSchema
 }
 
 export class ComposeServer {
-  #context: Context
+  #cache: DocumentCache | undefined
+  #ceramic: CeramicApi
+  #contextFactory: ContextFactoryFunction
   #graphiql: boolean
   #schema: GraphQLSchema
 
   constructor(params: ComposeServerParams) {
-    const { ceramic, context, definition, graphiql, ...contextParams } = params
-    const ceramicClient = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
-    this.#context = context ?? new Context({ ...contextParams, ceramic: ceramicClient })
+    const { cache, ceramic, contextFactory, definition, graphiql, schema } = params
+    this.#cache = cache
+    this.#ceramic = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
+    this.#contextFactory =
+      contextFactory ??
+      ((ctx) => {
+        const fallbackViewerID = getViewerID(ctx.request)
+        return new Context({ cache: this.#cache, ceramic: this.#ceramic, fallbackViewerID })
+      })
     this.#graphiql = graphiql === true
-    this.#schema = createGraphQLSchema({ definition, readonly: true })
+    this.#schema = getSchema({ definition, readonly: true, schema })
   }
 
   async processRequest(request: Request): Promise<ProcessRequestResult<Context, unknown>> {
@@ -71,7 +112,7 @@ export class ComposeServer {
       variables,
       request,
       schema: this.#schema,
-      contextFactory: () => this.#context,
+      contextFactory: this.#contextFactory,
     })
   }
 
@@ -85,11 +126,13 @@ export class ComposeServer {
     }
   }
 
-  async startHTTPServer(params: HTTPServerParams = {}): Promise<HTTPServerHandler> {
-    const server = fastify(params.options)
-    server.route({
-      method: ['GET', 'POST'],
-      url: '/graphql',
+  createGraphQLRoute(
+    url = '/graphql',
+    method: HTTPMethods | Array<HTTPMethods> = ['GET', 'POST']
+  ): RouteOptions {
+    return {
+      method,
+      url,
       handler: async (req, reply) => {
         const request: Request = {
           body: req.body,
@@ -99,16 +142,12 @@ export class ComposeServer {
         }
         await this.handleHTTPRequest(request, reply.raw)
       },
-    })
-
-    const port = await getPort({ port: params.port ?? 7077 })
-    await server.listen({ port })
-
-    return {
-      port,
-      stop: async () => {
-        await server.close()
-      },
     }
+  }
+
+  async startGraphQLServer(params: GraphQLServerParams = {}): Promise<HTTPServerHandler> {
+    const server = fastify(params.options)
+    server.route(this.createGraphQLRoute())
+    return await startHTTPServer(server, params.port)
   }
 }

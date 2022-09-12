@@ -16,6 +16,10 @@ export type ContextParams = {
    */
   ceramic: CeramicApi
   /**
+   * Fallback viewer ID to use when the Ceramic instance is not authenticated.
+   */
+  fallbackViewerID?: string | null
+  /**
    * @internal
    */
   loader?: DocumentLoader
@@ -31,11 +35,13 @@ export type ContextParams = {
 export class Context {
   #ceramic: CeramicApi
   #loader: DocumentLoader
+  #fallbackViewerID: string | null | undefined
 
   constructor(params: ContextParams) {
-    const { cache, ceramic } = params
+    const { cache, ceramic, fallbackViewerID } = params
     this.#ceramic = ceramic
     this.#loader = params.loader ?? new DocumentLoader({ ceramic, cache })
+    this.#fallbackViewerID = fallbackViewerID
   }
 
   /**
@@ -65,7 +71,7 @@ export class Context {
    */
   get viewerID(): string | null {
     const did = this.#ceramic.did
-    return did?.hasParent ? did.parent : did?.id ?? null
+    return did ? (did.hasParent ? did.parent : did.id) : this.#fallbackViewerID ?? null
   }
 
   /**

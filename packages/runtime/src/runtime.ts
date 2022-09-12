@@ -1,6 +1,5 @@
 import type { CeramicApi } from '@ceramicnetwork/common'
 import { CeramicClient } from '@ceramicnetwork/http-client'
-import type { RuntimeCompositeDefinition } from '@composedb/types'
 import {
   type DocumentNode,
   type ExecutionResult,
@@ -14,9 +13,9 @@ import {
 
 import { Context } from './context.js'
 import type { DocumentCache } from './loader.js'
-import { createGraphQLSchema } from './schema.js'
+import { type GetSchemaParams, getSchema } from './utils.js'
 
-export type ComposeRuntimeParams = {
+export type ComposeRuntimeParams = GetSchemaParams & {
   /**
    * Optional cache for documents.
    */
@@ -29,19 +28,6 @@ export type ComposeRuntimeParams = {
    * Optional context to use.
    */
   context?: Context
-  /**
-   * Runtime composite definition, created using the {@linkcode devtools.Composite Composite}
-   * development tools.
-   */
-  definition?: RuntimeCompositeDefinition
-  /**
-   * Set the schema to read-only, disabling mutations support.
-   */
-  readonly?: boolean
-  /**
-   * GraphQL Schema to use, ignores the `definition` and `readonly` parameters if provided.
-   */
-  schema?: GraphQLSchema
 }
 
 /**
@@ -63,16 +49,7 @@ export class ComposeRuntime {
     const { ceramic, context, definition, readonly, schema, ...contextParams } = params
     const ceramicClient = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
     this.#context = context ?? new Context({ ...contextParams, ceramic: ceramicClient })
-    if (schema == null) {
-      if (definition == null) {
-        throw new Error(
-          `Invalid parameters to create ComposeRuntime instance: missing definition or schema`
-        )
-      }
-      this.#schema = createGraphQLSchema({ definition, readonly })
-    } else {
-      this.#schema = schema
-    }
+    this.#schema = getSchema({ definition, readonly, schema })
   }
 
   /**
