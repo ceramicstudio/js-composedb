@@ -33,7 +33,7 @@ ARGUMENTS
   MODELS                   a list of models (identified by names of stream IDs) to extract from the given composite
 
 OPTIONS
-  -k, --did-private-key    DID Private Key (you can generate a fresh private key using composedb did:generate-private-key)
+  -c, --ceramic-url        Ceramic API URL
   -o, --output             a path to file where the resulting encoded composite definition should be saved
 ```
 
@@ -86,7 +86,6 @@ ARGUMENTS
   MODELS                   one or more models to use when extracting a new composite, identified by name or stream ID
 
 OPTIONS
-  -k, --did-private-key    DID Private Key (you can generate a fresh private key using composedb did:generate-private-key)
   -o, --output             a path to file where the resulting encoded composite definition should be saved
 ```
 
@@ -102,7 +101,6 @@ ARGUMENTS
   PATHS                    a list of paths to files containing encoded composites, separated by spaces
 
 OPTIONS
-  -k, --did-private-key    DID Private Key (you can generate a fresh private key using composedb did:generate-private-key)
   -e, --common-embeds      'all','none' or a list of comma-separated embeds to extract from input composites into the output composite
   -o, --output             a path to file where the resulting encoded composite definition should be saved
 ```
@@ -120,6 +118,9 @@ USAGE
 
 ARGUMENTS
   PATH                     a path to a file containing a composite's encoded definition
+  
+OPTIONS
+  -c, --ceramic-url        Ceramic API URL
 ```
 
 ### `composedb composite:compile`
