@@ -274,6 +274,7 @@ importers:
       '@composedb/runtime': workspace:^0.2.0
       '@composedb/test-schemas': workspace:^0.2.0
       '@composedb/types': workspace:^0.2.1
+      '@graphql-tools/batch-execute': ^8.5.6
       '@graphql-tools/stitch': ^8.7.9
       '@graphql-tools/utils': ^8.11.0
       dids: ^3.3.0
@@ -284,6 +285,7 @@ importers:
       '@ceramicnetwork/http-client': 2.3.4
       '@composedb/constants': link:../constants
       '@composedb/runtime': link:../runtime
+      '@graphql-tools/batch-execute': 8.5.6_graphql@16.6.0
       '@graphql-tools/stitch': 8.7.9_graphql@16.6.0
       graphql: 16.6.0
     devDependencies:
@@ -4004,6 +4006,18 @@ packages:
       value-or-promise: 1.0.11
     dev: false
 
+  /@graphql-tools/batch-execute/8.5.6_graphql@16.6.0:
+    resolution: {integrity: sha512-33vMvVDLBKsNJVNhcySVXF+zkcRL/GRs1Lt+MxygrYCypcAPpFm+amE2y9vOCFufuaKExIX7Lonnmxu19vPzaQ==}
+    peerDependencies:
+      graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+    dependencies:
+      '@graphql-tools/utils': 8.12.0_graphql@16.6.0
+      dataloader: 2.1.0
+      graphql: 16.6.0
+      tslib: 2.4.0
+      value-or-promise: 1.0.11
+    dev: false
+
   /@graphql-tools/delegate/9.0.5_graphql@16.6.0:
     resolution: {integrity: sha512-oUowVftgjYmJ7JeByBN8b6twliYh1Kn1tzMGVrwnx8ESZmY75MIZJqo5Uz7y7ioRopGrWPEyNpkJE5sDccqrMg==}
     peerDependencies:
@@ -4061,6 +4075,15 @@ packages:
     dependencies:
       graphql: 16.6.0
       tslib: 2.4.0
+
+  /@graphql-tools/utils/8.12.0_graphql@16.6.0:
+    resolution: {integrity: sha512-TeO+MJWGXjUTS52qfK4R8HiPoF/R7X+qmgtOYd8DTH0l6b+5Y/tlg5aGeUJefqImRq7nvi93Ms40k/Uz4D5CWw==}
+    peerDependencies:
+      graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+    dependencies:
+      graphql: 16.6.0
+      tslib: 2.4.0
+    dev: false
 
   /@graphql-tools/wrap/9.1.0_graphql@16.6.0:
     resolution: {integrity: sha512-JF4ogPHWHtbyQocntX4vKBPPJbwn6MwkQlX44z4tVckf/zNr5zAse7m3iTu2k8fuyGwwNq5QxCHrn6o3SHLJOg==}

@@ -2,17 +2,17 @@ import { fetchJson } from '@ceramicnetwork/common'
 import { VIEWER_ID_HEADER } from '@composedb/constants'
 import { createGraphQLSchema } from '@composedb/runtime'
 import type { RuntimeCompositeDefinition } from '@composedb/types'
+import { createBatchingExecutor } from '@graphql-tools/batch-execute'
 import { stitchSchemas } from '@graphql-tools/stitch'
-import type { AsyncExecutor } from '@graphql-tools/utils'
+import type { Executor } from '@graphql-tools/utils'
 import { type GraphQLSchema, print } from 'graphql'
 
 export type GetViewerID = () => string | null | undefined
 
-export function createRemoteExecutor(url: string, getViewerID: GetViewerID): AsyncExecutor {
-  return async function remoteExecutor({ document, variables }) {
+export function createRemoteExecutor(url: string, getViewerID: GetViewerID): Executor {
+  const remoteExecutor: Executor = async ({ document, variables }) => {
     const viewerID = getViewerID()
     const headers = viewerID ? { [VIEWER_ID_HEADER]: viewerID } : {}
-
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await fetchJson(url, {
       method: 'POST',
@@ -20,6 +20,7 @@ export function createRemoteExecutor(url: string, getViewerID: GetViewerID): Asy
       body: { query: print(document), variables },
     })
   }
+  return createBatchingExecutor(remoteExecutor)
 }
 
 export type HybridSchemaParams = {

@@ -6,6 +6,9 @@ import { CERAMIC_URL } from '../../constants'
 
 const server = new ComposeServer({ ceramic: CERAMIC_URL, definition })
 
-export default function handler(req: NextApiRequest & { method: string }, res: NextApiResponse) {
-  server.handleHTTPRequest(req, res)
+export default async function handler(
+  req: NextApiRequest & { method: string },
+  res: NextApiResponse
+) {
+  await server.handleHTTPRequest(req, res)
 }
