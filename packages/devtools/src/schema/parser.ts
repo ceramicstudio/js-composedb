@@ -1,7 +1,7 @@
-import {
+import type {
   ModelAccountRelation,
-  type ModelRelationDefinition,
-  type ModelRelationsDefinition,
+  ModelRelationDefinition,
+  ModelRelationsDefinition,
 } from '@ceramicnetwork/stream-model'
 import type { JSONSchema } from '@composedb/types'
 import { makeExecutableSchema } from '@graphql-tools/schema'
@@ -43,8 +43,8 @@ import type {
 } from './types.js'
 
 const ACCOUNT_RELATIONS: Record<string, ModelAccountRelation> = {
-  LIST: ModelAccountRelation.LIST,
-  SINGLE: ModelAccountRelation.SINGLE,
+  LIST: { type: 'list' },
+  SINGLE: { type: 'single' },
 }
 
 type NumberDirectiveArguments = {
@@ -290,7 +290,7 @@ export class SchemaParser {
               `Unsupported @documentReference directive on field ${fieldName} of object ${objectName}, @documentReference can only be set on a StreamID scalar`
             )
           }
-          return { type: 'document', model: directive.args?.model as string | undefined }
+          return { type: 'document', model: directive.args?.model as string }
       }
     }
   }

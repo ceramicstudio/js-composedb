@@ -1,4 +1,3 @@
-import { ModelAccountRelation } from '@ceramicnetwork/stream-model'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { CeramicCommitID, getScalar } from '@composedb/graphql-scalars'
 import type {
@@ -442,7 +441,7 @@ class SchemaBuilder {
             return await ctx.queryConnection({
               ...args,
               model: relation.model,
-              criteria: { [relation.property]: doc.id.toString() },
+              filter: { [relation.property]: doc.id.toString() },
             })
           },
         }
@@ -452,7 +451,7 @@ class SchemaBuilder {
           resolve: async (doc, _args, ctx): Promise<number> => {
             return await ctx.queryCount({
               model: relation.model,
-              criteria: { [relation.property]: doc.id.toString() },
+              filter: { [relation.property]: doc.id.toString() },
             })
           },
         }
@@ -585,7 +584,7 @@ class SchemaBuilder {
           throw new Error('Ceramic instance is not authenticated')
         }
         const document =
-          model.accountRelation === ModelAccountRelation.SINGLE
+          model.accountRelation.type === 'single'
             ? await ctx.createSingle(model.id, input.content)
             : await ctx.createDoc(model.id, input.content)
         return { document }

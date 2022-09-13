@@ -28,7 +28,7 @@ directive @documentVersion on FIELD_DEFINITION
 # Relation definitions
 
 directive @accountReference on FIELD_DEFINITION
-directive @documentReference(model: String) on FIELD_DEFINITION
+directive @documentReference(model: String!) on FIELD_DEFINITION
 
 # Relation views
 

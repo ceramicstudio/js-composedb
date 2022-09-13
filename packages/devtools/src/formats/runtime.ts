@@ -1,8 +1,4 @@
-import {
-  ModelAccountRelation,
-  type ModelDefinition,
-  type ModelViewsDefinition,
-} from '@ceramicnetwork/stream-model'
+import type { ModelDefinition, ModelViewsDefinition } from '@ceramicnetwork/stream-model'
 import type {
   CustomRuntimeScalarType,
   InternalCompositeDefinition,
@@ -284,16 +280,15 @@ export function createRuntimeDefinition(
     // Attach entry-point to account store based on relation type
     if (modelDefinition.accountRelation != null) {
       const key = camelCase(modelName)
-      if (modelDefinition.accountRelation === ModelAccountRelation.SINGLE) {
+      const relationType = modelDefinition.accountRelation.type
+      if (relationType === 'single') {
         runtime.accountData[key] = { type: 'node', name: modelName }
         // @ts-ignore TS2367, should be unnecessary check based on type definition but more types
         // could be added later
-      } else if (modelDefinition.accountRelation === ModelAccountRelation.LIST) {
+      } else if (relationType === 'list') {
         runtime.accountData[key + 'List'] = { type: 'connection', name: modelName }
       } else {
-        throw new Error(
-          `Unsupported account relation: ${modelDefinition.accountRelation as string}`
-        )
+        throw new Error(`Unsupported account relation type: ${relationType as string}`)
       }
     }
   }
