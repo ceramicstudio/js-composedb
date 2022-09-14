@@ -97,14 +97,21 @@ describe('models', () => {
     }, 60000)
 
     test('model list succeeds', async () => {
-      const models = await execa('bin/run.js', ['model:list', '--indexer-url=http://localhost:7007'])
+      const models = await execa('bin/run.js', [
+        'model:list',
+        '--indexer-url=http://localhost:7007',
+      ])
       expect(stripAnsi(models.stdout.toString()).includes('GenericProfile')).toBe(true)
       expect(stripAnsi(models.stdout.toString()).includes('SocialProfile')).toBe(true)
       expect(stripAnsi(models.stdout.toString()).includes('PersonProfile')).toBe(true)
     }, 60000)
 
     test('model list succeeds with --table argument', async () => {
-      const models = await execa('bin/run.js', ['model:list', '--indexer-url=http://localhost:7007', '--table'])
+      const models = await execa('bin/run.js', [
+        'model:list',
+        '--indexer-url=http://localhost:7007',
+        '--table',
+      ])
       expect(stripAnsi(models.stdout.toString()).includes('GenericProfile')).toBe(true)
       expect(stripAnsi(models.stdout.toString()).includes('SocialProfile')).toBe(true)
       expect(stripAnsi(models.stdout.toString()).includes('PersonProfile')).toBe(true)
