@@ -58,7 +58,7 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
       while (this.lastLoadedPageInfo?.hasNextPage) {
         await CliUx.ux.anykey('Press any key to load more models')
         this.spinner.start('Loading models...')
-        const nextPage: Page<StreamState> = await ceramicIndexer.index.queryIndex({
+        const nextPage: Page<StreamState | null> = await ceramicIndexer.index.queryIndex({
           first: this.getPageSize(),
           model: Model.MODEL,
           after: this.lastLoadedPageInfo?.endCursor,
@@ -74,14 +74,23 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
     }
   }
 
-  getFieldsFromEdges(ceramicIndexer: CeramicClient, edges: Array<Edge<StreamState>>): Array<PartialModelDefinition> {
+  getFieldsFromEdges(ceramicIndexer: CeramicClient, edges: Array<Edge<StreamState | null>>): Array<PartialModelDefinition> {
     return edges.map((edge) => {
-      const stream = ceramicIndexer.buildStreamFromState(edge.node)
-      return {
-        id: stream.id.toString(),
-        name: (stream.content as Record<string, any>).name as string,
-        description: (stream.content as Record<string, any>).description as string,
+      if (edge && edge.node) {
+        const stream = ceramicIndexer.buildStreamFromState(edge.node)
+        return {
+          id: stream.id.toString(),
+          name: (stream.content as Record<string, any>).name as string,
+          description: (stream.content as Record<string, any>).description as string,
+        }
+      } else {
+        return {
+          id: '',
+          name: '',
+          description: '',
+        }
       }
+
     })
   }
 

@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
-    "@ceramicnetwork/http-client": "^2.3.4",
+    "@ceramicnetwork/http-client": "^2.3.5-rc.2",
     "@composedb/client": "workspace:^0.2.0",
     "@composedb/types": "workspace:^0.2.0",
     "@emotion/react": "^11.10.0",
@@ -32,7 +32,7 @@
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^2.5.0",
+    "@ceramicnetwork/common": "^2.6.1-rc.2",
     "@composedb/devtools": "workspace:^0.2.0",
     "@composedb/devtools-node": "workspace:^0.2.0",
     "@swc/core": "^1.2.244",
