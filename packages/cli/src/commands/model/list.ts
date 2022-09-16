@@ -75,22 +75,22 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
   }
 
   getFieldsFromEdges(ceramicIndexer: CeramicClient, edges: Array<Edge<StreamState | null>>): Array<PartialModelDefinition> {
+    const missingMessage = '<MISSING!!>'
     return edges.map((edge) => {
+      let id = missingMessage
+      let name = missingMessage
+      let description = missingMessage
       if (edge && edge.node) {
         const stream = ceramicIndexer.buildStreamFromState(edge.node)
-        return {
-          id: stream.id.toString(),
-          name: (stream.content as Record<string, any>).name as string,
-          description: (stream.content as Record<string, any>).description as string,
-        }
-      } else {
-        return {
-          id: '',
-          name: '',
-          description: '',
-        }
+        id = stream.id.toString()
+        name = (stream.content as Record<string, any>).name as string
+        description = (stream.content as Record<string, any>).description as string
       }
-
+      return {
+        id: id,
+        name: name,
+        description: description,
+      }
     })
   }
 
