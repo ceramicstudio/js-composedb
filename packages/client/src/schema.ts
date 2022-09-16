@@ -160,7 +160,7 @@ class SchemaBuilder {
                 account,
                 args: ConnectionArguments,
                 ctx
-              ): Promise<Connection<ModelInstanceDocument> | null> => {
+              ): Promise<Connection<ModelInstanceDocument | null>> => {
                 return await ctx.queryConnection({ ...args, account, model: model.id })
               },
             }

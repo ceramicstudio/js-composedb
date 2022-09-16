@@ -121,7 +121,7 @@ export class Context {
   /**
    * Query the index for a connection of documents.
    */
-  async queryConnection(query: ConnectionQuery): Promise<Connection<ModelInstanceDocument>> {
+  async queryConnection(query: ConnectionQuery): Promise<Connection<ModelInstanceDocument | null>> {
     return await queryConnection(this.#ceramic, query)
   }
 

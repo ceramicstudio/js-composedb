@@ -30,8 +30,8 @@ ARGUMENTS
   CONTENT                  contents of the model instance encoded as JSON
 
 OPTIONS
-  -k, --did-private-key    DID Private Key (you can generate a fresh private key using composedb did:generate-private-key)
   -c, --ceramic-url        Ceramic API URL
+  -k, --did-private-key    DID Private Key (you can generate a fresh private key using composedb did:generate-private-key)
 ```
 
 ### `composedb document:replace`
@@ -49,8 +49,8 @@ ARGUMENTS
   CONTENT                  new contents of the model instance encoded as JSON
 
 OPTIONS
-  -k, --did-private-key    DID Private Key (you can generate a fresh private key using composedb did:generate-private-key)
   -c, --ceramic-url        Ceramic API URL
+  -k, --did-private-key    DID Private Key (you can generate a fresh private key using composedb did:generate-private-key)
 ```
 
 ### `composedb document:content`

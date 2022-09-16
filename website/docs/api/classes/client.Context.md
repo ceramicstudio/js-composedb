@@ -152,7 +152,7 @@ ___
 
 ### queryConnection
 
-▸ **queryConnection**(`query`): `Promise`<`Connection`<`ModelInstanceDocument`<`Record`<`string`, `any`\>\>\>\>
+▸ **queryConnection**(`query`): `Promise`<`Connection`<``null`` \| `ModelInstanceDocument`<`Record`<`string`, `any`\>\>\>\>
 
 Query the index for a connection of documents.
 
@@ -164,7 +164,7 @@ Query the index for a connection of documents.
 
 #### Returns
 
-`Promise`<`Connection`<`ModelInstanceDocument`<`Record`<`string`, `any`\>\>\>\>
+`Promise`<`Connection`<``null`` \| `ModelInstanceDocument`<`Record`<`string`, `any`\>\>\>\>
 
 ___
 

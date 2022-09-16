@@ -63,7 +63,7 @@ describe('query', () => {
     const queryIndex = jest.fn(() => ({
       edges: [
         { cursor: 'cursor1', node: testState },
-        { cursor: 'cursor2', node: testState },
+        { cursor: 'cursor2', node: null },
         { cursor: 'cursor3', node: testState },
       ],
       pageInfo: { hasNextPage: true, hasPreviousPage: false },
@@ -73,7 +73,7 @@ describe('query', () => {
     await expect(queryConnection(ceramic, { model: 'test', first: 3 })).resolves.toEqual({
       edges: [
         { cursor: 'cursor1', node: expectedNode },
-        { cursor: 'cursor2', node: expectedNode },
+        { cursor: 'cursor2', node: null },
         { cursor: 'cursor3', node: expectedNode },
       ],
       pageInfo: {

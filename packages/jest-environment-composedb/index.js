@@ -44,7 +44,6 @@ export default class ComposeEnvironment extends NodeEnvironment {
     })
 
     const stateStoreDirectory = path.join(this.tmpFolder.path, 'ceramic')
-
     this.global.ceramic = await Ceramic.create(this.global.ipfs, {
       stateStoreDirectory: stateStoreDirectory,
       indexing: {
