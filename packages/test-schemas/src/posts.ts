@@ -17,7 +17,7 @@ type ${postModelName} @loadModel(id: "${postModelID}") {
 type Comment @createModel(accountRelation: LIST, description: "Comment on a Post") {
   author: DID! @documentAccount
   version: CommitID! @documentVersion 
-  postID: StreamID! @documentReference(model: "${postModelID}")
+  postID: StreamID! @documentReference(model: "${postModelName}")
   post: ${postModelName} @relationDocument(property: "postID")
   text: String! @string(maxLength: 2000)
 }
@@ -36,8 +36,8 @@ type ${commentModelName} @loadModel(id: "${commentModelID}") {
 }
 
 type Post @loadModel(id: ${id}) {
-  commentsCount: Int! @relationCountFrom(model: "${commentModelID}", property: "${commentModelProperty}")
-  comments: [${commentModelName}]! @relationFrom(model: "${commentModelID}", property: "${commentModelProperty}")
+  commentsCount: Int! @relationCountFrom(model: "${commentModelName}", property: "${commentModelProperty}")
+  comments: [${commentModelName}]! @relationFrom(model: "${commentModelName}", property: "${commentModelProperty}")
 }
 `
 }

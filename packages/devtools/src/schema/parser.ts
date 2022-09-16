@@ -108,34 +108,32 @@ export class SchemaParser {
       },
     })
 
-    const modelsEntries = Object.entries(this.#def.models)
-    if (modelsEntries.length === 0) {
+    const modelsNames = Object.keys(this.#def.models)
+    if (modelsNames.length === 0) {
       throw new Error('No models found in Composite Definition Schema')
     }
 
     // Once all models are defined, we need to replace the model names used in relations by their ID
-    for (const [name, definition] of modelsEntries) {
-      if (definition.action === 'create') {
-        const object = this.#def.objects[name]
-        if (object == null) {
-          throw new Error(`Missing object definition for model ${name}`)
-        }
-        for (const [key, field] of Object.entries(object.properties)) {
-          if (field.type === 'view' && field.viewType === 'relation') {
-            const relatedModel = this.#def.models[field.relation.model]
-            if (relatedModel == null) {
-              throw new Error(
-                `Missing related model ${field.relation.model} for relation defined on field ${key} of object ${name}`
-              )
-            }
-            if (relatedModel.action === 'create') {
-              throw new Error(
-                `Unsupported relation to model ${field.relation.model} defined on field ${key} of object ${name}, related models must be loaded using the @loadModel directive`
-              )
-            }
-            // Replace model name by ID in definition
-            field.relation.model = relatedModel.id
+    for (const name of modelsNames) {
+      const object = this.#def.objects[name]
+      if (object == null) {
+        throw new Error(`Missing object definition for model ${name}`)
+      }
+      for (const [key, field] of Object.entries(object.properties)) {
+        if (field.type === 'view' && field.viewType === 'relation') {
+          const relatedModel = this.#def.models[field.relation.model]
+          if (relatedModel == null) {
+            throw new Error(
+              `Missing related model ${field.relation.model} for relation defined on field ${key} of object ${name}`
+            )
           }
+          if (relatedModel.action === 'create') {
+            throw new Error(
+              `Unsupported relation to model ${field.relation.model} defined on field ${key} of object ${name}, related models must be loaded using the @loadModel directive`
+            )
+          }
+          // Replace model name by ID in definition
+          field.relation.model = relatedModel.id
         }
       }
     }

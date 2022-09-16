@@ -31,6 +31,11 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           lastVersion: '0.2.x',
           versions: {
+            current: {
+              label: 'Next 🚧',
+              banner: 'unreleased',
+              path: 'next',
+            },
             '0.2.x': {
               label: '0.2.x',
               path: '0.2.x',
@@ -82,12 +87,10 @@ const config = {
             position: 'left',
             label: 'API',
           },
-          // {
-          //   type: 'docsVersionDropdown',
-          //   position: 'right',
-          //   dropdownItemsAfter: [{ to: '/versions', label: 'All versions' }],
-          //   dropdownActiveClassDisabled: true,
-          // },
+          {
+            type: 'docsVersionDropdown',
+            position: 'right',
+          },
           {
             href: 'https://github.com/ceramicstudio/js-composedb',
             label: 'GitHub',

@@ -20,3 +20,30 @@ The same datasets can be represented by different composites, such as the compos
     dark: useBaseUrl('/img/models-composition-dark.png'),
   }}
 />
+
+## Relations
+
+The ComposeDB graph representation supports the following types of edges (relations) between nodes:
+
+- [Account to document](#account-to-document), with two variants:
+  - Single: an [account](./concepts-overview.md#accounts) can only be related to **one** [document](./concepts-overview.md#documents) of a given [model](./concepts-overview.md#models).
+  - Multiple: an [account](./concepts-overview.md#accounts) can be related to **many** [documents](./concepts-overview.md#documents) of a given [model](./concepts-overview.md#models).
+- [Document to account](#document-to-account): a [document](./concepts-overview.md#documents) can contain properties storing relations to an [account](./concepts-overview.md#accounts).
+- [Document to document](#document-to-account): a [document](./concepts-overview.md#documents) can contain properties storing relations to another [document](./concepts-overview.md#documents).
+
+Direct edges between accounts are **not supported** by ComposeDB, but relations can be defined indirectly by using an intermediary document.
+
+### Account to document
+
+TODO: set in model definition, difference between single and multiple
+
+### Document to account
+
+TODO: DID field stored in schema + relation directive
+
+### Document to document
+
+TODO: 2 sides:
+
+- doc owning relation
+- doc being pointed at

@@ -10,7 +10,9 @@ exports[`schema createAbstractCompositeDefinition creates an InternalCompositeDe
     "GenericProfile": {
       "action": "create",
       "model": {
-        "accountRelation": "single",
+        "accountRelation": {
+          "type": "single",
+        },
         "description": "A model to store common profile-related properties",
         "name": "GenericProfile",
         "relations": {},
@@ -89,7 +91,9 @@ exports[`schema createAbstractCompositeDefinition creates an InternalCompositeDe
     "PersonProfile": {
       "action": "create",
       "model": {
-        "accountRelation": "single",
+        "accountRelation": {
+          "type": "single",
+        },
         "description": "A model to store accounts' personal data",
         "name": "PersonProfile",
         "relations": {},
@@ -149,7 +153,9 @@ exports[`schema createAbstractCompositeDefinition creates an InternalCompositeDe
     "SocialProfile": {
       "action": "create",
       "model": {
-        "accountRelation": "single",
+        "accountRelation": {
+          "type": "single",
+        },
         "description": "A model to store properties that accounts would like to share on social media",
         "name": "SocialProfile",
         "relations": {},

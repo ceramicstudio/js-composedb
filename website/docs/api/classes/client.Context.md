@@ -168,6 +168,24 @@ Query the index for a connection of documents.
 
 ___
 
+### queryCount
+
+▸ **queryCount**(`query`): `Promise`<`number`\>
+
+Query the index for the total number of documents matching the query parameters.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `query` | `BaseQuery` |
+
+#### Returns
+
+`Promise`<`number`\>
+
+___
+
 ### querySingle
 
 ▸ **querySingle**(`query`): `Promise`<``null`` \| `ModelInstanceDocument`<`Record`<`string`, `any`\>\>\>

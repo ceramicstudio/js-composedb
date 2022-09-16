@@ -17,7 +17,9 @@ exports[`Runtime format Note model definition with views 1`] = `
   },
   "models": {
     "Note": {
-      "accountRelation": "list",
+      "accountRelation": {
+        "type": "list",
+      },
       "id": "NoteID",
     },
   },
@@ -61,7 +63,9 @@ exports[`Runtime format Post with comments relations 1`] = `
   "enums": {},
   "models": {
     "Post": {
-      "accountRelation": "list",
+      "accountRelation": {
+        "type": "list",
+      },
       "id": "PostID",
     },
   },
@@ -107,11 +111,15 @@ exports[`Runtime format Post with comments relations 2`] = `
   "enums": {},
   "models": {
     "Comment": {
-      "accountRelation": "list",
+      "accountRelation": {
+        "type": "list",
+      },
       "id": "CommentID",
     },
     "Post": {
-      "accountRelation": "list",
+      "accountRelation": {
+        "type": "list",
+      },
       "id": "PostID",
     },
   },
@@ -184,11 +192,15 @@ exports[`Runtime format Post with comments relations 3`] = `
   "enums": {},
   "models": {
     "Comment": {
-      "accountRelation": "list",
+      "accountRelation": {
+        "type": "list",
+      },
       "id": "CommentID",
     },
     "Post": {
-      "accountRelation": "list",
+      "accountRelation": {
+        "type": "list",
+      },
       "id": "PostID",
     },
   },
@@ -283,15 +295,21 @@ exports[`Runtime format Profile - multiples models with common local references 
   "enums": {},
   "models": {
     "GenericProfile": {
-      "accountRelation": "single",
+      "accountRelation": {
+        "type": "single",
+      },
       "id": "GenericProfileID",
     },
     "PersonProfile": {
-      "accountRelation": "single",
+      "accountRelation": {
+        "type": "single",
+      },
       "id": "PersonProfileID",
     },
     "SocialProfile": {
-      "accountRelation": "single",
+      "accountRelation": {
+        "type": "single",
+      },
       "id": "SocialProfileID",
     },
   },
@@ -425,15 +443,21 @@ exports[`Runtime format Profile definition with added model view 1`] = `
   "enums": {},
   "models": {
     "GenericProfile": {
-      "accountRelation": "single",
+      "accountRelation": {
+        "type": "single",
+      },
       "id": "GenericProfileID",
     },
     "PersonProfile": {
-      "accountRelation": "single",
+      "accountRelation": {
+        "type": "single",
+      },
       "id": "PersonProfileID",
     },
     "SocialProfile": {
-      "accountRelation": "single",
+      "accountRelation": {
+        "type": "single",
+      },
       "id": "SocialProfileID",
     },
   },
