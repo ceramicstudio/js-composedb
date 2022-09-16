@@ -86,7 +86,7 @@ const readPipe: () => Promise<string | undefined> = () => {
 export abstract class BaseCommand<
   Flags extends StringRecord = StringRecord,
   Args extends StringRecord = StringRecord
-  > extends CoreCommand {
+> extends CoreCommand {
   args!: Args
   flags!: Flags
   stdin!: string | undefined

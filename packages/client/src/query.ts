@@ -32,10 +32,13 @@ export function toIndexQuery(source: ConnectionQuery): IndexQuery {
 export function toRelayConnection(
   ceramic: CeramicApi,
   page: Page<StreamState>
-): Connection<ModelInstanceDocument> {
+): Connection<ModelInstanceDocument | null> {
   return {
-    edges: page.edges.map(({ cursor, node }) => {
-      return { cursor, node: ceramic.buildStreamFromState<ModelInstanceDocument>(node) }
+    edges: (page.edges ?? []).map(({ cursor, node }) => {
+      return {
+        cursor,
+        node: node ? ceramic.buildStreamFromState<ModelInstanceDocument>(node) : null,
+      }
     }),
     pageInfo: {
       ...page.pageInfo,
@@ -48,7 +51,7 @@ export function toRelayConnection(
 export async function queryConnection(
   ceramic: CeramicApi,
   query: ConnectionQuery
-): Promise<Connection<ModelInstanceDocument>> {
+): Promise<Connection<ModelInstanceDocument | null>> {
   const page = await ceramic.index.queryIndex(toIndexQuery(query))
   return toRelayConnection(ceramic, page)
 }
@@ -58,6 +61,6 @@ export async function querySingle(
   query: BaseQuery
 ): Promise<ModelInstanceDocument | null> {
   const result = await ceramic.index.queryIndex({ ...query, last: 1 })
-  const edge = result.edges[0]
-  return edge ? ceramic.buildStreamFromState<ModelInstanceDocument>(edge.node) : null
+  const node = result.edges?.[0]?.node
+  return node ? ceramic.buildStreamFromState<ModelInstanceDocument>(node) : null
 }
