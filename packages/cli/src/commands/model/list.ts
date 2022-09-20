@@ -47,7 +47,7 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
       console.clear()
       this.spinner.start('Loading models...')
       const ceramicIndexer = new CeramicClient(this.flags['indexer-url'])
-      const page = await ceramicIndexer.index.queryIndex({
+      const page = await ceramicIndexer.index.query({
         first: this.getPageSize(),
         model: Model.MODEL,
       })
@@ -60,7 +60,7 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
       while (this.lastLoadedPageInfo?.hasNextPage) {
         await CliUx.ux.anykey('Press any key to load more models')
         this.spinner.start('Loading models...')
-        const nextPage: Page<StreamState> = await ceramicIndexer.index.queryIndex({
+        const nextPage: Page<StreamState | null> = await ceramicIndexer.index.query({
           first: this.getPageSize(),
           model: Model.MODEL,
           after: this.lastLoadedPageInfo?.endCursor,
@@ -80,16 +80,21 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
 
   getFieldsFromEdges(
     ceramicIndexer: CeramicClient,
-    edges: Array<Edge<StreamState>>
+    edges: Array<Edge<StreamState | null>>
   ): Array<PartialModelDefinition> {
-    return edges.map((edge) => {
-      const stream = ceramicIndexer.buildStreamFromState(edge.node)
-      return {
-        id: stream.id.toString(),
-        name: (stream.content as Record<string, any>).name as string,
-        description: (stream.content as Record<string, any>).description as string,
-      }
-    })
+    return edges
+      .map((edge) => {
+        if (edge?.node == null) {
+          return null
+        }
+        const stream = ceramicIndexer.buildStreamFromState(edge.node)
+        return {
+          id: stream.id.toString(),
+          name: (stream.content as Record<string, any>).name as string,
+          description: (stream.content as Record<string, any>).description as string,
+        }
+      })
+      .filter(Boolean) as Array<PartialModelDefinition>
   }
 
   displayPartialDefinitions(definitions: Array<PartialModelDefinition>): void {

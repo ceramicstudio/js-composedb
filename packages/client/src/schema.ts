@@ -409,11 +409,7 @@ class SchemaBuilder {
         }
         return {
           type: this.#types[modelAlias],
-          resolve: async (
-            doc,
-            _args,
-            ctx
-          ): Promise<ModelInstanceDocument<Record<string, any>> | null> => {
+          resolve: async (doc, _args, ctx): Promise<ModelInstanceDocument | null> => {
             const id = doc.content?.[relation.property] as string | void
             if (id == null) {
               return null
@@ -437,7 +433,11 @@ class SchemaBuilder {
         return {
           type: this.#types[`${modelAlias}Connection`],
           args: connectionArgs,
-          resolve: async (doc, args: ConnectionArguments, ctx): Promise<Connection<any> | null> => {
+          resolve: async (
+            doc,
+            args: ConnectionArguments,
+            ctx
+          ): Promise<Connection<unknown> | null> => {
             return await ctx.queryConnection({
               ...args,
               model: relation.model,

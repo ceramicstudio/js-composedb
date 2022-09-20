@@ -1,18 +1,21 @@
-import type { BaseQuery, CeramicApi, Page, Pagination, StreamState } from '@ceramicnetwork/common'
+import type {
+  BaseQuery,
+  CeramicApi,
+  Page,
+  PaginationQuery,
+  StreamState,
+} from '@ceramicnetwork/common'
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import type { Connection, ConnectionArguments } from 'graphql-relay'
 
 export type ConnectionQuery = BaseQuery & ConnectionArguments
-export type IndexQuery = BaseQuery & Pagination
 
-export function toIndexQuery(source: ConnectionQuery): IndexQuery {
+export function toPaginationQuery(source: ConnectionQuery): PaginationQuery {
   const { after, before, first, last, ...base } = source
-  let query: IndexQuery
+  let query: PaginationQuery
   if (first != null) {
     query = { ...base, first }
     if (after != null) {
-      // eslint-disable-next-line
-      // @ts-ignore defined as read-only
       query.after = after
     }
     return query
@@ -20,8 +23,6 @@ export function toIndexQuery(source: ConnectionQuery): IndexQuery {
   if (last != null) {
     query = { ...base, last }
     if (before != null) {
-      // eslint-disable-next-line
-      // @ts-ignore defined as read-only
       query.before = before
     }
     return query
@@ -31,7 +32,7 @@ export function toIndexQuery(source: ConnectionQuery): IndexQuery {
 
 export function toRelayConnection(
   ceramic: CeramicApi,
-  page: Page<StreamState>
+  page: Page<StreamState | null>
 ): Connection<ModelInstanceDocument | null> {
   return {
     edges: (page.edges ?? []).map(({ cursor, node }) => {
@@ -52,7 +53,7 @@ export async function queryConnection(
   ceramic: CeramicApi,
   query: ConnectionQuery
 ): Promise<Connection<ModelInstanceDocument | null>> {
-  const page = await ceramic.index.queryIndex(toIndexQuery(query))
+  const page = await ceramic.index.query(toPaginationQuery(query))
   return toRelayConnection(ceramic, page)
 }
 
@@ -60,7 +61,7 @@ export async function querySingle(
   ceramic: CeramicApi,
   query: BaseQuery
 ): Promise<ModelInstanceDocument | null> {
-  const result = await ceramic.index.queryIndex({ ...query, last: 1 })
+  const result = await ceramic.index.query({ ...query, last: 1 })
   const node = result.edges?.[0]?.node
   return node ? ceramic.buildStreamFromState<ModelInstanceDocument>(node) : null
 }

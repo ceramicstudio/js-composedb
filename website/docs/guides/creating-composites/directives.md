@@ -47,17 +47,17 @@ needed, an `id: ID` field can be added, as shown in the examples below.
 
 ```graphql
 # ❌ the following declaration will NOT work:
-@loadModel(id: "<known model stream ID>")
+@loadModel(id: "<existing model stream ID>")
 type MyModel {}
 
 # ✅ the following declaration will work:
-@loadModel(id: "<known model stream ID>")
+@loadModel(id: "<existing model stream ID>")
 type MyModel {
   id: ID
 }
 
 # ✅ the following declaration will also work:
-@loadModel(id: "<known model stream ID>")
+@loadModel(id: "<existing model stream ID>")
 type MyModel {
   owner: DID! @documentAccount
 }

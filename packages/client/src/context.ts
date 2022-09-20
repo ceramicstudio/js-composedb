@@ -129,7 +129,7 @@ export class Context {
    * Query the index for the total number of documents matching the query parameters.
    */
   async queryCount(query: BaseQuery): Promise<number> {
-    return await this.#ceramic.index.queryCount(query)
+    return await this.#ceramic.index.count(query)
   }
 
   /**
