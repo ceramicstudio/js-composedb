@@ -11,19 +11,25 @@ import type { Connection, ConnectionArguments } from 'graphql-relay'
 export type ConnectionQuery = BaseQuery & ConnectionArguments
 
 export function toPaginationQuery(source: ConnectionQuery): PaginationQuery {
-  const { after, before, first, last, ...base } = source
+  const { account, after, before, first, last, model } = source
   let query: PaginationQuery
   if (first != null) {
-    query = { ...base, first }
+    query = { model, first }
     if (after != null) {
       query.after = after
+    }
+    if (account != null) {
+      query.account = account
     }
     return query
   }
   if (last != null) {
-    query = { ...base, last }
+    query = { model, last }
     if (before != null) {
       query.before = before
+    }
+    if (account != null) {
+      query.account = account
     }
     return query
   }

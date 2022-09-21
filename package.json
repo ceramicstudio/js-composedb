@@ -33,15 +33,16 @@
   },
   "pnpm": {
     "overrides": {
-      "@ceramicnetwork/common": "link:../../ceramicnetwork/js-ceramic/packages/common",
-      "@ceramicnetwork/core": "link:../../ceramicnetwork/js-ceramic/packages/core",
-      "@ceramicnetwork/http-client": "link:../../ceramicnetwork/js-ceramic/packages/http-client",
-      "@ceramicnetwork/stream-caip10-link-handler": "link:../../ceramicnetwork/js-ceramic/packages/stream-caip10-link-handler",
-      "@ceramicnetwork/stream-model": "link:../../ceramicnetwork/js-ceramic/packages/stream-model",
-      "@ceramicnetwork/stream-model-handler": "link:../../ceramicnetwork/js-ceramic/packages/stream-model-handler",
-      "@ceramicnetwork/stream-model-instance-handler": "link:../../ceramicnetwork/js-ceramic/packages/stream-model-instance-handler",
-      "@ceramicnetwork/stream-tile-handler": "link:../../ceramicnetwork/js-ceramic/packages/stream-tile-handler",
-      "@ceramicnetwork/streamid": "link:../../ceramicnetwork/js-ceramic/packages/streamid"
+      "@ceramicnetwork/common": "^2.7.0-rc.0",
+      "@ceramicnetwork/core": "^2.10.0-rc.3",
+      "@ceramicnetwork/http-client": "^2.4.0-rc.0",
+      "@ceramicnetwork/stream-caip10-link-handler": "^2.1.5-rc.3",
+      "@ceramicnetwork/stream-model": "^0.6.0-rc.0",
+      "@ceramicnetwork/stream-model-handler": "^0.6.0-rc.0",
+      "@ceramicnetwork/stream-model-instance": "^0.4.2-rc.3",
+      "@ceramicnetwork/stream-model-instance-handler": "^0.7.0-rc.0",
+      "@ceramicnetwork/stream-tile-handler": "^2.2.8-rc.3",
+      "@ceramicnetwork/streamid": "^2.3.4-rc.0"
     }
   }
 }

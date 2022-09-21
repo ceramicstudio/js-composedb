@@ -585,31 +585,20 @@ describe('composite', () => {
 
   test('Relations support', async () => {
     const postComposite = await Composite.create({ ceramic, schema: postSchema })
-    const postParams = postComposite.toParams()
-    const postID = Object.keys(postParams.definition.models)[0]
+    const postID = postComposite.modelIDs[0]
     expect(postID).toBeDefined()
 
     const postAndCommentComposite = await Composite.create({
       ceramic,
       schema: createCommentSchemaWithPost(postID),
     })
-    const postAndCommentParams = postAndCommentComposite.toParams()
-    let commentID
-    for (const [id, definition] of Object.entries(postAndCommentParams.definition.models)) {
-      if (definition.name === 'Comment') {
-        commentID = id
-      } else {
-        // eslint-disable-next-line jest/no-conditional-expect
-        expect(id).toBe(postID)
-      }
-    }
+    const commentID = postAndCommentComposite.modelIDs.find((id) => id !== postID)
     expect(commentID).toBeDefined()
 
     const postWithCommentComposite = await Composite.create({
       ceramic,
       schema: loadPostSchemaWithComments(postID, commentID as string),
     })
-    const { definition } = postWithCommentComposite.toParams()
-    expect(Object.keys(definition.models)).toHaveLength(2)
+    expect(postWithCommentComposite.modelIDs).toHaveLength(2)
   }, 60000)
 })

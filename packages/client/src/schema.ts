@@ -59,11 +59,29 @@ type BuildObjectParams = {
 }
 type BuildDocumentObjectParams = BuildObjectParams & { model: RuntimeModel }
 
+type ConnectionAccountArgument = { account?: string }
+type ConnectionArgumentsWithAccount = ConnectionArguments & ConnectionAccountArgument
+
+const connectionArgsWithAccount = {
+  ...connectionArgs,
+  account: {
+    type: GraphQLID,
+    description: 'Returns only documents created by the provided account',
+  },
+}
+
 const UpdateOptionsInput = new GraphQLInputObjectType({
   name: 'UpdateOptionsInput',
   fields: {
-    replace: { type: GraphQLBoolean },
-    version: { type: CeramicCommitID },
+    replace: {
+      type: GraphQLBoolean,
+      defaultValue: false,
+      description: 'Fully replace the document contents instead of performing a shallow merge',
+    },
+    version: {
+      type: CeramicCommitID,
+      description: 'Only perform mutation if the document matches the provided version',
+    },
   },
 })
 
@@ -132,10 +150,13 @@ class SchemaBuilder {
         const config: GraphQLFieldConfigMap<string, Context> = {
           id: {
             type: new GraphQLNonNull(GraphQLID),
+            description: 'Globally unique identifier of the account (DID string)',
             resolve: (did) => did,
           },
           isViewer: {
             type: new GraphQLNonNull(GraphQLBoolean),
+            description:
+              'Whether the Ceramic instance is currently authenticated with this account or not',
             resolve: (did, _, ctx) => ctx.authenticated && ctx.viewerID === did,
           },
         }
@@ -177,6 +198,7 @@ class SchemaBuilder {
       node: nodeDefs.nodeField,
       viewer: {
         type: accountObject,
+        description: 'Account currently authenticated on the Ceramic instance, if set',
         resolve: (_self, _args, ctx): string | null => ctx.viewerID,
       },
     }
@@ -431,15 +453,18 @@ class SchemaBuilder {
       }
       case 'queryConnection':
         return {
-          type: this.#types[`${modelAlias}Connection`],
-          args: connectionArgs,
+          type: new GraphQLNonNull(this.#types[`${modelAlias}Connection`]),
+          args: connectionArgsWithAccount,
           resolve: async (
             doc,
-            args: ConnectionArguments,
+            args: ConnectionArgumentsWithAccount,
             ctx
           ): Promise<Connection<unknown> | null> => {
+            const account =
+              args.account === 'documentAccount' ? doc.metadata.controller : args.account
             return await ctx.queryConnection({
               ...args,
+              account,
               model: relation.model,
               filter: { [relation.property]: doc.id.toString() },
             })
@@ -448,8 +473,17 @@ class SchemaBuilder {
       case 'queryCount':
         return {
           type: new GraphQLNonNull(GraphQLInt),
-          resolve: async (doc, _args, ctx): Promise<number> => {
+          args: {
+            account: {
+              type: GraphQLID,
+              description: 'Counts only documents created by the provided account',
+            },
+          },
+          resolve: async (doc, args: ConnectionAccountArgument, ctx): Promise<number> => {
+            const account =
+              args.account === 'documentAccount' ? doc.metadata.controller : args.account
             return await ctx.queryCount({
+              account,
               model: relation.model,
               filter: { [relation.property]: doc.id.toString() },
             })
@@ -471,11 +505,13 @@ class SchemaBuilder {
       case 'documentAccount':
         return {
           type: new GraphQLNonNull(definitions.accountObject),
+          description: 'Account controlling the document',
           resolve: (doc): string => doc.metadata.controller,
         }
       case 'documentVersion':
         return {
           type: new GraphQLNonNull(CeramicCommitID),
+          description: 'Current version of the document',
           resolve: (doc): string => doc.commitId.toString(),
         }
       case 'relation':

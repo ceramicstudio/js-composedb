@@ -50,7 +50,7 @@ export default async function globalSetup() {
   await fs.writeJson(CONFIG_PATH, TEST_DAEMON_CONFIG)
 
   await setup({
-    command: `IPFS_PATH=\'${GOIPFS_DIR_PATH.pathname}\' CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB=\'true\' pnpm dlx @ceramicnetwork/cli daemon --config ${CONFIG_PATH.pathname}`,
+    command: `IPFS_PATH=\'${GOIPFS_DIR_PATH.pathname}\' CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB=\'true\' pnpm dlx @ceramicnetwork/cli@next daemon --config ${CONFIG_PATH.pathname}`,
     debug: true,
     launchTimeout: 240000,
     port: 7007,
