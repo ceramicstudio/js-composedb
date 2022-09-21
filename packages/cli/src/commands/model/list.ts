@@ -58,6 +58,7 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
       this.displayPartialDefinitions(this.fetchedFields)
 
       while (this.lastLoadedPageInfo?.hasNextPage) {
+        this.spinner.stop()
         await CliUx.ux.anykey('Press any key to load more models')
         this.spinner.start('Loading models...')
         const nextPage: Page<StreamState> = await ceramicIndexer.index.queryIndex({
