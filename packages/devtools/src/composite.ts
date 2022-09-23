@@ -57,6 +57,14 @@ function assertModelsHaveCommits(
   }
 }
 
+function assertSupportedModelController(model: Model): void {
+  if (!model.metadata.controller.startsWith('did:key:')) {
+    throw new Error(
+      `Unsupported model controller ${model.metadata.controller}, only did:key is supported`
+    )
+  }
+}
+
 /** @internal */
 export function setDefinitionAliases(
   definition: StrictCompositeDefinition,
@@ -102,6 +110,7 @@ async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
         genesis,
         MODEL_GENESIS_OPTS
       )
+      assertSupportedModelController(model)
       for (const commit of updates) {
         await ceramic.applyCommit(model.id, commit as unknown as SignedCommit)
       }
@@ -256,6 +265,7 @@ export class Composite {
           model = await Model.load(params.ceramic, abstractModel.id)
           modelsViews[abstractModel.id] = abstractModel.views
         }
+        assertSupportedModelController(model)
         const id = model.id.toString()
         definition.models[id] = model.content
 
@@ -314,6 +324,7 @@ export class Composite {
           Model.load(params.ceramic, id),
           params.ceramic.loadStreamCommits(id),
         ])
+        assertSupportedModelController(model)
         definition.models[id] = model.content
         commits[id] = streamCommits
           .map((c) => c.value as Record<string, any>)

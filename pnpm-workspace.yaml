@@ -1,4 +1,4 @@
 packages:
-  - 'examples/*'
+  - 'internal-integration-checks/*'
   - 'packages/*'
   - 'website'
