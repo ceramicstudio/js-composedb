@@ -37,7 +37,7 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/streamid": "^2.3.3",
+    "@ceramicnetwork/streamid": "^2.3.4",
     "@composedb/types": "workspace:^0.2.1",
     "graphql": "^16.5.0",
     "graphql-scalars": "^1.18.0"

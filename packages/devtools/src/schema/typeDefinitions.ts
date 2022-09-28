@@ -20,10 +20,21 @@ directive @string(minLength: Int, maxLength: Int!, default: String) on FIELD_DEF
 
 directive @list(minLength: Int, maxLength: Int!) on FIELD_DEFINITION
 
-# Views
+# Stream metadata views
 
 directive @documentAccount on FIELD_DEFINITION
 directive @documentVersion on FIELD_DEFINITION
+
+# Relation definitions
+
+directive @accountReference on FIELD_DEFINITION
+directive @documentReference(model: String!) on FIELD_DEFINITION
+
+# Relation views
+
+directive @relationDocument(property: String!) on FIELD_DEFINITION
+directive @relationFrom(model: String!, property: String!) on FIELD_DEFINITION
+directive @relationCountFrom(model: String!, property: String!) on FIELD_DEFINITION
 
 # Model definition
 
@@ -33,14 +44,9 @@ enum ModelAccountRelation {
 }
 
 directive @createModel(
-  accountRelation: ModelAccountRelation!
   description: String!
-) on INTERFACE
-directive @createModel(
   accountRelation: ModelAccountRelation!
-  description: String!
 ) on OBJECT
 
-directive @loadModel(id: StreamID!) on INTERFACE
 directive @loadModel(id: StreamID!) on OBJECT
 `

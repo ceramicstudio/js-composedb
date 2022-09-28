@@ -1,5 +1,5 @@
 import type { CeramicApi, SignedCommit } from '@ceramicnetwork/common'
-import { Model } from '@ceramicnetwork/stream-model'
+import { Model, type ModelViewsDefinition } from '@ceramicnetwork/stream-model'
 import type {
   CompositeViewsDefinition,
   EncodedCompositeDefinition,
@@ -57,6 +57,14 @@ function assertModelsHaveCommits(
   }
 }
 
+function assertSupportedModelController(model: Model): void {
+  if (!model.metadata.controller.startsWith('did:key:')) {
+    throw new Error(
+      `Unsupported model controller ${model.metadata.controller}, only did:key is supported`
+    )
+  }
+}
+
 /** @internal */
 export function setDefinitionAliases(
   definition: StrictCompositeDefinition,
@@ -90,16 +98,6 @@ export function setDefinitionViews(
   return definition
 }
 
-/** @internal */
-export async function fromAbstractModel(
-  ceramic: CeramicApi,
-  model: AbstractModelDefinition
-): Promise<Model> {
-  return model.action === 'create'
-    ? await Model.create(ceramic, model.definition)
-    : await Model.load(ceramic, model.id)
-}
-
 async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
   ceramic: CeramicApi,
   modelsCommits: Models & {} // eslint-disable-line @typescript-eslint/ban-types
@@ -112,6 +110,7 @@ async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
         genesis,
         MODEL_GENESIS_OPTS
       )
+      assertSupportedModelController(model)
       for (const commit of updates) {
         await ceramic.applyCommit(model.id, commit as unknown as SignedCommit)
       }
@@ -251,14 +250,22 @@ export class Composite {
       models: {},
       commonEmbeds,
     }
+    const modelsViews: Record<string, ModelViewsDefinition> = {}
     const commits: Record<string, any> = {}
 
     // TODO: once interfaces are supported, they need to be loaded or created first
     await Promise.all(
       // For each model definition...
-      Object.values(models).map(async (abstractModel) => {
+      Object.values(models).map(async (abstractModel: AbstractModelDefinition) => {
         // Create or load the model stream
-        const model = await fromAbstractModel(params.ceramic, abstractModel)
+        let model: Model
+        if (abstractModel.action === 'create') {
+          model = await Model.create(params.ceramic, abstractModel.model)
+        } else {
+          model = await Model.load(params.ceramic, abstractModel.id)
+          modelsViews[abstractModel.id] = abstractModel.views
+        }
+        assertSupportedModelController(model)
         const id = model.id.toString()
         definition.models[id] = model.content
 
@@ -269,6 +276,8 @@ export class Composite {
           .filter(isSignedCommit)
       })
     )
+
+    definition.views = { models: modelsViews }
     return new Composite({ commits, definition })
   }
 
@@ -315,6 +324,7 @@ export class Composite {
           Model.load(params.ceramic, id),
           params.ceramic.loadStreamCommits(id),
         ])
+        assertSupportedModelController(model)
         definition.models[id] = model.content
         commits[id] = streamCommits
           .map((c) => c.value as Record<string, any>)

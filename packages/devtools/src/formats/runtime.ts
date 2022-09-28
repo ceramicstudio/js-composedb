@@ -1,8 +1,4 @@
-import {
-  ModelAccountRelation,
-  type ModelDefinition,
-  type ModelViewsDefinition,
-} from '@ceramicnetwork/stream-model'
+import type { ModelDefinition, ModelViewsDefinition } from '@ceramicnetwork/stream-model'
 import type {
   CustomRuntimeScalarType,
   InternalCompositeDefinition,
@@ -17,7 +13,9 @@ import type {
 import { camelCase, pascalCase } from 'change-case'
 import { JsonReference } from 'json-ptr'
 
+import { type ScalarTitle, SCALAR_RUNTIME_TYPES } from '../schema/scalars.js'
 import type { AnySchema, ScalarSchema } from '../types.js'
+import { viewDefinitionToRuntime } from '../utils.js'
 
 type EnumSchema = JSONSchema.String & { title: string; enum: Array<string> }
 
@@ -27,12 +25,10 @@ export function getName(base: string, prefix = ''): string {
   return withCase.startsWith(prefix) ? withCase : prefix + withCase
 }
 
-const CUSTOM_SCALARS_TITLES: Record<string, CustomRuntimeScalarType> = {
-  CeramicCommitID: 'commitid',
-  GraphQLDID: 'did',
-  GraphQLID: 'id',
+/** @internal */
+export function getStringScalarType(schema: JSONSchema.String): CustomRuntimeScalarType | 'string' {
+  return SCALAR_RUNTIME_TYPES[schema.title as ScalarTitle] ?? 'string'
 }
-type CustomScalarTitle = keyof typeof CUSTOM_SCALARS_TITLES
 
 type RuntimeModelBuilderParams = {
   name: string
@@ -240,7 +236,7 @@ export class RuntimeModelBuilder {
         return { type: 'float', required }
       case 'string':
         return {
-          type: CUSTOM_SCALARS_TITLES[schema.title as CustomScalarTitle] ?? 'string',
+          type: getStringScalarType(schema),
           required,
         }
     }
@@ -248,15 +244,7 @@ export class RuntimeModelBuilder {
 
   _buildViews(object: RuntimeObjectFields, views: ModelViewsDefinition = {}): void {
     for (const [key, view] of Object.entries(views)) {
-      switch (view.type) {
-        case 'documentAccount':
-        case 'documentVersion':
-          object[key] = { type: 'view', viewType: view.type }
-          continue
-        default:
-          // @ts-ignore unexpected view type
-          throw new Error(`Unsupported view type: ${view.type as string}`)
-      }
+      object[key] = viewDefinitionToRuntime(view)
     }
   }
 }
@@ -292,16 +280,15 @@ export function createRuntimeDefinition(
     // Attach entry-point to account store based on relation type
     if (modelDefinition.accountRelation != null) {
       const key = camelCase(modelName)
-      if (modelDefinition.accountRelation === ModelAccountRelation.SINGLE) {
+      const relationType = modelDefinition.accountRelation.type
+      if (relationType === 'single') {
         runtime.accountData[key] = { type: 'node', name: modelName }
         // @ts-ignore TS2367, should be unnecessary check based on type definition but more types
         // could be added later
-      } else if (modelDefinition.accountRelation === ModelAccountRelation.LIST) {
+      } else if (relationType === 'list') {
         runtime.accountData[key + 'List'] = { type: 'connection', name: modelName }
       } else {
-        throw new Error(
-          `Unsupported account relation: ${modelDefinition.accountRelation as string}`
-        )
+        throw new Error(`Unsupported account relation type: ${relationType as string}`)
       }
     }
   }

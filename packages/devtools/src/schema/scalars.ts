@@ -1,9 +1,33 @@
+import { CustomRuntimeScalarType } from '@composedb/types'
 import { GraphQLScalarType } from 'graphql'
 import { isEqual } from 'lodash-es'
 
 import type { ScalarSchema } from '../types.js'
 
-export const extraScalars: Record<string, ScalarSchema> = {
+export type ScalarTitle =
+  | 'CeramicCommitID'
+  | 'GraphQLCountryCode'
+  | 'GraphQLDate'
+  | 'GraphQLDateTime'
+  | 'GraphQLDID'
+  | 'GraphQLID'
+  | 'CeramicStreamID'
+  | 'GraphQLTime'
+
+type ScalarWithTitle = ScalarSchema & { title: ScalarTitle }
+
+export const SCALAR_RUNTIME_TYPES: Record<ScalarTitle, CustomRuntimeScalarType> = {
+  CeramicCommitID: 'commitid',
+  CeramicStreamID: 'streamid',
+  GraphQLCountryCode: 'countrycode',
+  GraphQLDate: 'date',
+  GraphQLDateTime: 'datetime',
+  GraphQLDID: 'did',
+  GraphQLID: 'id',
+  GraphQLTime: 'time',
+}
+
+export const extraScalars: Record<string, ScalarWithTitle> = {
   CommitID: { type: 'string', title: 'CeramicCommitID', maxLength: 200 },
   CountryCode: {
     type: 'string',
@@ -30,7 +54,7 @@ const scalars: Record<string, ScalarSchema> = {
   ...extraScalars,
   Boolean: { type: 'boolean' },
   Float: { type: 'number' },
-  ID: { type: 'string', title: 'GraphQLID' },
+  ID: { type: 'string', title: 'GraphQLID', maxLength: 100 },
   Int: { type: 'integer' },
   String: { type: 'string' },
 }

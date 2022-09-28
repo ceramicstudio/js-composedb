@@ -31,9 +31,28 @@ npm install --dev @composedb/devtools
 
 ___
 
+### AbstractCreateModelDefinition
+
+Ƭ **AbstractCreateModelDefinition**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `action` | ``"create"`` |
+| `model` | `ModelDefinition` |
+
+___
+
+### AbstractLoadModelDefinition
+
+Ƭ **AbstractLoadModelDefinition**: [`ParsedLoadModelDefinition`](devtools.md#parsedloadmodeldefinition) & { `views`: `ModelViewsDefinition`  }
+
+___
+
 ### AbstractModelDefinition
 
-Ƭ **AbstractModelDefinition**: [`CreateModelDefinition`](devtools.md#createmodeldefinition) \| [`LoadModelDefinition`](devtools.md#loadmodeldefinition)
+Ƭ **AbstractModelDefinition**: [`AbstractCreateModelDefinition`](devtools.md#abstractcreatemodeldefinition) \| [`AbstractLoadModelDefinition`](devtools.md#abstractloadmodeldefinition)
 
 ___
 
@@ -82,19 +101,6 @@ Composite instance creation parameters.
 
 ___
 
-### CreateModelDefinition
-
-Ƭ **CreateModelDefinition**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `action` | ``"create"`` |
-| `definition` | `ModelDefinition` |
-
-___
-
 ### CreateParams
 
 Ƭ **CreateParams**: `Object`
@@ -107,22 +113,6 @@ Composite creation parameters from a schema.
 | :------ | :------ | :------ |
 | `ceramic` | `CeramicApi` | Ceramic instance connected to the node the new Model streams must be created on. The Ceramic instance **must have an authenticated DID attached to it** in order to create Models, using the `did:key` method. |
 | `schema` | `string` | Composite schema string. |
-
-___
-
-### CreateParsedModelDefinition
-
-Ƭ **CreateParsedModelDefinition**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `accountRelation` | `ModelAccountRelation` |
-| `action` | ``"create"`` |
-| `description` | `string` |
-| `implements` | `string`[] |
-| `interface` | `boolean` |
 
 ___
 
@@ -179,19 +169,6 @@ ___
 
 ___
 
-### LoadModelDefinition
-
-Ƭ **LoadModelDefinition**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `action` | ``"load"`` |
-| `id` | `string` |
-
-___
-
 ### ObjectDefinition
 
 Ƭ **ObjectDefinition**: `Object`
@@ -200,9 +177,9 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `implements` | `string`[] |
 | `properties` | [`ObjectFieldsDefinition`](devtools.md#objectfieldsdefinition) |
 | `references` | `string`[] |
+| `relations` | `ModelRelationsDefinition` |
 
 ___
 
@@ -224,9 +201,37 @@ ___
 
 ___
 
+### ParsedCreateModelDefinition
+
+Ƭ **ParsedCreateModelDefinition**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `accountRelation` | `ModelAccountRelation` |
+| `action` | ``"create"`` |
+| `description` | `string` |
+| `relations` | `ModelRelationsDefinition` |
+
+___
+
+### ParsedLoadModelDefinition
+
+Ƭ **ParsedLoadModelDefinition**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `action` | ``"load"`` |
+| `id` | `string` |
+
+___
+
 ### ParsedModelDefinition
 
-Ƭ **ParsedModelDefinition**: [`CreateParsedModelDefinition`](devtools.md#createparsedmodeldefinition) \| [`LoadModelDefinition`](devtools.md#loadmodeldefinition)
+Ƭ **ParsedModelDefinition**: [`ParsedCreateModelDefinition`](devtools.md#parsedcreatemodeldefinition) \| [`ParsedLoadModelDefinition`](devtools.md#parsedloadmodeldefinition)
 
 ___
 

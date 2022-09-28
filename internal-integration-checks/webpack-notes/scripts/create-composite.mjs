@@ -33,8 +33,7 @@ const composite = await createComposite(
 )
 
 // Display models for Ceramic node config
-const models = Object.keys(composite.toParams().definition.models)
-console.log(`Composite models: ${JSON.stringify(models)}`)
+console.log(`Composite models: ${JSON.stringify(composite.modelIDs)}`)
 
 // Write encoded definition
 const compositePath = new URL('../data/src/composite.json', import.meta.url)

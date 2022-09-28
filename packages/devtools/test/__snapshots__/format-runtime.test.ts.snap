@@ -17,7 +17,9 @@ exports[`Runtime format Note model definition with views 1`] = `
   },
   "models": {
     "Note": {
-      "accountRelation": "list",
+      "accountRelation": {
+        "type": "list",
+      },
       "id": "NoteID",
     },
   },
@@ -32,6 +34,230 @@ exports[`Runtime format Note model definition with views 1`] = `
         "refType": "enum",
         "required": false,
         "type": "reference",
+      },
+      "text": {
+        "required": true,
+        "type": "string",
+      },
+      "title": {
+        "required": true,
+        "type": "string",
+      },
+      "version": {
+        "type": "view",
+        "viewType": "documentVersion",
+      },
+    },
+  },
+}
+`;
+
+exports[`Runtime format Post with comments relations 1`] = `
+{
+  "accountData": {
+    "postList": {
+      "name": "Post",
+      "type": "connection",
+    },
+  },
+  "enums": {},
+  "models": {
+    "Post": {
+      "accountRelation": {
+        "type": "list",
+      },
+      "id": "PostID",
+    },
+  },
+  "objects": {
+    "Post": {
+      "author": {
+        "type": "view",
+        "viewType": "documentAccount",
+      },
+      "date": {
+        "required": false,
+        "type": "datetime",
+      },
+      "text": {
+        "required": true,
+        "type": "string",
+      },
+      "title": {
+        "required": true,
+        "type": "string",
+      },
+      "version": {
+        "type": "view",
+        "viewType": "documentVersion",
+      },
+    },
+  },
+}
+`;
+
+exports[`Runtime format Post with comments relations 2`] = `
+{
+  "accountData": {
+    "commentList": {
+      "name": "Comment",
+      "type": "connection",
+    },
+    "postList": {
+      "name": "Post",
+      "type": "connection",
+    },
+  },
+  "enums": {},
+  "models": {
+    "Comment": {
+      "accountRelation": {
+        "type": "list",
+      },
+      "id": "CommentID",
+    },
+    "Post": {
+      "accountRelation": {
+        "type": "list",
+      },
+      "id": "PostID",
+    },
+  },
+  "objects": {
+    "Comment": {
+      "author": {
+        "type": "view",
+        "viewType": "documentAccount",
+      },
+      "post": {
+        "relation": {
+          "model": "PostID",
+          "property": "postID",
+          "source": "document",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "postID": {
+        "required": true,
+        "type": "streamid",
+      },
+      "text": {
+        "required": true,
+        "type": "string",
+      },
+      "version": {
+        "type": "view",
+        "viewType": "documentVersion",
+      },
+    },
+    "Post": {
+      "author": {
+        "type": "view",
+        "viewType": "documentAccount",
+      },
+      "date": {
+        "required": false,
+        "type": "datetime",
+      },
+      "text": {
+        "required": true,
+        "type": "string",
+      },
+      "title": {
+        "required": true,
+        "type": "string",
+      },
+      "version": {
+        "type": "view",
+        "viewType": "documentVersion",
+      },
+    },
+  },
+}
+`;
+
+exports[`Runtime format Post with comments relations 3`] = `
+{
+  "accountData": {
+    "commentList": {
+      "name": "Comment",
+      "type": "connection",
+    },
+    "postList": {
+      "name": "Post",
+      "type": "connection",
+    },
+  },
+  "enums": {},
+  "models": {
+    "Comment": {
+      "accountRelation": {
+        "type": "list",
+      },
+      "id": "CommentID",
+    },
+    "Post": {
+      "accountRelation": {
+        "type": "list",
+      },
+      "id": "PostID",
+    },
+  },
+  "objects": {
+    "Comment": {
+      "author": {
+        "type": "view",
+        "viewType": "documentAccount",
+      },
+      "post": {
+        "relation": {
+          "model": "PostID",
+          "property": "postID",
+          "source": "document",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "postID": {
+        "required": true,
+        "type": "streamid",
+      },
+      "text": {
+        "required": true,
+        "type": "string",
+      },
+      "version": {
+        "type": "view",
+        "viewType": "documentVersion",
+      },
+    },
+    "Post": {
+      "author": {
+        "type": "view",
+        "viewType": "documentAccount",
+      },
+      "comments": {
+        "relation": {
+          "model": "CommentID",
+          "property": "postID",
+          "source": "queryConnection",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "commentsCount": {
+        "relation": {
+          "model": "CommentID",
+          "property": "postID",
+          "source": "queryCount",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "date": {
+        "required": false,
+        "type": "datetime",
       },
       "text": {
         "required": true,
@@ -69,15 +295,21 @@ exports[`Runtime format Profile - multiples models with common local references 
   "enums": {},
   "models": {
     "GenericProfile": {
-      "accountRelation": "single",
+      "accountRelation": {
+        "type": "single",
+      },
       "id": "GenericProfileID",
     },
     "PersonProfile": {
-      "accountRelation": "single",
+      "accountRelation": {
+        "type": "single",
+      },
       "id": "PersonProfileID",
     },
     "SocialProfile": {
-      "accountRelation": "single",
+      "accountRelation": {
+        "type": "single",
+      },
       "id": "SocialProfileID",
     },
   },
@@ -145,7 +377,7 @@ exports[`Runtime format Profile - multiples models with common local references 
       },
       "birthDate": {
         "required": false,
-        "type": "string",
+        "type": "date",
       },
       "gender": {
         "required": false,
@@ -158,14 +390,14 @@ exports[`Runtime format Profile - multiples models with common local references 
       "nationalities": {
         "item": {
           "required": false,
-          "type": "string",
+          "type": "countrycode",
         },
         "required": false,
         "type": "list",
       },
       "residenceCountry": {
         "required": false,
-        "type": "string",
+        "type": "countrycode",
       },
     },
     "SocialProfile": {
@@ -211,15 +443,21 @@ exports[`Runtime format Profile definition with added model view 1`] = `
   "enums": {},
   "models": {
     "GenericProfile": {
-      "accountRelation": "single",
+      "accountRelation": {
+        "type": "single",
+      },
       "id": "GenericProfileID",
     },
     "PersonProfile": {
-      "accountRelation": "single",
+      "accountRelation": {
+        "type": "single",
+      },
       "id": "PersonProfileID",
     },
     "SocialProfile": {
-      "accountRelation": "single",
+      "accountRelation": {
+        "type": "single",
+      },
       "id": "SocialProfileID",
     },
   },
@@ -291,7 +529,7 @@ exports[`Runtime format Profile definition with added model view 1`] = `
       },
       "birthDate": {
         "required": false,
-        "type": "string",
+        "type": "date",
       },
       "gender": {
         "required": false,
@@ -304,14 +542,14 @@ exports[`Runtime format Profile definition with added model view 1`] = `
       "nationalities": {
         "item": {
           "required": false,
-          "type": "string",
+          "type": "countrycode",
         },
         "required": false,
         "type": "list",
       },
       "residenceCountry": {
         "required": false,
-        "type": "string",
+        "type": "countrycode",
       },
     },
     "SocialProfile": {

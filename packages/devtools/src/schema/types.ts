@@ -1,25 +1,12 @@
-import type { ModelAccountRelation, ModelDefinition } from '@ceramicnetwork/stream-model'
+import type {
+  ModelAccountRelation,
+  ModelDefinition,
+  ModelRelationsDefinition,
+  ModelViewsDefinition,
+} from '@ceramicnetwork/stream-model'
 import type { RuntimeViewField } from '@composedb/types'
 
 import type { ScalarSchema } from '../types.js'
-
-export type CreateParsedModelDefinition = {
-  action: 'create'
-  accountRelation: ModelAccountRelation
-  description: string
-  interface: boolean
-  implements: Array<string>
-  // relations: Record<string, unknown>
-  // views: ModelViewsDefinition
-}
-
-export type LoadModelDefinition = {
-  action: 'load'
-  id: string
-  // views: ModelViewsDefinition
-}
-
-export type ParsedModelDefinition = CreateParsedModelDefinition | LoadModelDefinition
 
 export type FieldCommonDefinition = {
   required: boolean
@@ -60,10 +47,27 @@ export type ObjectFieldDefinition = ItemDefinition | ListFieldDefinition | ViewF
 export type ObjectFieldsDefinition = Record<string, ObjectFieldDefinition>
 
 export type ObjectDefinition = {
-  implements: Array<string> // Interface names
+  // implements: Array<string> // Interface names
   properties: ObjectFieldsDefinition
   references: Array<string> // Embedded objects and enums
+  relations: ModelRelationsDefinition
 }
+
+export type ParsedCreateModelDefinition = {
+  action: 'create'
+  // interface: boolean
+  // implements: Array<string>
+  description: string
+  accountRelation: ModelAccountRelation
+  relations: ModelRelationsDefinition
+}
+
+export type ParsedLoadModelDefinition = {
+  action: 'load'
+  id: string
+}
+
+export type ParsedModelDefinition = ParsedCreateModelDefinition | ParsedLoadModelDefinition
 
 export type SchemaDefinition = {
   enums: Record<string, Array<string>>
@@ -72,9 +76,13 @@ export type SchemaDefinition = {
   objects: Record<string, ObjectDefinition>
 }
 
-export type CreateModelDefinition = { action: 'create'; definition: ModelDefinition }
+export type AbstractCreateModelDefinition = { action: 'create'; model: ModelDefinition }
 
-export type AbstractModelDefinition = CreateModelDefinition | LoadModelDefinition
+export type AbstractLoadModelDefinition = ParsedLoadModelDefinition & {
+  views: ModelViewsDefinition
+}
+
+export type AbstractModelDefinition = AbstractCreateModelDefinition | AbstractLoadModelDefinition
 
 export type AbstractCompositeDefinition = {
   models: Record<string, AbstractModelDefinition>
