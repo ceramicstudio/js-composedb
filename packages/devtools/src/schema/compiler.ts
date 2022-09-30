@@ -1,4 +1,4 @@
-import type { ModelRelationsDefinition, ModelViewsDefinition } from '@ceramicnetwork/stream-model'
+import type { ModelViewsDefinition } from '@ceramicnetwork/stream-model'
 import type { JSONSchema } from '@composedb/types'
 import type { SetRequired } from 'type-fest'
 
@@ -269,7 +269,6 @@ export class SchemaCompiler {
       )
     }
 
-    const relations: ModelRelationsDefinition = {}
     const views: ModelViewsDefinition = {}
     const object: CompileObject = {
       $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -331,7 +330,7 @@ export class SchemaCompiler {
         // implements: definition.implements,
         accountRelation: modelDefinition.accountRelation,
         schema: object,
-        relations,
+        relations: modelDefinition.relations,
         views,
       },
     }

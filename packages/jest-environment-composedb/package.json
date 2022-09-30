@@ -23,10 +23,10 @@
     "lint": "eslint index.js --fix"
   },
   "dependencies": {
-    "@ceramicnetwork/core": "^2.10.0",
+    "@ceramicnetwork/core": "^2.11.0-rc.0",
     "dids": "^3.4.0",
     "ipfs-core": "^0.15.4",
-    "jest-environment-node": "^29.0.3",
+    "jest-environment-node": "^29.1.2",
     "key-did-provider-ed25519": "^2.0.1",
     "key-did-resolver": "^2.1.2",
     "tmp-promise": "^3.0.3",
