@@ -1,7 +1,7 @@
 {
   "name": "jest-environment-composedb",
   "private": true,
-  "version": "0.2.1",
+  "version": "0.3.0-rc.0",
   "description": "ComposeDB environment for Jest",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",

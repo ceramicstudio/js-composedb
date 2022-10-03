@@ -34,7 +34,7 @@ const config = {
             current: {
               label: 'Next 🚧',
               banner: 'unreleased',
-              path: 'next',
+              path: '0.3.x',
             },
             '0.2.x': {
               label: '0.2.x',
@@ -106,15 +106,15 @@ const config = {
             items: [
               {
                 label: 'Getting Started',
-                to: '/docs/0.2.x/installation',
+                to: '/docs/0.3.x/installation',
               },
               {
                 label: 'Guides',
-                to: '/docs/0.2.x/category/guides',
+                to: '/docs/0.3.x/category/guides',
               },
               {
                 label: 'API',
-                to: '/docs/0.2.x/api/modules/client',
+                to: '/docs/0.3.x/api/modules/client',
               },
             ],
           },
