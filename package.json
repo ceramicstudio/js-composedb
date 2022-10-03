@@ -11,7 +11,7 @@
     "prepare": "pnpm build"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.24.4",
+    "@changesets/cli": "^2.25.0",
     "@jest/globals": "^29.1.2",
     "@skypack/package-check": "^0.2.2",
     "@swc/cli": "^0.1.57",

@@ -11,7 +11,7 @@
     "build": "del build && cp -r public build && webpack --mode production"
   },
   "dependencies": {
-    "@apollo/client": "^3.6.10",
+    "@apollo/client": "^3.7.0",
     "@ceramicnetwork/http-client": "^2.5.0-rc.0",
     "@composedb/client": "workspace:^0.2.0",
     "@composedb/types": "workspace:^0.2.0",
@@ -36,7 +36,7 @@
     "@composedb/devtools": "workspace:^0.2.0",
     "@composedb/devtools-node": "workspace:^0.2.0",
     "@swc/core": "^1.3.4",
-    "@types/node": "^18.7.23",
+    "@types/node": "^18.8.0",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "css-loader": "^6.7.1",

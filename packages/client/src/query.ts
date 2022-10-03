@@ -31,8 +31,7 @@ export function toPaginationQuery(source: ConnectionQuery): PaginationQuery {
     if (after != null) {
       pagination.after = after
     }
-  }
-  if (last != null) {
+  } else if (last != null) {
     pagination = { last }
     if (before != null) {
       pagination.before = before
