@@ -5,10 +5,10 @@ import { getResolver } from 'key-did-resolver'
 import { fromString } from 'uint8arrays'
 
 let did
-if (process.env.SEED) {
-  const seed = fromString(process.env.SEED, 'base16')
+if (process.env.DID_PRIVATE_KEY) {
+  const privateKey = fromString(process.env.DID_PRIVATE_KEY, 'base16')
   did = new DID({
-    provider: new Ed25519Provider(seed),
+    provider: new Ed25519Provider(privateKey),
     resolver: getResolver(),
   })
   await did.authenticate()

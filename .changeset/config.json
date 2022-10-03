@@ -9,6 +9,7 @@
       "@composedb/client",
       "@composedb/devtools",
       "@composedb/devtools-node",
+      "@composedb/graphql-scalars",
       "@composedb/types"
     ]
   ],
