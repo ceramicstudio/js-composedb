@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ceramicnetwork/http-client": "^2.4.0",
+    "@ceramicnetwork/http-client": "^2.5.0-rc.1",
     "@composedb/client": "workspace:^0.2.0",
     "@composedb/types": "workspace:^0.2.0",
     "@emotion/react": "^11.10.4",
