@@ -9,15 +9,15 @@ import { Ed25519Provider } from 'key-did-provider-ed25519'
 import { getResolver } from 'key-did-resolver'
 import { fromString } from 'uint8arrays'
 
-if (!process.env.SEED) {
-  throw new Error('Missing SEED environment variable')
+if (!process.env.DID_PRIVATE_KEY) {
+  throw new Error('Missing DID_PRIVATE_KEY environment variable')
 }
 
-// The seed must be provided as an environment variable
-const seed = fromString(process.env.SEED, 'base16')
+// The private key must be provided as an environment variable
+const privateKey = fromString(process.env.DID_PRIVATE_KEY, 'base16')
 // Create and authenticate the DID
 const did = new DID({
-  provider: new Ed25519Provider(seed),
+  provider: new Ed25519Provider(privateKey),
   resolver: getResolver(),
 })
 await did.authenticate()
