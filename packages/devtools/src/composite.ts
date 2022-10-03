@@ -1,5 +1,6 @@
 import type { CeramicApi, SignedCommit } from '@ceramicnetwork/common'
 import { Model, type ModelViewsDefinition } from '@ceramicnetwork/stream-model'
+import { StreamID } from '@ceramicnetwork/streamid'
 import type {
   CompositeViewsDefinition,
   EncodedCompositeDefinition,
@@ -8,6 +9,7 @@ import type {
   RuntimeCompositeDefinition,
   StreamCommits,
 } from '@composedb/types'
+import type { DID } from 'dids'
 import { cloneDeep, merge } from 'lodash-es'
 import createObjectHash from 'object-hash'
 
@@ -244,6 +246,12 @@ export class Composite {
    * wrapped in a Composite instance.
    */
   static async create(params: CreateParams): Promise<Composite> {
+    if (!params.ceramic.did?.authenticated) {
+      throw new Error(
+        'An authenticated DID must be attached to the Ceramic instance in order to create a composite'
+      )
+    }
+
     const { commonEmbeds, models } = createAbstractCompositeDefinition(params.schema)
     const definition: InternalCompositeDefinition = {
       version: Composite.VERSION,
@@ -278,7 +286,10 @@ export class Composite {
     )
 
     definition.views = { models: modelsViews }
-    return new Composite({ commits, definition })
+    const composite = new Composite({ commits, definition })
+
+    await composite.startIndexingOn(params.ceramic)
+    return composite
   }
 
   /**
@@ -297,21 +308,36 @@ export class Composite {
    * Create a Composite instance from a JSON-encoded `CompositeDefinition`.
    */
   static async fromJSON(params: FromJSONParams): Promise<Composite> {
+    if (!params.ceramic.did?.authenticated) {
+      throw new Error(
+        'An authenticated DID must be attached to the Ceramic instance in order to deploy a composite'
+      )
+    }
+
     const { models, ...definition } = params.definition
     const commits = decodeSignedMap(models)
-    return new Composite({
+    const composite = new Composite({
       commits,
       definition: {
         ...definition,
         models: await loadModelsFromCommits(params.ceramic, commits),
       },
     })
+
+    await composite.startIndexingOn(params.ceramic)
+    return composite
   }
 
   /**
    * Create a Composite instance from a set of Model streams already present on a Ceramic node.
    */
   static async fromModels(params: FromModelsParams): Promise<Composite> {
+    if (!params.ceramic.did?.authenticated) {
+      throw new Error(
+        'An authenticated DID must be attached to the Ceramic instance in order to create a composite'
+      )
+    }
+
     const definition: InternalCompositeDefinition = {
       version: Composite.VERSION,
       models: {},
@@ -331,8 +357,10 @@ export class Composite {
           .filter(isSignedCommit)
       })
     )
+    const composite = new Composite({ commits, definition })
 
-    return new Composite({ commits, definition })
+    await composite.startIndexingOn(params.ceramic)
+    return composite
   }
 
   #commits: Record<string, StreamCommits>
@@ -501,6 +529,20 @@ export class Composite {
     const params = this.toParams()
     const definition = setDefinitionViews(toStrictDefinition(params.definition), views, replace)
     return new Composite({ ...params, definition })
+  }
+
+  /**
+   * Configure the Ceramic node to index the models defined in the composite. An authenticated DID
+   * set as admin in the Ceramic node configuration must be attached to the Ceramic instance or
+   * explicitly provided.
+   */
+  async startIndexingOn(ceramic: CeramicApi, did: DID | undefined = ceramic.did): Promise<void> {
+    if (!did?.authenticated) {
+      throw new Error('An admin DID must be provided to interact with the indexing APIs')
+    }
+
+    const modelIDs = Object.keys(this.#definition.models).map(StreamID.fromString)
+    await ceramic.admin.startIndexingModels(did, modelIDs)
   }
 
   /**

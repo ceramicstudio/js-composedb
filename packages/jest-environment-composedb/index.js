@@ -43,20 +43,22 @@ export default class ComposeEnvironment extends NodeEnvironment {
       silent: true,
     })
 
+    const did = new DID({
+      resolver: getResolver(),
+      provider: new Ed25519Provider(this.seed),
+    })
+    await did.authenticate()
+
     const stateStoreDirectory = path.join(this.tmpFolder.path, 'ceramic')
+
     this.global.ceramic = await Ceramic.create(this.global.ipfs, {
+      adminDids: [did.id],
       stateStoreDirectory: stateStoreDirectory,
       indexing: {
         db: this.indexingConfig.db ?? `sqlite://${stateStoreDirectory}/ceramic.sqlite`,
         models: this.indexingConfig.models ?? [],
       },
     })
-
-    const did = new DID({
-      resolver: getResolver(),
-      provider: new Ed25519Provider(this.seed),
-    })
-    await did.authenticate()
     this.global.ceramic.did = did
   }
 
