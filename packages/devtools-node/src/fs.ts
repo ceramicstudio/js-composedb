@@ -25,13 +25,9 @@ export function getDirPath(path: PathInput): string {
 /**
  * Create a Composite from a GraphQL schema path.
  */
-export async function createComposite(
-  ceramic: CeramicClient | string,
-  path: PathInput
-): Promise<Composite> {
-  const client = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
+export async function createComposite(ceramic: CeramicClient, path: PathInput): Promise<Composite> {
   const file = await readFile(getFilePath(path))
-  return await Composite.create({ ceramic: client, schema: file.toString() })
+  return await Composite.create({ ceramic, schema: file.toString() })
 }
 
 /**

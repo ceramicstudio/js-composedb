@@ -501,7 +501,10 @@ describe('composite', () => {
     })
   })
 
-  describe('startIndexingOn() call the admin API to index the models', () => {
+  test('startIndexingOn() calls the admin API to index the models', async () => {
+    const startIndexingModels = jest.fn()
+    const mockCeramic = { admin: { startIndexingModels } } as unknown as CeramicApi
+
     const modelID = 'kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e'
     const composite = new Composite({
       commits: { [modelID]: [] },
@@ -517,38 +520,8 @@ describe('composite', () => {
       },
     })
 
-    test('throws if no DID is provided', async () => {
-      const mockCeramic = {} as CeramicApi
-      await expect(composite.startIndexingOn(mockCeramic)).rejects.toThrow(
-        'An admin DID must be provided to interact with the indexing APIs'
-      )
-    })
-
-    test('throws if the provided DID is not authenticated', async () => {
-      const mockCeramic = {} as CeramicApi
-      const did = { authenticated: false } as DID
-      await expect(composite.startIndexingOn(mockCeramic, did)).rejects.toThrow(
-        'An admin DID must be provided to interact with the indexing APIs'
-      )
-    })
-
-    test('uses the provided DID to call the API', async () => {
-      const startIndexingModels = jest.fn()
-      const mockCeramic = { admin: { startIndexingModels } } as unknown as CeramicApi
-      const did = { authenticated: true } as DID
-      await composite.startIndexingOn(mockCeramic, did)
-      expect(startIndexingModels).toBeCalledWith(did, [expect.any(StreamID)])
-    })
-
-    test('uses the DID attached to the Ceramic instance if no DID is provided', async () => {
-      const startIndexingModels = jest.fn()
-      const mockCeramic = {
-        admin: { startIndexingModels },
-        did: { authenticated: true },
-      } as unknown as CeramicApi
-      await composite.startIndexingOn(mockCeramic)
-      expect(startIndexingModels).toBeCalledWith(mockCeramic.did, [expect.any(StreamID)])
-    })
+    await composite.startIndexingOn(mockCeramic)
+    expect(startIndexingModels).toBeCalledWith([expect.any(StreamID)])
   })
 
   test('Composite.from() merges composites into a new instance', () => {

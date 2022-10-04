@@ -9,7 +9,6 @@ import type {
   RuntimeCompositeDefinition,
   StreamCommits,
 } from '@composedb/types'
-import type { DID } from 'dids'
 import { cloneDeep, merge } from 'lodash-es'
 import createObjectHash from 'object-hash'
 
@@ -190,6 +189,11 @@ export type CreateParams = {
    * Composite schema string.
    */
   schema: string
+  /**
+   * Whether to add the Models to the index or not. If `true` (default), the Ceramic instance
+   * must be authenticated with an admin DID.
+   */
+  index?: boolean
 }
 
 /**
@@ -204,6 +208,11 @@ export type FromJSONParams = {
    * JSON-encoded composite definition.
    */
   definition: EncodedCompositeDefinition
+  /**
+   * Whether to add the Models to the index or not. If `true`, the Ceramic instance must be
+   * authenticated with an admin DID. Defaults to `false`.
+   */
+  index?: boolean
 }
 
 /**
@@ -218,6 +227,11 @@ export type FromModelsParams = CompositeOptions & {
    * Stream IDs of the Models to import in the composite.
    */
   models: Array<string>
+  /**
+   * Whether to add the Models to the index or not. If `true`, the Ceramic instance must be
+   * authenticated with an admin DID. Defaults to `false`.
+   */
+  index?: boolean
 }
 
 /**
@@ -288,7 +302,11 @@ export class Composite {
     definition.views = { models: modelsViews }
     const composite = new Composite({ commits, definition })
 
-    await composite.startIndexingOn(params.ceramic)
+    // By default, add models to the index
+    if (params.index !== false) {
+      await composite.startIndexingOn(params.ceramic)
+    }
+
     return composite
   }
 
@@ -308,12 +326,6 @@ export class Composite {
    * Create a Composite instance from a JSON-encoded `CompositeDefinition`.
    */
   static async fromJSON(params: FromJSONParams): Promise<Composite> {
-    if (!params.ceramic.did?.authenticated) {
-      throw new Error(
-        'An authenticated DID must be attached to the Ceramic instance in order to deploy a composite'
-      )
-    }
-
     const { models, ...definition } = params.definition
     const commits = decodeSignedMap(models)
     const composite = new Composite({
@@ -324,7 +336,11 @@ export class Composite {
       },
     })
 
-    await composite.startIndexingOn(params.ceramic)
+    // Only add models to the index if explicitly requested
+    if (params.index) {
+      await composite.startIndexingOn(params.ceramic)
+    }
+
     return composite
   }
 
@@ -332,12 +348,6 @@ export class Composite {
    * Create a Composite instance from a set of Model streams already present on a Ceramic node.
    */
   static async fromModels(params: FromModelsParams): Promise<Composite> {
-    if (!params.ceramic.did?.authenticated) {
-      throw new Error(
-        'An authenticated DID must be attached to the Ceramic instance in order to create a composite'
-      )
-    }
-
     const definition: InternalCompositeDefinition = {
       version: Composite.VERSION,
       models: {},
@@ -359,7 +369,11 @@ export class Composite {
     )
     const composite = new Composite({ commits, definition })
 
-    await composite.startIndexingOn(params.ceramic)
+    // Only add models to the index if explicitly requested
+    if (params.index) {
+      await composite.startIndexingOn(params.ceramic)
+    }
+
     return composite
   }
 
@@ -533,16 +547,11 @@ export class Composite {
 
   /**
    * Configure the Ceramic node to index the models defined in the composite. An authenticated DID
-   * set as admin in the Ceramic node configuration must be attached to the Ceramic instance or
-   * explicitly provided.
+   * set as admin in the Ceramic node configuration must be attached to the Ceramic instance.
    */
-  async startIndexingOn(ceramic: CeramicApi, did: DID | undefined = ceramic.did): Promise<void> {
-    if (!did?.authenticated) {
-      throw new Error('An admin DID must be provided to interact with the indexing APIs')
-    }
-
+  async startIndexingOn(ceramic: CeramicApi): Promise<void> {
     const modelIDs = Object.keys(this.#definition.models).map(StreamID.fromString)
-    await ceramic.admin.startIndexingModels(did, modelIDs)
+    await ceramic.admin.startIndexingModels(modelIDs)
   }
 
   /**

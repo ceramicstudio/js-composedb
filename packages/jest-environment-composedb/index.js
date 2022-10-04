@@ -50,16 +50,17 @@ export default class ComposeEnvironment extends NodeEnvironment {
     await did.authenticate()
 
     const stateStoreDirectory = path.join(this.tmpFolder.path, 'ceramic')
-
-    this.global.ceramic = await Ceramic.create(this.global.ipfs, {
-      adminDids: [did.id],
+    const ceramic = await Ceramic.create(this.global.ipfs, {
       stateStoreDirectory: stateStoreDirectory,
       indexing: {
         db: this.indexingConfig.db ?? `sqlite://${stateStoreDirectory}/ceramic.sqlite`,
         models: this.indexingConfig.models ?? [],
+        allowQueriesBeforeHistoricalSync: true,
       },
     })
-    this.global.ceramic.did = did
+    ceramic.did = did
+
+    this.global.ceramic = ceramic
   }
 
   async teardown() {

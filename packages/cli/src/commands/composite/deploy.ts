@@ -23,7 +23,7 @@ export default class CompositeDeploy extends Command<
       let composite: Composite | undefined = undefined
       if (this.stdin !== undefined) {
         const definition = JSON.parse(this.stdin) as EncodedCompositeDefinition
-        composite = await Composite.fromJSON({ ceramic: this.ceramic, definition })
+        composite = await Composite.fromJSON({ ceramic: this.ceramic, definition, index: true })
       } else if (this.args.compositePath !== undefined) {
         composite = await readEncodedComposite(this.ceramic, this.args.compositePath)
       } else {
