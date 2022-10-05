@@ -13,7 +13,6 @@ import {
 } from '@composedb/test-schemas'
 import type { ModelDefinition } from '@composedb/types'
 import { jest } from '@jest/globals'
-import type { DID } from 'dids'
 
 import { Composite, type CompositeParams } from '../src'
 
@@ -521,7 +520,7 @@ describe('composite', () => {
     })
 
     await composite.startIndexingOn(mockCeramic)
-    expect(startIndexingModels).toBeCalledWith([expect.any(StreamID)])
+    expect(startIndexingModels).toHaveBeenCalledWith([expect.any(StreamID)])
   })
 
   test('Composite.from() merges composites into a new instance', () => {

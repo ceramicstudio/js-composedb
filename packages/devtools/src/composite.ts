@@ -260,12 +260,6 @@ export class Composite {
    * wrapped in a Composite instance.
    */
   static async create(params: CreateParams): Promise<Composite> {
-    if (!params.ceramic.did?.authenticated) {
-      throw new Error(
-        'An authenticated DID must be attached to the Ceramic instance in order to create a composite'
-      )
-    }
-
     const { commonEmbeds, models } = createAbstractCompositeDefinition(params.schema)
     const definition: InternalCompositeDefinition = {
       version: Composite.VERSION,

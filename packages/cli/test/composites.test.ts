@@ -93,6 +93,7 @@ describe('composites', () => {
       const deploy = await execa('bin/run.js', [
         'composite:deploy',
         'test/mocks/encoded.composite.undeployed.json',
+        `--did-private-key=${seed}`,
       ])
       expect(deploy.stderr.toString().includes(`Deploying the composite... Done!`)).toBe(true)
 

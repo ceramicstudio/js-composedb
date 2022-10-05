@@ -32,34 +32,6 @@
     "typescript": "^4.8.4"
   },
   "pnpm": {
-    "overrides": {
-      "@ceramicnetwork/3id-did-resolver": "link:../../ceramicnetwork/js-ceramic/packages/3id-did-resolver",
-      "@ceramicnetwork/blockchain-utils-linking": "link:../../ceramicnetwork/js-ceramic/packages/blockchain-utils-linking",
-      "@ceramicnetwork/blockchain-utils-validation": "link:../../ceramicnetwork/js-ceramic/packages/blockchain-utils-validation",
-      "@ceramicnetwork/cli": "link:../../ceramicnetwork/js-ceramic/packages/cli",
-      "@ceramicnetwork/common": "link:../../ceramicnetwork/js-ceramic/packages/common",
-      "@ceramicnetwork/core": "link:../../ceramicnetwork/js-ceramic/packages/core",
-      "@ceramicnetwork/http-client": "link:../../ceramicnetwork/js-ceramic/packages/http-client",
-      "@ceramicnetwork/ipfs-daemon": "link:../../ceramicnetwork/js-ceramic/packages/ipfs-daemon",
-      "@ceramicnetwork/ipfs-topology": "link:../../ceramicnetwork/js-ceramic/packages/ipfs-topology",
-      "key-did-resolver": "link:../../ceramicnetwork/js-ceramic/packages/key-did-resolver",
-      "@ceramicnetwork/logger": "link:../../ceramicnetwork/js-ceramic/packages/logger",
-      "@ceramicnetwork/metrics": "link:../../ceramicnetwork/js-ceramic/packages/metrics",
-      "@ceramicnetwork/pinning-aggregation": "link:../../ceramicnetwork/js-ceramic/packages/pinning-aggregation",
-      "@ceramicnetwork/pinning-crust-backend": "link:../../ceramicnetwork/js-ceramic/packages/pinning-crust-backend",
-      "@ceramicnetwork/pinning-ipfs-backend": "link:../../ceramicnetwork/js-ceramic/packages/pinning-ipfs-backend",
-      "@ceramicnetwork/pinning-powergate-backend": "link:../../ceramicnetwork/js-ceramic/packages/pinning-powergate-backend",
-      "pkh-did-resolver": "link:../../ceramicnetwork/js-ceramic/packages/pkh-did-resolver",
-      "@ceramicnetwork/stream-caip10-link-handler": "link:../../ceramicnetwork/js-ceramic/packages/stream-caip10-link-handler",
-      "@ceramicnetwork/stream-caip10-link": "link:../../ceramicnetwork/js-ceramic/packages/stream-caip10-link",
-      "@ceramicnetwork/stream-model-handler": "link:../../ceramicnetwork/js-ceramic/packages/stream-model-handler",
-      "@ceramicnetwork/stream-model-instance-handler": "link:../../ceramicnetwork/js-ceramic/packages/stream-model-instance-handler",
-      "@ceramicnetwork/stream-model-instance": "link:../../ceramicnetwork/js-ceramic/packages/stream-model-instance",
-      "@ceramicnetwork/stream-model": "link:../../ceramicnetwork/js-ceramic/packages/stream-model",
-      "@ceramicnetwork/stream-tests": "link:../../ceramicnetwork/js-ceramic/packages/stream-tests",
-      "@ceramicnetwork/stream-tile-handler": "link:../../ceramicnetwork/js-ceramic/packages/stream-tile-handler",
-      "@ceramicnetwork/stream-tile": "link:../../ceramicnetwork/js-ceramic/packages/stream-tile",
-      "@ceramicnetwork/streamid": "link:../../ceramicnetwork/js-ceramic/packages/streamid"
-    }
+    "overrides": {}
   }
 }

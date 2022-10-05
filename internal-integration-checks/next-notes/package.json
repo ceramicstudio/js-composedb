@@ -33,7 +33,7 @@
   "devDependencies": {
     "@composedb/devtools": "workspace:^0.3.0-rc.0",
     "@composedb/devtools-node": "workspace:^0.3.0-rc.0",
-    "@types/node": "^18.8.1",
+    "@types/node": "^18.8.2",
     "@types/react": "^18.0.21",
     "@types/react-relay": "^14.1.2",
     "@types/relay-runtime": "^14.1.3",

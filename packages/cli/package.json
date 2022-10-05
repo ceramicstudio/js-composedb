@@ -69,10 +69,10 @@
     ]
   },
   "dependencies": {
-    "@ceramicnetwork/3id-did-resolver": "^2.1.9-rc.1",
-    "@ceramicnetwork/http-client": "^2.5.0-rc.1",
-    "@ceramicnetwork/stream-model": "^0.6.1-rc.1",
-    "@ceramicnetwork/stream-model-instance": "^0.4.3-rc.1",
+    "@ceramicnetwork/3id-did-resolver": "^2.1.9-rc.2",
+    "@ceramicnetwork/http-client": "^2.5.0-rc.2",
+    "@ceramicnetwork/stream-model": "^0.6.1-rc.2",
+    "@ceramicnetwork/stream-model-instance": "^0.4.3-rc.2",
     "@ceramicnetwork/streamid": "^2.3.5-rc.0",
     "@composedb/client": "workspace:^0.3.0-rc.0",
     "@composedb/devtools": "workspace:^0.3.0-rc.0",
@@ -95,14 +95,14 @@
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^2.8.0-rc.1",
+    "@ceramicnetwork/common": "^2.8.0-rc.2",
     "@composedb/types": "workspace:^0.3.0-rc.0",
     "@swc-node/register": "^1.5.2",
     "@types/fs-extra": "^9.0.13",
     "@types/inquirer": "^8.2.1",
     "@types/jest": "^29.1.1",
     "@types/listr": "^0.14.4",
-    "@types/node": "^18.8.1",
+    "@types/node": "^18.8.2",
     "@types/update-notifier": "^6.0.1",
     "ajv": "^8.10.0",
     "execa": "^6.0.0",
