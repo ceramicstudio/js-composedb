@@ -3,6 +3,7 @@
  */
 
 import type { CeramicApi } from '@ceramicnetwork/common'
+import { StreamID } from '@ceramicnetwork/streamid'
 import {
   ImageMetadataType,
   createCommentSchemaWithPost,
@@ -11,6 +12,7 @@ import {
   profilesSchema,
 } from '@composedb/test-schemas'
 import type { ModelDefinition } from '@composedb/types'
+import { jest } from '@jest/globals'
 
 import { Composite, type CompositeParams } from '../src'
 
@@ -496,6 +498,29 @@ describe('composite', () => {
         })
       })
     })
+  })
+
+  test('startIndexingOn() calls the admin API to index the models', async () => {
+    const startIndexingModels = jest.fn()
+    const mockCeramic = { admin: { startIndexingModels } } as unknown as CeramicApi
+
+    const modelID = 'kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e'
+    const composite = new Composite({
+      commits: { [modelID]: [] },
+      definition: {
+        version: '1.0',
+        models: {
+          [modelID]: {
+            name: 'Foo',
+            accountRelation: { type: 'single' },
+            schema: {},
+          },
+        },
+      },
+    })
+
+    await composite.startIndexingOn(mockCeramic)
+    expect(startIndexingModels).toHaveBeenCalledWith([expect.any(StreamID)])
   })
 
   test('Composite.from() merges composites into a new instance', () => {

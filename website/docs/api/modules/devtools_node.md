@@ -72,7 +72,7 @@ Create a Composite from a GraphQL schema path.
 
 | Name | Type |
 | :------ | :------ |
-| `ceramic` | `string` \| `CeramicClient` |
+| `ceramic` | `CeramicClient` |
 | `path` | [`PathInput`](devtools_node.md#pathinput) |
 
 #### Returns

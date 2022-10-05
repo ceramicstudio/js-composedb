@@ -181,6 +181,25 @@ Set views for the Models in the composite, merging with existing ones unless `re
 
 ___
 
+### startIndexingOn
+
+▸ **startIndexingOn**(`ceramic`): `Promise`<`void`\>
+
+Configure the Ceramic node to index the models defined in the composite. An authenticated DID
+set as admin in the Ceramic node configuration must be attached to the Ceramic instance.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `ceramic` | `CeramicApi` |
+
+#### Returns
+
+`Promise`<`void`\>
+
+___
+
 ### toJSON
 
 ▸ **toJSON**(): `EncodedCompositeDefinition`

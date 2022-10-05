@@ -28,21 +28,21 @@ The following steps require a local Ceramic node to be running. If you do not al
   <TabItem value="npm">
 
 ```sh
-npx @ceramicnetwork/cli daemon --network=testnet-clay
+npx @ceramicnetwork/cli daemon --network=inmemory
 ```
 
   </TabItem>
   <TabItem value="pnpm">
 
 ```sh
-pnpm dlx @ceramicnetwork/cli daemon --network=testnet-clay
+pnpm dlx @ceramicnetwork/cli daemon --network=inmemory
 ```
 
   </TabItem>
   <TabItem value="yarn">
 
 ```sh
-yarn dlx @ceramicnetwork/cli daemon --network=testnet-clay
+yarn dlx @ceramicnetwork/cli daemon --network=inmemory
 ```
 
   </TabItem>
@@ -52,9 +52,7 @@ yarn dlx @ceramicnetwork/cli daemon --network=testnet-clay
 
 Composites can be created by importing existing models. Here we're going to import a simple profile model with the stream ID `kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e`, that exists on the Clay testnet.
 
-:::caution
-
-Make sure your local Ceramic node is connected to the Clay testnet in order to load this model.
+:::tip Alternative option
 
 If for some reason the model can't be loaded from the Clay testnet, you can [download the composite file directly instead](/my-first-composite.json) and store it in `my-first-composite.json` file.
 
@@ -69,7 +67,11 @@ If for some reason the model can't be loaded from the Clay testnet, you can [dow
   ]}>
   <TabItem value="api">
 
-Make sure you have the `composedb` packages [installed](installation.mdx), before running the code below.
+:::caution Dependencies required
+
+Make sure you have the listed packages installed before running the code below and your local Ceramic node is connected to the Clay testnet in order to load this model.
+
+:::
 
 ```js
 import { CeramicClient } from '@ceramicnetwork/http-client'
@@ -91,7 +93,7 @@ More details: [`Composite.fromModels`](./api/classes/devtools.Composite.md#fromm
   <TabItem value="cli">
 
 ```sh
-composedb composite:from-model kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e --ceramic-url=http://localhost:7007 --output=my-first-composite.json
+composedb composite:from-model kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e --network=testnet-clay --output=my-first-composite.json
 ```
 
   </TabItem>
@@ -110,19 +112,40 @@ The composite can be deployed from a script or the CLI using the composite file:
   ]}>
   <TabItem value="api">
 
-Make sure you have the `composedb` packages [installed](installation.mdx), before running the code below.
+:::caution Dependencies required
+
+Make sure you have installed the packages imported in the code below before running the script.
+
+:::
 
 ```js
 import { CeramicClient } from '@ceramicnetwork/http-client'
 import { readEncodedComposite } from '@composedb/devtools-node'
+import { DID } from 'dids'
+import { Ed25519Provider } from 'key-did-provider-ed25519'
+import { getResolver } from 'key-did-resolver'
+import { fromString } from 'uint8arrays/from-string'
+
+// Hexadecimal-encoded private key for a DID having admin access to the target Ceramic node
+// Replace the example key here by your admin private key
+const privateKey = fromString('b0cb[...]515f')
+
+const did = new DID({
+  resolver: getResolver(),
+  provider: new Ed25519Provider(privateKey),
+})
+await did.authenticate()
 
 // Replace by the URL of the Ceramic node you want to deploy the Models to
 const ceramic = new CeramicClient('http://localhost:7007')
+// An authenticated DID with admin access must be set on the Ceramic instance
+ceramic.did = did
 
 // Replace by the path to the local encoded composite file
 const composite = await readEncodedComposite(ceramic, 'my-first-composite.json')
 
-console.log('Model IDs to set in configuration:', composite.modelIDs)
+// Notify the Ceramic node to index the models present in the composite
+await composite.startIndexingOn(ceramic)
 ```
 
 More details: [`readEncodedComposite`](./api/modules/devtools_node.md#readencodedcomposite)
@@ -130,38 +153,19 @@ More details: [`readEncodedComposite`](./api/modules/devtools_node.md#readencode
   </TabItem>
   <TabItem value="cli">
 
-First, we need to ensure the model streams are available on the target Ceramic node:
+:::caution Private key required
+
+Running this command requires an [admin DID](./configuration.md#admin-dids) private key to be
+provided, using the `DID_PRIVATE_KEY` environment variable or the `--did-private-key` flag.
+
+:::
 
 ```sh
 composedb composite:deploy my-first-composite.json --ceramic-url=http://localhost:7007
 ```
 
-Then we need to get the list of models that need to be set for indexing in the Ceramic node configuration:
-
-```sh
-composedb composite:models my-first-composite.json
-```
-
   </TabItem>
 </Tabs>
-
-## Configuring Ceramic
-
-The local Ceramic node then needs to be configured to index documents using the defined model and be able to serve queries against the index.
-
-This can be done by editing Ceramic's config file, which defaults to `~/.ceramic/daemon.config.json` on Linux, macOS and WSL (Windows Subsystem for Linux), adding the necessary model stream IDs to the `indexing.models` array:
-
-```json
-{
-  ...
-  "indexing": {
-    ...
-    "models": ["kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e"]
-  }
-}
-```
-
-Once it's done, the Ceramic node needs to be restarted so the index can be queried.
 
 ## Interacting using GraphiQL
 
@@ -176,7 +180,11 @@ Once the composite is deployed and the Ceramic node configured, it is possible t
   ]}>
   <TabItem value="api">
 
-Make sure you have the `composedb` packages [installed](installation.mdx), before running the code below.
+:::caution Dependencies required
+
+Make sure you have the `@composedb/devtools-node` package [installed](./installation.mdx#libraries), before running the code below.
+
+:::
 
 ```js
 import { serveEncodedDefinition } from '@composedb/devtools-node'

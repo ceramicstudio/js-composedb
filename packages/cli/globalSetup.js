@@ -15,7 +15,13 @@ import {
 // TODO: Investigate why the indexing API throws errors when we run tests several times without cleaning the db
 const TEST_DAEMON_CONFIG = {
   anchor: {},
-  'http-api': { 'cors-allowed-origins': [new RegExp('.*')] },
+  'http-api': {
+    'admin-dids': [
+      'did:key:z6Mkh3VVZHjMWmBFkmixiYsZmJYAEkASk4ScjZDkawn6Npcu', // used in composites.test.ts
+      'did:key:z6MkpRhEWywReoFtQMQGqSmTu5mp9vQVok86Qha2sn6e32Db', // used in models.test.ts
+    ],
+    'cors-allowed-origins': [new RegExp('.*')],
+  },
   ipfs: { mode: 'bundled' },
   logger: { 'log-level': 2, 'log-to-files': false },
   metrics: {
@@ -50,7 +56,7 @@ export default async function globalSetup() {
   await fs.writeJson(CONFIG_PATH, TEST_DAEMON_CONFIG)
 
   await setup({
-    command: `IPFS_PATH=\'${GOIPFS_DIR_PATH.pathname}\' CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB=\'true\' pnpm dlx @ceramicnetwork/cli@^2.8.0-rc.1 daemon --config ${CONFIG_PATH.pathname}`,
+    command: `IPFS_PATH=\'${GOIPFS_DIR_PATH.pathname}\' CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB=\'true\' pnpm dlx @ceramicnetwork/cli@^2.8.0-rc.2 daemon --config ${CONFIG_PATH.pathname}`,
     debug: true,
     launchTimeout: 240000,
     port: 7007,

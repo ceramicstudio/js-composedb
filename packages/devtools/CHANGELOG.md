@@ -1,5 +1,11 @@
 # @composedb/devtools
 
+## 0.3.0-rc.1
+
+### Patch Changes
+
+- Add admin APIs support for composites creation and deployment
+
 ## 0.3.0-rc.0
 
 ### Minor Changes

@@ -93,7 +93,11 @@ describe('models', () => {
 
   describe('model:list', () => {
     beforeAll(async () => {
-      await execa('bin/run.js', ['composite:deploy', 'test/mocks/encoded.composite.profiles.json'])
+      await execa('bin/run.js', [
+        'composite:deploy',
+        'test/mocks/encoded.composite.profiles.json',
+        `--did-private-key=${seed}`,
+      ])
     }, 60000)
 
     test('model list succeeds', async () => {
