@@ -1,6 +1,6 @@
 {
   "name": "@composedb/devtools",
-  "version": "0.3.0-rc.0",
+  "version": "0.3.0-rc.1",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
@@ -55,7 +55,7 @@
   "devDependencies": {
     "@ceramicnetwork/common": "^2.8.0-rc.2",
     "@composedb/test-schemas": "workspace:^0.2.0",
-    "@composedb/types": "workspace:^0.3.0-rc.0",
+    "@composedb/types": "workspace:^0.3.0-rc.1",
     "@types/jest": "^29.1.1",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.8.2",
@@ -65,7 +65,7 @@
     "fs-extra": "^10.1.0",
     "graphql": "^16.5.0",
     "graphql-tools": "^8.3.6",
-    "jest-environment-composedb": "workspace:^0.3.0-rc.0"
+    "jest-environment-composedb": "workspace:^0.3.0-rc.1"
   },
   "jest": {
     "extensionsToTreatAsEsm": [

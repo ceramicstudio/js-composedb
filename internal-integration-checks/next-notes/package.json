@@ -1,6 +1,6 @@
 {
   "name": "next-notes",
-  "version": "0.3.0-rc.0",
+  "version": "0.3.0-rc.1",
   "private": true,
   "scripts": {
     "relay": "relay-compiler",
@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@ceramicnetwork/http-client": "^2.5.0-rc.0",
-    "@composedb/client": "workspace:^0.3.0-rc.0",
-    "@composedb/types": "workspace:^0.3.0-rc.0",
+    "@composedb/client": "workspace:^0.3.0-rc.1",
+    "@composedb/types": "workspace:^0.3.0-rc.1",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.6",
@@ -31,8 +31,8 @@
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
-    "@composedb/devtools": "workspace:^0.3.0-rc.0",
-    "@composedb/devtools-node": "workspace:^0.3.0-rc.0",
+    "@composedb/devtools": "workspace:^0.3.0-rc.1",
+    "@composedb/devtools-node": "workspace:^0.3.0-rc.1",
     "@types/node": "^18.8.2",
     "@types/react": "^18.0.21",
     "@types/react-relay": "^14.1.2",
