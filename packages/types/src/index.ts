@@ -34,22 +34,6 @@ export type StreamCommits = Array<DagJWSResult>
 /** JSON-encoded Ceramic stream commits for a given stream. */
 export type EncodedStreamCommits = Array<EncodedDagJWSResult>
 
-// export type ModelRelationDefinition =
-//   | { type: 'account' }
-//   | { type: 'document'; models: Array<string> }
-//   | { type: 'setIndex' }
-
-// export type ModelRelationsDefinition = Record<string, ModelRelationDefinition>
-
-// export type ReferencedFromViewDefinition = {
-//   type: 'ReferencedFrom'
-//   model: string
-//   property: string
-//   collection: boolean // TODO: use enum?
-// }
-
-// export type ReferencedFromViewDefinitions = Record<string, ReferencedFromViewDefinition>
-
 /** Composite-level views definition. */
 export type CompositeViewsDefinition = {
   // TODO: Account-based views
@@ -170,10 +154,20 @@ export type RuntimeMetaType = 'objectType'
 /** Runtime meta field representation. */
 export type RuntimeMetaField = { type: 'meta'; metaType: RuntimeMetaType }
 
+/** Runtime relation source. */
+export type RuntimeRelationSource = 'document' | 'queryConnection' | 'queryCount'
+/** Runtime relation field representation. */
+export type RuntimeRelation = {
+  source: RuntimeRelationSource
+  model: string
+  property: string
+}
 /** Runtime view types. */
 export type RuntimeViewType = 'documentAccount' | 'documentVersion'
 /** Runtime view field representation. */
-export type RuntimeViewField = { type: 'view'; viewType: RuntimeViewType }
+export type RuntimeViewField =
+  | { type: 'view'; viewType: 'relation'; relation: RuntimeRelation }
+  | { type: 'view'; viewType: RuntimeViewType }
 
 /**Runtime object fields representations. */
 export type RuntimeObjectField =

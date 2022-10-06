@@ -46,6 +46,7 @@ ARGUMENTS
   PATH                     a path to a runtime representation of a composite encoded as JSON
 
 OPTIONS
+  -c, --ceramic-url        Ceramic API URL
   -k, --did-private-key    DID Private Key that should be used to authenticate the queries and mutations (you can generate a fresh private key using composedb did:generate-private-key)
   --readonly               a boolean indicating whether the server should load the schema without mutations
   --port                   the port that the server should listen on

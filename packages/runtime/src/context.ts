@@ -3,7 +3,7 @@ import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instanc
 import type { CommitID, StreamID } from '@ceramicnetwork/streamid'
 import type { Connection } from 'graphql-relay'
 
-import { type ConnectionQuery, queryConnection, querySingle } from './query.js'
+import { type ConnectionQuery, queryConnection, querySingle, toBaseQuery } from './query.js'
 import { type DocumentCache, DocumentLoader, type UpdateDocOptions } from './loader.js'
 
 export type ContextParams = {
@@ -127,8 +127,15 @@ export class Context {
   /**
    * Query the index for a connection of documents.
    */
-  async queryConnection(query: ConnectionQuery): Promise<Connection<ModelInstanceDocument>> {
+  async queryConnection(query: ConnectionQuery): Promise<Connection<ModelInstanceDocument | null>> {
     return await queryConnection(this.#ceramic, query)
+  }
+
+  /**
+   * Query the index for the total number of documents matching the query parameters.
+   */
+  async queryCount(query: BaseQuery): Promise<number> {
+    return await this.#ceramic.index.count(toBaseQuery(query))
   }
 
   /**

@@ -9,10 +9,13 @@ exports[`schema createAbstractCompositeDefinition creates an InternalCompositeDe
   "models": {
     "GenericProfile": {
       "action": "create",
-      "definition": {
-        "accountRelation": "single",
+      "model": {
+        "accountRelation": {
+          "type": "single",
+        },
         "description": "A model to store common profile-related properties",
         "name": "GenericProfile",
+        "relations": {},
         "schema": {
           "$defs": {
             "ImageMetadata": {
@@ -87,10 +90,13 @@ exports[`schema createAbstractCompositeDefinition creates an InternalCompositeDe
     },
     "PersonProfile": {
       "action": "create",
-      "definition": {
-        "accountRelation": "single",
+      "model": {
+        "accountRelation": {
+          "type": "single",
+        },
         "description": "A model to store accounts' personal data",
         "name": "PersonProfile",
+        "relations": {},
         "schema": {
           "$defs": {
             "GraphQLCountryCode": {
@@ -146,10 +152,13 @@ exports[`schema createAbstractCompositeDefinition creates an InternalCompositeDe
     },
     "SocialProfile": {
       "action": "create",
-      "definition": {
-        "accountRelation": "single",
+      "model": {
+        "accountRelation": {
+          "type": "single",
+        },
         "description": "A model to store properties that accounts would like to share on social media",
         "name": "SocialProfile",
+        "relations": {},
         "schema": {
           "$defs": {
             "ImageMetadata": {

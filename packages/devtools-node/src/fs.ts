@@ -25,13 +25,9 @@ export function getDirPath(path: PathInput): string {
 /**
  * Create a Composite from a GraphQL schema path.
  */
-export async function createComposite(
-  ceramic: CeramicClient | string,
-  path: PathInput
-): Promise<Composite> {
-  const client = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
+export async function createComposite(ceramic: CeramicClient, path: PathInput): Promise<Composite> {
   const file = await readFile(getFilePath(path))
-  return await Composite.create({ ceramic: client, schema: file.toString() })
+  return await Composite.create({ ceramic, schema: file.toString() })
 }
 
 /**
@@ -39,12 +35,13 @@ export async function createComposite(
  */
 export async function readEncodedComposite(
   ceramic: CeramicClient | string,
-  path: PathInput
+  path: PathInput,
+  index?: boolean
 ): Promise<Composite> {
   const client = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
   const file = getFilePath(path)
   const definition = (await readJSON(file)) as EncodedCompositeDefinition
-  return Composite.fromJSON({ ceramic: client, definition })
+  return Composite.fromJSON({ ceramic: client, definition: definition, index: index })
 }
 
 /**

@@ -4,6 +4,7 @@ import type { SetRequired } from 'type-fest'
 
 import { DOC_ID_FIELD } from '../constants.js'
 import type { AnySchema, ScalarSchema } from '../types.js'
+import { viewRuntimeToModel } from '../utils.js'
 
 import { parseSchema } from './parser.js'
 import { isCommonScalar } from './scalars.js'
@@ -244,7 +245,22 @@ export class SchemaCompiler {
     objectDefinition: ObjectDefinition
   ): AbstractModelDefinition {
     if (modelDefinition.action === 'load') {
-      return modelDefinition
+      const views: ModelViewsDefinition = {}
+      for (const [key, field] of Object.entries(objectDefinition.properties)) {
+        if (key === DOC_ID_FIELD) {
+          // id can be set as unique field to ensure the object is not empty, as it's not supported
+          // by the GraphQL parser
+          continue
+        }
+        if (field.type === 'view') {
+          views[key] = viewRuntimeToModel(field)
+        } else {
+          throw new Error(
+            `Unsupported property ${key} on model ${name}, only views can be added to loaded models`
+          )
+        }
+      }
+      return { ...modelDefinition, views }
     }
 
     if (objectDefinition.properties[DOC_ID_FIELD] != null) {
@@ -282,9 +298,10 @@ export class SchemaCompiler {
         case 'scalar':
           value = this._compileScalar(field)
           break
-        case 'view':
-          views[key] = { type: field.viewType }
+        case 'view': {
+          views[key] = viewRuntimeToModel(field)
           break
+        }
       }
 
       if (value != null) {
@@ -305,14 +322,15 @@ export class SchemaCompiler {
 
     return {
       action: 'create',
-      definition: {
+      model: {
         name,
         description: modelDefinition.description,
-        accountRelation: modelDefinition.accountRelation,
         // TODO: add once supported in model definition
         // interface: definition.interface,
         // implements: definition.implements,
+        accountRelation: modelDefinition.accountRelation,
         schema: object,
+        relations: modelDefinition.relations,
         views,
       },
     }

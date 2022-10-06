@@ -3,9 +3,16 @@
  */
 
 import type { CeramicApi } from '@ceramicnetwork/common'
-import { ModelAccountRelation } from '@ceramicnetwork/stream-model'
-import { ImageMetadataType, profilesSchema } from '@composedb/test-schemas'
+import { StreamID } from '@ceramicnetwork/streamid'
+import {
+  ImageMetadataType,
+  createCommentSchemaWithPost,
+  loadPostSchemaWithComments,
+  postSchema,
+  profilesSchema,
+} from '@composedb/test-schemas'
 import type { ModelDefinition } from '@composedb/types'
+import { jest } from '@jest/globals'
 
 import { Composite, type CompositeParams } from '../src'
 
@@ -44,8 +51,8 @@ describe('composite', () => {
         definition: {
           version: '1.0',
           models: {
-            fooID: { name: 'Foo', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
-            barID: { name: 'Bar', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+            fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+            barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
           },
           aliases: { fooID: 'Test', barID: 'Other' },
         },
@@ -62,8 +69,8 @@ describe('composite', () => {
         definition: {
           version: '1.0',
           models: {
-            fooID: { name: 'Foo', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
-            barID: { name: 'Bar', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+            fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+            barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
           },
         },
       })
@@ -76,8 +83,8 @@ describe('composite', () => {
         definition: {
           version: '1.0',
           models: {
-            fooID: { name: 'Foo', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
-            barID: { name: 'Bar', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+            fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+            barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
           },
           aliases: { fooID: 'Test', barID: 'Other' },
         },
@@ -123,8 +130,8 @@ describe('composite', () => {
         definition: {
           version: '1.0',
           models: {
-            fooID: { name: 'Foo', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
-            barID: { name: 'Bar', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+            fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+            barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
           },
           aliases: { fooID: 'Test', barID: 'Other' },
         },
@@ -149,7 +156,7 @@ describe('composite', () => {
           definition: {
             version: '1.0',
             models: {
-              fooID: { name: 'Foo', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+              fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
             },
             aliases: { fooID: 'Test' },
             commonEmbeds: [],
@@ -165,7 +172,7 @@ describe('composite', () => {
           definition: {
             version: '1.0',
             models: {
-              fooID: { name: 'Foo', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+              fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
             },
             aliases: { fooID: 'Test' },
             commonEmbeds: [],
@@ -181,7 +188,7 @@ describe('composite', () => {
           definition: {
             version: '1.0',
             models: {
-              fooID: { name: 'Foo', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+              fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
             },
             aliases: { fooID: 'Test' },
             commonEmbeds: [],
@@ -251,16 +258,14 @@ describe('composite', () => {
               models: {
                 model: {
                   foo: {
-                    type: 'ReferencedFrom',
+                    type: 'relationFrom',
                     model: 'foo',
                     property: 'foo',
-                    collection: false,
                   },
                   bar: {
-                    type: 'ReferencedFrom',
+                    type: 'relationFrom',
                     model: 'bar',
                     property: 'bar',
-                    collection: false,
                   },
                 },
               },
@@ -273,10 +278,9 @@ describe('composite', () => {
           models: {
             model: {
               bar: {
-                type: 'ReferencedFrom',
+                type: 'relationFrom',
                 model: 'test',
                 property: 'test',
-                collection: false,
               },
             },
           },
@@ -287,16 +291,14 @@ describe('composite', () => {
           models: {
             model: {
               foo: {
-                type: 'ReferencedFrom',
+                type: 'relationFrom',
                 model: 'foo',
                 property: 'foo',
-                collection: false,
               },
               bar: {
-                type: 'ReferencedFrom',
+                type: 'relationFrom',
                 model: 'bar',
                 property: 'bar',
-                collection: false,
               },
             },
           },
@@ -307,16 +309,14 @@ describe('composite', () => {
           models: {
             model: {
               foo: {
-                type: 'ReferencedFrom',
+                type: 'relationFrom',
                 model: 'foo',
                 property: 'foo',
-                collection: false,
               },
               bar: {
-                type: 'ReferencedFrom',
+                type: 'relationFrom',
                 model: 'test',
                 property: 'test',
-                collection: false,
               },
             },
           },
@@ -332,7 +332,7 @@ describe('composite', () => {
           definition: {
             version: '1.0',
             models: {
-              fooID: { name: 'Foo', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+              fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
             },
           },
         })
@@ -341,7 +341,7 @@ describe('composite', () => {
           definition: {
             version: '1.0',
             models: {
-              barID: { name: 'Bar', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+              barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
             },
           },
         })
@@ -350,7 +350,7 @@ describe('composite', () => {
           definition: {
             version: '1.0',
             models: {
-              bazID: { name: 'Baz', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+              bazID: { name: 'Baz', accountRelation: { type: 'single' }, schema: {} },
             },
             aliases: { bazID: 'Test' },
           },
@@ -361,9 +361,9 @@ describe('composite', () => {
           definition: {
             version: '1.0',
             models: {
-              fooID: { name: 'Foo', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
-              barID: { name: 'Bar', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
-              bazID: { name: 'Baz', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+              fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+              barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
+              bazID: { name: 'Baz', accountRelation: { type: 'single' }, schema: {} },
             },
             aliases: { bazID: 'Test' },
             commonEmbeds: [],
@@ -391,7 +391,7 @@ describe('composite', () => {
           definition: {
             version: '1.5',
             models: {
-              fooID: { name: 'Foo', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+              fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
             },
           },
         }
@@ -500,6 +500,29 @@ describe('composite', () => {
     })
   })
 
+  test('startIndexingOn() calls the admin API to index the models', async () => {
+    const startIndexingModels = jest.fn()
+    const mockCeramic = { admin: { startIndexingModels } } as unknown as CeramicApi
+
+    const modelID = 'kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e'
+    const composite = new Composite({
+      commits: { [modelID]: [] },
+      definition: {
+        version: '1.0',
+        models: {
+          [modelID]: {
+            name: 'Foo',
+            accountRelation: { type: 'single' },
+            schema: {},
+          },
+        },
+      },
+    })
+
+    await composite.startIndexingOn(mockCeramic)
+    expect(startIndexingModels).toHaveBeenCalledWith([expect.any(StreamID)])
+  })
+
   test('Composite.from() merges composites into a new instance', () => {
     const first: CompositeParams = {
       commits: { fooID: [] },
@@ -507,7 +530,7 @@ describe('composite', () => {
         version: '1.0',
         commonEmbeds: ['First'],
         models: {
-          fooID: { name: 'Foo', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+          fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
         },
       },
     }
@@ -517,7 +540,7 @@ describe('composite', () => {
         version: '1.0',
         commonEmbeds: ['First', 'Second'],
         models: {
-          barID: { name: 'Bar', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+          barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
         },
       },
     }
@@ -526,7 +549,7 @@ describe('composite', () => {
       definition: {
         version: '1.0',
         models: {
-          bazID: { name: 'Baz', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+          bazID: { name: 'Baz', accountRelation: { type: 'single' }, schema: {} },
         },
         aliases: { bazID: 'Test' },
       },
@@ -540,9 +563,9 @@ describe('composite', () => {
       definition: {
         version: '1.0',
         models: {
-          fooID: { name: 'Foo', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
-          barID: { name: 'Bar', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
-          bazID: { name: 'Baz', accountRelation: ModelAccountRelation.SINGLE, schema: {} },
+          fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+          barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
+          bazID: { name: 'Baz', accountRelation: { type: 'single' }, schema: {} },
         },
         aliases: { bazID: 'Test' },
         commonEmbeds: ['First', 'Second'],
@@ -562,7 +585,7 @@ describe('composite', () => {
   describe('Composite.create()', () => {
     test('creates a new composite from valid schema', async () => {
       const composite = await Composite.create({ ceramic, schema: profilesSchema })
-      expect(composite.hash).not.toBeFalsy()
+      expect(composite.hash).toBeDefined()
       const compositeParams = composite.toParams()
       expect(Object.keys(compositeParams.commits).length).toEqual(3)
       const modelNames = ['GenericProfile', 'SocialProfile', 'PersonProfile']
@@ -578,10 +601,29 @@ describe('composite', () => {
       await expect(async () => {
         await Composite.create({ ceramic, schema: ImageMetadataType })
       }).rejects.toThrow('No models found in Composite Definition Schema')
-    }, 60000)
+    })
   })
 
   test.todo('Composite.fromJSON()')
 
   test.todo('Composite.fromModels()')
+
+  test('Relations support', async () => {
+    const postComposite = await Composite.create({ ceramic, schema: postSchema })
+    const postID = postComposite.modelIDs[0]
+    expect(postID).toBeDefined()
+
+    const postAndCommentComposite = await Composite.create({
+      ceramic,
+      schema: createCommentSchemaWithPost(postID),
+    })
+    const commentID = postAndCommentComposite.modelIDs.find((id) => id !== postID)
+    expect(commentID).toBeDefined()
+
+    const postWithCommentComposite = await Composite.create({
+      ceramic,
+      schema: loadPostSchemaWithComments(postID, commentID as string),
+    })
+    expect(postWithCommentComposite.modelIDs).toHaveLength(2)
+  }, 60000)
 })

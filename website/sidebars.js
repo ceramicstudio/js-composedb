@@ -19,7 +19,7 @@ const sidebars = {
       type: 'category',
       collapsed: false,
       label: 'Getting Started',
-      items: ['installation', 'first-composite', 'client-setup'],
+      items: ['installation', 'configuration', 'first-composite', 'client-setup'],
     },
     {
       type: 'category',

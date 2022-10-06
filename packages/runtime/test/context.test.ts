@@ -126,21 +126,21 @@ describe('context', () => {
   test('queryConnection()', async () => {
     const expectedNode = {}
     const buildStreamFromState = jest.fn(() => expectedNode)
-    const queryIndex = jest.fn(() => ({
+    const query = jest.fn(() => ({
       edges: [
         { cursor: 'cursor1', node: testState },
-        { cursor: 'cursor2', node: testState },
+        { cursor: 'cursor2', node: null },
         { cursor: 'cursor3', node: testState },
       ],
       pageInfo: { hasNextPage: true, hasPreviousPage: false },
     }))
-    const ceramic = { buildStreamFromState, index: { queryIndex } } as unknown as CeramicApi
+    const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicApi
     const context = new Context({ ceramic })
 
     await expect(context.queryConnection({ model: 'test', first: 3 })).resolves.toEqual({
       edges: [
         { cursor: 'cursor1', node: expectedNode },
-        { cursor: 'cursor2', node: expectedNode },
+        { cursor: 'cursor2', node: null },
         { cursor: 'cursor3', node: expectedNode },
       ],
       pageInfo: {
@@ -150,20 +150,28 @@ describe('context', () => {
         endCursor: null,
       },
     })
-    expect(queryIndex).toHaveBeenCalledWith({ model: 'test', first: 3, after: undefined })
+    expect(query).toHaveBeenCalledWith({ model: 'test', first: 3, after: undefined })
   })
 
   test('querySingle()', async () => {
     const expectedNode = {}
     const buildStreamFromState = jest.fn(() => expectedNode)
-    const queryIndex = jest.fn(() => ({
+    const query = jest.fn(() => ({
       edges: [{ cursor: 'cursor1', node: testState }],
       pageInfo: { hasNextPage: false, hasPreviousPage: false },
     }))
-    const ceramic = { buildStreamFromState, index: { queryIndex } } as unknown as CeramicApi
+    const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicApi
     const context = new Context({ ceramic })
 
     await expect(context.querySingle({ model: 'test' })).resolves.toBe(expectedNode)
-    expect(queryIndex).toHaveBeenCalledWith({ model: 'test', last: 1 })
+    expect(query).toHaveBeenCalledWith({ model: 'test', last: 1 })
+  })
+
+  test('queryCount()', async () => {
+    const count = jest.fn(() => 10)
+    const ceramic = { index: { count } } as unknown as CeramicApi
+    const context = new Context({ ceramic })
+    await expect(context.queryCount({ model: 'test' })).resolves.toBe(10)
+    expect(count).toHaveBeenCalledWith({ model: 'test' })
   })
 })

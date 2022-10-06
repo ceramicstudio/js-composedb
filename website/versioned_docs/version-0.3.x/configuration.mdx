@@ -1,0 +1,115 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Ceramic configuration
+
+Ceramic functionalities supporting ComposeDB are currently considered
+experimental and the Ceramic node must be explicitly configured to support them.
+
+## Environment variable
+
+The `CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB` environment variable must be set to
+`true` to run a Ceramic node with ComposeDB support, for example:
+
+<Tabs
+  defaultValue="pnpm"
+  groupId="package-manager"
+  values={[
+    {label: 'npm', value: 'npm'},
+    {label: 'pnpm', value: 'pnpm'},
+    {label: 'Yarn', value: 'yarn'},
+  ]}>
+  <TabItem value="npm">
+
+```sh
+CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB='true' npx @ceramicnetwork/cli daemon
+```
+
+  </TabItem>
+  <TabItem value="pnpm">
+
+```sh
+CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB='true' pnpm dlx @ceramicnetwork/cli daemon
+```
+
+  </TabItem>
+  <TabItem value="yarn">
+
+```sh
+CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB='true' yarn dlx @ceramicnetwork/cli daemon
+```
+
+  </TabItem>
+</Tabs>
+
+## Admin DIDs
+
+ComposeDB queries support relies on Ceramic nodes indexing documents using the
+models specified in the composite. In order to notify the Ceramic node of the
+models to index, the ComposeDB tools need to interact with restricted admin APIs
+on Ceramic.
+
+Calling the Ceramic admin APIs requires an authenticated DID to be set in the
+[configuration file](#configuration-file), which can be generated using the
+following ComposeDB CLI commands:
+
+### Generating a DID private key
+
+The
+[`did:generate-private-key` command](./api/commands/cli.did.md#composedb-didgenerate-private-key)
+of the ComposeDB CLI can be used to generate a random private key for a DID:
+
+```sh
+composedb did:generate-private-key
+```
+
+:::caution
+
+The generated private key must be securely stored so it can be used when
+interacting with other commands of the ComposeDB CLI when set as the
+`DID_PRIVATE_KEY` environment variable or `--did-private-key` flag, and
+development tools APIs.
+
+:::
+
+### Getting the DID value
+
+The DID string value can be accessed based on a known private key generated in
+the step above by using the
+[`did:from-private-key` command](./api/commands/cli.did.md#composedb-didfrom-private-key)
+of the ComposeDB CLI:
+
+```sh
+composedb did:from-private-key [hexadecimal-encoded private key string]
+```
+
+The DID string can then be set in the Ceramic node configuration file as
+described below.
+
+## Configuration file
+
+The Ceramic node configuration file, which defaults to
+`~/.ceramic/daemon.config.json` on Linux, macOS and WSL (Windows Subsystem for
+Linux), needs to be edited to specify the [admin DIDs](#admin-dids) allowed to
+set models for indexing, as well as the indexing configuration:
+
+```json
+{
+  ...
+  "http-api": {
+    ...
+    "admin-dids": ["did:key:..."]
+  },
+  "indexing": {
+    ...
+    "allow-queries-before-historical-sync": true
+  }
+}
+```
+
+:::tip
+
+If your Ceramic node is already started, it will need to be restarted for the
+changes to the configuration file to be applied.
+
+:::

@@ -1,6 +1,6 @@
 {
   "name": "@composedb/graphql-scalars",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
@@ -37,8 +37,8 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/streamid": "^2.3.3",
-    "@composedb/types": "workspace:^0.2.1",
+    "@ceramicnetwork/streamid": "^2.3.5",
+    "@composedb/types": "workspace:^0.3.0",
     "graphql": "^16.5.0",
     "graphql-scalars": "^1.18.0"
   }

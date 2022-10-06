@@ -22,6 +22,9 @@ export default class ComposeEnvironment extends NodeEnvironment {
   }
 
   async setup() {
+    this.originalEnvValue = process.env.CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB
+    process.env.CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB = 'true'
+
     this.tmpFolder = await dir({ unsafeCleanup: true })
 
     this.global.ipfs = await create({
@@ -40,26 +43,28 @@ export default class ComposeEnvironment extends NodeEnvironment {
       silent: true,
     })
 
-    const stateStoreDirectory = path.join(this.tmpFolder.path, 'ceramic')
-    process.env.CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB = 'true'
-    this.global.ceramic = await Ceramic.create(this.global.ipfs, {
-      stateStoreDirectory: stateStoreDirectory,
-      indexing: {
-        db: this.indexingConfig.db ?? `sqlite://${stateStoreDirectory}/ceramic.sqlite`,
-        models: this.indexingConfig.models ?? [],
-      },
-    })
-
     const did = new DID({
       resolver: getResolver(),
       provider: new Ed25519Provider(this.seed),
     })
     await did.authenticate()
-    this.global.ceramic.did = did
+
+    const stateStoreDirectory = path.join(this.tmpFolder.path, 'ceramic')
+    const ceramic = await Ceramic.create(this.global.ipfs, {
+      stateStoreDirectory: stateStoreDirectory,
+      indexing: {
+        db: this.indexingConfig.db ?? `sqlite://${stateStoreDirectory}/ceramic.sqlite`,
+        models: this.indexingConfig.models ?? [],
+        allowQueriesBeforeHistoricalSync: true,
+      },
+    })
+    ceramic.did = did
+
+    this.global.ceramic = ceramic
   }
 
   async teardown() {
-    process.env.CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB = 'false'
+    process.env.CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB = this.originalEnvValue
     await this.global.ceramic.close()
     await this.global.ipfs.stop()
     await this.tmpFolder.cleanup()

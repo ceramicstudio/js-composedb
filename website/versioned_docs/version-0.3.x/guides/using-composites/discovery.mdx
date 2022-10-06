@@ -1,0 +1,50 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Composites discovery
+
+ComposeDB does not yet provide a way to discover composites directly, however it is possible to create composites from known models.
+
+## Models discovery
+
+The ComposeDB CLI can be used to list the models indexed by 3Box Labs on the Clay network.
+
+```sh
+composedb model:list --table
+```
+
+## Creating a composite from known models
+
+When models are available on a Ceramic network, it is possible to load them into a composite so they can be easily reused.
+
+<Tabs
+  defaultValue="api"
+  groupId="api-or-cli"
+  values={[
+    {label: 'Using the CLI', value: 'cli'},
+    {label: 'Using the API', value: 'api'},
+  ]}>
+  <TabItem value="api">
+
+Make sure you have the `composedb` packages [installed](../../installation.mdx), before running the code below.
+
+```js
+import { CeramicClient } from '@ceramicnetwork/http-client'
+import { Composite } from '@composedb/devtools'
+import { writeEncodedComposite } from '@composedb/devtools-node'
+
+const ceramic = new CeramicClient('https://gateway-clay.ceramic.network')
+const composite = await Composite.fromModels({ ceramic, models: ['<model ID>'] })
+
+await writeEncodedComposite(composite, 'my-composite.json')
+```
+
+  </TabItem>
+  <TabItem value="cli">
+
+```sh
+composedb composite:from-model <model ID> --ceramic-url=https://gateway-clay.ceramic.network --output=my-composite.json
+```
+
+  </TabItem>
+</Tabs>

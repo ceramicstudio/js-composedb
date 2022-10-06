@@ -1,5 +1,6 @@
 import type { CeramicApi, SignedCommit } from '@ceramicnetwork/common'
-import { Model } from '@ceramicnetwork/stream-model'
+import { Model, type ModelViewsDefinition } from '@ceramicnetwork/stream-model'
+import { StreamID } from '@ceramicnetwork/streamid'
 import type {
   CompositeViewsDefinition,
   EncodedCompositeDefinition,
@@ -57,6 +58,14 @@ function assertModelsHaveCommits(
   }
 }
 
+function assertSupportedModelController(model: Model): void {
+  if (!model.metadata.controller.startsWith('did:key:')) {
+    throw new Error(
+      `Unsupported model controller ${model.metadata.controller}, only did:key is supported`
+    )
+  }
+}
+
 /** @internal */
 export function setDefinitionAliases(
   definition: StrictCompositeDefinition,
@@ -90,16 +99,6 @@ export function setDefinitionViews(
   return definition
 }
 
-/** @internal */
-export async function fromAbstractModel(
-  ceramic: CeramicApi,
-  model: AbstractModelDefinition
-): Promise<Model> {
-  return model.action === 'create'
-    ? await Model.create(ceramic, model.definition)
-    : await Model.load(ceramic, model.id)
-}
-
 async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
   ceramic: CeramicApi,
   modelsCommits: Models & {} // eslint-disable-line @typescript-eslint/ban-types
@@ -112,6 +111,7 @@ async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
         genesis,
         MODEL_GENESIS_OPTS
       )
+      assertSupportedModelController(model)
       for (const commit of updates) {
         await ceramic.applyCommit(model.id, commit as unknown as SignedCommit)
       }
@@ -189,6 +189,11 @@ export type CreateParams = {
    * Composite schema string.
    */
   schema: string
+  /**
+   * Whether to add the Models to the index or not. If `true` (default), the Ceramic instance
+   * must be authenticated with an admin DID.
+   */
+  index?: boolean
 }
 
 /**
@@ -203,6 +208,11 @@ export type FromJSONParams = {
    * JSON-encoded composite definition.
    */
   definition: EncodedCompositeDefinition
+  /**
+   * Whether to add the Models to the index or not. If `true`, the Ceramic instance must be
+   * authenticated with an admin DID. Defaults to `false`.
+   */
+  index?: boolean
 }
 
 /**
@@ -217,6 +227,11 @@ export type FromModelsParams = CompositeOptions & {
    * Stream IDs of the Models to import in the composite.
    */
   models: Array<string>
+  /**
+   * Whether to add the Models to the index or not. If `true`, the Ceramic instance must be
+   * authenticated with an admin DID. Defaults to `false`.
+   */
+  index?: boolean
 }
 
 /**
@@ -251,14 +266,22 @@ export class Composite {
       models: {},
       commonEmbeds,
     }
+    const modelsViews: Record<string, ModelViewsDefinition> = {}
     const commits: Record<string, any> = {}
 
     // TODO: once interfaces are supported, they need to be loaded or created first
     await Promise.all(
       // For each model definition...
-      Object.values(models).map(async (abstractModel) => {
+      Object.values(models).map(async (abstractModel: AbstractModelDefinition) => {
         // Create or load the model stream
-        const model = await fromAbstractModel(params.ceramic, abstractModel)
+        let model: Model
+        if (abstractModel.action === 'create') {
+          model = await Model.create(params.ceramic, abstractModel.model)
+        } else {
+          model = await Model.load(params.ceramic, abstractModel.id)
+          modelsViews[abstractModel.id] = abstractModel.views
+        }
+        assertSupportedModelController(model)
         const id = model.id.toString()
         definition.models[id] = model.content
 
@@ -269,7 +292,16 @@ export class Composite {
           .filter(isSignedCommit)
       })
     )
-    return new Composite({ commits, definition })
+
+    definition.views = { models: modelsViews }
+    const composite = new Composite({ commits, definition })
+
+    // By default, add models to the index
+    if (params.index !== false) {
+      await composite.startIndexingOn(params.ceramic)
+    }
+
+    return composite
   }
 
   /**
@@ -290,13 +322,20 @@ export class Composite {
   static async fromJSON(params: FromJSONParams): Promise<Composite> {
     const { models, ...definition } = params.definition
     const commits = decodeSignedMap(models)
-    return new Composite({
+    const composite = new Composite({
       commits,
       definition: {
         ...definition,
         models: await loadModelsFromCommits(params.ceramic, commits),
       },
     })
+
+    // Only add models to the index if explicitly requested
+    if (params.index) {
+      await composite.startIndexingOn(params.ceramic)
+    }
+
+    return composite
   }
 
   /**
@@ -315,14 +354,21 @@ export class Composite {
           Model.load(params.ceramic, id),
           params.ceramic.loadStreamCommits(id),
         ])
+        assertSupportedModelController(model)
         definition.models[id] = model.content
         commits[id] = streamCommits
           .map((c) => c.value as Record<string, any>)
           .filter(isSignedCommit)
       })
     )
+    const composite = new Composite({ commits, definition })
 
-    return new Composite({ commits, definition })
+    // Only add models to the index if explicitly requested
+    if (params.index) {
+      await composite.startIndexingOn(params.ceramic)
+    }
+
+    return composite
   }
 
   #commits: Record<string, StreamCommits>
@@ -491,6 +537,15 @@ export class Composite {
     const params = this.toParams()
     const definition = setDefinitionViews(toStrictDefinition(params.definition), views, replace)
     return new Composite({ ...params, definition })
+  }
+
+  /**
+   * Configure the Ceramic node to index the models defined in the composite. An authenticated DID
+   * set as admin in the Ceramic node configuration must be attached to the Ceramic instance.
+   */
+  async startIndexingOn(ceramic: CeramicApi): Promise<void> {
+    const modelIDs = Object.keys(this.#definition.models).map(StreamID.fromString)
+    await ceramic.admin.startIndexingModels(modelIDs)
   }
 
   /**

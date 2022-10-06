@@ -15,7 +15,13 @@ import {
 // TODO: Investigate why the indexing API throws errors when we run tests several times without cleaning the db
 const TEST_DAEMON_CONFIG = {
   anchor: {},
-  'http-api': { 'cors-allowed-origins': [new RegExp('.*')] },
+  'http-api': {
+    'admin-dids': [
+      'did:key:z6Mkh3VVZHjMWmBFkmixiYsZmJYAEkASk4ScjZDkawn6Npcu', // used in composites.test.ts
+      'did:key:z6MkpRhEWywReoFtQMQGqSmTu5mp9vQVok86Qha2sn6e32Db', // used in models.test.ts
+    ],
+    'cors-allowed-origins': [new RegExp('.*')],
+  },
   ipfs: { mode: 'bundled' },
   logger: { 'log-level': 2, 'log-to-files': false },
   metrics: {

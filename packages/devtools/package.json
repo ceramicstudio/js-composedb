@@ -1,6 +1,6 @@
 {
   "name": "@composedb/devtools",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
@@ -39,33 +39,33 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/stream-model": "^0.5.0",
-    "@composedb/graphql-scalars": "workspace:^0.2.1",
-    "@graphql-tools/schema": "^9.0.3",
-    "@graphql-tools/utils": "^8.11.0",
+    "@ceramicnetwork/stream-model": "^0.6.1",
+    "@ceramicnetwork/streamid": "^2.3.5",
+    "@composedb/graphql-scalars": "workspace:^0.3.0",
+    "@graphql-tools/schema": "^9.0.4",
+    "@graphql-tools/utils": "^8.12.0",
     "change-case": "^4.1.2",
     "json-ptr": "^3.1.1",
     "lodash-es": "^4.17.21",
-    "multiformats": "^9.8.1",
+    "multiformats": "^9.9.0",
     "object-hash": "^3.0.0",
-    "type-fest": "^2.19.0",
+    "type-fest": "^3.0.0",
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^2.6.0",
-    "@ceramicnetwork/streamid": "^2.3.3",
-    "@composedb/test-schemas": "workspace:^0.2.0",
-    "@composedb/types": "workspace:^0.2.1",
-    "@types/jest": "^29.0.0",
+    "@ceramicnetwork/common": "^2.8.0",
+    "@composedb/test-schemas": "workspace:^0.3.0",
+    "@composedb/types": "workspace:^0.3.0",
+    "@types/jest": "^29.1.1",
     "@types/lodash-es": "^4.17.6",
-    "@types/node": "^18.7.16",
+    "@types/node": "^18.8.2",
     "@types/object-hash": "^2.2.1",
     "ajv": "^8.11.0",
-    "dids": "^3.3.0",
+    "dids": "^3.4.0",
     "fs-extra": "^10.1.0",
     "graphql": "^16.5.0",
-    "graphql-tools": "^8.3.5",
-    "jest-environment-composedb": "workspace:^0.2.0"
+    "graphql-tools": "^8.3.6",
+    "jest-environment-composedb": "workspace:^0.3.0"
   },
   "jest": {
     "extensionsToTreatAsEsm": [

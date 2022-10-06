@@ -1,4 +1,3 @@
-import { ModelAccountRelation } from '@ceramicnetwork/stream-model'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { CeramicCommitID, getScalar } from '@composedb/graphql-scalars'
 import type {
@@ -7,6 +6,7 @@ import type {
   RuntimeModel,
   RuntimeObjectFields,
   RuntimeReference,
+  RuntimeRelation,
   RuntimeScalar,
   RuntimeViewField,
 } from '@composedb/types'
@@ -19,6 +19,7 @@ import {
   type GraphQLInputFieldConfigMap,
   GraphQLID,
   GraphQLInputObjectType,
+  GraphQLInt,
   GraphQLInterfaceType,
   GraphQLList,
   GraphQLNonNull,
@@ -58,11 +59,29 @@ type BuildObjectParams = {
 }
 type BuildDocumentObjectParams = BuildObjectParams & { model: RuntimeModel }
 
+type ConnectionAccountArgument = { account?: string }
+type ConnectionArgumentsWithAccount = ConnectionArguments & ConnectionAccountArgument
+
+const connectionArgsWithAccount = {
+  ...connectionArgs,
+  account: {
+    type: GraphQLID,
+    description: 'Returns only documents created by the provided account',
+  },
+}
+
 const UpdateOptionsInput = new GraphQLInputObjectType({
   name: 'UpdateOptionsInput',
   fields: {
-    replace: { type: GraphQLBoolean },
-    version: { type: CeramicCommitID },
+    replace: {
+      type: GraphQLBoolean,
+      defaultValue: false,
+      description: 'Fully replace the document contents instead of performing a shallow merge',
+    },
+    version: {
+      type: CeramicCommitID,
+      description: 'Only perform mutation if the document matches the provided version',
+    },
   },
 })
 
@@ -90,10 +109,16 @@ class SchemaBuilder {
   #types: Record<string, GraphQLEnumType | GraphQLObjectType> = {}
   #inputObjects: Record<string, GraphQLInputObjectType> = {}
   #mutations: Record<string, GraphQLFieldConfig<any, Context>> = {}
+  // Internal mapping of model IDs to object names
+  #modelAliases: Record<string, string>
 
   constructor(params: CreateSchemaParams) {
     this.#def = params.definition
     this.#isReadonly = !!params.readonly
+    this.#modelAliases = Object.entries(this.#def.models).reduce((aliases, [alias, model]) => {
+      aliases[model.id] = alias
+      return aliases
+    }, {} as Record<string, string>)
   }
 
   build(): GraphQLSchema {
@@ -107,11 +132,6 @@ class SchemaBuilder {
   }
 
   _createSharedDefinitions(): SharedDefinitions {
-    const modelAliases = Object.entries(this.#def.models).reduce((aliases, [alias, model]) => {
-      aliases[model.id] = alias
-      return aliases
-    }, {} as Record<string, string>)
-
     const nodeDefs = nodeDefinitions(
       async (id: string, ctx: Context) => {
         return id.startsWith('did:') ? id : await ctx.loadDoc(id)
@@ -119,7 +139,7 @@ class SchemaBuilder {
       (didOrDoc: string | ModelInstanceDocument) => {
         return typeof didOrDoc === 'string'
           ? 'CeramicAccount'
-          : modelAliases[didOrDoc.metadata.model?.toString()]
+          : this.#modelAliases[didOrDoc.metadata.model?.toString()]
       }
     )
 
@@ -130,10 +150,13 @@ class SchemaBuilder {
         const config: GraphQLFieldConfigMap<string, Context> = {
           id: {
             type: new GraphQLNonNull(GraphQLID),
+            description: 'Globally unique identifier of the account (DID string)',
             resolve: (did) => did,
           },
           isViewer: {
             type: new GraphQLNonNull(GraphQLBoolean),
+            description:
+              'Whether the Ceramic instance is currently authenticated with this account or not',
             resolve: (did, _, ctx) => ctx.authenticated && ctx.viewerID === did,
           },
         }
@@ -158,7 +181,7 @@ class SchemaBuilder {
                 account,
                 args: ConnectionArguments,
                 ctx
-              ): Promise<Connection<ModelInstanceDocument> | null> => {
+              ): Promise<Connection<ModelInstanceDocument | null>> => {
                 return await ctx.queryConnection({ ...args, account, model: model.id })
               },
             }
@@ -175,6 +198,7 @@ class SchemaBuilder {
       node: nodeDefs.nodeField,
       viewer: {
         type: accountObject,
+        description: 'Account currently authenticated on the Ceramic instance, if set',
         resolve: (_self, _args, ctx): string | null => ctx.viewerID,
       },
     }
@@ -237,7 +261,7 @@ class SchemaBuilder {
               }
               break
             case 'view':
-              config[key] = this._buildDocumentObjectViewField(definitions, field)
+              config[key] = this._buildDocumentObjectViewField(key, definitions, field, fields)
               break
             default:
               config[key] = {
@@ -385,25 +409,119 @@ class SchemaBuilder {
     return field.required ? new GraphQLNonNull(type) : type
   }
 
-  _buildDocumentObjectViewField(
-    definitions: SharedDefinitions,
-    field: RuntimeViewField
+  _buildDocumentObjectRelation(
+    key: string,
+    relation: RuntimeRelation,
+    objectFields: RuntimeObjectFields
   ): GraphQLFieldConfig<ModelInstanceDocument, Context> {
-    if (field.viewType === 'documentAccount') {
-      return {
-        type: new GraphQLNonNull(definitions.accountObject),
-        resolve: (doc): string => doc.metadata.controller,
-      }
-    }
-    if (field.viewType === 'documentVersion') {
-      return {
-        type: new GraphQLNonNull(CeramicCommitID),
-        resolve: (doc): string => doc.commitId.toString(),
-      }
+    const modelAlias = this.#modelAliases[relation.model]
+    if (modelAlias == null) {
+      throw new Error(
+        `Model alias not found for relation with ID ${relation.model} on field ${key}`
+      )
     }
 
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    throw new Error(`Unsupported view type: ${field.viewType}`)
+    switch (relation.source) {
+      case 'document': {
+        const ref = objectFields[relation.property]
+        if (ref == null) {
+          throw new Error(
+            `Missing reference field ${relation.property} for relation defined on field ${key}`
+          )
+        }
+        return {
+          type: this.#types[modelAlias],
+          resolve: async (doc, _args, ctx): Promise<ModelInstanceDocument | null> => {
+            const id = doc.content?.[relation.property] as string | void
+            if (id == null) {
+              return null
+            }
+            const loaded = await ctx.loadDoc(id)
+            if (loaded == null) {
+              return null
+            }
+            const loadedModel = loaded.metadata.model.toString()
+            if (relation.model != null && loadedModel !== relation.model) {
+              console.warn(
+                `Ignoring unexpected model ${loadedModel} for document ${id}, expected model ${relation.model}`
+              )
+              return null
+            }
+            return loaded
+          },
+        }
+      }
+      case 'queryConnection':
+        return {
+          type: new GraphQLNonNull(this.#types[`${modelAlias}Connection`]),
+          args: connectionArgsWithAccount,
+          resolve: async (
+            doc,
+            args: ConnectionArgumentsWithAccount,
+            ctx
+          ): Promise<Connection<unknown> | null> => {
+            const account =
+              args.account === 'documentAccount' ? doc.metadata.controller : args.account
+            return await ctx.queryConnection({
+              ...args,
+              account,
+              model: relation.model,
+              filter: { [relation.property]: doc.id.toString() },
+            })
+          },
+        }
+      case 'queryCount':
+        return {
+          type: new GraphQLNonNull(GraphQLInt),
+          args: {
+            account: {
+              type: GraphQLID,
+              description: 'Counts only documents created by the provided account',
+            },
+          },
+          resolve: async (doc, args: ConnectionAccountArgument, ctx): Promise<number> => {
+            const account =
+              args.account === 'documentAccount' ? doc.metadata.controller : args.account
+            return await ctx.queryCount({
+              account,
+              model: relation.model,
+              filter: { [relation.property]: doc.id.toString() },
+            })
+          },
+        }
+      default:
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        throw new Error(`Unsupported relation source: ${relation.source}`)
+    }
+  }
+
+  _buildDocumentObjectViewField(
+    key: string,
+    definitions: SharedDefinitions,
+    field: RuntimeViewField,
+    objectFields: RuntimeObjectFields
+  ): GraphQLFieldConfig<ModelInstanceDocument, Context> {
+    switch (field.viewType) {
+      case 'documentAccount':
+        return {
+          type: new GraphQLNonNull(definitions.accountObject),
+          description: 'Account controlling the document',
+          resolve: (doc): string => doc.metadata.controller,
+        }
+      case 'documentVersion':
+        return {
+          type: new GraphQLNonNull(CeramicCommitID),
+          description: 'Current version of the document',
+          resolve: (doc): string => doc.commitId.toString(),
+        }
+      case 'relation':
+        return this._buildDocumentObjectRelation(key, field.relation, objectFields)
+      default:
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        throw new Error(`Unsupported view type: ${field.viewType}`)
+    }
   }
 
   _buildScalarFieldType(definitions: SharedDefinitions, field: RuntimeScalar): GraphQLOutputType {
@@ -502,7 +620,7 @@ class SchemaBuilder {
           throw new Error('Ceramic instance is not authenticated')
         }
         const document =
-          model.accountRelation === ModelAccountRelation.SINGLE
+          model.accountRelation.type === 'single'
             ? await ctx.createSingle(model.id, input.content)
             : await ctx.createDoc(model.id, input.content)
         return { document }

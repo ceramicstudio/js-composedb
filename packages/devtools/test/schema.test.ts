@@ -4,10 +4,10 @@ import { ImageMetadataType, profilesSchema } from '@composedb/test-schemas'
 import Ajv from 'ajv/dist/2020'
 
 import { createAbstractCompositeDefinition } from '../src'
-import type { AbstractModelDefinition, CreateModelDefinition } from '../src/schema/types'
+import type { AbstractCreateModelDefinition, AbstractModelDefinition } from '../src/schema/types'
 
 function getSchema(modelDefinition: AbstractModelDefinition) {
-  return (modelDefinition as CreateModelDefinition).definition.schema
+  return (modelDefinition as AbstractCreateModelDefinition).model.schema
 }
 
 describe('schema', () => {
@@ -78,9 +78,9 @@ describe('schema', () => {
       models: {
         ModelWithDIDProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithDIDProp',
-            accountRelation: 'single',
+            accountRelation: { type: 'single' },
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
               type: 'object',
@@ -154,9 +154,9 @@ describe('schema', () => {
       models: {
         ModelWithCommitIDProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithCommitIDProp',
-            accountRelation: 'single',
+            accountRelation: { type: 'single' },
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
               type: 'object',
@@ -226,9 +226,9 @@ describe('schema', () => {
       models: {
         ModelWithBooleanProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithBooleanProp',
-            accountRelation: 'single',
+            accountRelation: { type: 'single' },
             description: 'Test model with boolean properties',
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -265,9 +265,9 @@ describe('schema', () => {
       models: {
         ModelWithIntProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithIntProp',
-            accountRelation: 'single',
+            accountRelation: { type: 'single' },
             description: 'Test model with int properties',
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -304,9 +304,9 @@ describe('schema', () => {
       models: {
         ModelWithFloatProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithFloatProp',
-            accountRelation: 'single',
+            accountRelation: { type: 'single' },
             description: 'Test model with float properties',
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -343,9 +343,9 @@ describe('schema', () => {
       models: {
         ModelWithStringProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithStringProp',
-            accountRelation: 'single',
+            accountRelation: { type: 'single' },
             description: 'Test model with string properties',
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -412,9 +412,9 @@ describe('schema', () => {
       models: {
         ModelWithIDProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithIDProp',
-            accountRelation: 'single',
+            accountRelation: { type: 'single' },
             description: 'Test model with GraphQL ID property',
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -455,9 +455,9 @@ describe('schema', () => {
       models: {
         ModelWithArrayProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithArrayProp',
-            accountRelation: 'single',
+            accountRelation: { type: 'single' },
             description: 'Test model with list property',
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -501,9 +501,9 @@ describe('schema', () => {
       models: {
         ModelWithStringProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithStringProp',
-            accountRelation: 'single',
+            accountRelation: { type: 'single' },
             description: 'Test model with a constrained string property',
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -593,9 +593,9 @@ describe('schema', () => {
       models: {
         ModelWithArrayProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithArrayProp',
-            accountRelation: 'single',
+            accountRelation: { type: 'single' },
             description: 'Test model with a constrained array property',
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -633,9 +633,9 @@ describe('schema', () => {
       models: {
         ModelWithArrayProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithArrayProp',
-            accountRelation: 'single',
+            accountRelation: { type: 'single' },
             description: 'Test model with an array property with constrained items',
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -687,9 +687,9 @@ describe('schema', () => {
       models: {
         ModelWithIntProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithIntProp',
-            accountRelation: 'single',
+            accountRelation: { type: 'single' },
             description: 'Test model with a constreained int property',
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -723,9 +723,9 @@ describe('schema', () => {
       models: {
         ModelWithFloatProp: {
           action: 'create',
-          definition: {
+          model: {
             name: 'ModelWithFloatProp',
-            accountRelation: 'single',
+            accountRelation: { type: 'single' },
             description: 'Test model with a constrained float property',
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',

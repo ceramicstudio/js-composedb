@@ -1,0 +1,105 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Composites customization
+
+## Merging composites
+
+Multiple composites can be merged together into a single composite including all the models from the source composites.
+
+<Tabs
+  defaultValue="api"
+  groupId="api-or-cli"
+  values={[
+    {label: 'Using the CLI', value: 'cli'},
+    {label: 'Using the API', value: 'api'},
+  ]}>
+  <TabItem value="api">
+
+Make sure you have the `composedb` packages [installed](../../installation.mdx), before running the code below.
+
+```js
+import { CeramicClient } from '@ceramicnetwork/http-client'
+import { Composite } from '@composedb/devtools'
+import { readEncodedComposite, writeEncodedComposite } from '@composedb/devtools-node'
+
+const ceramic = new CeramicClient('http://localhost:7007')
+
+const loadSources = [
+  'src/first-composite.json',
+  'src/second-composite.json',
+  'src/third-composite.json',
+].map(async (path) => await readEncodedComposite(ceramic, path))
+const sourceComposites = await Promise.all(loadSources)
+const mergedComposite = Composite.from(sourceComposites)
+
+await writeEncodedComposite(mergedComposite, 'merged-composite.json')
+```
+
+  </TabItem>
+  <TabItem value="cli">
+
+```sh
+composedb composite:merge src/first-composite.json src/second-composite.json src/third-composite.json --output=merged-composite.json
+```
+
+  </TabItem>
+</Tabs>
+
+## Extracting models
+
+Composites can contain more models than useful to a given app. To avoid using unnecessary models, it is possible to extract only the wanted models from a given composite, to create a new composite.
+
+<Tabs
+  defaultValue="api"
+  groupId="api-or-cli"
+  values={[
+    {label: 'Using the CLI', value: 'cli'},
+    {label: 'Using the API', value: 'api'},
+  ]}>
+  <TabItem value="api">
+
+Make sure you have the `composedb` packages [installed](../../installation.mdx), before running the code below.
+
+```js
+import { CeramicClient } from '@ceramicnetwork/http-client'
+import { Composite } from '@composedb/devtools'
+import { readEncodedComposite, writeEncodedComposite } from '@composedb/devtools-node'
+
+const ceramic = new CeramicClient('http://localhost:7007')
+const sourceComposite = await readEncodedComposite(ceramic, 'source-composite.json')
+
+const mergedComposite = sourceComposite.copy(['modelID1', 'modelID2'])
+await writeEncodedComposite(mergedComposite, 'new-composite.json')
+```
+
+  </TabItem>
+  <TabItem value="cli">
+
+```sh
+composedb composite:extract-model source-composite.json modelID1 modelID2 --output=new-composite.json
+```
+
+  </TabItem>
+</Tabs>
+
+## Aliasing Models
+
+Models can be aliases in a given composite, so that the GraphQL Schema uses the provided names instead of the ones defined in the model definition.
+
+Make sure you have the `composedb` packages [installed](../../installation.mdx), before running the code below.
+
+```js
+import { CeramicClient } from '@ceramicnetwork/http-client'
+import { Composite } from '@composedb/devtools'
+import { readEncodedComposite, writeEncodedComposite } from '@composedb/devtools-node'
+
+const ceramic = new CeramicClient('http://localhost:7007')
+const sourceComposite = await readEncodedComposite(ceramic, 'source-composite.json')
+
+const newComposite = sourceComposite.setAliases({
+  'kjz...123': 'SomeName',
+  'kjz...456': 'SomeOtherName',
+})
+await writeEncodedComposite(newComposite, 'new-composite.json')
+```
