@@ -35,12 +35,13 @@ export async function createComposite(ceramic: CeramicClient, path: PathInput): 
  */
 export async function readEncodedComposite(
   ceramic: CeramicClient | string,
-  path: PathInput
+  path: PathInput,
+  index?: boolean
 ): Promise<Composite> {
   const client = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
   const file = getFilePath(path)
   const definition = (await readJSON(file)) as EncodedCompositeDefinition
-  return Composite.fromJSON({ ceramic: client, definition })
+  return Composite.fromJSON({ ceramic: client, definition: definition, index: index })
 }
 
 /**
