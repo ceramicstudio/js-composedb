@@ -219,9 +219,10 @@ composedb composite:compile my-first-composite.json runtime-composite.json
 
 Then we can start the local server with GraphiQL using the runtime composite:
 
-:::caution Private key required if you want to run mutations
+:::tip Private key required if you want to run mutations
 
-Running this command in authenticated mode requires an [admin DID](./configuration.mdx#admin-dids) private key to be
+Running this command in authenticated mode requires a
+ private key to be
 provided, using the `DID_PRIVATE_KEY` environment variable or the `--did-private-key` flag.
 
 You will only be able to perform mutations against this local GraphQL server, if you run in in authenticated mode.
