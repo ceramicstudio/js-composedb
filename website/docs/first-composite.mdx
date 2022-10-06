@@ -200,7 +200,7 @@ console.log(`Server started on ${server.url}`)
 
 process.on('SIGTERM', () => {
   server.close(() => {
-  
+
     console.log('Server stopped')
   })
 })
@@ -219,9 +219,49 @@ composedb composite:compile my-first-composite.json runtime-composite.json
 
 Then we can start the local server with GraphiQL using the runtime composite:
 
+:::caution Private key required if you want to run mutations
+
+Running this command in authenticated mode requires an [admin DID](./configuration.mdx#admin-dids) private key to be
+provided, using the `DID_PRIVATE_KEY` environment variable or the `--did-private-key` flag.
+
+You will only be able to perform mutations against this local GraphQL server, if you run in in authenticated mode.
+
+:::
+
 ```sh
 composedb graphql:server --ceramic-url=http://localhost:7007 --graphiql --port=5001 runtime-composite.json
 ```
 
   </TabItem>
 </Tabs>
+
+Now you can open `http://localhost:5001/graphql` in your browser and use the GraphiQL web app to query and mutate the model from your composite.
+
+For example, to create a `SimpleProfile` instance for the authenticated account:
+``` graphql
+mutation {
+  createSimpleProfile(input: { content: { displayName: "Ceramic Dev" } }) {
+    document {
+      displayName
+    }
+  }
+}
+```
+
+, and to query the first 10 `SimpleProfile` instances:
+``` graphql
+query {
+  simpleProfileIndex(first: 10) {
+    edges {
+      node {
+        displayName
+      }
+    }
+  }
+}
+```
+
+To check the details of the GraphQL schema built from your runtime composite representation, you can use the `graphql:schema` CLI command:
+```sh
+composedb graphql:schema runtime-composite.json
+```
