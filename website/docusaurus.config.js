@@ -29,15 +29,17 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          lastVersion: '0.2.x',
+          includeCurrentVersion: false,
+          lastVersion: '0.3.x',
           versions: {
-            current: {
-              label: 'Next 🚧',
-              banner: 'unreleased',
+            '0.3.x': {
+              label: '0.3.x',
+              banner: 'none',
               path: '0.3.x',
             },
             '0.2.x': {
               label: '0.2.x',
+              banner: 'unmaintained',
               path: '0.2.x',
             },
           },
