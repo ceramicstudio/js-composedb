@@ -10,7 +10,7 @@ The `CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB` environment variable must be set to
 installed Ceramic CLI available as `ceramic`:
 
 ```sh
-CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB ceramic daemon --network=inmemory
+CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB='true' ceramic daemon --network=inmemory
 ```
 
 ## Admin DIDs
