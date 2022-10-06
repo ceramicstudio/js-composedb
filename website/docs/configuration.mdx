@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
 # Ceramic configuration
 
 Ceramic functionalities supporting ComposeDB are currently considered
@@ -6,12 +9,38 @@ experimental and the Ceramic node must be explicitly configured to support them.
 ## Environment variable
 
 The `CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB` environment variable must be set to
-`true` to run a Ceramic node with ComposeDB support, for example with a globally
-installed Ceramic CLI available as `ceramic`:
+`true` to run a Ceramic node with ComposeDB support, for example:
+
+<Tabs
+  defaultValue="pnpm"
+  groupId="package-manager"
+  values={[
+    {label: 'npm', value: 'npm'},
+    {label: 'pnpm', value: 'pnpm'},
+    {label: 'Yarn', value: 'yarn'},
+  ]}>
+  <TabItem value="npm">
 
 ```sh
-CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB='true' ceramic daemon --network=inmemory
+CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB='true' npx @ceramicnetwork/cli daemon --network=inmemory
 ```
+
+  </TabItem>
+  <TabItem value="pnpm">
+
+```sh
+CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB='true' pnpm dlx @ceramicnetwork/cli daemon --network=inmemory
+```
+
+  </TabItem>
+  <TabItem value="yarn">
+
+```sh
+CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB='true' yarn dlx @ceramicnetwork/cli daemon --network=inmemory
+```
+
+  </TabItem>
+</Tabs>
 
 ## Admin DIDs
 
@@ -19,6 +48,7 @@ ComposeDB queries support relies on Ceramic nodes indexing documents using the
 models specified in the composite. In order to notify the Ceramic node of the
 models to index, the ComposeDB tools need to interact with restricted admin APIs
 on Ceramic.
+
 
 Calling the Ceramic admin APIs requires an authenticated DID to be set in the
 [configuration file](#configuration-file), which can be generated using the
