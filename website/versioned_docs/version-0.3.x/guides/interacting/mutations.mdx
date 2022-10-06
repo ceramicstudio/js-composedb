@@ -1,0 +1,20 @@
+# Performing mutations
+
+## Enabling mutations
+
+In order to perform mutations, the Ceramic instance used by the ComposeDB client needs to be authenticated. This can be done by calling the [`setDID` method](../../api/classes/client.ComposeClient.md#setdid) on the [`ComposeClient`](../../api/classes/client.ComposeClient.md) instance with an authenticated `DID` instance:
+
+```js
+compose.setDID(did)
+```
+
+## Available mutations
+
+Mutation functions are automatically generated based on the Models present in the runtime Composite definition, using the `create` and `update` prefixes, all wrapped in a top-level `Mutation` object.
+
+## Mutations options
+
+Update mutations can be provided an options object with the following fields:
+
+- `replace: Boolean`: by default the update logic performs a shallow (1 level) merge of the document contents, so existing contents of the document are not removed unless explicitly changed. When setting `replace` to `true`, the document contents will be fully replaced by the contents provided in the update mutation.
+- `version: CommitID`: version of the document the update should be applied on. If set, the update logic will load the latest version of the document and throw an error if it doesn't match the expected version.

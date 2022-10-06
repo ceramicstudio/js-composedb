@@ -1,5 +1,11 @@
 # @composedb/types
 
+## 0.3.0
+
+### Patch Changes
+
+- Release v0.3
+
 ## 0.3.0-rc.1
 
 ### Patch Changes

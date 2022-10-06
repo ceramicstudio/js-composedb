@@ -1,5 +1,14 @@
 # next-notes
 
+## 0.3.0
+
+### Patch Changes
+
+- Release v0.3
+- Updated dependencies
+  - @composedb/client@0.3.0
+  - @composedb/types@0.3.0
+
 ## 0.3.0-rc.1
 
 ### Patch Changes
