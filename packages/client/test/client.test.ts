@@ -34,7 +34,7 @@ describe('client', () => {
       { input: { content: { name: 'Alice' } } }
     )
     expect(res.data?.createGenericProfile.document.id).toBeDefined()
-  }, 30000)
+  }, 120000)
 
   test('create and query post with comments', async () => {
     const postComposite = await Composite.create({ ceramic, schema: postSchema })
@@ -118,5 +118,5 @@ describe('client', () => {
       `
     )
     expect(res).toMatchSnapshot()
-  }, 60000)
+  }, 120000)
 })
