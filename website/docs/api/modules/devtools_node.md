@@ -103,7 +103,7 @@ ___
 
 ### readEncodedComposite
 
-▸ **readEncodedComposite**(`ceramic`, `path`): `Promise`<`Composite`\>
+▸ **readEncodedComposite**(`ceramic`, `path`, `index?`): `Promise`<`Composite`\>
 
 Create a Composite from a JSON-encoded definition path.
 
@@ -113,6 +113,7 @@ Create a Composite from a JSON-encoded definition path.
 | :------ | :------ |
 | `ceramic` | `string` \| `CeramicClient` |
 | `path` | [`PathInput`](devtools_node.md#pathinput) |
+| `index?` | `boolean` |
 
 #### Returns
 
