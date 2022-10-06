@@ -1,11 +1,11 @@
 {
   "name": "jest-environment-composedb",
   "private": true,
-  "version": "0.3.0-rc.1",
+  "version": "0.3.0",
   "description": "ComposeDB environment for Jest",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
-  "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
+  "homepage": "https://composedb.js.org",
   "keywords": [
     "jest",
     "ceramic",
@@ -23,12 +23,12 @@
     "lint": "eslint index.js --fix"
   },
   "dependencies": {
-    "@ceramicnetwork/core": "^2.11.0-rc.2",
+    "@ceramicnetwork/core": "^2.11.0",
     "dids": "^3.4.0",
     "ipfs-core": "^0.15.4",
     "jest-environment-node": "^29.1.2",
     "key-did-provider-ed25519": "^2.0.1",
-    "key-did-resolver": "^2.1.2",
+    "key-did-resolver": "^2.1.3",
     "tmp-promise": "^3.0.3",
     "uint8arrays": "^3.0.0"
   }
