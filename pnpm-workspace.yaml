@@ -1,4 +1,3 @@
 packages:
-  - 'internal-integration-checks/*'
   - 'packages/*'
   - 'website'
