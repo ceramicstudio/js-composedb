@@ -28,21 +28,21 @@ The following steps require a local Ceramic node to be running. If you do not al
   <TabItem value="npm">
 
 ```sh
-npx @ceramicnetwork/cli daemon --network=inmemory
+npx @ceramicnetwork/cli daemon
 ```
 
   </TabItem>
   <TabItem value="pnpm">
 
 ```sh
-pnpm dlx @ceramicnetwork/cli daemon --network=inmemory
+pnpm dlx @ceramicnetwork/cli daemon
 ```
 
   </TabItem>
   <TabItem value="yarn">
 
 ```sh
-yarn dlx @ceramicnetwork/cli daemon --network=inmemory
+yarn dlx @ceramicnetwork/cli daemon
 ```
 
   </TabItem>
@@ -155,7 +155,7 @@ More details: [`readEncodedComposite`](./api/modules/devtools_node.md#readencode
 
 :::caution Private key required
 
-Running this command requires an [admin DID](./configuration.md#admin-dids) private key to be
+Running this command requires an [admin DID](./configuration.mdx#admin-dids) private key to be
 provided, using the `DID_PRIVATE_KEY` environment variable or the `--did-private-key` flag.
 
 :::
@@ -193,13 +193,14 @@ const server = await serveEncodedDefinition({
   ceramicURL: 'http://localhost:7007',
   graphiql: true,
   path: new URL('my-first-composite.json', import.meta.url),
-  port: 5000,
+  port: 5001,
 })
 
 console.log(`Server started on ${server.url}`)
 
 process.on('SIGTERM', () => {
   server.close(() => {
+
     console.log('Server stopped')
   })
 })
@@ -218,9 +219,50 @@ composedb composite:compile my-first-composite.json runtime-composite.json
 
 Then we can start the local server with GraphiQL using the runtime composite:
 
+:::tip Private key required if you want to run mutations
+
+Running this command in authenticated mode requires a
+ private key to be
+provided, using the `DID_PRIVATE_KEY` environment variable or the `--did-private-key` flag.
+
+You will only be able to perform mutations against this local GraphQL server, if you run in in authenticated mode.
+
+:::
+
 ```sh
-composedb graphql:server --ceramic-url=http://localhost:7007 --graphiql --port=5000 runtime-composite.json
+composedb graphql:server --ceramic-url=http://localhost:7007 --graphiql --port=5001 runtime-composite.json
 ```
 
   </TabItem>
 </Tabs>
+
+Now you can open `http://localhost:5001/graphql` in your browser and use the GraphiQL web app to query and mutate the model from your composite.
+
+For example, to create a `SimpleProfile` instance for the authenticated account:
+``` graphql
+mutation {
+  createSimpleProfile(input: { content: { displayName: "Ceramic Dev" } }) {
+    document {
+      displayName
+    }
+  }
+}
+```
+
+, and to query the first 10 `SimpleProfile` instances:
+``` graphql
+query {
+  simpleProfileIndex(first: 10) {
+    edges {
+      node {
+        displayName
+      }
+    }
+  }
+}
+```
+
+To check the details of the GraphQL schema built from your runtime composite representation, you can use the `graphql:schema` CLI command:
+```sh
+composedb graphql:schema runtime-composite.json
+```
