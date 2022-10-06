@@ -193,13 +193,14 @@ const server = await serveEncodedDefinition({
   ceramicURL: 'http://localhost:7007',
   graphiql: true,
   path: new URL('my-first-composite.json', import.meta.url),
-  port: 5000,
+  port: 5001,
 })
 
 console.log(`Server started on ${server.url}`)
 
 process.on('SIGTERM', () => {
   server.close(() => {
+  
     console.log('Server stopped')
   })
 })
@@ -219,7 +220,7 @@ composedb composite:compile my-first-composite.json runtime-composite.json
 Then we can start the local server with GraphiQL using the runtime composite:
 
 ```sh
-composedb graphql:server --ceramic-url=http://localhost:7007 --graphiql --port=5000 runtime-composite.json
+composedb graphql:server --ceramic-url=http://localhost:7007 --graphiql --port=5001 runtime-composite.json
 ```
 
   </TabItem>
