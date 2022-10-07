@@ -50,7 +50,7 @@ yarn dlx @ceramicnetwork/cli daemon
 
 ## Importing a model
 
-Composites can be created by importing existing models. Here we're going to import a simple profile model with the stream ID `kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e`, that exists on the Clay testnet.
+Composites can be created by importing existing models. Here we're going to import a simple profile model with the stream ID `kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc`, that exists on the Clay testnet.
 
 :::tip Alternative option
 
@@ -81,7 +81,7 @@ import { writeEncodedComposite } from '@composedb/devtools-node'
 const ceramic = new CeramicClient('http://localhost:7007')
 const composite = await Composite.fromModels({
   ceramic,
-  models: ['kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e'],
+  models: ['kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc'],
 })
 
 await writeEncodedComposite(composite, 'my-first-composite.json')
@@ -93,7 +93,7 @@ More details: [`Composite.fromModels`](./api/classes/devtools.Composite.md#fromm
   <TabItem value="cli">
 
 ```sh
-composedb composite:from-model kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e --output=my-first-composite.json
+composedb composite:from-model kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc --output=my-first-composite.json
 ```
 
   </TabItem>
