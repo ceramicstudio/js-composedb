@@ -11,7 +11,7 @@ import {
   profilesSchema,
 } from '@composedb/test-schemas'
 
-import { ComposeClient, printGraphQLSchema } from '../src'
+import { ComposeClient } from '../src'
 
 declare global {
   const ceramic: CeramicApi
@@ -51,8 +51,6 @@ describe('client', () => {
       schema: loadPostSchemaWithComments(postModelID, commentModelID),
     })
     const definition = composite.toRuntime()
-
-    expect(printGraphQLSchema(definition)).toMatchSnapshot()
 
     const client = new ComposeClient({ ceramic, definition })
 
