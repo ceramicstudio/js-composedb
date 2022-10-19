@@ -59,7 +59,10 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
 
       while (this.lastLoadedPageInfo?.hasNextPage) {
         this.spinner.stop()
-        await CliUx.ux.anykey('Press any key to load more models')
+        await this.anykeyWithFriendlyExit(
+          'Press any key to load more models',
+          'You stopped the model loading manually'
+        )
         this.spinner.start('Loading models...')
         const nextPage: Page<StreamState | null> = await ceramicIndexer.index.query({
           first: this.getPageSize(),
@@ -76,6 +79,16 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
     } catch (e) {
       this.spinner.fail((e as Error).message)
       return
+    }
+  }
+
+  async anykeyWithFriendlyExit(message: string, exitMessage?: string): Promise<void> {
+    const tty = process.stdin.setRawMode !== undefined
+    const char = (await CliUx.ux.prompt(message, { type: 'single', required: false })) as string
+    if (tty) process.stderr.write('\n')
+    if (char === 'q' || char === '\u0003') {
+      this.spinner.succeed(exitMessage)
+      process.exit()
     }
   }
 
