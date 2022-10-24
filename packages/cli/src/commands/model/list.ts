@@ -60,8 +60,8 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
       while (this.lastLoadedPageInfo?.hasNextPage) {
         this.spinner.stop()
         await this.anykeyWithFriendlyExit(
-          'Press any key to load more models',
-          'You stopped the model loading manually'
+          'Press ctrl+c or q to quit. Press any other key to continue loading models.',
+          'Stopped loading models due to user input'
         )
         this.spinner.start('Loading models...')
         const nextPage: Page<StreamState | null> = await ceramicIndexer.index.query({
