@@ -39,9 +39,9 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/http-client": "^2.5.0",
-    "@ceramicnetwork/stream-model-instance": "^0.4.3",
-    "@ceramicnetwork/streamid": "^2.3.5",
+    "@ceramicnetwork/http-client": "2.5.1-hotfix.0",
+    "@ceramicnetwork/stream-model-instance": "0.4.4-hotfix.0",
+    "@ceramicnetwork/streamid": "2.3.6-hotfix.0",
     "@composedb/constants": "workspace:^0.3.0",
     "@composedb/graphql-scalars": "workspace:^0.3.0",
     "@composedb/runtime": "workspace:^0.3.0",
@@ -53,8 +53,8 @@
     "graphql-relay": "^0.10.0"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^2.8.0",
-    "@ceramicnetwork/stream-model": "^0.6.1",
+    "@ceramicnetwork/common": "2.8.1-hotfix.0",
+    "@ceramicnetwork/stream-model": "0.6.2-hotfix.0",
     "@composedb/devtools": "workspace:^0.3.0",
     "@composedb/test-schemas": "workspace:^0.3.0",
     "@composedb/types": "workspace:^0.3.0",

@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`client create and query post with comments 1`] = `
+{
+  "data": {
+    "viewer": {
+      "postList": {
+        "edges": [
+          {
+            "node": {
+              "comments": {
+                "edges": [],
+              },
+              "commentsCount": 0,
+              "text": "First post content",
+              "title": "A first post",
+            },
+          },
+          {
+            "node": {
+              "comments": {
+                "edges": [
+                  {
+                    "node": {
+                      "text": "A first comment",
+                    },
+                  },
+                  {
+                    "node": {
+                      "text": "A second comment",
+                    },
+                  },
+                  {
+                    "node": {
+                      "text": "A third comment",
+                    },
+                  },
+                ],
+              },
+              "commentsCount": 3,
+              "text": "Second post content",
+              "title": "A second post",
+            },
+          },
+        ],
+      },
+    },
+  },
+}
+`;

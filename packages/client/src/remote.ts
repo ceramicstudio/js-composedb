@@ -25,20 +25,31 @@ export function createRemoteExecutor(url: string, getViewerID: GetViewerID): Exe
 
 export type HybridSchemaParams = {
   definition: RuntimeCompositeDefinition
-  getViewerID: GetViewerID
-  serverURL: string
+  getViewerID?: GetViewerID
+  remoteExecutor?: Executor
+  serverURL?: string
 }
 
 export function createHybridSchema(params: HybridSchemaParams): GraphQLSchema {
-  const { definition, getViewerID, serverURL } = params
-  const localSchema = createGraphQLSchema({ definition })
+  const { definition, getViewerID, remoteExecutor, serverURL } = params
+
+  let executor: Executor
+  if (typeof remoteExecutor === 'function') {
+    executor = remoteExecutor
+  } else if (typeof getViewerID === 'function' && typeof serverURL === 'string') {
+    executor = createRemoteExecutor(serverURL, getViewerID)
+  } else {
+    throw new Error(
+      'Invalid parameters to create hybrid schema: missing `remoteExecutor` or `getViewerID` and `serverURL` parameters'
+    )
+  }
   const remoteSchemaConfig = {
-    executor: createRemoteExecutor(serverURL, getViewerID),
+    executor,
     schema: createGraphQLSchema({ definition, readonly: true }),
   }
 
   return stitchSchemas({
-    subschemas: [localSchema, remoteSchemaConfig],
+    subschemas: [createGraphQLSchema({ definition }), remoteSchemaConfig],
     mergeTypes: false,
     onTypeConflict: (left, right, info) => {
       return info?.left.subschema === remoteSchemaConfig ? left : right

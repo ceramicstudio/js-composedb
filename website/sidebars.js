@@ -71,12 +71,14 @@ const sidebars = {
     {
       type: 'category',
       collapsed: false,
-      label: 'Client module',
+      label: 'Client APIs',
       link: { type: 'generated-index' },
       items: [
-        { type: 'doc', id: 'api/modules/client', label: 'Overview' },
+        { type: 'doc', id: 'api/modules/client', label: 'ComposeDB Client' },
+        { type: 'doc', id: 'api/modules/runtime', label: 'ComposeDB Runtime' },
         { type: 'doc', id: 'api/classes/client.ComposeClient', label: 'ComposeClient class' },
-        { type: 'doc', id: 'api/classes/client.Context', label: 'Context class' },
+        { type: 'doc', id: 'api/classes/runtime.ComposeRuntime', label: 'ComposeRuntime class' },
+        { type: 'doc', id: 'api/classes/runtime.Context', label: 'Context class' },
       ],
     },
     {

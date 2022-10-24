@@ -1,4 +1,4 @@
-import { type CeramicApi, fetchJson } from '@ceramicnetwork/common'
+import type { CeramicApi } from '@ceramicnetwork/common'
 import { CeramicClient } from '@ceramicnetwork/http-client'
 import {
   ComposeRuntime,
@@ -7,37 +7,11 @@ import {
   type DocumentCache,
 } from '@composedb/runtime'
 import type { RuntimeCompositeDefinition } from '@composedb/types'
+import type { Executor } from '@graphql-tools/utils'
 import type { DID } from 'dids'
 import type { DocumentNode, ExecutionResult, Source } from 'graphql'
 
 import { createHybridSchema } from './remote.js'
-
-export type FromServerParams = {
-  /**
-   * Optional cache for documents.
-   */
-  cache?: DocumentCache
-  /**
-   * Server config URL.
-   */
-  url: string
-}
-
-export type FromServerConfig = {
-  /**
-   * Ceramic server URL.
-   */
-  ceramic: string
-  /**
-   * Runtime composite definition, created using the {@linkcode devtools.Composite Composite}
-   * development tools.
-   */
-  definition: RuntimeCompositeDefinition
-  /**
-   * Query server URL.
-   */
-  serverURL: string
-}
 
 export type ComposeClientParams = {
   /**
@@ -54,6 +28,10 @@ export type ComposeClientParams = {
    */
   definition: RuntimeCompositeDefinition
   /**
+   * Optional remote query executor.
+   */
+  remoteExecutor?: Executor
+  /**
    * Optional query server URL.
    */
   serverURL?: string
@@ -61,8 +39,7 @@ export type ComposeClientParams = {
 
 /**
  * The ComposeClient class provides APIs to execute queries on a GraphQL schema generated from a
- * `RuntimeCompositeDefinition`. It allows applications to interact with documents using known
- * models on a Ceramic node.
+ * `RuntimeCompositeDefinition`, leveraging the {@linkcode runtime.ComposeRuntime ComposeRuntime class}.
  *
  * It is exported by the {@linkcode client} module.
  *
@@ -71,17 +48,12 @@ export type ComposeClientParams = {
  * ```
  */
 export class ComposeClient {
-  static async fromServer(params: FromServerParams): Promise<ComposeClient> {
-    const config = (await fetchJson(params.url)) as FromServerConfig
-    return new ComposeClient({ ...config, cache: params.cache })
-  }
-
   #context: Context
   #resources: Array<string>
   #runtime: ComposeRuntime
 
   constructor(params: ComposeClientParams) {
-    const { ceramic, definition, serverURL, ...contextParams } = params
+    const { ceramic, definition, remoteExecutor, serverURL, ...contextParams } = params
     const ceramicClient = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
     this.#context = new Context({ ...contextParams, ceramic: ceramicClient })
     this.#resources = Object.values(definition.models).map((model) => {
@@ -92,10 +64,11 @@ export class ComposeClient {
       context: this.#context,
       definition,
     }
-    if (serverURL != null) {
+    if (remoteExecutor != null || serverURL != null) {
       runtimeParams.schema = createHybridSchema({
         definition,
         getViewerID: () => this.id,
+        remoteExecutor,
         serverURL,
       })
     }

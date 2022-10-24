@@ -26,10 +26,10 @@ export type ContextParams = {
 }
 
 /**
- * GraphQL execution context, exported by the {@linkcode client} module.
+ * GraphQL execution context, exported by the {@linkcode runtime} module.
  *
  * ```sh
- * import { Context } from '@composedb/client'
+ * import { Context } from '@composedb/runtime'
  * ```
  */
 export class Context {

@@ -1,15 +1,15 @@
 ---
-id: "client.Context"
+id: "runtime.Context"
 title: "Class: Context"
 custom_edit_url: null
 ---
 
-[client](../modules/client.md).Context
+[runtime](../modules/runtime.md).Context
 
-GraphQL execution context, exported by the [`client`](../modules/client.md) module.
+GraphQL execution context, exported by the [`runtime`](../modules/runtime.md) module.
 
 ```sh
-import { Context } from '@composedb/client'
+import { Context } from '@composedb/runtime'
 ```
 
 ## Constructors
@@ -22,7 +22,7 @@ import { Context } from '@composedb/client'
 
 | Name | Type |
 | :------ | :------ |
-| `params` | [`ContextParams`](../modules/client.md#contextparams) |
+| `params` | [`ContextParams`](../modules/runtime.md#contextparams) |
 
 ## Accessors
 

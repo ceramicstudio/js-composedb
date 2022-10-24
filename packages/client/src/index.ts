@@ -1,5 +1,5 @@
 /**
- * ComposeDB client.
+ * High-level ComposeDB client, based on the {@linkcode runtime ComposeDB runtime}.
  *
  * ## Installation
  *

@@ -57,7 +57,7 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `stop` | (`callback?`: (`err?`: `Error`) => `void`) => `void` | Stop the server. |
+| `stop` | () => `Promise`<`void`\> | Stop the server. |
 | `url` | `string` | URL of the local GraphQL endpoint. |
 
 ## Functions
@@ -123,7 +123,7 @@ ___
 
 ### serveEncodedDefinition
 
-▸ **serveEncodedDefinition**(`params`): `Promise`<[`ServerHandler`](devtools_node.md#serverhandler)\>
+▸ **serveEncodedDefinition**(`params`): `Promise`<`HTTPServerHandler`\>
 
 Create a local GraphQL server to interact with an encoded composite definition.
 
@@ -135,13 +135,13 @@ Create a local GraphQL server to interact with an encoded composite definition.
 
 #### Returns
 
-`Promise`<[`ServerHandler`](devtools_node.md#serverhandler)\>
+`Promise`<`HTTPServerHandler`\>
 
 ___
 
 ### serveGraphQL
 
-▸ **serveGraphQL**(`params`): `Promise`<[`ServerHandler`](devtools_node.md#serverhandler)\>
+▸ **serveGraphQL**(`params`): `Promise`<`HTTPServerHandler`\>
 
 Create a local GraphQL server to interact with a runtime composite definition.
 
@@ -153,7 +153,7 @@ Create a local GraphQL server to interact with a runtime composite definition.
 
 #### Returns
 
-`Promise`<[`ServerHandler`](devtools_node.md#serverhandler)\>
+`Promise`<`HTTPServerHandler`\>
 
 ___
 

@@ -1,5 +1,5 @@
 /**
- * ComposeDB runtime.
+ * ComposeDB runtime module, converting a runtime composite to an executable GraphQL schema.
  *
  * ## Installation
  *
