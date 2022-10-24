@@ -93,7 +93,7 @@ describe('schema', () => {
                   type: 'string',
                   title: 'GraphQLDID',
                   pattern:
-                    "^did:[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+:[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+$",
+                    "^did:[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+:[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+$",
                   maxLength: 100,
                 },
               },
