@@ -246,13 +246,17 @@ importers:
     specifiers:
       '@ceramicnetwork/streamid': 2.3.6-hotfix.0
       '@composedb/types': workspace:^0.3.0
+      caip: ^1.1.0
       graphql: ^16.5.0
       graphql-scalars: ^1.20.0
+      multiformats: ^9.9.0
     dependencies:
       '@ceramicnetwork/streamid': 2.3.6-hotfix.0
       '@composedb/types': link:../types
+      caip: 1.1.0
       graphql: 16.6.0
       graphql-scalars: 1.20.0_graphql@16.6.0
+      multiformats: 9.9.0
 
   packages/jest-environment-composedb:
     specifiers:
@@ -3883,7 +3887,7 @@ packages:
     resolution: {integrity: sha512-1VVh2huHsuohdXC1bGJNE8WR72slZ9XE2T3wbBBq31dm7ZBatmKLLxrB+XAqafxfRFjv08RZmj/W/ZqaM13AuA==}
     dependencies:
       cborg: 1.9.5
-      multiformats: 9.7.1
+      multiformats: 9.9.0
 
   /@ipld/dag-json/8.0.11:
     resolution: {integrity: sha512-Pea7JXeYHTWXRTIhBqBlhw7G53PJ7yta3G/sizGEZyzdeEwhZRr0od5IQ0r2ZxOt1Do+2czddjeEPp+YTxDwCA==}
@@ -14708,6 +14712,7 @@ packages:
 
   /multiformats/9.7.1:
     resolution: {integrity: sha512-TaVmGEBt0fhxiNJMGphBfB+oGvUxFs8KgGvgl8d3C+GWtrFcvXdJ2196eg+dYhmSFClmgFfSfJEklo+SZzdNuw==}
+    dev: false
 
   /multiformats/9.9.0:
     resolution: {integrity: sha512-HoMUjhH9T8DDBNT+6xzkrd9ga/XiBI4xLr58LJACwK6G3HTOPeMz4nB4KJs33L2BelrIJa7P0VuNaVF3hMYfjg==}

@@ -102,14 +102,26 @@ export type RuntimeStringScalar = RuntimeScalarCommon & {
 
 /** Ceramic-specific runtime scalar types. */
 export type CustomRuntimeScalarType =
+  | 'accountid'
+  | 'chainid'
+  | 'cid'
   | 'commitid'
   | 'countrycode'
   | 'date'
   | 'datetime'
   | 'did'
+  | 'duration'
   | 'id'
+  | 'latitude'
+  | 'localdate'
+  | 'locale'
+  | 'localtime'
+  | 'longitude'
   | 'streamid'
   | 'time'
+  | 'timezone'
+  | 'url'
+  | 'utcoffset'
 
 type RuntimeStringScalarType<Type extends CustomRuntimeScalarType> = RuntimeScalarCommon & {
   type: Type

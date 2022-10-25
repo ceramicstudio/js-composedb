@@ -12,6 +12,7 @@ function validateStreamID(input: unknown): string {
 export const CeramicCommitID = new GraphQLScalarType({
   name: 'CeramicCommitID',
   description: 'A Ceramic Commit ID',
+  specifiedByURL: 'https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#commitid',
   serialize: validateCommitID,
   parseValue: validateCommitID,
   parseLiteral(ast) {
@@ -25,6 +26,7 @@ export const CeramicCommitID = new GraphQLScalarType({
 export const CeramicStreamID = new GraphQLScalarType({
   name: 'CeramicStreamID',
   description: 'A Ceramic Stream ID',
+  specifiedByURL: 'https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#streamid',
   serialize: validateStreamID,
   parseValue: validateStreamID,
   parseLiteral(ast) {

@@ -1,0 +1,284 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`scalars support extra scalars 1`] = `
+{
+  "commonEmbeds": [],
+  "models": {
+    "ExtraScalarsID": {
+      "accountRelation": {
+        "type": "list",
+      },
+      "description": "Kitchen sink of added scalar types",
+      "name": "ExtraScalars",
+      "relations": {},
+      "schema": {
+        "$defs": {
+          "CeramicCommitID": {
+            "maxLength": 200,
+            "title": "CeramicCommitID",
+            "type": "string",
+          },
+          "CeramicStreamID": {
+            "maxLength": 100,
+            "title": "CeramicStreamID",
+            "type": "string",
+          },
+          "ChainAgnosticAccountID": {
+            "maxLength": 106,
+            "title": "ChainAgnosticAccountID",
+            "type": "string",
+          },
+          "ChainAgnosticChainID": {
+            "maxLength": 41,
+            "title": "ChainAgnosticChainID",
+            "type": "string",
+          },
+          "GraphQLCountryCode": {
+            "maxLength": 2,
+            "pattern": "^(AD|AE|AF|AG|AI|AL|AM|AO|AQ|AR|AS|AT|AU|AW|AX|AZ|BA|BB|BD|BE|BF|BG|BH|BI|BJ|BL|BM|BN|BO|BQ|BR|BS|BT|BV|BW|BY|BZ|CA|CC|CD|CF|CG|CH|CI|CK|CL|CM|CN|CO|CR|CU|CV|CW|CX|CY|CZ|DE|DJ|DK|DM|DO|DZ|EC|EE|EG|EH|ER|ES|ET|FI|FJ|FK|FM|FO|FR|GA|GB|GD|GE|GF|GG|GH|GI|GL|GM|GN|GP|GQ|GR|GS|GT|GU|GW|GY|HK|HM|HN|HR|HT|HU|ID|IE|IL|IM|IN|IO|IQ|IR|IS|IT|JE|JM|JO|JP|KE|KG|KH|KI|KM|KN|KP|KR|KW|KY|KZ|LA|LB|LC|LI|LK|LR|LS|LT|LU|LV|LY|MA|MC|MD|ME|MF|MG|MH|MK|ML|MM|MN|MO|MP|MQ|MR|MS|MT|MU|MV|MW|MX|MY|MZ|NA|NC|NE|NF|NG|NI|NL|NO|NP|NR|NU|NZ|OM|PA|PE|PF|PG|PH|PK|PL|PM|PN|PR|PS|PT|PW|PY|QA|RE|RO|RS|RU|RW|SA|SB|SC|SD|SE|SG|SH|SI|SJ|SK|SL|SM|SN|SO|SR|SS|ST|SV|SX|SY|SZ|TC|TD|TF|TG|TH|TJ|TK|TL|TM|TN|TO|TR|TT|TV|TW|TZ|UA|UG|UM|US|UY|UZ|VA|VC|VE|VG|VI|VN|VU|WF|WS|YE|YT|ZA|ZM|ZW)$",
+            "title": "GraphQLCountryCode",
+            "type": "string",
+          },
+          "GraphQLDID": {
+            "maxLength": 100,
+            "pattern": "^did:[a-zA-Z0-9.!#$%&'*+\\/=?^_\`{|}~-]+:[a-zA-Z0-9.!#$%&'*+\\/=?^_\`{|}~-]+$",
+            "title": "GraphQLDID",
+            "type": "string",
+          },
+          "GraphQLDate": {
+            "format": "date",
+            "maxLength": 100,
+            "title": "GraphQLDate",
+            "type": "string",
+          },
+          "GraphQLDateTime": {
+            "format": "date-time",
+            "maxLength": 100,
+            "title": "GraphQLDateTime",
+            "type": "string",
+          },
+          "GraphQLLatitude": {
+            "maximum": 90,
+            "minimum": -90,
+            "title": "GraphQLLatitude",
+            "type": "number",
+          },
+          "GraphQLLocalDate": {
+            "maxLength": 100,
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "title": "GraphQLLocalDate",
+            "type": "string",
+          },
+          "GraphQLLocalTime": {
+            "maxLength": 100,
+            "pattern": "^([0-1][0-9]|2[0-3]):([0-5][0-9])(:[0-5][0-9](\\.\\d{3})?)?$",
+            "title": "GraphQLLocalTime",
+            "type": "string",
+          },
+          "GraphQLLocale": {
+            "maxLength": 100,
+            "pattern": "^(((en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))|((([A-Za-z]{2,3}(-([A-Za-z]{3}(-[A-Za-z]{3}){0,2}))?)|[A-Za-z]{4}|[A-Za-z]{5,8})(-([A-Za-z]{4}))?(-([A-Za-z]{2}|[0-9]{3}))?(-([A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*(-([0-9A-WY-Za-wy-z](-[A-Za-z0-9]{2,8})+))*(-(x(-[A-Za-z0-9]{1,8})+))?)|(x(-[A-Za-z0-9]{1,8})+))$",
+            "title": "GraphQLLocale",
+            "type": "string",
+          },
+          "GraphQLLongitude": {
+            "maximum": 180,
+            "minimum": -180,
+            "title": "GraphQLLongitude",
+            "type": "number",
+          },
+          "GraphQLTime": {
+            "format": "time",
+            "maxLength": 100,
+            "title": "GraphQLTime",
+            "type": "string",
+          },
+          "GraphQLTimeZone": {
+            "maxLength": 100,
+            "pattern": "^(?:[A-Za-z0-9_]|(?:%[0-9A-Fa-f]{2}))+",
+            "title": "GraphQLTimeZone",
+            "type": "string",
+          },
+          "GraphQLURL": {
+            "format": "uri",
+            "maxLength": 100,
+            "title": "GraphQLURL",
+            "type": "string",
+          },
+          "GraphQLUtcOffset": {
+            "maxLength": 100,
+            "pattern": "^([+-]?)(\\d{2}):(\\d{2})$",
+            "title": "GraphQLUtcOffset",
+            "type": "string",
+          },
+          "InterPlanetaryCID": {
+            "maxLength": 100,
+            "title": "InterPlanetaryCID",
+            "type": "string",
+          },
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "accountID": {
+            "$ref": "#/$defs/ChainAgnosticAccountID",
+          },
+          "chainID": {
+            "$ref": "#/$defs/ChainAgnosticChainID",
+          },
+          "cid": {
+            "$ref": "#/$defs/InterPlanetaryCID",
+          },
+          "commitID": {
+            "$ref": "#/$defs/CeramicCommitID",
+          },
+          "countryCode": {
+            "$ref": "#/$defs/GraphQLCountryCode",
+          },
+          "date": {
+            "$ref": "#/$defs/GraphQLDate",
+          },
+          "dateTime": {
+            "$ref": "#/$defs/GraphQLDateTime",
+          },
+          "did": {
+            "$ref": "#/$defs/GraphQLDID",
+          },
+          "latitude": {
+            "$ref": "#/$defs/GraphQLLatitude",
+          },
+          "localDate": {
+            "$ref": "#/$defs/GraphQLLocalDate",
+          },
+          "localTime": {
+            "$ref": "#/$defs/GraphQLLocalTime",
+          },
+          "locale": {
+            "$ref": "#/$defs/GraphQLLocale",
+          },
+          "longitude": {
+            "$ref": "#/$defs/GraphQLLongitude",
+          },
+          "streamID": {
+            "$ref": "#/$defs/CeramicStreamID",
+          },
+          "time": {
+            "$ref": "#/$defs/GraphQLTime",
+          },
+          "timeZone": {
+            "$ref": "#/$defs/GraphQLTimeZone",
+          },
+          "url": {
+            "$ref": "#/$defs/GraphQLURL",
+          },
+          "utcOffset": {
+            "$ref": "#/$defs/GraphQLUtcOffset",
+          },
+        },
+        "type": "object",
+      },
+      "views": {},
+    },
+  },
+  "version": "1.0",
+  "views": {
+    "models": {},
+  },
+}
+`;
+
+exports[`scalars support extra scalars 2`] = `
+{
+  "accountData": {
+    "extraScalarsList": {
+      "name": "ExtraScalars",
+      "type": "connection",
+    },
+  },
+  "enums": {},
+  "models": {
+    "ExtraScalars": {
+      "accountRelation": {
+        "type": "list",
+      },
+      "id": "ExtraScalarsID",
+    },
+  },
+  "objects": {
+    "ExtraScalars": {
+      "accountID": {
+        "required": false,
+        "type": "accountid",
+      },
+      "chainID": {
+        "required": false,
+        "type": "chainid",
+      },
+      "cid": {
+        "required": false,
+        "type": "cid",
+      },
+      "commitID": {
+        "required": false,
+        "type": "commitid",
+      },
+      "countryCode": {
+        "required": false,
+        "type": "countrycode",
+      },
+      "date": {
+        "required": false,
+        "type": "date",
+      },
+      "dateTime": {
+        "required": false,
+        "type": "datetime",
+      },
+      "did": {
+        "required": false,
+        "type": "did",
+      },
+      "latitude": {
+        "required": false,
+        "type": "float",
+      },
+      "localDate": {
+        "required": false,
+        "type": "localdate",
+      },
+      "localTime": {
+        "required": false,
+        "type": "localtime",
+      },
+      "locale": {
+        "required": false,
+        "type": "locale",
+      },
+      "longitude": {
+        "required": false,
+        "type": "float",
+      },
+      "streamID": {
+        "required": false,
+        "type": "streamid",
+      },
+      "time": {
+        "required": false,
+        "type": "time",
+      },
+      "timeZone": {
+        "required": false,
+        "type": "timezone",
+      },
+      "url": {
+        "required": false,
+        "type": "url",
+      },
+      "utcOffset": {
+        "required": false,
+        "type": "utcoffset",
+      },
+    },
+  },
+}
+`;
