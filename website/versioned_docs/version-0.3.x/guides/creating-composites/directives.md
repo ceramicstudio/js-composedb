@@ -21,8 +21,7 @@ When using the `@createModel` directive, two parameters must be provided:
 Example:
 
 ```graphql
-@createModel(accountRelation: LIST, description: "A simple text post")
-type Post {
+type Post @createModel(accountRelation: LIST, description: "A simple text post") {
   author: DID! @documentAccount
   title: String! @string(minLength: 10, maxLength: 100)
   text: String! @string(maxLength: 500)
@@ -47,18 +46,15 @@ needed, an `id: ID` field can be added, as shown in the examples below.
 
 ```graphql
 # ❌ the following declaration will NOT work:
-@loadModel(id: "<existing model stream ID>")
-type MyModel {}
+type MyModel @loadModel(id: "<existing model stream ID>") {}
 
 # ✅ the following declaration will work:
-@loadModel(id: "<existing model stream ID>")
-type MyModel {
+type MyModel @loadModel(id: "<existing model stream ID>") {
   id: ID
 }
 
 # ✅ the following declaration will also work:
-@loadModel(id: "<existing model stream ID>")
-type MyModel {
+type MyModel @loadModel(id: "<existing model stream ID>") {
   owner: DID! @documentAccount
 }
 ```
@@ -117,13 +113,11 @@ directive.
 Example:
 
 ```graphql {2,8}
-@loadModel(id: "<Post model stream ID>")
-type Post {
+type Post @loadModel(id: "<Post model stream ID>") {
   id: ID!
 }
 
-@createModel(accountRelation: LIST, description: "A comment on a Post")
-type Comment {
+type Comment @createModel(accountRelation: LIST, description: "A comment on a Post") {
   postID: StreamID! @documentReference(model: "Post")
   text: String! @string(maxLength: 500)
 }
@@ -171,13 +165,11 @@ Example where `post` fields allows to access the post document the comment is
 made on, based on the `postID` value stored in the comment document:
 
 ```graphql {8,9}
-@loadModel(id: "<Post model stream ID>")
-type Post {
+type Post @loadModel(id: "<Post model stream ID>") {
   id: ID!
 }
 
-@createModel(accountRelation: LIST, description: "A comment on a Post")
-type Comment {
+type Comment @createModel(accountRelation: LIST, description: "A comment on a Post") {
   postID: StreamID! @documentReference(model: "Post")
   post: Post! @relationDocument(property: "postID")
   text: String! @string(maxLength: 500)
@@ -195,13 +187,11 @@ Comment model described in the
 [`@relationDocument` directive example](#relationdocument):
 
 ```graphql {2,8}
-@loadModel(id: "<Comment model stream ID>")
-type Comment {
+type Comment @loadModel(id: "<Comment model stream ID>") {
   id: ID!
 }
 
-@loadModel(id: "<Post model stream ID>")
-type Post {
+type Post @loadModel(id: "<Post model stream ID>") {
   comments: [Comment] @relationFrom(model: "Comment", property: "postID")
 }
 ```
@@ -217,13 +207,11 @@ the Comment model described in the
 [`@relationDocument` directive example](#relationdocument):
 
 ```graphql {2,8}
-@loadModel(id: "<Comment model stream ID>")
-type Comment {
+type Comment @loadModel(id: "<Comment model stream ID>") {
   id: ID!
 }
 
-@loadModel(id: "<Post model stream ID>")
-type Post {
+type Post @loadModel(id: "<Post model stream ID>") {
   commentsCount: Int! @relationCountFrom(model: "Comment", property: "postID")
 }
 ```
