@@ -97,7 +97,7 @@ export const DateTime = new GraphQLScalarType({
     throw new TypeError(`DateTime cannot represent an invalid date-time-string ${String(value)}.`)
   },
   extensions: {
-    codegenScalarType: 'Date | string',
+    codegenScalarType: 'string',
     jsonSchema: {
       type: 'string',
       format: 'date-time',
