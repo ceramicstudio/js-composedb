@@ -51,8 +51,7 @@ function validateDateTime(input: string): boolean {
 
   // Check if it is a correct date using the javascript Date parse() method.
   const time = Date.parse(input)
-  if (time !== time) {
-      // eslint-disable-line
+  if (Number.isNaN(time)) {
     return false
   }
   // Split the date-time-string up into the string-date and time-string part.
@@ -75,10 +74,10 @@ export const DateTime = new GraphQLScalarType({
       if (dateString.indexOf('Z') !== -1) {
         return dateString
       } else
-        throw new TypeError(`DateTime string must be formatted to UTC time  ${String(dateString)}.`)
+        throw new TypeError(`DateTime string must be formatted to UTC time ${String(dateString)}.`)
     } else
       throw new TypeError(
-        `DateTime cannot represent an invalid date-time-string  ${String(dateString)}.`
+        `DateTime cannot represent an invalid date-time-string ${String(dateString)}.`
       )
   },
   parseValue: (value) => {
@@ -96,5 +95,12 @@ export const DateTime = new GraphQLScalarType({
       return value
     }
     throw new TypeError(`DateTime cannot represent an invalid date-time-string ${String(value)}.`)
+  },
+  extensions: {
+    codegenScalarType: 'Date | string',
+    jsonSchema: {
+      type: 'string',
+      format: 'date-time',
+    },
   },
 })
