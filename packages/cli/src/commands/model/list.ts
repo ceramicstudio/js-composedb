@@ -84,7 +84,7 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
 
   async anykeyWithFriendlyExit(message: string, exitMessage?: string): Promise<void> {
     const tty = process.stdin.setRawMode !== undefined
-    const char = (await CliUx.ux.prompt(message, { type: 'single', required: false })) as string
+    const char = await CliUx.ux.prompt(message, { type: 'single', required: false })
     if (tty) process.stderr.write('\n')
     if (char === 'q' || char === '\u0003') {
       this.spinner.succeed(exitMessage)
