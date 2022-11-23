@@ -128,7 +128,7 @@ import { fromString } from 'uint8arrays/from-string'
 
 // Hexadecimal-encoded private key for a DID having admin access to the target Ceramic node
 // Replace the example key here by your admin private key
-const privateKey = fromString('b0cb[...]515f')
+const privateKey = fromString('b0cb[...]515f', 'base16')
 
 const did = new DID({
   resolver: getResolver(),
@@ -200,7 +200,6 @@ console.log(`Server started on ${server.url}`)
 
 process.on('SIGTERM', () => {
   server.close(() => {
-
     console.log('Server stopped')
   })
 })
@@ -222,7 +221,7 @@ Then we can start the local server with GraphiQL using the runtime composite:
 :::tip Private key required if you want to run mutations
 
 Running this command in authenticated mode requires a
- private key to be
+private key to be
 provided, using the `DID_PRIVATE_KEY` environment variable or the `--did-private-key` flag.
 
 You will not be able to run mutations, unless you start the server in authenticated mode.
@@ -239,7 +238,8 @@ composedb graphql:server --ceramic-url=http://localhost:7007 --graphiql --port=5
 Now you can open `http://localhost:5001/graphql` in your browser and use the GraphiQL web app to query and mutate the model from your composite.
 
 For example, to create a `SimpleProfile` instance for the authenticated account:
-``` graphql
+
+```graphql
 mutation {
   createSimpleProfile(input: { content: { displayName: "Ceramic Dev" } }) {
     document {
@@ -250,7 +250,8 @@ mutation {
 ```
 
 , and to query the first 10 `SimpleProfile` instances:
-``` graphql
+
+```graphql
 query {
   simpleProfileIndex(first: 10) {
     edges {
@@ -263,6 +264,7 @@ query {
 ```
 
 To check the details of the GraphQL schema built from your runtime composite representation, you can use the `graphql:schema` CLI command:
+
 ```sh
 composedb graphql:schema runtime-composite.json
 ```
