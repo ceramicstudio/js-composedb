@@ -1,9 +1,4 @@
-
 # Welcome to ComposeDB
-ComposeDB on Ceramic is a decentralized, composable graph database! It provides a set of Typescript libraries and tools that allow developers to rapidly build applications on [Ceramic](https://ceramic.network/) — including the ability to discover, create, share and reuse composable data models using [GraphQL](https://www.graphql.org/).
-
- 
-# Introduction
 ![ComposeDB on Ceramic](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/4a148100-a682-442a-b57d-9e2d1c9d78fb/Screen_Shot_2022-11-14_at_10.00.08_AM.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45/20221202/us-west-2/s3/aws4_request&X-Amz-Date=20221202T203023Z&X-Amz-Expires=86400&X-Amz-Signature=0a2d67dac0258ae38b8ff043b5f7500026607d5c01a3eaafbe7d713c93d25239&X-Amz-SignedHeaders=host&response-content-disposition=filename=%22Screen%2520Shot%25202022-11-14%2520at%252010.00.08%2520AM.png%22&x-id=GetObject)
 
 ## Overview
