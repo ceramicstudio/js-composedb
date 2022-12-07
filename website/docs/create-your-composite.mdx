@@ -65,7 +65,7 @@ The output of this command will be a composite file named `my-first-composite.js
 ### Deployment
 You will have to deploy the composite with fetched models to your local Ceramic node so that they can be used when building and running your applications. This can be achieved by using ComposeDB CLI and referencing the composite file of fetched models in your local environment as shown below. Note that you have to provide your did private key to deploy the model:
 
-```jsx
+```sh
 composedb composite:deploy my-first-composite.json --ceramic-url=http://localhost:7007 --did-private-key=your_private_key
 ```
 
