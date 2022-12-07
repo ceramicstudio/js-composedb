@@ -9,12 +9,11 @@ Models are [Ceramic streams](https://developers.ceramic.network/learn/advanced/
 
 ### Language
 
-Models are written using a subset of the GraphQL Schema Definition Language (GraphQL SDL) - learn more in the reference section about [Schema Definition Language](https://www.notion.so/Schema-Definition-Language-b4543246ccb14f558da7d47aa81630a8).
+Models are written using a subset of the GraphQL Schema Definition Language (GraphQL SDL). <!-- - learn more in the reference section about [Schema Definition Language](https://www.notion.so/Schema-Definition-Language-b4543246ccb14f558da7d47aa81630a8). -->
 
 ### Validation
 
-Schema validation: All [documents](https://composedb.js.org/docs/0.3.x/guides/concepts-overview#documents) in ComposeDB must use a model, which contains information about the data structure the document must conform to. The validation is performed directly by all Ceramic nodes, allowing application to have guaranties about the documents they interact with even if they don't implement validation themselves.
-<!-- replace with relative links -->
+Schema validation: All documents <!-- add link to documents page --> in ComposeDB must use a model, which contains information about the data structure the document must conform to. The validation is performed directly by all Ceramic nodes, allowing application to have guaranties about the documents they interact with even if they don't implement validation themselves.
 
 > Ceramic uses [draft 2020-12 of the JSON Schema specification](https://json-schema.org/specification-links.html#2020-12) to define the data structure and validation rules of documents.
 
@@ -22,10 +21,13 @@ Schema validation: All [documents](https://composedb.js.org/docs/0.3.x/guides/c
 
 As in other property graphs, on ComposeDB you need a way to define which properties within a document can store relations to other documents.
 
-ComposeDB uses models to define direct relations between [accounts](https://composedb.js.org/docs/0.3.x/guides/concepts-overview#accounts) and [documents](https://composedb.js.org/docs/0.3.x/guides/concepts-overview#documents) with different constraints, as described in Writing Models [Relations](https://www.notion.so/Relations-60f78e9672d04ef29a1002a38d7706b7). In the near future, Account to Account relations, which will enable use cases like follower graphs will be supported.[](https://composedb.js.org/docs/0.3.x/guides/concepts-overview#relations)
-<!-- replace with relative links -->
+ComposeDB uses models to define direct relations between accounts and documents with different constraints. In the near future, Account to Account relations, which will enable use cases like follower graphs will be supported.
 
-### Composites
+<!-- replace with relative links
+ComposeDB uses models to define direct relations between [accounts](https://composedb.js.org/docs/0.3.x/guides/concepts-overview#accounts) and [documents](https://composedb.js.org/docs/0.3.x/guides/concepts-overview#documents) with different constraints, as described in Writing Models [Relations](https://www.notion.so/Relations-60f78e9672d04ef29a1002a38d7706b7). In the near future, Account to Account relations, which will enable use cases like follower graphs will be supported.[](https://composedb.js.org/docs/0.3.x/guides/concepts-overview#relations)
+ -->
+
+## Composites
 
 Composites are composable building blocks used by developers. They are groups of data models (e.g. profiles, blog posts, and comments) that together define the graph database schema for an application. 
 
