@@ -34,7 +34,7 @@ OPTIONS
 
 Load the contents of a model stream with a given ID.
 
-You should use this command to check if an existing model found through [Composites Discovery](../.././data-modeling-concepts#composites) has the fields you need.
+You should use this command to check if an existing model found through [Composites Discovery](../../data-modeling-concepts.mdx#composites) has the fields you need.
 
 ```
 USAGE
