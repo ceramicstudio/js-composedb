@@ -45,6 +45,7 @@ const sidebars = {
       label: 'Guides',
       link: { type: 'generated-index' },
       items: [
+        "guides/data-composition",
         {
           type: 'category',
           label: 'Using composites',
@@ -69,7 +70,32 @@ const sidebars = {
             { type: 'doc', id: 'guides/creating-composites/directives', label: 'Directives' },
           ],
         },
-      ],
+        {
+          "type": "category",
+          "label": "Interacting with data",
+          "link": {
+            "type": "generated-index"
+          },
+          "items": [
+            {
+              "type": "doc",
+              "id": "guides/interacting/queries"
+            },
+            {
+              "type": "doc",
+              "id": "guides/interacting/mutations"
+            },
+            {
+              "type": "doc",
+              "id": "guides/interacting/using-apollo"
+            },
+            {
+              "type": "doc",
+              "id": "guides/interacting/using-relay"
+            }
+          ]
+        }
+      ]
     },
   ],
   api: [
