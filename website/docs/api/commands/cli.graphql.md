@@ -4,7 +4,7 @@ title: "CLI: graphql:* commands"
 custom_edit_url: null
 ---
 
-The group of [CLI](../modules/cli.md) `graphql:*` commands makes it possible to generate GraphQL Schemas from [runtime definitions](./cli.composite.md#composedb-compositecompile) of your [Composites](../.././data-modeling-concepts#composites) and run a local GraphQL HTTP server
+The group of [CLI](../modules/cli.md) `graphql:*` commands makes it possible to generate GraphQL Schemas from [runtime definitions](./cli.composite.md#composedb-compositecompile) of your [Composites](../../data-modeling-concepts.mdx#composites) and run a local GraphQL HTTP server
 
 ## Command List
 
