@@ -4,7 +4,7 @@ title: "CLI: document:* commands"
 custom_edit_url: null
 ---
 
-The group of [CLI](../modules/cli.md) `document:*` commands enables the creation and interactions with [Documents](../.././graph-structure#documents)
+The group of [CLI](../modules/cli.md) `document:*` commands enables the creation and interactions with [Documents](../../graph-structure.mdx#documents)
 
 ## Command List
 
