@@ -4,7 +4,7 @@ title: "CLI: composite:* commands"
 custom_edit_url: null
 ---
 
-The group of [CLI](../modules/cli.md) `composite:*` commands enables the creation and interactions with [Composites](../.././data-modeling-concepts#composites)
+The group of [CLI](../modules/cli.md) `composite:*` commands enables the creation and interactions with [Composites](../../data-modeling-concepts.mdx#composites)
 
 ## Command List
 
