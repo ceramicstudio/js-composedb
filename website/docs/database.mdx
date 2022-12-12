@@ -1,0 +1,12 @@
+# Database
+## Ceramic Server
+
+Building a decentralized graph database is a bit different than building a centralized one. As a result, there are a few important changes required when running a JS Ceramic node after the ComposeDB release. 
+
+Every node must now be backed by a SQL database, SQLite or Postgres, that will be used to index the data and construct the database for the models in your composite. Each node decides what to index and store in the database based on the models contained in the composite, which must be passed to the node during development.
+
+Ceramic acts as a syncing protocol that maintains your local database state against a global network of documents and interoperable models, maintained via the same verifiable event streams that have always been at the core of Ceramic—allowing you to trust the integrity of your index.
+
+## GraphQL Client
+
+Developers now only need to use one library, the ComposeDB Client, which provides a GraphQL interface to Ceramic. This client needs to be passed a composite in order to saturate its own APIs and know which models you’re using. Once your ComposeDB Client is loaded with your composite, you can make GraphQL queries and mutations against your Ceramic node. Using ComposeDB will be much easier and more streamlined than building directly with previous developer packages on Ceramic—such as IDX or DID DataStore.

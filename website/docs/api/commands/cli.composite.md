@@ -4,7 +4,7 @@ title: "CLI: composite:* commands"
 custom_edit_url: null
 ---
 
-The group of [CLI](../modules/cli.md) `composite:*` commands enables the creation and interactions with [Composites](../../guides/concepts-overview.md#composites)
+The group of [CLI](../modules/cli.md) `composite:*` commands enables the creation and interactions with [Composites](../../data-modeling-concepts.mdx#composites)
 
 ## Command List
 
@@ -22,7 +22,7 @@ The group of [CLI](../modules/cli.md) `composite:*` commands enables the creatio
 
 Create an encoded composite definition from a list of already existing model stream ids (usually found by [Composites Discovery](../../guides/using-composites/discovery.mdx))
 
-You can find a detailed guide on using an existing model to create your composite [here](../../first-composite.mdx)
+You can find a detailed guide on using an existing model to create your composite [here](../../create-your-composite.mdx)
 
 ```
 USAGE
@@ -41,7 +41,8 @@ OPTIONS
 
 Create an encoded composite definition from GraphQL [Composite Schema](../../guides/creating-composites/overview.mdx#composite-schema)
 
-You can find a detailed guide on the creation of Composites [here](../../guides/creating-composites/overview.mdx)
+<!-- You can find a detailed guide on the creation of Composites [here](../.././create-your-composite) 
+replace with data modelling composites section -->
 
 ```
 USAGE
@@ -127,7 +128,7 @@ OPTIONS
 
 Creates a runtime definition of the composite and saves it in given path(s). 
 
-You will need the runtime definition to configure your ComposeDB Client. You can find a detailed guide on how to configure a ComposeDB Client [here](../../client-setup.mdx)
+You will need the runtime definition to configure your ComposeDB Client. <!-- replace with client setup guide You can find a detailed guide on how to configure a ComposeDB Client [here](../../client-setup.mdx) -->
 
 ```
 USAGE
