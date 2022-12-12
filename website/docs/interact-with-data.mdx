@@ -11,7 +11,7 @@ The final step of getting started with ComposeDB is interacting with your data. 
 ### GraphQL Server
 To interact with data on the network, start a local GraphQL server by running the command below. Note that you have to provide your `did-private-key` here — it is also required for performing mutations, covered below.
 
-```jsx
+```sh
 composedb graphql:server --ceramic-url=http://localhost:7007 --graphiql runtime-composite.json --did-private-key=your_private_key --port=5005
 ```
 
@@ -19,14 +19,13 @@ composedb graphql:server --ceramic-url=http://localhost:7007 --graphiql runtime-
 
 
 The output will display a URL, for example:
-```jsx
+```sh
 GraphQL server is listening on http://localhost:5005/graphql
 ```
 
 ### GraphQL Web UI
 In your browser, visit the URL that your local GraphQL server is listening on. You will see a simple UI that you can use to easily interact with your data:
-![GraphQL Web UI](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/d71c8c99-f66d-436f-b1c3-faec13cd8dcc/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45/20221206/us-west-2/s3/aws4_request&X-Amz-Date=20221206T182104Z&X-Amz-Expires=86400&X-Amz-Signature=4742409f5ef08c4e9a272ce60b0ede2c94610351615a2810d1cab1e017301071&X-Amz-SignedHeaders=host&response-content-disposition=filename=%22Untitled.png%22&x-id=GetObject)
-<!--  replace with static image notion -->
+![GraphQL Web UI](../static/img/data-model-table.png)
   
 
 ## Queries
@@ -41,25 +40,15 @@ In the [Create your composite](./create-your-composite) guide, we fetched two mo
   
 
 ```graphql
-
 query{
-
-postIndex(first: 2) {
-
-edges {
-
-node {
-
-text
-
+  postIndex(first: 2) {
+    edges {
+      node {
+        text
+      }
+    }
+  }
 }
-
-}
-
-}
-
-}
-
 ```
 
   
@@ -72,44 +61,25 @@ You should see a response similar to the one below. Here, nodes correspond to st
 
   
 
-```graphql
-
+```json
 {
-
-"data": {
-
-"postIndex": {
-
-"edges": [
-
-{
-
-"node": {
-
-"text": "This is my first post."
-
+  "data": {
+    "postIndex": {
+      "edges": [
+        {
+          "node": {
+            "text": "This is my first post."
+          }
+        },
+        {
+          "node": {
+            "text": "My second post about ComposeDB!"
+          }
+        }
+      ]
+    }
+  }
 }
-
-},
-
-{
-
-"node": {
-
-"text": "My second post about ComposeDB!"
-
-}
-
-}
-
-]
-
-}
-
-}
-
-}
-
 ```
 
   
@@ -123,27 +93,16 @@ You have options to retrieve specific records or last `n` indexed records as wel
   
 
 ```graphql
-
 query{
-
-postIndex(last: 3) {
-
-edges {
-
-node {
-
-text
-
+  postIndex(last: 3) {
+    edges {
+      node {
+        text
+      }
+    }
+  }
 }
-
-}
-
-}
-
-}
-
 ```
-
   
 
 ## Mutations
@@ -159,23 +118,14 @@ Let’s say, you would like to create a post and add it to the graph. To do that
   
 
 ```graphql
-
 mutation CreateNewPost($i: CreatePostInput!){
-
-createPost(input: $i){
-
-document{
-
-id
-
-text
-
+  createPost(input: $i){
+		document{
+			id
+      text
+    }
+  }
 }
-
-}
-
-}
-
 ```
 
   
@@ -184,22 +134,14 @@ text
 
   
 
-```graphql
-
+```json
 {
-
-"i": {
-
-"content": {
-
-"text": "A Post created using composites and GraphQL"
-
+  "i": {
+    "content": {
+      "text": "A Post created using composites and GraphQL" 
+    }
+  }
 }
-
-}
-
-}
-
 ```
 
   
@@ -212,28 +154,17 @@ The result of the query above will be a new document with a unique ID and the co
 
   
 
-```graphql
-
+```json
 {
-
-"data": {
-
-"createPost": {
-
-"document": {
-
-"id": "kjzl6kcym7w8y9xlffqruh3v7ou1vn11t8203i6te2i3pliizt65ad3vdh5nl4l",
-
-"text": "A Post created using composites and GraphQL"
-
+  "data": {
+    "createPost": {
+      "document": {
+        "id": "kjzl6kcym7w8y9xlffqruh3v7ou1vn11t8203i6te2i3pliizt65ad3vdh5nl4l",
+        "text": "A Post created using composites and GraphQL"
+      }
+    }
+  }
 }
-
-}
-
-}
-
-}
-
 ```
 
   
@@ -250,19 +181,12 @@ Now let’s say you want to edit the post you created in the previous step. To u
 
 ```graphql
 mutation UpdatePost($i: UpdatePostInput!) {
-
-updatePost(input: $i) {
-
-document {
-
-id
-
-text
-
-}
-
-}
-
+    updatePost(input: $i) {
+        document {
+            id
+            text
+        }
+    }
 }
 ```
 
@@ -270,46 +194,30 @@ text
 
 **Variables:**
 
-```graphql
-{
-
-"i": {
-
-"id": "kjzl6kcym7w8y9xlffqruh3v7ou1vn11t8203i6te2i3pliizt65ad3vdh5nl4l",
-
-"content": {
-
-"text": "My best post!"
-
-}
-
-}
-
+```json
+{{
+    "i": {
+          "id": "kjzl6kcym7w8y9xlffqruh3v7ou1vn11t8203i6te2i3pliizt65ad3vdh5nl4l",
+	        "content": {    
+            "text": "My best post!"
+        }
+    }
 }
 ```
 
 This mutation will update the record with ID `kjzl6kcym7w8y9xlffqruh3v7ou1vn11t8203i6te2i3pliizt65ad3vdh5nl4l`.
 
 **Response:**
-```graphql
+```json
 {
-
-"data": {
-
-"updatePost": {
-
-"document": {
-
-"id": "kjzl6kcym7w8y9xlffqruh3v7ou1vn11t8203i6te2i3pliizt65ad3vdh5nl4l",
-
-"text": "My best post!"
-
-}
-
-}
-
-}
-
+  "data": {
+    "updatePost": {
+      "document": {
+        "id": "kjzl6kcym7w8y9xlffqruh3v7ou1vn11t8203i6te2i3pliizt65ad3vdh5nl4l",
+        "text": "My best post!"
+      }
+    }
+  }
 }
 ```
 

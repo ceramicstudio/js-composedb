@@ -1,9 +1,5 @@
-import Tabs from  '@theme/Tabs'
-import TabItem from  '@theme/TabItem'
-
 # Create your composite
 The second step in getting started with ComposeDB on Ceramic is creating your composite to serve as your database schema. In this guide, we will create your first composite.
-
 
 >💡 Before proceeding you must have [set up your environment](./set-up-your-environment) in the previous step
 
@@ -16,7 +12,7 @@ The Data Model Catalog contains all models created by other ComposeDB developers
 
 To list all models in the marketplace, run the following command:
 
-```jsx
+```sh
 composedb model:list --table
 ```
 <!-- curated model:list command -->
@@ -26,14 +22,10 @@ Here, the flag `--table` will display the output in an organized table view and 
 **Response:** Below see a small snippet of the the output table. Each model has the following properties:
 
 -  `Name` - model name
-
 -  `Unique ID` - unique identifier (stream ID) for the model
-
 -  `Description` - description of the model’s functionality
 
-![Data Model Table](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/dcee19b2-54b7-46b5-bfe3-9ea0a9dd5b7a/Screenshot_2022-11-16_at_14.59.07.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45/20221206/us-west-2/s3/aws4_request&X-Amz-Date=20221206T180011Z&X-Amz-Expires=86400&X-Amz-Signature=cf6fbcf46fca88ef34a039a5c5292275f9c3816e2d49dc9a1fe793f6c7b43e72&X-Amz-SignedHeaders=host&response-content-disposition=filename=%22Screenshot%25202022-11-16%2520at%252014.59.07.png%22&x-id=GetObject)
-  
-<!-- replace with static image notion -->
+![Data Model Table](../static/img/data-model-table.png)
 
 
 ## Creation
@@ -44,7 +36,7 @@ In this section we will demonstrate how to create a composite by downloading mod
 ### Single model
 You can fetch any existing model on Marketplace by referencing model’s unique ID. For example, for your basic social media app, let’s say you would like to use an existing SimpleProfile. To fetch the model, to your working directory, take note of the model stream ID in the table above and run the following command:
 
-```jsx
+```sh
 composedb composite:from-model kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc --ceramic-url=http://localhost:7007 --output=my-first-composite-single.json
 ```
 
@@ -55,7 +47,7 @@ After running the command above, your will have the SimpleProfile model stored l
 If your application needs multiple models, for example the SimpleProfile and Post models, you can. To fetch them, take note of the model stream IDs and provide them in a ComposeDB CLI command as follows:
 
   
-```jsx
+```sh
 composedb composite:from-model kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc kjzl6hvfrbw6c99mdfpjx1z3fue7sesgua6gsl1vu97229lq56344zu9bawnf96 --ceramic-url=http://localhost:7007 --output=my-first-composite.json
 ```
 
@@ -65,13 +57,13 @@ The output of this command will be a composite file named `my-first-composite.js
 ### Deployment
 You will have to deploy the composite with fetched models to your local Ceramic node so that they can be used when building and running your applications. This can be achieved by using ComposeDB CLI and referencing the composite file of fetched models in your local environment as shown below. Note that you have to provide your did private key to deploy the model:
 
-```jsx
+```sh
 composedb composite:deploy my-first-composite.json --ceramic-url=http://localhost:7007 --did-private-key=your_private_key
 ```
 
 Whenever composites are deployed, the models will be automatically indexed. This also means that these models are shared across the network (at the moment, only Clay testnet). If you check the output produced by the terminal that runs your Ceramic local node, you should see a similar output:
 
-```jsx
+```sh
 IMPORTANT: Starting indexing for Model kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc
 
 IMPORTANT: Starting indexing for Model kjzl6hvfrbw6c99mdfpjx1z3fue7sesgua6gsl1vu97229lq56344zu9bawnf96
@@ -86,14 +78,14 @@ This means that the composite was deployed and the models were indexed on your l
 ### Compilation
 The last step left is compiling the composite. This is necessary to interact with the data in the next step of this guide:
 
-```jsx
+```sh
 composedb composite:compile my-first-composite.json runtime-composite.json
 ```
 
 The output of this command will be a json file called `runtime-composite.json`
 
 ## Next steps
-Now that you have created your composite, you are ready to use it: **[Interact with data](/interact-with-data) →**
+Now that you have created your composite, you are ready to use it: **[Interact with data](./interact-with-data) →**
 
 <!--
 ## Related Guides

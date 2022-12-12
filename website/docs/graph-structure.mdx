@@ -1,6 +1,3 @@
-import Tabs from '@theme/Tabs'
-import TabItem from '@theme/TabItem'
-
 # Graph Structure
 ComposeDB provides a **graph structure** for interacting with data on [Ceramic](https://ceramic.network/). The ComposeDB content graph supports two types of nodes: **accounts** that are able to able to create & edit data in the graph, and **documents** containing mutable data of a given shape.
 
@@ -8,18 +5,18 @@ The **nodes** in the graph can be **accounts** or **documents**, while the�
 
 ComposeDB is is designed similar to a property graph database.
 
-### Accounts[](https://composedb.js.org/docs/0.3.x/guides/concepts-overview#accounts)
+## Accounts
 
-Ceramic uses [Decentralized Identifiers (DIDs)](https://w3c.github.io/did-core/) for accounts, which get translated to [CeramicAccount objects](https://composedb.js.org/docs/0.3.x/guides/interacting/queries#ceramicaccount-object) by the ComposeDB client.
+Ceramic uses [Decentralized Identifiers (DIDs)](https://w3c.github.io/did-core/) for [accounts](../0.3.x/guides/concepts-overview#accounts), which get translated to [CeramicAccount objects](../0.3.x/guides/interacting/queries#ceramicaccount-object) by the ComposeDB client.
 
 DIDs can represent any entity that is able to write data on Ceramic and therefore in ComposeDB, which can be end-users of an application, groups, applications or any kind of authenticated service.
 
-In order to write data in ComposeDB, a DID must be attached to the ComposeDB client instance, as documented in the [mutations page](https://composedb.js.org/docs/0.3.x/guides/interacting/mutations).
+In order to write data in ComposeDB, a DID must be attached to the ComposeDB client instance, as documented in the [mutations page](../0.3.x/guides/interacting/mutations).
 
-### Documents[](https://composedb.js.org/docs/0.3.x/guides/concepts-overview#documents)
+## Documents
 
-Documents are [Ceramic streams](https://developers.ceramic.network/learn/advanced/overview/#streams) that store structured data as defined by a [model](https://composedb.js.org/docs/0.3.x/guides/concepts-overview#models).
+[Documents](../0.3.x/guides/concepts-overview#documents) are [Ceramic streams](https://developers.ceramic.network/learn/advanced/overview/#streams) that store structured data as defined by a [model](../0.3.x/guides/concepts-overview#models).
 
 Ceramic nodes can be configured to index specific models, storing all the documents using a model in a local database in order to provide fast access and query capabilities.
 
-Using [GraphQL](https://graphql.org/), the ComposeDB client allows to query documents indexed by a Ceramic node, as well as creating new documents and updating existing ones when [mutations are enabled](https://composedb.js.org/docs/0.3.x/guides/interacting/mutations).
+Using [GraphQL](https://graphql.org/), the ComposeDB client allows to query documents indexed by a Ceramic node, as well as creating new documents and updating existing ones when [mutations are enabled](../0.3.x/guides/interacting/mutations).

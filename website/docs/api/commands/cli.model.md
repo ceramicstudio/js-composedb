@@ -4,7 +4,7 @@ title: "CLI: model:* commands"
 custom_edit_url: null
 ---
 
-The group of [CLI](../modules/cli.md) `model:*` commands enables discovery of [Models](../../guides/concepts-overview.md#models), as well as their creation and interactions with them
+The group of [CLI](../modules/cli.md) `model:*` commands enables discovery of [Models](../.././data-modeling-concepts#models), as well as their creation and interactions with them.
 
 ## Command List
 
@@ -19,7 +19,7 @@ The group of [CLI](../modules/cli.md) `model:*` commands enables discovery of [M
 
 Display a paginated list of models indexed on the connected ceramic node, which needs to be indexing model streams.
 
-This currently is the main entry path to [Composites Discovery](../../guides/using-composites/discovery.mdx)
+This currently is the main entry path to [Composites Discovery](../.././data-modeling-concepts#composites) <!-- replace with dedicated composites discovery page -->
 
 ```
 USAGE
@@ -34,8 +34,7 @@ OPTIONS
 
 Load the contents of a model stream with a given ID.
 
-You should use this command to check if an existing model found through [Composites Discovery](../../guides/using-composites/discovery.mdx)
-has the fields you need.
+You should use this command to check if an existing model found through [Composites Discovery](../.././data-modeling-concepts#composites) has the fields you need.
 
 ```
 USAGE
@@ -51,7 +50,7 @@ OPTIONS
 
 ### `composedb model:controller`
 
-Load the model stream with a given ID and display its controller DID (identifier for the [Ceramic Account](../../guides/concepts-overview.md#accounts) that owns the model)
+Load the model stream with a given ID and display its controller DID (identifier for the [Ceramic Account](../.././graph-structure#accounts) that owns the model)
 
 ```
 USAGE
