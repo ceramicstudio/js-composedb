@@ -6,11 +6,11 @@ ComposeDB on Ceramic is a decentralized, composable graph database! It provides 
 ## Overview
 ComposeDB on Ceramic is a composable graph database built for Web3 app developers:
 
--  **Graph database** – Store and query data from a powerful graph, similar to Neo4j’s property graph database
--  **Easy to use –** Write your models as GraphQL schemas and connect your app using intuitive GraphQL APIs
--  **Data composability –** Reuse models from the marketplace to bootstrap your app with data, unlocking limitless data composability within ComposeDB’s open data ecosystem.
--  **Sign in with Web3 –** Securely authenticate users with wallets from Ethereum, Solana, and other popular blockchains.
--  **Powered by Ceramic –** ComposeDB is built on Ceramic, a mutable layer for IPFS with anchoring on Ethereum for finality.
+-  **Graph database** - Store and query data from a powerful graph, similar to Neo4j’s property graph database
+-  **Easy to use** – Write your models as GraphQL schemas and connect your app using intuitive GraphQL APIs
+-  **Data composability** – Reuse models from the marketplace to bootstrap your app with data, unlocking limitless data composability within ComposeDB’s open data ecosystem.
+-  **Sign in with Web3** – Securely authenticate users with wallets from Ethereum, Solana, and other popular blockchains.
+-  **Powered by Ceramic** – ComposeDB is built on Ceramic, a mutable layer for IPFS with anchoring on Ethereum for finality.
 
 
 
