@@ -50,7 +50,7 @@ OPTIONS
 
 ### `composedb model:controller`
 
-Load the model stream with a given ID and display its controller DID (identifier for the [Ceramic Account](../.././graph-structure#accounts) that owns the model)
+Load the model stream with a given ID and display its controller DID (identifier for the [Ceramic Account](../../graph-structure.mdx#accounts) that owns the model)
 
 ```
 USAGE
