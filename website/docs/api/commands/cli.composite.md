@@ -22,7 +22,7 @@ The group of [CLI](../modules/cli.md) `composite:*` commands enables the creatio
 
 Create an encoded composite definition from a list of already existing model stream ids (usually found by [Composites Discovery](../../guides/using-composites/discovery.mdx))
 
-You can find a detailed guide on using an existing model to create your composite [here](../.././create-your-composite)
+You can find a detailed guide on using an existing model to create your composite [here](../../create-your-composite.mdx)
 
 ```
 USAGE
