@@ -19,7 +19,7 @@ The group of [CLI](../modules/cli.md) `model:*` commands enables discovery of [M
 
 Display a paginated list of models indexed on the connected ceramic node, which needs to be indexing model streams.
 
-This currently is the main entry path to [Composites Discovery](../.././data-modeling-concepts#composites) <!-- replace with dedicated composites discovery page -->
+This currently is the main entry path to [Composites Discovery](../../data-modeling-concepts.mdx#composites) <!-- replace with dedicated composites discovery page -->
 
 ```
 USAGE
