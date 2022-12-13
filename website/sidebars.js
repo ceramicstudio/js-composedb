@@ -33,8 +33,8 @@ const sidebars = {
       label: 'Core Concepts',
       link: { type: 'doc',id: 'core-concepts'},
       items: [
-        { type: 'doc', id: 'graph-structure', label: 'Graph Structure' },
-        { type: 'doc', id: 'data-modeling-concepts', label: 'Data Modeling Concepts' },
+        { type: 'doc', id: 'graph-structure', label: 'Graph' },
+        { type: 'doc', id: 'data-modeling-concepts', label: 'Models' },
         { type: 'doc', id: 'database', label: 'Database' },
       ]
     },
