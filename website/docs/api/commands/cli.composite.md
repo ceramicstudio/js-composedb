@@ -128,7 +128,9 @@ OPTIONS
 
 Creates a runtime definition of the composite and saves it in given path(s). 
 
-You will need the runtime definition to configure your ComposeDB Client. <!-- replace with client setup guide You can find a detailed guide on how to configure a ComposeDB Client [here](../../client-setup.mdx) -->
+You will need the runtime definition to configure your ComposeDB.
+
+<!-- replace with client setup guide You can find a detailed guide on how to configure a ComposeDB Client [here](../../client-setup.mdx) -->
 
 ```
 USAGE
