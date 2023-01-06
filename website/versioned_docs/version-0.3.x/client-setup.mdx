@@ -49,7 +49,9 @@ composedb composite:compile my-first-composite.json src/__generated__/definition
 
 Once the composite definition file is written, for example in `src/__generated__/definition.js` using the example above, it can be imported in the app to configure the client:
 
-Make sure you have the `composedb` packages [installed](installation.mdx), before running the code below.app to configure the client.
+If you don't already have an app initialized, run `npm init` to create your new application and update your package.json to include a top-level property `"type": "module"`.
+
+Then make sure you have the `composedb` packages [installed](installation.mdx) before running the code below to configure the client.
 
 ```js title="src/compose.js"
 import { ComposeClient } from '@composedb/client'
@@ -66,13 +68,33 @@ More details: [`ComposeClient`](./api/classes/client.ComposeClient.md)
 The [`ComposeClient`](./api/classes/client.ComposeClient.md) instance created in the previous step can be used to execute GraphQL queries using a schema automatically generated from the runtime composite definition.
 
 ```js
-await compose.executeQuery(`
-  query {
-    viewer {
-      id
+async function main() {
+  const result = await compose.executeQuery(`
+    query {
+      simpleProfileIndex(first: 10) {
+        edges {
+          node {
+            displayName
+          }
+        }
+      }
     }
+  `)
+
+  for (let node of result.data.simpleProfileIndex.edges) {
+    const properties = JSON.parse(JSON.stringify(node))
+    console.log(properties)
   }
-`)
+}
+
+main()
+  .then(() => {
+    process.exit(0)
+  })
+  .catch((err) => {
+    console.error(err)
+    process.exit(1)
+  })
 ```
 
 More details: [`executeQuery`](./api/classes/client.ComposeClient.md#executequery)
