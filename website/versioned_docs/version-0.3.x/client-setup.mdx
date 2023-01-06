@@ -67,7 +67,9 @@ More details: [`ComposeClient`](./api/classes/client.ComposeClient.md)
 
 The [`ComposeClient`](./api/classes/client.ComposeClient.md) instance created in the previous step can be used to execute GraphQL queries using a schema automatically generated from the runtime composite definition.
 
-```js
+After adding the code below to your app, you can run it with the command `node ./src/compose.js` from your terminal.
+
+```js title="src/compose.js"
 async function main() {
   const result = await compose.executeQuery(`
     query {
