@@ -1,5 +1,7 @@
 import type { CeramicApi, SignedCommit } from '@ceramicnetwork/common'
+import type { MisingDIDError } from '@ceramicnetwork/http-client'
 import { Model, type ModelViewsDefinition } from '@ceramicnetwork/stream-model'
+
 import { StreamID } from '@ceramicnetwork/streamid'
 import type {
   CompositeViewsDefinition,
@@ -541,11 +543,16 @@ export class Composite {
 
   /**
    * Configure the Ceramic node to index the models defined in the composite. An authenticated DID
-   * set as admin in the Ceramic node configuration must be attached to the Ceramic instance.
+   * set as admin in the Ceramic node configuration must be attached to the Ceramic instance, otherwise
+   * an error is thrown.
    */
   async startIndexingOn(ceramic: CeramicApi): Promise<void> {
     const modelIDs = Object.keys(this.#definition.models).map(StreamID.fromString)
-    await ceramic.admin.startIndexingModels(modelIDs)
+    try {
+      await ceramic.admin.startIndexingModels(modelIDs)
+    } catch(e: MissingDIDError) {
+      throw new Error(`${e.message}: is the environment variable DID_PRIVATE_KEY set to a valid DID?`)
+    }
   }
 
   /**
