@@ -26,7 +26,7 @@ The CLI exposes commands with different prefixes which make it possible to:
 | [`composedb composite:*`](../commands/cli.composite.md) | create and interact with Composites                                     |
 | [`composedb model:*`](../commands/cli.model.md)         | create and interact with Models                                         |
 | [`composedb document:*`](../commands/cli.document.md)   | create and interact with Documents                                      |
-| [`composedb graphql:*`](../commands/cli.did.md)         | generate ComposeDB GraphQl Schemas and run a local GraphQL HTTP server  |
+| [`composedb graphql:*`](../commands/cli.graphql.md)         | generate ComposeDB GraphQl Schemas and run a local GraphQL HTTP server  |
 
 ## Help
 
