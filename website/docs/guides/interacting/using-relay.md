@@ -19,11 +19,11 @@ import { Environment, Network, RecordSource, Store } from 'relay-runtime'
 // Path to the generated runtime composite definition
 import { definition } from './__generated__/definition.js'
 
-const compose = new ComposeClient({ ceramic: 'http://localhost:7007', definition })
+const composeClient = new ComposeClient({ ceramic: 'http://localhost:7007', definition })
 
 // Create a custom Network using the ComposeClient instance to execute operations
 const network = Network.create(async (request, variables) => {
-  return await client.executeQuery(request.text, variables)
+  return await composeClient.executeQuery(request.text, variables)
 })
 
 // Use the created Network instance to create the Relay Environment
