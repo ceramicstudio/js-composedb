@@ -2,11 +2,9 @@ import { CeramicClient } from '@ceramicnetwork/http-client'
 import { Composite } from '@composedb/devtools'
 import { printGraphQLSchema } from '@composedb/client'
 import type { EncodedCompositeDefinition, RuntimeCompositeDefinition } from '@composedb/types'
-import fs from 'fs-extra'
+import { readFile, readJSON, writeFile, writeJSON, ensureDir } from 'fs-extra'
 import { resolve } from 'path'
 import { cwd } from 'process'
-// // fs-extra is a CommonJS module
-const { readFile, readJSON, writeFile, writeJSON, ensureDir } = fs
 import * as pathModule from 'path'
 
 import type { PathInput } from './types.js'

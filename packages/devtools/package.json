@@ -62,7 +62,7 @@
     "@types/object-hash": "^3.0.2",
     "ajv": "^8.12.0",
     "dids": "^3.4.0",
-    "fs-extra": "^10.1.0",
+    "fs-extra": "^11.1.0",
     "graphql": "^16.5.0",
     "graphql-tools": "^8.3.16",
     "jest-environment-composedb": "workspace:^0.3.1"

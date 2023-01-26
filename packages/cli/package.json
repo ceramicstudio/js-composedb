@@ -84,7 +84,7 @@
     "did-resolver": "^3.2.2",
     "dids": "^3.4.0",
     "env-paths": "^3.0.0",
-    "fs-extra": "^10.0.1",
+    "fs-extra": "^11.1.0",
     "inquirer": "^8.2.4",
     "key-did-provider-ed25519": "^2.0.0",
     "key-did-resolver": "^2.3.0",
