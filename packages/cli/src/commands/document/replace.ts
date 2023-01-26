@@ -1,4 +1,5 @@
 import { Command, type CommandFlags, STREAM_ID_ARG } from '../../command.js'
+import { Args } from '@oclif/core'
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 
 export default class DocumentReplace extends Command<
@@ -7,15 +8,14 @@ export default class DocumentReplace extends Command<
 > {
   static description = 'replace content in a model instance document stream'
 
-  static args = [
-    STREAM_ID_ARG,
-    {
-      name: 'content',
+  static args = {
+    streamId: STREAM_ID_ARG,
+    content: Args.custom({
       required: true,
       description: 'New content of the model instance document (JSON encoded as string)',
-      parse: JSON.parse,
-    },
-  ]
+      parse: (input) => Promise.resolve(JSON.parse(input)),
+    })(),
+  }
 
   async run(): Promise<void> {
     this.spinner.start('Replacing content in the model instance document...')

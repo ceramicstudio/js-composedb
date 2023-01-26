@@ -1,5 +1,5 @@
 import { BaseCommand, type QueryCommandFlags } from '../../command.js'
-import { Flags, CliUx } from '@oclif/core'
+import { Flags, ux } from '@oclif/core'
 import { Model } from '@ceramicnetwork/stream-model'
 import Table from 'cli-table3'
 import { Edge, Page, PageInfo, StreamState } from '@ceramicnetwork/common'
@@ -84,7 +84,7 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
 
   async anykeyWithFriendlyExit(message: string, exitMessage?: string): Promise<void> {
     const tty = process.stdin.setRawMode !== undefined
-    const char = await CliUx.ux.prompt(message, { type: 'single', required: false })
+    const char = await ux.prompt(message, { type: 'single', required: false })
     if (tty) process.stderr.write('\n')
     if (char === 'q' || char === '\u0003') {
       this.spinner.succeed(exitMessage)

@@ -1,5 +1,5 @@
 import { Command, type CommandFlags } from '../../command.js'
-import { Flags } from '@oclif/core'
+import { Args, Flags } from '@oclif/core'
 import Table from 'cli-table3'
 import { readEncodedComposite } from '@composedb/devtools-node'
 import { Composite } from '@composedb/devtools'
@@ -18,13 +18,12 @@ export default class CompositeModels extends Command<
 > {
   static description = 'display the list of models included in a composite'
 
-  static args = [
-    {
-      name: 'compositePath',
+  static args = {
+    compositePath: Args.string({
       required: false,
       description: 'A path to encoded composite definition',
-    },
-  ]
+    }),
+  }
 
   static flags = {
     ...Command.flags,

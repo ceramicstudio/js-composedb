@@ -1,4 +1,5 @@
 import { Command, CommandFlags } from '../../command.js'
+import { Args } from '@oclif/core'
 import { type DIDProvider, DID } from 'dids'
 import { Ed25519Provider } from 'key-did-provider-ed25519'
 import { fromString } from 'uint8arrays'
@@ -6,13 +7,12 @@ import { fromString } from 'uint8arrays'
 export default class DIDFromPrivateKey extends Command<CommandFlags, { didPrivateKey: string }> {
   static description = 'create a new DID from a specified private key'
 
-  static args = [
-    {
-      name: 'didPrivateKey',
+  static args = {
+    didPrivateKey: Args.string({
       required: false,
       description: 'a random 32-bit private key represented as a base16 string',
-    },
-  ]
+    }),
+  }
 
   async run(): Promise<void> {
     this.spinner.start('Creating DID...')
