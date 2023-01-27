@@ -17,7 +17,7 @@ export default class DocumentContent extends Command<DocumentContentFlags, { str
   static description =
     'load a model instance stream document with a given stream id and display its contents'
 
-  static args = [STREAM_ID_ARG]
+  static args = { streamId: STREAM_ID_ARG }
 
   static flags = {
     ...Command.flags,

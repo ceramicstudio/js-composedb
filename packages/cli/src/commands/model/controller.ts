@@ -10,7 +10,7 @@ import {
 export default class ModelController extends Command<QueryCommandFlags, { streamId: string }> {
   static description = 'load a model stream with a given stream id and display its controller'
 
-  static args = [STREAM_ID_ARG]
+  static args = { streamId: STREAM_ID_ARG }
 
   static flags = {
     ...Command.flags,

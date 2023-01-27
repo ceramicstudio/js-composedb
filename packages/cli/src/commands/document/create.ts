@@ -1,4 +1,5 @@
 import { Command, type CommandFlags } from '../../command.js'
+import { Args } from '@oclif/core'
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { StreamID } from '@ceramicnetwork/streamid'
 
@@ -8,20 +9,18 @@ export default class CreateDocument extends Command<
 > {
   static description = 'create a model instance document stream from content encoded as JSON'
 
-  static args = [
-    {
-      name: 'model',
+  static args = {
+    model: Args.custom({
       required: true,
       description: 'StreamID of the model whose instance is being created',
-      parse: StreamID.fromString,
-    },
-    {
-      name: 'content',
+      parse: (input) => Promise.resolve(StreamID.fromString(input)),
+    })(),
+    content: Args.custom({
       required: true,
       description: 'Content of the created model instance document (JSON encoded as string)',
-      parse: JSON.parse,
-    },
-  ]
+      parse: (input) => Promise.resolve(JSON.parse(input)),
+    })(),
+  }
 
   async run(): Promise<void> {
     this.spinner.start('Creating the model instance document...')
