@@ -1,0 +1,41 @@
+# Models
+## Data Models
+
+Models are [Ceramic streams](https://developers.ceramic.network/learn/advanced/overview/#streams) storing metadata about [documents](./graph-structure.mdx#documents). This metadata includes their discovery information as well as data structure/schema, validation rules, and relations. <!-- replace with model discovery guide (https://composedb.js.org/docs/0.3.x/guides/using-composites/discovery). -->
+<!-- replace with relative links -->
+
+### Language
+
+Models are written using a subset of the GraphQL Schema Definition Language (GraphQL SDL). <!-- - learn more in the reference section about [Schema Definition Language](https://www.notion.so/Schema-Definition-Language-b4543246ccb14f558da7d47aa81630a8). -->
+
+### Validation
+
+Schema validation: All documents <!-- add link to documents page --> in ComposeDB must use a model, which contains information about the data structure the document must conform to. The validation is performed directly by all Ceramic nodes, allowing application to have guaranties about the documents they interact with even if they don't implement validation themselves.
+
+:::info
+
+Ceramic uses [draft 2020-12 of the JSON Schema specification](https://json-schema.org/specification-links.html#2020-12) to define the data structure and validation rules of documents.
+
+:::
+
+## Relations
+
+As in other property graphs, on ComposeDB you need a way to define which properties within a document can store relations to other documents.
+
+ComposeDB uses models to define direct relations between accounts and documents with different constraints. In the near future, Account to Account relations, which will enable use cases like follower graphs will be supported.
+
+<!-- replace with relative links
+ComposeDB uses models to define direct relations between [accounts](https://composedb.js.org/docs/0.3.x/guides/concepts-overview#accounts) and [documents](https://composedb.js.org/docs/0.3.x/guides/concepts-overview#documents) with different constraints, as described in Writing Models [Relations](https://www.notion.so/Relations-60f78e9672d04ef29a1002a38d7706b7). In the near future, Account to Account relations, which will enable use cases like follower graphs will be supported.[](https://composedb.js.org/docs/0.3.x/guides/concepts-overview#relations)
+ -->
+
+## Composites
+
+Composites are composable building blocks used by developers. They are groups of data models (e.g. profiles, blog posts, and comments) that together define the graph database schema for an application. 
+
+Content streams in Ceramic have metadata that automatically associates them to a data model***,*** which defines the shape and schema of that data, as well as to accounts and other content (e.g. User X liked a post by User Y). 
+
+The ComposeDB developer tools and client library use complementary representations of composites to support various development flows such as managing data models, deploying them to Ceramic nodes and generating the runtime [GraphQL](https://graphql.org/) schema applications can interact with.
+
+## Data Model Catalog
+
+Composites and their underlying data models are designed to be reusable, making it simple to build complementary and interoperable apps. Apps that reuse each other's composites create instant interoperability, without any integrations needed. To date, developers on Ceramic have had to manually submit data models to the Registry on Github. Models are now automatically indexed, enabling easier discovery and reuse. Currently, discovering existing models happens through commands in the ComposeDB CLI, but we’ll follow closely with a UI.

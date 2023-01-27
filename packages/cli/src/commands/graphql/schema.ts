@@ -1,5 +1,5 @@
 import { Command, CommandFlags } from '../../command.js'
-import { Flags } from '@oclif/core'
+import { Args, Flags } from '@oclif/core'
 import fs from 'fs-extra'
 import { writeGraphQLSchema } from '@composedb/devtools-node'
 import { printGraphQLSchema } from '@composedb/runtime'
@@ -16,13 +16,12 @@ export default class GraphQLSchema extends Command<
 > {
   static description = 'Load the graphQL schema from Composite '
 
-  static args = [
-    {
-      name: 'runtimeDefinitionPath',
+  static args = {
+    runtimeDefinitionPath: Args.string({
       required: false,
       description: 'ID of the stream',
-    },
-  ]
+    }),
+  }
 
   static flags = {
     ...Command.flags,

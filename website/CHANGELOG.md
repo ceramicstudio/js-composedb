@@ -1,5 +1,11 @@
 # website
 
+## 0.3.1
+
+### Patch Changes
+
+- Fix DateTime scalar encoding (PR https://github.com/ceramicstudio/js-composedb/pull/54)
+
 ## 0.3.0
 
 ### Patch Changes

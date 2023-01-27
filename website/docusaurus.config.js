@@ -34,8 +34,8 @@ const config = {
           versions: {
             current: {
               banner: 'unreleased',
-              label: 'Next 🚧',
-              path: 'next',
+              label: 'Preview',
+              path: 'preview',
             },
             '0.3.x': {
               label: '0.3.x',

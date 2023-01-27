@@ -40,7 +40,7 @@ import { fromString } from 'uint8arrays/from-string'
 
 // Hexadecimal-encoded private key for a DID having admin access to the target Ceramic node
 // Replace the example key here by your admin private key
-const privateKey = fromString('b0cb[...]515f')
+const privateKey = fromString('b0cb[...]515f', 'base16')
 
 const did = new DID({
   resolver: getResolver(),
@@ -67,7 +67,7 @@ More details: [`createComposite`](../../api/modules/devtools_node.md#createcompo
 
 :::caution Private key required
 
-Running this command requires an [admin DID](../../configuration.mdx#admin-dids) private key to be
+Running this command requires an [admin DID](../../set-up-your-environment.mdx#generate-your-account) private key to be
 provided, using the `DID_PRIVATE_KEY` environment variable or the `--did-private-key` flag.
 
 :::

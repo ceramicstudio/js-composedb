@@ -1,0 +1,251 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+
+# Interact with data
+The final step of getting started with ComposeDB is interacting with your data. In this guide you will learn how to perform GraphQL queries and mutations using your composite.
+
+<!-- >💡 Want to interact with data from JavaScript? See [Client configuration](https://www.notion.so/Client-configuration-6147b53d9e01478f91bd81194c4a39c2). -->
+
+## Setup
+### GraphQL Server
+To interact with data on the network, start a local GraphQL server by running the command below. Note that you have to provide your `did-private-key` here — it is also required for performing mutations, covered below.
+
+```sh
+composedb graphql:server --ceramic-url=http://localhost:7007 --graphiql runtime-composite.json --did-private-key=your_private_key --port=5005
+```
+
+>✏️ ***Note:*** You can customize the port by configuring the `—-port` flag.
+
+
+The output will display a URL, for example:
+```sh
+GraphQL server is listening on http://localhost:5005/graphql
+```
+
+### GraphQL Web UI
+In your browser, visit the URL that your local GraphQL server is listening on. You will see a simple UI that you can use to easily interact with your data:
+![GraphQL Web UI](/img/data-model-table.png)
+  
+
+## Queries
+One of the most common data interactions you might want to do with ComposeDB is read records from the graph. Using GraphQL, you can query ComposeDB records indexed by your Ceramic node.
+
+In the [Create your composite](./create-your-composite.mdx) guide, we fetched two models from the Catalog: `Post` and `SimpleProfile`. Here we will focus on `Post` model. For example, let’s say you want to check the first 2 entries that were indexed on the Post graph. This can be achieved running a query like below and specifying that you want to retrieve first 2 records:
+
+  
+
+**Query**:
+
+  
+
+```graphql
+query{
+  postIndex(first: 2) {
+    edges {
+      node {
+        text
+      }
+    }
+  }
+}
+```
+
+  
+
+You should see a response similar to the one below. Here, nodes correspond to stored documents while edges represent the relations between nodes.
+
+  
+
+**Response**:
+
+  
+
+```json
+{
+  "data": {
+    "postIndex": {
+      "edges": [
+        {
+          "node": {
+            "text": "This is my first post."
+          }
+        },
+        {
+          "node": {
+            "text": "My second post about ComposeDB!"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+  
+
+You have options to retrieve specific records or last `n` indexed records as well. For example, to check the last 3 records, run the query below:
+
+  
+
+**Query:**
+
+  
+
+```graphql
+query{
+  postIndex(last: 3) {
+    edges {
+      node {
+        text
+      }
+    }
+  }
+}
+```
+  
+
+## Mutations
+There are two types of mutations you can perform on ComposeDB data: creating and updating records.
+  
+### Creating records
+Let’s say, you would like to create a post and add it to the graph. To do that, you will have to run a mutation as shown below and pass the actual text as a variable:
+
+  
+
+**Query:**
+
+  
+
+```graphql
+mutation CreateNewPost($i: CreatePostInput!){
+  createPost(input: $i){
+		document{
+			id
+      text
+    }
+  }
+}
+```
+
+  
+
+**Variables:**
+
+  
+
+```json
+{
+  "i": {
+    "content": {
+      "text": "A Post created using composites and GraphQL" 
+    }
+  }
+}
+```
+
+  
+
+The result of the query above will be a new document with a unique ID and the content you provided:
+
+  
+
+**Response**:
+
+  
+
+```json
+{
+  "data": {
+    "createPost": {
+      "document": {
+        "id": "kjzl6kcym7w8y9xlffqruh3v7ou1vn11t8203i6te2i3pliizt65ad3vdh5nl4l",
+        "text": "A Post created using composites and GraphQL"
+      }
+    }
+  }
+}
+```
+
+  
+:::note
+
+Stream IDs are unique. The “id” you will see in the response when performing the mutation above will be different.
+
+:::
+  
+
+### Updating records
+Now let’s say you want to edit the post you created in the previous step. To update it, you have to run the `UpdatePost` mutation and pass the post’s unique ID along with the updated content as variables.
+
+:::info
+
+You can find your post’s ID in the response after you ran the `CreateNewPost` mutation.
+
+:::
+  
+
+**Query:**
+
+```graphql
+mutation UpdatePost($i: UpdatePostInput!) {
+    updatePost(input: $i) {
+        document {
+            id
+            text
+        }
+    }
+}
+```
+
+  
+
+**Variables:**
+
+```json
+{
+  "i": {
+    "id": "kjzl6kcym7w8y9xlffqruh3v7ou1vn11t8203i6te2i3pliizt65ad3vdh5nl4l",
+    "content": {
+      "text": "My best post!"
+    }
+  }
+}
+```
+
+This mutation will update the record with ID `kjzl6kcym7w8y9xlffqruh3v7ou1vn11t8203i6te2i3pliizt65ad3vdh5nl4l`.
+
+**Response:**
+```json
+{
+  "data": {
+    "updatePost": {
+      "document": {
+        "id": "kjzl6kcym7w8y9xlffqruh3v7ou1vn11t8203i6te2i3pliizt65ad3vdh5nl4l",
+        "text": "My best post!"
+      }
+    }
+  }
+}
+```
+
+## Authentication
+Although you can query records created by other accounts, you can only perform mutations on records controlled by your account. This guide did not require your authentication because you previously did that in the [Set up your environment](./set-up-your-environment.mdx) guide.
+
+🔑 `did-private-key` plays a very important role for these kind of mutations - it ensures that only you, the account owner, can make changes to the streams that you created.
+
+## Next steps
+Congratulations — you’re on your way to becoming a ComposeDB developer! 🚀 
+
+Visit [Next Steps](./next-steps.mdx) for more integration guides and opportunities to contribute to the ComposeDB on Ceramic ecosystem.
+
+<!-- ## Related Guides
+For more detailed descriptions and examples, see our advanced guides:
+
+- [Data interactions](https://www.notion.so/Data-interactions-249a50eba41341e8954511175f468fa2)
+
+- [Mutations](https://www.notion.so/Mutations-0a93e6f4a004491c83e9908549f5522a)
+
+- [Queries](https://www.notion.so/Queries-4aba20cbf09d4f2685d9ab5412ce952f)
+
+- [Client configuration](https://www.notion.so/Client-configuration-6147b53d9e01478f91bd81194c4a39c2): Perform queries and mutations from JavaScript -->

@@ -1,5 +1,5 @@
 import { Command, type CommandFlags } from '../../command.js'
-import { Flags } from '@oclif/core'
+import { Args, Flags } from '@oclif/core'
 import { createComposite, writeEncodedComposite } from '@composedb/devtools-node'
 
 type Flags = CommandFlags & {
@@ -10,13 +10,12 @@ export default class CreateComposite extends Command<Flags, { schemaFilePath: st
   static description =
     'create a Composite (a list of Model Streams) from a graphQL Schema Definition Language definition'
 
-  static args = [
-    {
-      name: 'schemaFilePath',
+  static args = {
+    schemaFilePath: Args.string({
       required: true,
       description: 'A graphQL SDL definition of the Composite encoded as a string',
-    },
-  ]
+    }),
+  }
 
   static flags = {
     ...Command.flags,

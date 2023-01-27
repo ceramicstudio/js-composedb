@@ -16,7 +16,7 @@ type ModelContentFlags = QueryCommandFlags & {
 export default class ModelContent extends Command<ModelContentFlags, { streamId: string }> {
   static description = 'load a model stream with a given stream id and display its contents'
 
-  static args = [STREAM_ID_ARG]
+  static args = { streamId: STREAM_ID_ARG }
 
   static flags = {
     ...Command.flags,

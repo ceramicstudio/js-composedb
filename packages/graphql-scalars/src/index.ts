@@ -10,17 +10,21 @@ import {
 import {
   GraphQLCountryCode,
   GraphQLDate,
-  GraphQLDateTime,
+  //GraphQLDateTime,
   GraphQLDID,
   GraphQLTime,
 } from 'graphql-scalars'
 
 import { CeramicCommitID, CeramicStreamID } from './ceramic.js'
 
+//@TODO Remove these imports when https://github.com/Urigo/graphql-scalars/pull/1641 is merged
+import { DateTime as GraphQLDateTime } from './datetime.js'
+export { DateTime as GraphQLDateTime } from './datetime.js'
+
 export {
   GraphQLCountryCode,
   GraphQLDate,
-  GraphQLDateTime,
+  //GraphQLDateTime,
   GraphQLDID,
   GraphQLTime,
 } from 'graphql-scalars'

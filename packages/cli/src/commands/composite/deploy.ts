@@ -1,4 +1,5 @@
 import { Command, type CommandFlags } from '../../command.js'
+import { Args } from '@oclif/core'
 import { readEncodedComposite } from '@composedb/devtools-node'
 import { Composite } from '@composedb/devtools'
 import { EncodedCompositeDefinition } from '@composedb/types'
@@ -9,13 +10,12 @@ export default class CompositeDeploy extends Command<
 > {
   static description = 'deploy models included in the composite on connected ceramic node'
 
-  static args = [
-    {
-      name: 'compositePath',
+  static args = {
+    compositePath: Args.string({
       required: false,
       description: 'A path to encoded composite definition',
-    },
-  ]
+    }),
+  }
 
   async run(): Promise<void> {
     try {

@@ -1,6 +1,6 @@
 import { serveGraphQL } from '@composedb/devtools-node'
 import { Command, CommandFlags } from '../../command.js'
-import { Flags } from '@oclif/core'
+import { Args, Flags } from '@oclif/core'
 import fs from 'fs-extra'
 import { RuntimeCompositeDefinition } from '@composedb/types'
 
@@ -16,13 +16,12 @@ export default class GraphQLServer extends Command<
 > {
   static description = 'Load the graphQL schema from Composite '
 
-  static args = [
-    {
-      name: 'runtimeDefinitionPath',
+  static args = {
+    runtimeDefinitionPath: Args.string({
       required: false,
       description: 'ID of the stream',
-    },
-  ]
+    }),
+  }
 
   static flags = {
     ...Command.flags,

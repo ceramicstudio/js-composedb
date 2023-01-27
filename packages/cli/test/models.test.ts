@@ -91,7 +91,8 @@ describe('models', () => {
     }, 60000)
   })
 
-  describe('model:list', () => {
+  describe.skip('model:list', () => {
+    // Logic needs to be updated so that indexer is configured to index models
     beforeAll(async () => {
       await execa('bin/run.js', [
         'composite:deploy',
