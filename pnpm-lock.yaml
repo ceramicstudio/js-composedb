@@ -56,7 +56,7 @@ importers:
       '@composedb/devtools': workspace:^0.3.1
       '@composedb/devtools-node': workspace:^0.3.1
       '@composedb/types': workspace:^0.3.1
-      '@oclif/core': ^2.0.6
+      '@oclif/core': ^2.0.7
       '@oclif/plugin-help': ^5.2.1
       '@oclif/plugin-version': ^1.2.1
       '@swc-node/register': ^1.5.5
@@ -91,7 +91,7 @@ importers:
       '@composedb/client': link:../client
       '@composedb/devtools': link:../devtools
       '@composedb/devtools-node': link:../devtools-node
-      '@oclif/core': 2.0.6
+      '@oclif/core': 2.0.7
       '@oclif/plugin-help': 5.2.1
       '@oclif/plugin-version': 1.2.1
       cli-table3: 0.6.3
@@ -5045,8 +5045,8 @@ packages:
       tslib: 2.4.1
     dev: true
 
-  /@oclif/core/2.0.6:
-    resolution: {integrity: sha512-AOgr1bBjjAyCWcaaai1z7kBULg2zodCuubnmoU7mge2IL/hh2E6F2jdI7wpPK6KI7gVqZq0PKGxsl4EOFsrErQ==}
+  /@oclif/core/2.0.7:
+    resolution: {integrity: sha512-pj7hIH8SBeH3qha47fmyqdaBdNVEqesRgnKFh8Ytdb4S41/4BYOiQuyQGuvnKgvicH6DMxp4FbM9EQEW46V9xw==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@types/cli-progress': 3.11.0
@@ -5073,7 +5073,7 @@ packages:
       strip-ansi: 6.0.1
       supports-color: 8.1.1
       supports-hyperlinks: 2.3.0
-      tslib: 2.4.1
+      tslib: 2.5.0
       widest-line: 3.1.0
       wordwrap: 1.0.0
       wrap-ansi: 7.0.0
@@ -5082,14 +5082,14 @@ packages:
     resolution: {integrity: sha512-6z/ZholfRZ/k6XonAzV6p34A7LAhr2r2JUOlaCF2ZMrF6LjMN21dWXVK0Sxra+TQqZEm0B2oeSbTmHFtDkbIlw==}
     engines: {node: '>=12.0.0'}
     dependencies:
-      '@oclif/core': 2.0.6
+      '@oclif/core': 2.0.7
 
   /@oclif/plugin-not-found/2.3.17:
     resolution: {integrity: sha512-KTh4vQ3GIiHNeuqsMV58cdvRBO1IREoEGuAE+e73OcP5VEjjsbJNQS+IXg0UHivMQhVBl7FeadgvAqGzUHPv5w==}
     engines: {node: '>=12.0.0'}
     dependencies:
       '@oclif/color': 1.0.3
-      '@oclif/core': 2.0.6
+      '@oclif/core': 2.0.7
       fast-levenshtein: 3.0.0
       lodash: 4.17.21
     dev: true
@@ -5098,14 +5098,14 @@ packages:
     resolution: {integrity: sha512-Xb7MECv9uSaxIuzPbgJnOZEf0gnHlcLdncBkJCn5vsMnt1hC91j65feGeY8c68vsrAi6SumOfI8C63v8gC+FEA==}
     engines: {node: '>=14.0.0'}
     dependencies:
-      '@oclif/core': 2.0.6
+      '@oclif/core': 2.0.7
     dev: false
 
   /@oclif/plugin-warn-if-update-available/2.0.23:
     resolution: {integrity: sha512-eLeVwDpX/r078gHwPwD/5BFmuwO8cEbEw/cidWCqnjmMyWKcr4XzbnD6lDAkxUzaKcrjlxqRQDAEX2V2ulHzSg==}
     engines: {node: '>=12.0.0'}
     dependencies:
-      '@oclif/core': 2.0.6
+      '@oclif/core': 2.0.7
       chalk: 4.1.2
       debug: 4.3.4
       fs-extra: 9.1.0
@@ -15544,7 +15544,7 @@ packages:
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
-      '@oclif/core': 2.0.6
+      '@oclif/core': 2.0.7
       '@oclif/plugin-help': 5.2.1
       '@oclif/plugin-not-found': 2.3.17
       '@oclif/plugin-warn-if-update-available': 2.0.23
@@ -17745,7 +17745,7 @@ packages:
   /rxjs/7.8.0:
     resolution: {integrity: sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg==}
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.5.0
 
   /safe-buffer/5.1.2:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
@@ -19028,6 +19028,9 @@ packages:
 
   /tslib/2.4.1:
     resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
+
+  /tslib/2.5.0:
+    resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}
 
   /tsutils/3.21.0_typescript@4.9.4:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}

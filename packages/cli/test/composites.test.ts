@@ -19,15 +19,16 @@ const MODEL2_JSON =
 describe('composites', () => {
   const seed = '3a6de55a5ef33d110a5a37438704b0f0cb77ca5977131775a70ffd1c23779c8c'
 
-  let undeployedComposite, encodedProfilesComposite
+  let undeployedComposite: Record<string, unknown>
+  let encodedProfilesComposite: Record<string, unknown>
   beforeAll(async () => {
     const [undeployed, profiles] = await Promise.all([
       fs.readJSON(
         fileURLToPath(new URL('mocks/encoded.composite.undeployed.json', import.meta.url))
-      ),
+      ) as Promise<Record<string, unknown>>,
       fs.readJSON(
-        fileURLToPath(new URL('./mocks/encoded.composite.profiles.json', import.meta.url))
-      ),
+        fileURLToPath(new URL('mocks/encoded.composite.profiles.json', import.meta.url))
+      ) as Promise<Record<string, unknown>>,
     ])
     undeployedComposite = undeployed
     encodedProfilesComposite = profiles
