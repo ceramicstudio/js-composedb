@@ -1,3 +1,15 @@
+/**
+ * ComposeDB server for hybrid execution on the {@linkcode client ComposeDB client}.
+ *
+ * ## Installation
+ *
+ * ```sh
+ * npm install @composedb/server
+ * ```
+ *
+ * @module server
+ */
+
 import type { CeramicApi } from '@ceramicnetwork/common'
 import { CeramicClient } from '@ceramicnetwork/http-client'
 import { VIEWER_ID_HEADER } from '@composedb/constants'
@@ -25,6 +37,11 @@ import {
 
 export type ContextFactoryFunction = (executionContext: ExecutionContext) => Context
 
+/**
+ * Returns the viewer ID sent by the client, if set.
+ *
+ * @param request {@link https://graphql-helix.vercel.app/docs/types GraphQL Helix `Request` object}
+ */
 export function getViewerID(request: Request): string | null | undefined {
   return typeof request.headers.get === 'function'
     ? request.headers.get(VIEWER_ID_HEADER)
@@ -41,6 +58,7 @@ export type HTTPServerHandler = {
   stop: () => Promise<void>
 }
 
+/** @internal */
 export async function startHTTPServer(
   server: FastifyInstance,
   listenOnPort?: number | Array<number>
@@ -104,6 +122,7 @@ export class ComposeServer {
     this.#schema = getSchema({ definition, readonly: true, schema })
   }
 
+  /** @internal */
   async processRequest(request: Request): Promise<ProcessRequestResult<Context, unknown>> {
     const { operationName, query, variables } = getGraphQLParameters(request)
     return await processRequest<Context>({
@@ -116,6 +135,16 @@ export class ComposeServer {
     })
   }
 
+  /**
+   * Handle a GraphQL query from an incoming HTTP `request`, sending the `response` back.
+   *
+   * If the `graphiql` option is set to `true` when creating the
+   * {@linkcode server.ComposeServer ComposeServer instance}, this handler can serve the GraphiQL
+   * UI.
+   *
+   * @param request {@link https://graphql-helix.vercel.app/docs/types GraphQL Helix `Request` object}
+   * @param response {@link https://graphql-helix.vercel.app/docs/types GraphQL Helix `Response` object}
+   */
   async handleHTTPRequest(request: Request, response: RawResponse): Promise<void> {
     if (this.#graphiql && shouldRenderGraphiQL(request)) {
       response.setHeader('Content-Type', 'text/html')
@@ -126,6 +155,7 @@ export class ComposeServer {
     }
   }
 
+  /** @internal */
   createGraphQLRoute(
     url = '/graphql',
     method: HTTPMethods | Array<HTTPMethods> = ['GET', 'POST']
@@ -145,6 +175,9 @@ export class ComposeServer {
     }
   }
 
+  /**
+   * Start a local HTTP server with a `/graphql` endpoint handling GraphQL queries.
+   */
   async startGraphQLServer(params: GraphQLServerParams = {}): Promise<HTTPServerHandler> {
     const server = fastify(params.options)
     server.route(this.createGraphQLRoute())

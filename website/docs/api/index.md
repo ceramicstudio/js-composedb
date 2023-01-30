@@ -11,3 +11,4 @@ custom_edit_url: null
 - [devtools](modules/devtools.md)
 - [devtools-node](modules/devtools_node.md)
 - [runtime](modules/runtime.md)
+- [server](modules/server.md)
