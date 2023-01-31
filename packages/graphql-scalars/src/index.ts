@@ -9,8 +9,6 @@ import {
 } from 'graphql'
 import {
   GraphQLCountryCode,
-  GraphQLDate,
-  //GraphQLDateTime,
   GraphQLDID,
   GraphQLDuration,
   GraphQLLatitude,
@@ -18,24 +16,19 @@ import {
   GraphQLLocale,
   GraphQLLocalTime,
   GraphQLLongitude,
-  GraphQLTime,
   GraphQLTimeZone,
-  GraphQLURL,
   GraphQLUtcOffset,
 } from 'graphql-scalars'
 
 import { CeramicCommitID, CeramicStreamID } from './ceramic.js'
 import { ChainAgnosticAccountID, ChainAgnosticChainID } from './chain-agnostic.js'
+// TODO: Remove these imports when https://github.com/Urigo/graphql-scalars/pull/1641 is merged
+import { GraphQLDate, GraphQLDateTime, GraphQLTime } from './datetime.js'
 import { InterPlanetaryCID } from './inter-planetary.js'
-
-//@TODO Remove these imports when https://github.com/Urigo/graphql-scalars/pull/1641 is merged
-import { DateTime as GraphQLDateTime } from './datetime.js'
-export { DateTime as GraphQLDateTime } from './datetime.js'
+import { GraphQLURI } from './uri.js'
 
 export {
   GraphQLCountryCode,
-  GraphQLDate,
-  //GraphQLDateTime,
   GraphQLDID,
   GraphQLDuration,
   GraphQLLatitude,
@@ -43,14 +36,14 @@ export {
   GraphQLLocale,
   GraphQLLocalTime,
   GraphQLLongitude,
-  GraphQLTime,
   GraphQLTimeZone,
-  GraphQLURL,
   GraphQLUtcOffset,
 } from 'graphql-scalars'
 export { CeramicCommitID, CeramicStreamID } from './ceramic.js'
 export { ChainAgnosticAccountID, ChainAgnosticChainID } from './chain-agnostic.js'
+export { GraphQLDate, GraphQLDateTime, GraphQLTime } from './datetime.js'
 export { InterPlanetaryCID } from './inter-planetary.js'
+export { GraphQLURI } from './uri.js'
 
 export type ScalarMap = Record<RuntimeScalarType, GraphQLScalarType>
 
@@ -77,7 +70,7 @@ export const scalars: ScalarMap = {
   string: GraphQLString,
   time: GraphQLTime,
   timezone: GraphQLTimeZone,
-  url: GraphQLURL,
+  uri: GraphQLURI,
   utcoffset: GraphQLUtcOffset,
 }
 

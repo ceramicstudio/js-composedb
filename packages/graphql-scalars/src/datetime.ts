@@ -16,9 +16,9 @@ function validateDate(date: string): boolean {
   }
   // Verify the correct number of days for
   // the month contained in the date-string.
-  const year = Number(date.substr(0, 4))
-  const month = Number(date.substr(5, 2))
-  const day = Number(date.substr(8, 2))
+  const year = Number(date.substring(0, 4))
+  const month = Number(date.substring(5, 2))
+  const day = Number(date.substring(8, 2))
   switch (month) {
     case 2: // February
       if (((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) && day > 29) {
@@ -57,12 +57,50 @@ function validateDateTime(input: string): boolean {
   // Split the date-time-string up into the string-date and time-string part.
   // and check whether these parts are RFC 3339 compliant.
   const index = input.indexOf('T')
-  const dateString = input.substr(0, index)
-  const timeString = input.substr(index + 1)
+  const dateString = input.substring(0, index)
+  const timeString = input.substring(index + 1)
   return validateDate(dateString) && validateTime(timeString)
 }
 
-export const DateTime = new GraphQLScalarType({
+export const GraphQLDate = new GraphQLScalarType({
+  name: 'Date',
+  description:
+    'A date string, such as 2007-12-03, compliant with the `full-date` ' +
+    'format outlined in section 5.6 of the RFC 3339 profile of the ' +
+    'ISO 8601 standard for representation of dates and times using ' +
+    'the Gregorian calendar.',
+  serialize: (dateString) => {
+    if (typeof dateString === 'string' && validateDate(dateString)) {
+      return dateString
+    } else
+      throw new TypeError(`Date cannot represent an invalid date-string ${String(dateString)}.`)
+  },
+  parseValue: (value) => {
+    if (typeof value === 'string' && validateDate(value)) {
+      return value
+    }
+    throw new TypeError(`Date cannot represent an invalid date-string ${String(value)}.`)
+  },
+  parseLiteral: (ast) => {
+    if (ast.kind !== Kind.STRING) {
+      throw new TypeError('Date cannot represent non string or Date type')
+    }
+    const { value } = ast
+    if (validateDate(value)) {
+      return value
+    }
+    throw new TypeError(`Date cannot represent an invalid date-string ${String(value)}.`)
+  },
+  extensions: {
+    codegenScalarType: 'string',
+    jsonSchema: {
+      type: 'string',
+      format: 'date',
+    },
+  },
+})
+
+export const GraphQLDateTime = new GraphQLScalarType({
   name: 'DateTime',
   description:
     'A date-time string at UTC, such as 2007-12-03T10:15:30Z, ' +
@@ -101,6 +139,58 @@ export const DateTime = new GraphQLScalarType({
     jsonSchema: {
       type: 'string',
       format: 'date-time',
+    },
+  },
+})
+
+export const GraphQLTime = new GraphQLScalarType({
+  name: 'Time',
+  description:
+    'A time string at UTC, such as 10:15:30Z, compliant with ' +
+    'the `full-time` format outlined in section 5.6 of the RFC 3339' +
+    'profile of the ISO 8601 standard for representation of dates and ' +
+    'times using the Gregorian calendar.',
+  serialize(value: any): string {
+    if (value instanceof Date) {
+      const dateTimeString = value.toISOString()
+      return dateTimeString.substring(dateTimeString.indexOf('T') + 1)
+    } else if (typeof value === 'string') {
+      if (validateTime(value)) {
+        return value
+      }
+      throw new TypeError(`Time cannot represent an invalid time-string ${value}.`)
+    } else {
+      throw new TypeError(
+        'Time cannot be serialized from a non string, ' +
+          'or non Date type ' +
+          JSON.stringify(value)
+      )
+    }
+  },
+  parseValue(value: any) {
+    if (!(typeof value === 'string')) {
+      throw new TypeError(`Time cannot represent non string type ${JSON.stringify(value)}`)
+    }
+    if (validateTime(value)) {
+      return value
+    }
+    throw new TypeError(`Time cannot represent an invalid time-string ${value}.`)
+  },
+  parseLiteral(ast) {
+    if (ast.kind !== Kind.STRING) {
+      throw new TypeError(`Time cannot represent non string type ${'value' in ast && ast.value}`)
+    }
+    const value = ast.value
+    if (validateTime(value)) {
+      return value
+    }
+    throw new TypeError(`Time cannot represent an invalid time-string ${String(value)}.`)
+  },
+  extensions: {
+    codegenScalarType: 'string',
+    jsonSchema: {
+      type: 'string',
+      format: 'time',
     },
   },
 })

@@ -23,7 +23,7 @@ export type ScalarTitle =
   | 'GraphQLLongitude'
   | 'GraphQLTime'
   | 'GraphQLTimeZone'
-  | 'GraphQLURL'
+  | 'GraphQLURI'
   | 'GraphQLUtcOffset'
   | 'InterPlanetaryCID'
 
@@ -47,7 +47,7 @@ export const SCALAR_RUNTIME_TYPES: Record<ScalarTitle, CustomRuntimeScalarType> 
   GraphQLLongitude: 'longitude',
   GraphQLTime: 'time',
   GraphQLTimeZone: 'timezone',
-  GraphQLURL: 'url',
+  GraphQLURI: 'uri',
   GraphQLUtcOffset: 'utcoffset',
   InterPlanetaryCID: 'cid',
 }
@@ -90,7 +90,7 @@ export const extraScalars: Record<string, ScalarWithTitle> = {
   StreamID: { type: 'string', title: 'CeramicStreamID', maxLength: 100 },
   Time: { ...getGraphQLScalarSchema<JSONSchema.String>('time'), maxLength: 100 },
   TimeZone: { ...getGraphQLScalarSchema<JSONSchema.String>('timezone'), maxLength: 100 },
-  URL: { ...getGraphQLScalarSchema<JSONSchema.String>('url'), maxLength: 100 },
+  URI: { ...getGraphQLScalarSchema<JSONSchema.String>('uri'), maxLength: 100 },
   UTCOffset: { ...getGraphQLScalarSchema<JSONSchema.String>('utcoffset'), maxLength: 100 },
 }
 

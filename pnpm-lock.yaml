@@ -294,11 +294,13 @@ importers:
       '@composedb/graphql-scalars': workspace:^0.3.0
       '@composedb/test-schemas': workspace:^0.3.0
       '@composedb/types': workspace:^0.3.0
+      caip: ^1.1.0
       dataloader: ^2.1.0
       dids: ^3.3.0
       graphql: ^16.5.0
       graphql-relay: ^0.10.0
       jest-environment-composedb: workspace:^0.3.0
+      multiformats: ^9.9.0
     dependencies:
       '@ceramicnetwork/http-client': 2.15.0
       '@ceramicnetwork/stream-model': 0.16.0
@@ -313,8 +315,10 @@ importers:
       '@composedb/devtools': link:../devtools
       '@composedb/test-schemas': link:../test-schemas
       '@composedb/types': link:../types
+      caip: 1.1.0
       dids: 3.4.0
       jest-environment-composedb: link:../jest-environment-composedb
+      multiformats: 9.9.0
 
   packages/server:
     specifiers:

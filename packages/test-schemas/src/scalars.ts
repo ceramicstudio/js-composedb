@@ -16,7 +16,7 @@ type ExtraScalars @createModel(accountRelation: LIST, description: "Kitchen sink
   streamID: StreamID
   time: Time
   timeZone: TimeZone
-  url: URL
+  uri: URI
   utcOffset: UTCOffset
 }
 `

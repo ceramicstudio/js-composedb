@@ -3,13 +3,17 @@
  */
 
 import type { CeramicApi } from '@ceramicnetwork/common'
+import { CommitID, StreamID } from '@ceramicnetwork/streamid'
 import { Composite } from '@composedb/devtools'
 import {
   createCommentSchemaWithPost,
   loadPostSchemaWithComments,
   postSchema,
   profilesSchema,
+  extraScalarsSchema,
 } from '@composedb/test-schemas'
+import { AccountId, ChainId } from 'caip'
+import { CID } from 'multiformats/cid'
 
 import { ComposeRuntime, printGraphQLSchema } from '../src'
 
@@ -118,5 +122,50 @@ describe('runtime', () => {
       `
     )
     expect(res).toMatchSnapshot()
+  }, 60000)
+
+  test('can create a document using extra scalars', async () => {
+    const composite = await Composite.create({ ceramic, schema: extraScalarsSchema })
+    const runtime = new ComposeRuntime({ ceramic, definition: composite.toRuntime() })
+    const res = await runtime.executeQuery<{ createExtraScalars: { document: { id: string } } }>(
+      `
+      mutation CreateScalars($input: CreateExtraScalarsInput!) {
+        createExtraScalars(input: $input) {
+          document {
+            id
+          }
+        }
+      }
+      `,
+      {
+        input: {
+          content: {
+            accountID: new AccountId('eip155:1:0xabcdef'),
+            chainID: new ChainId('eip155:1'),
+            cid: CID.parse('bagcqcerakszw2vsovxznyp5gfnpdj4cqm2xiv76yd24wkjewhhykovorwo6a'),
+            commitID: CommitID.fromString(
+              'k1dpgaqe3i64kjqcp801r3sn7ysi5i0k7nxvs7j351s7kewfzr3l7mdxnj7szwo4kr9mn2qki5nnj0cv836ythy1t1gya9s25cn1nexst3jxi5o3h6qprfyju'
+            ),
+            countryCode: 'US',
+            date: '2023-01-31',
+            dateTime: '2023-01-31T16:04:16.475Z',
+            did: 'did:test:123',
+            latitude: 53.471,
+            localDate: '2023-01-31',
+            locale: 'en-gb',
+            localTime: '14:25:06.123',
+            longitude: 53.471,
+            streamID: StreamID.fromString(
+              'kjzl6cwe1jw147dvq16zluojmraqvwdmbh61dx9e0c59i344lcrsgqfohexp60s'
+            ),
+            time: '14:10:20+01:00',
+            timeZone: 'America/Costa_Rica',
+            uri: 'https://ceramic.network',
+            utcOffset: '+01:15',
+          },
+        },
+      }
+    )
+    expect(res.data?.createExtraScalars.document.id).toBeDefined()
   }, 60000)
 })

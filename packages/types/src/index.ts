@@ -120,7 +120,7 @@ export type CustomRuntimeScalarType =
   | 'streamid'
   | 'time'
   | 'timezone'
-  | 'url'
+  | 'uri'
   | 'utcoffset'
 
 type RuntimeStringScalarType<Type extends CustomRuntimeScalarType> = RuntimeScalarCommon & {
