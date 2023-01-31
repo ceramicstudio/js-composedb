@@ -92,8 +92,8 @@ const config = {
           },
           {
             type: 'doc',
-            docId: 'guides/creating-composites/schema',
-            //activeBasePath: 'docs/guides',
+            docId: 'guides/data-composition',
+            activeBasePath: 'docs/guides',
             position: 'left',
             label: 'Guides',
           },
