@@ -92,10 +92,17 @@ const config = {
           },
           {
             type: 'doc',
+            docId: 'guides/creating-composites/schema',
+            //activeBasePath: 'docs/guides',
+            position: 'left',
+            label: 'Guides',
+          },
+          {
+            type: 'doc',
             docId: 'api/modules/client',
             activeBasePath: 'docs/api',
             position: 'left',
-            label: 'API',
+            label: 'Reference',
           },
           {
             type: 'docsVersionDropdown',

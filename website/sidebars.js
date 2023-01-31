@@ -39,7 +39,9 @@ const sidebars = {
       ]
     },
     { type: 'doc', id: 'community', label: 'Community' },
-    {
+  ],
+  guides: [
+        {
       type: 'category',
       collapsed: false,
       label: 'Guides',
@@ -58,16 +60,6 @@ const sidebars = {
             { type: 'doc', id: 'guides/using-composites/discovery', label: 'Discovery' },
             { type: 'doc', id: 'guides/using-composites/deployment', label: 'Deployment' },
             { type: 'doc', id: 'guides/using-composites/customization', label: 'Customization' },
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Creating composites',
-          link: { type: 'doc', id: 'guides/creating-composites/overview' },
-          items: [
-            { type: 'doc', id: 'guides/creating-composites/schema', label: 'Schema' },
-            { type: 'doc', id: 'guides/creating-composites/scalars', label: 'Scalars' },
-            { type: 'doc', id: 'guides/creating-composites/directives', label: 'Directives' },
           ],
         },
         {
@@ -94,11 +86,21 @@ const sidebars = {
               "id": "guides/interacting/using-relay"
             }
           ]
-        }
+        },
       ]
     },
   ],
   api: [
+    {
+      type: 'category',
+      collapsed: false,
+      label: 'Schema Definition Language',
+      link: { type: 'doc', id: 'api/sdl/scalars' },
+      items: [
+        { type: 'doc', id: 'api/sdl/scalars', label: 'Scalars' },
+        { type: 'doc', id: 'api/sdl/directives', label: 'Directives' },
+      ],
+    },
     {
       type: 'category',
       collapsed: false,
