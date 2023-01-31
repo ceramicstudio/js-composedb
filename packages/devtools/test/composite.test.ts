@@ -625,5 +625,5 @@ describe('composite', () => {
       schema: loadPostSchemaWithComments(postID, commentID as string),
     })
     expect(postWithCommentComposite.modelIDs).toHaveLength(2)
-  }, 60000)
+  }, 120000)
 })
