@@ -2,7 +2,6 @@
  * @jest-environment composedb
  */
 
-import type { CeramicApi } from '@ceramicnetwork/common'
 import { Composite } from '@composedb/devtools'
 import {
   createCommentSchemaWithPost,
@@ -10,12 +9,10 @@ import {
   postSchema,
   profilesSchema,
 } from '@composedb/test-schemas'
+import type { Executor } from '@graphql-tools/utils'
+import { jest } from '@jest/globals'
 
-import { ComposeClient, printGraphQLSchema } from '../src'
-
-declare global {
-  const ceramic: CeramicApi
-}
+import { ComposeClient } from '../src'
 
 describe('client', () => {
   test('create profile', async () => {
@@ -51,8 +48,6 @@ describe('client', () => {
       schema: loadPostSchemaWithComments(postModelID, commentModelID),
     })
     const definition = composite.toRuntime()
-
-    expect(printGraphQLSchema(definition)).toMatchSnapshot()
 
     const client = new ComposeClient({ ceramic, definition })
 
@@ -119,4 +114,20 @@ describe('client', () => {
     )
     expect(res).toMatchSnapshot()
   }, 60000)
+
+  test('with remote executor', async () => {
+    const remoteExecutor = jest.fn() as Executor
+    const composite = await Composite.create({ ceramic, schema: profilesSchema })
+    const client = new ComposeClient({ ceramic, definition: composite.toRuntime(), remoteExecutor })
+    await client.executeQuery(`
+      query {
+        viewer {
+          genericProfile {
+            name
+          }
+        }
+      }
+    `)
+    expect(remoteExecutor).toHaveBeenCalled()
+  }, 30000)
 })

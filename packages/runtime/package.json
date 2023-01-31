@@ -1,0 +1,75 @@
+{
+  "name": "@composedb/runtime",
+  "version": "0.3.0",
+  "author": "3Box Labs",
+  "license": "(Apache-2.0 OR MIT)",
+  "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
+  "keywords": [
+    "ceramic",
+    "composedb",
+    "runtime"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ceramicstudio/js-composedb",
+    "directory": "packages/runtime"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build:clean": "del dist",
+    "build:js": "swc src -d ./dist --config-file ../../.swcrc",
+    "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
+    "build": "pnpm build:clean && pnpm build:types && pnpm build:js",
+    "lint": "eslint src test --fix",
+    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test:ci": "pnpm run test --ci --coverage",
+    "prepare": "pnpm build",
+    "prepublishOnly": "package-check"
+  },
+  "dependencies": {
+    "@ceramicnetwork/http-client": "2.15.0",
+    "@ceramicnetwork/stream-model": "0.16.0",
+    "@ceramicnetwork/stream-model-instance": "0.14.0",
+    "@ceramicnetwork/streamid": "2.10.0",
+    "@composedb/graphql-scalars": "workspace:^0.3.0",
+    "dataloader": "^2.1.0",
+    "graphql": "^16.5.0",
+    "graphql-relay": "^0.10.0"
+  },
+  "devDependencies": {
+    "@ceramicnetwork/common": "^2.18.0",
+    "@composedb/devtools": "workspace:^0.3.0",
+    "@composedb/test-schemas": "workspace:^0.3.0",
+    "@composedb/types": "workspace:^0.3.0",
+    "dids": "^3.3.0",
+    "jest-environment-composedb": "workspace:^0.3.0"
+  },
+  "jest": {
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.(t|j)s$": [
+        "@swc/jest",
+        {
+          "root": "../.."
+        }
+      ]
+    }
+  }
+}

@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem'
 
 Valid composites can be deployed to any supporting Ceramic node, by ensuring
 the model streams described in the composite are available and indexed on the
-node. An [admin DID](../../configuration.mdx#admin-dids) is necessary to start
+node. An [admin DID](../../set-up-your-environment.mdx#generate-your-account) is necessary to start
 indexing models on a Ceramic node.
 
 <Tabs
@@ -33,7 +33,7 @@ import { fromString } from 'uint8arrays/from-string'
 
 // Hexadecimal-encoded private key for a DID having admin access to the target Ceramic node
 // Replace the example key here by your admin private key
-const privateKey = fromString('b0cb[...]515f')
+const privateKey = fromString('b0cb[...]515f', 'base16')
 
 const did = new DID({
   resolver: getResolver(),
@@ -60,7 +60,7 @@ More details: [`readEncodedComposite`](../../api/modules/devtools_node.md#readen
 
 :::caution Private key required
 
-Running this command requires an [admin DID](../../configuration.mdx#admin-dids) private key to be
+Running this command requires an [admin DID](../../set-up-your-environment.mdx#generate-your-account) private key to be
 provided, using the `DID_PRIVATE_KEY` environment variable or the `--did-private-key` flag.
 
 :::

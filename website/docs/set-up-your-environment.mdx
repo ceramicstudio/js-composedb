@@ -1,0 +1,138 @@
+import Tabs from  '@theme/Tabs'
+import TabItem from  '@theme/TabItem'
+
+# Set up your environment
+The first step to build with ComposeDB is setting up your development environment. This guide will show you how to install and configure relevant packages and tools.
+
+## Installation
+### Create your project directory
+Start with creating the project directory. Here you’ll store all your app’s local files:
+```sh
+mkdir my-project
+cd my-project
+```
+
+### Node.js
+If you don’t already have them installed, you will need to install Node.js v16 and the following package managers:
+- [NodeJS v16](https://nodejs.org/en/)
+- [pnpm v7](https://pnpm.io/installation)
+
+Not sure which version you have? Use this command to make sure you have the correct versions installed.
+```sh
+node -v
+pnpm -v
+```
+
+### Ceramic
+ComposeDB runs on Ceramic, so you will need to run a Ceramic node. To get started, and for testing purposes, we recommend running a local Ceramic node. If you're interested in running the production node, you can follow the [tutorial here](https://blog.ceramic.network/configuring-a-ceramic-node-using-aws/). 
+
+The Ceramic CLI provides a set of commands that make it easier to run and manage Ceramic nodes. We will start by installing the Ceramic CLI:
+
+```sh
+pnpm install -g @ceramicnetwork/cli
+```
+
+### ComposeDB
+
+  
+
+Next install the ComposeDB CLI, which enables you to interact with ComposeDB data from your terminal. Install ComposeDB CLI using the following command:
+
+```sh
+pnpm add -g @composedb/cli@^0.3.0
+```
+
+ComposeDB exposes two complementary development libraries: 
+1. [@composedb/devtools](./api/modules/devtools.md) containing utilities related to managing composites, and 
+2. [@composedb/devtools-node](./api/modules/devtools_node.md) which contains utilities for interacting with the local file system and starting a local HTTP server. 
+
+To install the development packages, run:
+
+```sh
+pnpm add -D @composedb/devtools@^0.3.0 @composedb/devtools-node@^0.3.0
+```
+
+## Setup
+### Run a Ceramic node
+You can check that everything was installed correctly by spinning up a Ceramic node. Running the command below will start the Ceramic node in local mode and connect to Clay testnet. 
+Indexing is a key component of ComposeDB, which syncs data across nodes. Enable indexing by toggling:
+
+```sh
+CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB='true' pnpm dlx @ceramicnetwork/cli daemon
+```
+
+If you see the following output in your terminal, that means you have successfully started a local node and connected to Clay testnet 🚀
+```sh
+IMPORTANT: Ceramic API running on 0.0.0.0:7007'
+```
+
+
+:::note
+
+After you start a node, a node configuration file is created. Later in this guide, you’ll be editing this file. You can find it at the following path: `~/.ceramic/daemon.config.json`
+
+:::
+
+
+## Developer Account
+### Generate your private key
+You will need a private key for authorizing ComposeDB CLI commands in the later stages of development. You can generate it using the command below. Save it for later use:
+
+```sh
+composedb did:generate-private-key
+```
+
+:::caution
+
+**Important:** Store your private key securely - the key allows changes to be made to you app. In addition, you will need it throughout the app development process.
+
+:::
+
+### Generate your account
+Indexing is one of the key features of ComposeDB. In order to notify the Ceramic node which models have to be indexed, the ComposeDB tools have to interact with the restricted Admin API. Calling the API requires an authenticated Decentralized Identifier (DID) to be provided in the node configuration file. Create a DID by running the following command, using the private key generated previously:
+
+```sh
+composedb did:from-private-key your-private-key
+```
+
+⚠️ Copy this authenticated DID key and store it in a secure place, just like with your private key above. This DID key will have to be provided in your Ceramic node’s configuration file which will ensure that only authorized users can make changes to your application, e.g. deploy models on your Ceramic node.
+  
+
+### Using your account
+Provide the authenticated DID by opening the node configuration file which defaults to `~/.ceramic/daemon.config.json` and specifying it in the `admin-dids` section of the file as shown below:
+
+```json
+{
+  ...
+  "http-api": {
+    ...
+    "admin-dids": ["did:key:..."]
+  },
+  "indexing": {
+    ...
+    "allow-queries-before-historical-sync": true
+  }
+}
+```
+
+Save this file. By this point you should have your development environment and all configurations in place to get started working on your application.
+  
+
+## Confirmation
+As a final test, spin up the Ceramic local node:
+
+```sh
+ceramic daemon --network=testnet-clay
+```
+
+Once again, you should see your local Ceramic node up and running as follows:
+
+```sh
+IMPORTANT: Ceramic API running on 0.0.0.0:7007'
+```
+
+## Next steps
+After setting up your environment, the next step is to **[Create your composite](./create-your-composite.mdx) →**
+
+<!-- ## Related Guides
+Ready to go to production? Learn how to deploy your app: [Server configuration](https://www.notion.so/Server-configuration-226c2bf34a6d43e9b7e8331b823735ed) -->

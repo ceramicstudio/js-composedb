@@ -4,7 +4,7 @@ title: "CLI: graphql:* commands"
 custom_edit_url: null
 ---
 
-The group of [CLI](../modules/cli.md) `graphql:*` commands makes it possible to generate GraphQL Schemas from [runtime definitions](./cli.composite.md#composedb-compositecompile) of your [Composites](../../guides/concepts-overview.md#composites) and run a local GraphQL HTTP server
+The group of [CLI](../modules/cli.md) `graphql:*` commands makes it possible to generate GraphQL Schemas from [runtime definitions](./cli.composite.md#composedb-compositecompile) of your [Composites](../../data-modeling-concepts.mdx#composites) and run a local GraphQL HTTP server
 
 ## Command List
 
@@ -18,7 +18,7 @@ The group of [CLI](../modules/cli.md) `graphql:*` commands makes it possible to 
 Load the runtime graphql schema for the composite with given runtime definition
 
 You can use this command to see the ComposeDB GraphQL Execution Schema for your composite.
-You will be using this schema in your DApp to perform [Queries](../../guides/interacting/mutations.mdx) and [Mutations](../../guides/interacting/mutations.mdx)
+You will be using this schema in your DApp to perform Queries and Mutations. <!-- [Queries](../../guides/interacting/mutations.mdx) and [Mutations](../../guides/interacting/mutations.mdx) -->
 
 ```
 USAGE

@@ -6,9 +6,9 @@ custom_edit_url: null
 
 ComposeDB CLI - the Command Line Interface that enables interactions with a Ceramic Node
 
-You can check the [Getting Started](../../first-composite.mdx) Section for some examples (remember to switch to the 'Using the CLI' tab!)
+You can check the [Getting Started](../../set-up-your-environment.mdx) Section for some examples.
 
-You can also check documentation for particular commands to see more detailed usage explanations and links to examples
+<!-- You can also check documentation for particular commands to see more detailed usage explanations and links to examples. -->
 
 ## Installation
 
@@ -26,7 +26,7 @@ The CLI exposes commands with different prefixes which make it possible to:
 | [`composedb composite:*`](../commands/cli.composite.md) | create and interact with Composites                                     |
 | [`composedb model:*`](../commands/cli.model.md)         | create and interact with Models                                         |
 | [`composedb document:*`](../commands/cli.document.md)   | create and interact with Documents                                      |
-| [`composedb graphql:*`](../commands/cli.did.md)         | generate ComposeDB GraphQl Schemas and run a local GraphQL HTTP server  |
+| [`composedb graphql:*`](../commands/cli.graphql.md)         | generate ComposeDB GraphQl Schemas and run a local GraphQL HTTP server  |
 
 ## Help
 

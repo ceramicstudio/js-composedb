@@ -3,7 +3,7 @@ import { inspect } from 'util'
 import { SyncOptions } from '@ceramicnetwork/common'
 import { getResolver as get3IDResolver } from '@ceramicnetwork/3id-did-resolver'
 import { CeramicClient } from '@ceramicnetwork/http-client'
-import { Command as CoreCommand, Flags } from '@oclif/core'
+import { Args, Command as CoreCommand, Flags } from '@oclif/core'
 import { type DIDProvider, DID } from 'dids'
 import type { ResolverRegistry } from 'did-resolver'
 import { Ed25519Provider } from 'key-did-provider-ed25519'
@@ -31,11 +31,10 @@ export type QueryCommandFlags = CommandFlags & {
   sync?: string
 }
 
-export const STREAM_ID_ARG = {
-  name: 'streamId',
+export const STREAM_ID_ARG = Args.string({
   required: true,
   description: 'ID of the stream',
-}
+})
 
 /* Not using Flags.string.parse, because it's not supported anymore to either:
    a. have a Flags.integer flag with a string input and parse(...) returning an integer

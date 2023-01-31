@@ -1,6 +1,6 @@
 import { serveGraphQL } from '@composedb/devtools-node'
 import { Command, CommandFlags } from '../../command.js'
-import { Flags } from '@oclif/core'
+import { Args, Flags } from '@oclif/core'
 import fs from 'fs-extra'
 import { RuntimeCompositeDefinition } from '@composedb/types'
 
@@ -16,13 +16,12 @@ export default class GraphQLServer extends Command<
 > {
   static description = 'Load the graphQL schema from Composite '
 
-  static args = [
-    {
-      name: 'runtimeDefinitionPath',
+  static args = {
+    runtimeDefinitionPath: Args.string({
       required: false,
       description: 'ID of the stream',
-    },
-  ]
+    }),
+  }
 
   static flags = {
     ...Command.flags,
@@ -56,11 +55,16 @@ export default class GraphQLServer extends Command<
         graphiql: this.flags.graphiql,
         port: this.flags.port,
       })
-      this.spinner.info(`GraphQL server is listening on ${handler.url}`)
+      this.spinner.info(`GraphQL server is listening on http://localhost:${handler.port}/graphql`)
       const handleProcessKillGracefully = () => {
-        handler.stop(() => {
-          this.spinner.succeed('Server stopped')
-        })
+        handler.stop().then(
+          () => {
+            this.spinner.succeed('Server stopped')
+          },
+          () => {
+            this.spinner.fail('Failed to stop server')
+          }
+        )
       }
       process.on('SIGTERM', handleProcessKillGracefully)
       process.on('SIGINT', handleProcessKillGracefully)

@@ -7,8 +7,7 @@ custom_edit_url: null
 [client](../modules/client.md).ComposeClient
 
 The ComposeClient class provides APIs to execute queries on a GraphQL schema generated from a
-`RuntimeCompositeDefinition`. It allows applications to interact with documents using known
-models on a Ceramic node.
+`RuntimeCompositeDefinition`, leveraging the [`ComposeRuntime class`](runtime.ComposeRuntime.md).
 
 It is exported by the [`client`](../modules/client.md) module.
 
@@ -32,13 +31,13 @@ import { ComposeClient } from '@composedb/client'
 
 ### context
 
-• `get` **context**(): [`Context`](client.Context.md)
+• `get` **context**(): `Context`
 
 Context instance used internally.
 
 #### Returns
 
-[`Context`](client.Context.md)
+`Context`
 
 ___
 

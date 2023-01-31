@@ -1,16 +1,16 @@
+import { Args } from '@oclif/core'
 import { Model, ModelDefinition } from '@ceramicnetwork/stream-model'
 import { Command, type CommandFlags } from '../../command.js'
 
 export default class CreateModel extends Command<CommandFlags, { content: string }> {
   static description = 'create a model stream from content encoded as JSON'
 
-  static args = [
-    {
-      name: 'content',
+  static args = {
+    content: Args.string({
       required: true,
       description: 'Model content (JSON encoded as string)',
-    },
-  ]
+    }),
+  }
 
   async run(): Promise<void> {
     this.spinner.start('Creating the model...')

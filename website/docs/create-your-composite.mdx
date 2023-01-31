@@ -1,0 +1,107 @@
+# Create your composite
+The second step in getting started with ComposeDB on Ceramic is creating your composite to serve as your database schema. In this guide, we will create your first composite.
+
+:::tip
+
+Before proceeding you must have [set up your environment](./set-up-your-environment.mdx) in the previous step
+
+:::
+
+## Overview
+A composite is your database schema for ComposeDB, which includes a collection of data models. Once created, your composite instructs your node which models to index and also allows your client to perform queries and mutations on these models.
+
+
+## Data Model Catalog
+The Data Model Catalog contains all models created by other ComposeDB developers. By reusing models from the marketplace in your composite, you can instantly share and reuse data with other applications. This brings native app data composability to Web3 -- no more API integrations.
+
+To list all models in the marketplace, run the following command:
+
+```sh
+composedb model:list --table
+```
+<!-- curated model:list command -->
+
+Here, the flag `--table` will display the output in an organized table view and provide more details about each model’s functionality.
+
+**Response:** Below see a small snippet of the the output table. Each model has the following properties:
+
+-  `Name` - model name
+-  `Unique ID` - unique identifier (stream ID) for the model
+-  `Description` - description of the model’s functionality
+
+![Data Model Table](../static/img/data-model-table.png)
+
+
+## Creation
+In this section we will demonstrate how to create a composite by downloading models from the marketplace.
+
+<!-- 💡 Want to create a composite using new models not yet found on the marketplace? See the [Using models](https://www.notion.so/Using-models-d92f5986e2594ada841586efb21bb5a4) guide. -->
+
+### Single model
+You can fetch any existing model on Marketplace by referencing model’s unique ID. For example, for your basic social media app, let’s say you would like to use an existing SimpleProfile. To fetch the model, to your working directory, take note of the model stream ID in the table above and run the following command:
+
+```sh
+composedb composite:from-model kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc --ceramic-url=http://localhost:7007 --output=my-first-composite-single.json
+```
+
+After running the command above, your will have the SimpleProfile model stored locally in a file called `my-first-composite-single.json`.
+
+
+### Multiple models
+If your application needs multiple models, for example the SimpleProfile and Post models, you can. To fetch them, take note of the model stream IDs and provide them in a ComposeDB CLI command as follows:
+
+  
+```sh
+composedb composite:from-model kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc kjzl6hvfrbw6c99mdfpjx1z3fue7sesgua6gsl1vu97229lq56344zu9bawnf96 --ceramic-url=http://localhost:7007 --output=my-first-composite.json
+```
+
+The output of this command will be a composite file named `my-first-composite.json`.
+
+## Usage
+### Deployment
+You will have to deploy the composite with fetched models to your local Ceramic node so that they can be used when building and running your applications. This can be achieved by using ComposeDB CLI and referencing the composite file of fetched models in your local environment as shown below. Note that you have to provide your did private key to deploy the model:
+
+```sh
+composedb composite:deploy my-first-composite.json --ceramic-url=http://localhost:7007 --did-private-key=your_private_key
+```
+
+Whenever composites are deployed, the models will be automatically indexed. This also means that these models are shared across the network (at the moment, only Clay testnet). If you check the output produced by the terminal that runs your Ceramic local node, you should see a similar output:
+
+```sh
+IMPORTANT: Starting indexing for Model kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc
+
+IMPORTANT: Starting indexing for Model kjzl6hvfrbw6c99mdfpjx1z3fue7sesgua6gsl1vu97229lq56344zu9bawnf96
+
+IMPORTANT: Creating Compose DB Indexing table for model: kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc
+
+IMPORTANT: Creating Compose DB Indexing table for model: kjzl6hvfrbw6c99mdfpjx1z3fue7sesgua6gsl1vu97229lq56344zu9bawnf96
+```
+This means that the composite was deployed and the models were indexed on your local node successfully! 🎉
+  
+
+### Compilation
+The last step left is compiling the composite. This is necessary to interact with the data in the next step of this guide:
+
+```sh
+composedb composite:compile my-first-composite.json runtime-composite.json
+```
+
+The output of this command will be a json file called `runtime-composite.json`
+
+## Next steps
+Now that you have created your composite, you are ready to use it: **[Interact with data](./interact-with-data.mdx) →**
+
+<!--
+## Related Guides
+- [Data Modeling](https://www.notion.so/Data-Modeling-2599a8a3f4bd47d29c4898780a80f9cd)
+
+- [Model Catalog](https://www.notion.so/Model-Catalog-e2eddcca410f4a19b533fdccd7c5c6a0)
+
+- [Writing models](https://www.notion.so/Writing-models-e829e0e595574a0d90987f9acdc011f0)
+
+- [Writing models without relations](https://www.notion.so/Basics-ea065355247e49fb9013e2898597714b)
+
+- [Writing models with relations](https://www.notion.so/Relations-60f78e9672d04ef29a1002a38d7706b7)
+
+- [Using models](https://www.notion.so/Using-models-d92f5986e2594ada841586efb21bb5a4)
+-->

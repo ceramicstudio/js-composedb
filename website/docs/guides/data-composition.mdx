@@ -1,15 +1,15 @@
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import ThemedImage from '@theme/ThemedImage'
 
-# Data composition
+# Data Composition
 
-Data composition is at the heart of ComposeDB, using [composites](./concepts-overview.md#composites) as a proxy for datasets of [documents](./concepts-overview.md#documents) relevant to applications and services.
+Data composition is at the heart of ComposeDB, using composites as a proxy for datasets of documents relevant to applications and services.
 
-Composites represent sets of [models](./concepts-overview.md#models) that can be used to query, create and update documents, therefore it is important for developers to identify models to use, whether by [reusing models already adopted by the ecosystem](./using-composites/discovery.mdx) in order to access the set of documents already created using these models, or [creating new models](./creating-composites/overview.mdx) that would better suit specific needs.
+Composites represent sets of models that can be used to query, create and update documents, therefore it is important for developers to identify models to use, whether by [reusing models already adopted by the ecosystem](../create-your-composite.mdx) in order to access the set of documents already created using these models, or [creating new models](./creating-composites/overview.mdx) that would better suit specific needs.
 
-## Models composition
+## Models Composition
 
-The following schema describes how composites can be created by [merging existing composites](./using-composites/customization.mdx#merging-composites) (composites `D` and `A'` below) and [extracting models from a composite](./using-composites/customization.mdx#extracting-models) (composites `E` and `F` below).
+The following schema describes how composites can be created by merging existing composites (see composites `D` and `A'` below) and extracting models from a composite (represented by composites `E` and `F` below).
 
 The same datasets can be represented by different composites, such as the composites `A` and `A'` below that contain the same models.
 
@@ -26,16 +26,16 @@ The same datasets can be represented by different composites, such as the compos
 The ComposeDB graph representation supports the following types of edges (relations) between nodes:
 
 - [Account to document](#account-to-document), with two variants:
-  - Single: an [account](./concepts-overview.md#accounts) can only be related to **one** [document](./concepts-overview.md#documents) of a given [model](./concepts-overview.md#models).
-  - Multiple: an [account](./concepts-overview.md#accounts) can be related to **many** [documents](./concepts-overview.md#documents) of a given [model](./concepts-overview.md#models).
-- [Document to account](#document-to-account): a [document](./concepts-overview.md#documents) can contain properties storing relations to an [account](./concepts-overview.md#accounts).
-- [Document to document](#document-to-account): a [document](./concepts-overview.md#documents) can contain properties storing relations to another [document](./concepts-overview.md#documents).
+  - Single: an account can only be related to **one** document of a given model.
+  - Multiple: an account can be related to **many** documents of a given model.
+- [Document to account](#document-to-account): a document can contain properties storing relations to an account.
+- [Document to document](#document-to-account): a document can contain properties storing relations to another document.
 
-Direct edges between accounts are **not supported** by ComposeDB, but relations can be defined indirectly by using an intermediary [document](./concepts-overview.md#documents).
+Direct edges between accounts are **not supported** by ComposeDB, but relations can be defined indirectly by using an intermediary document.
 
 ### Account to document
 
-The relations between documents and the account controlling (having created and being able to update) them are defined in the [model](./concepts-overview.md#models) used by the document.
+The relations between documents and the account controlling (having created and being able to update) them are defined in the model used by the document.
 
 ComposeDB currently supports two variants for these relations:
 
@@ -59,7 +59,7 @@ In order to make these fields directly queryable from the index, the schema must
 
 ### Document to document
 
-Relations between documents can be defined on fields using the [`StreamID` scalar](./creating-composites/scalars.md#streamid) with the [`@documentReference` directive](./creating-composites/directives.md#documentreference) specifying the [model](./concepts-overview.md#models) the related document must use. This allows to define **many-to-one** relations between documents, for example many "comment" documents to a single "post" document.
+Relations between documents can be defined on fields using the [`StreamID` scalar](./creating-composites/scalars.md#streamid) with the [`@documentReference` directive](./creating-composites/directives.md#documentreference) specifying the model the related document must use. This allows to define **many-to-one** relations between documents, for example many "comment" documents to a single "post" document.
 
 Using the ComposeDB runtime, the associated document can be accessed directly if a view using the [`@relationDocument` directive](./creating-composites/directives.md#relationdocument) is defined in the model.
 
