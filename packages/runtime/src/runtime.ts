@@ -11,7 +11,7 @@ import {
   validate,
 } from 'graphql'
 
-import { Context } from './context.js'
+import { type Context, createContext } from './context.js'
 import type { DocumentCache } from './loader.js'
 import { type GetSchemaParams, getSchema } from './utils.js'
 
@@ -48,12 +48,12 @@ export class ComposeRuntime {
   constructor(params: ComposeRuntimeParams) {
     const { ceramic, context, definition, readonly, schema, ...contextParams } = params
     const ceramicClient = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
-    this.#context = context ?? new Context({ ...contextParams, ceramic: ceramicClient })
+    this.#context = context ?? createContext({ ...contextParams, ceramic: ceramicClient })
     this.#schema = getSchema({ definition, readonly, schema })
   }
 
   /**
-   * Context instance used internally.
+   * Context object used internally.
    */
   get context(): Context {
     return this.#context

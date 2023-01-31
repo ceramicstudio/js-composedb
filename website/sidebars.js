@@ -110,8 +110,6 @@ const sidebars = {
         { type: 'doc', id: 'api/modules/server', label: 'ComposeDB Server' },
         { type: 'doc', id: 'api/classes/client.ComposeClient', label: 'ComposeClient class' },
         { type: 'doc', id: 'api/classes/runtime.ComposeRuntime', label: 'ComposeRuntime class' },
-        { type: 'doc', id: 'api/classes/runtime.Context', label: 'Context class' },
-        { type: 'doc', id: 'api/classes/server.ComposeServer', label: 'ComposeServer class' },
       ],
     },
     {

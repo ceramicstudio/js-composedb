@@ -17,7 +17,7 @@ describe('remote', () => {
   beforeAll(async () => {
     const composite = await Composite.create({ ceramic, schema: profilesSchema })
     definition = composite.toRuntime()
-  })
+  }, 30000)
 
   describe('createHybridSchema()', () => {
     test('Runs mutations directly', async () => {

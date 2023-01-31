@@ -12,65 +12,23 @@ ComposeDB server for hybrid execution on the [`ComposeDB client`](client.md).
 npm install @composedb/server
 ```
 
-## Classes
-
-- [ComposeServer](../classes/server.ComposeServer.md)
-
 ## Type Aliases
 
-### ComposeServerParams
+### GraphQLParams
 
-Ƭ **ComposeServerParams**: `Object`
+Ƭ **GraphQLParams**<`ServerContext`\>: [`HandlerParams`](server.md#handlerparams)<`ServerContext`\> & { `port?`: `number` \| `number`[]  }
 
-#### Type declaration
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `cache?` | `DocumentCache` | Optional cache for documents. |
-| `ceramic` | `CeramicApi` \| `string` | Ceramic client instance or HTTP URL. |
-| `contextFactory?` | [`ContextFactoryFunction`](server.md#contextfactoryfunction) | Per-request context factory. |
-| `definition?` | `RuntimeCompositeDefinition` | Runtime composite definition, created using the [`Composite`](../classes/devtools.Composite.md) development tools. |
-| `graphiql?` | `boolean` | Enable GraphiQL support. |
-| `schema?` | `GraphQLSchema` | GraphQL Schema to use, ignores the `definition` parameter if provided. |
-
-___
-
-### ContextFactoryFunction
-
-Ƭ **ContextFactoryFunction**: (`executionContext`: `ExecutionContext`) => `Context`
-
-#### Type declaration
-
-▸ (`executionContext`): `Context`
-
-##### Parameters
+#### Type parameters
 
 | Name | Type |
 | :------ | :------ |
-| `executionContext` | `ExecutionContext` |
-
-##### Returns
-
-`Context`
+| `ServerContext` | extends `Record`<`string`, `any`\> = `Record`<`string`, `any`\> |
 
 ___
 
-### GraphQLServerParams
+### GraphQLServer
 
-Ƭ **GraphQLServerParams**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `options?` | `FastifyServerOptions` |
-| `port?` | `number` \| `number`[] |
-
-___
-
-### HTTPServerHandler
-
-Ƭ **HTTPServerHandler**: `Object`
+Ƭ **GraphQLServer**: `Object`
 
 #### Type declaration
 
@@ -79,7 +37,53 @@ ___
 | `port` | `number` |
 | `stop` | () => `Promise`<`void`\> |
 
+___
+
+### HandlerParams
+
+Ƭ **HandlerParams**<`ServerContext`\>: `Object`
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `ServerContext` | extends `Record`<`string`, `any`\> = `Record`<`string`, `any`\> |
+
+#### Type declaration
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `cache?` | `DocumentCache` | Optional cache for documents. |
+| `ceramic` | `CeramicApi` \| `string` | Ceramic client instance or HTTP URL. |
+| `definition?` | `RuntimeCompositeDefinition` | Runtime composite definition, created using the [`Composite`](../classes/devtools.Composite.md) development tools. |
+| `options?` | `YogaServerOptions`<`ServerContext`, `Context`\> | [Yoga server](https://the-guild.dev/graphql/yoga-server/docs) options. |
+| `schema?` | `GraphQLSchema` | GraphQL Schema to use, ignores the `definition` parameter if provided. |
+
 ## Functions
+
+### createHandler
+
+▸ **createHandler**<`ServerContext`\>(`params`): `YogaServerInstance`<`ServerContext`, `Context`\>
+
+Create a [Yoga server](https://the-guild.dev/graphql/yoga-server/docs) handling GraphQL requests.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `ServerContext` | extends `Record`<`string`, `any`\> = `Record`<`string`, `any`\> |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | [`HandlerParams`](server.md#handlerparams)<`ServerContext`\> |
+
+#### Returns
+
+`YogaServerInstance`<`ServerContext`, `Context`\>
+
+___
 
 ### getViewerID
 
@@ -89,10 +93,34 @@ Returns the viewer ID sent by the client, if set.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `request` | `Request` | [GraphQL Helix `Request` object](https://graphql-helix.vercel.app/docs/types) |
+| Name | Type |
+| :------ | :------ |
+| `request` | `Request` |
 
 #### Returns
 
 `string` \| ``null`` \| `undefined`
+
+___
+
+### startGraphQLServer
+
+▸ **startGraphQLServer**<`ServerContext`\>(`params`): `Promise`<[`GraphQLServer`](server.md#graphqlserver)\>
+
+Start a local GraphQL server.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `ServerContext` | extends `Record`<`string`, `any`\> = `Record`<`string`, `any`\> |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | [`GraphQLParams`](server.md#graphqlparams)<`ServerContext`\> |
+
+#### Returns
+
+`Promise`<[`GraphQLServer`](server.md#graphqlserver)\>

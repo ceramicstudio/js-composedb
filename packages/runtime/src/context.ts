@@ -25,123 +25,125 @@ export type ContextParams = {
   loader?: DocumentLoader
 }
 
-/**
- * GraphQL execution context, exported by the {@linkcode runtime} module.
- *
- * ```sh
- * import { Context } from '@composedb/runtime'
- * ```
- */
-export class Context {
-  #ceramic: CeramicApi
-  #loader: DocumentLoader
-  #fallbackViewerID: string | null | undefined
-
-  constructor(params: ContextParams) {
-    const { cache, ceramic, fallbackViewerID } = params
-    this.#ceramic = ceramic
-    this.#loader = params.loader ?? new DocumentLoader({ ceramic, cache })
-    this.#fallbackViewerID = fallbackViewerID
-  }
-
+export type Context = {
   /**
    * Returns whether the Ceramic client instance used internally is authenticated or not. When not
    * authenticated, mutations will fail.
    */
-  get authenticated(): boolean {
-    return this.#ceramic.did?.authenticated ?? false
-  }
-
+  isAuthenticated: () => boolean
   /**
    * Ceramic client instance used internally.
    */
-  get ceramic(): CeramicApi {
-    return this.#ceramic
-  }
-
+  ceramic: CeramicApi
   /**
    * Document loader instance used internally.
    */
-  get loader(): DocumentLoader {
-    return this.#loader
-  }
-
+  loader: DocumentLoader
   /**
    * ID of the current viewer (authenticated DID), if set.
    */
-  get viewerID(): string | null {
-    const did = this.#ceramic.did
-    return did ? (did.hasParent ? did.parent : did.id) : this.#fallbackViewerID ?? null
-  }
-
+  getViewerID: () => string | null
   /**
    * Load a document by ID, using the cache if possible.
    */
-  async loadDoc<Content extends Record<string, any> = Record<string, any>>(
+  loadDoc: <Content extends Record<string, any>>(
     id: string | CommitID | StreamID,
-    fresh = false
-  ): Promise<ModelInstanceDocument<Content>> {
-    if (fresh) {
-      this.#loader.clear(id)
-    }
-    return await this.#loader.load<Content>(id)
-  }
-
+    fresh?: boolean
+  ) => Promise<ModelInstanceDocument<Content>>
   /**
    * Create a new document with the given model and content.
    */
-  async createDoc<Content extends Record<string, any> = Record<string, any>>(
+  createDoc: <Content extends Record<string, any>>(
     model: string,
     content: Content
-  ): Promise<ModelInstanceDocument<Content>> {
-    return await this.#loader.create(model, content)
-  }
-
+  ) => Promise<ModelInstanceDocument<Content>>
   /**
    * Create a new single document with the given model and content.
    */
-  async createSingle<Content extends Record<string, any> = Record<string, any>>(
+  createSingle: <Content extends Record<string, any>>(
     model: string,
     content: Content
-  ): Promise<ModelInstanceDocument<Content>> {
-    const controller = this.viewerID
-    if (controller == null) {
-      throw new Error('Document can only be created with an authenticated account')
-    }
-    const doc = await this.#loader.single<Content>(controller, model)
-    await doc.replace(content)
-    return doc
-  }
-
+  ) => Promise<ModelInstanceDocument<Content>>
   /**
    * Update an existing document.
    */
-  async updateDoc<Content extends Record<string, any> = Record<string, any>>(
+  updateDoc: <Content extends Record<string, any>>(
     id: string | StreamID,
     content: Content,
     options?: UpdateDocOptions
-  ): Promise<ModelInstanceDocument<Content>> {
-    return await this.#loader.update(id, content, options)
-  }
-
+  ) => Promise<ModelInstanceDocument<Content>>
   /**
    * Query the index for a connection of documents.
    */
-  async queryConnection(query: ConnectionQuery): Promise<Connection<ModelInstanceDocument | null>> {
-    return await queryConnection(this.#ceramic, query)
-  }
-
+  queryConnection: (query: ConnectionQuery) => Promise<Connection<ModelInstanceDocument | null>>
   /**
    * Query the index for the total number of documents matching the query parameters.
    */
-  async queryCount(query: BaseQuery): Promise<number> {
-    return await this.#ceramic.index.count(toBaseQuery(query))
-  }
-
+  queryCount: (query: BaseQuery) => Promise<number>
   /**
    * Query the index for a single document.
    */
-  async querySingle(query: BaseQuery): Promise<ModelInstanceDocument | null> {
-    return await querySingle(this.#ceramic, query)
+  querySingle: (query: BaseQuery) => Promise<ModelInstanceDocument | null>
+}
+
+export function createContext(params: ContextParams): Context {
+  const { cache, ceramic, fallbackViewerID } = params
+  const loader = params.loader ?? new DocumentLoader({ ceramic, cache })
+
+  function getViewerID(): string | null {
+    const did = ceramic.did
+    return did ? (did.hasParent ? did.parent : did.id) : fallbackViewerID ?? null
+  }
+
+  return {
+    ceramic,
+    loader,
+    getViewerID,
+    isAuthenticated: (): boolean => ceramic.did?.authenticated ?? false,
+    loadDoc: async <Content extends Record<string, any> = Record<string, any>>(
+      id: string | CommitID | StreamID,
+      fresh = false
+    ): Promise<ModelInstanceDocument<Content>> => {
+      if (fresh) {
+        loader.clear(id)
+      }
+      return await loader.load<Content>(id)
+    },
+    createDoc: async <Content extends Record<string, any> = Record<string, any>>(
+      model: string,
+      content: Content
+    ): Promise<ModelInstanceDocument<Content>> => {
+      return await loader.create(model, content)
+    },
+    createSingle: async <Content extends Record<string, any> = Record<string, any>>(
+      model: string,
+      content: Content
+    ): Promise<ModelInstanceDocument<Content>> => {
+      const controller = getViewerID()
+      if (controller == null) {
+        throw new Error('Document can only be created with an authenticated account')
+      }
+      const doc = await loader.single<Content>(controller, model)
+      await doc.replace(content)
+      return doc
+    },
+    updateDoc: async <Content extends Record<string, any> = Record<string, any>>(
+      id: string | StreamID,
+      content: Content,
+      options?: UpdateDocOptions
+    ): Promise<ModelInstanceDocument<Content>> => {
+      return await loader.update(id, content, options)
+    },
+    queryConnection: async (
+      query: ConnectionQuery
+    ): Promise<Connection<ModelInstanceDocument | null>> => {
+      return await queryConnection(ceramic, query)
+    },
+    queryCount: async (query: BaseQuery): Promise<number> => {
+      return await ceramic.index.count(toBaseQuery(query))
+    },
+    querySingle: async (query: BaseQuery): Promise<ModelInstanceDocument | null> => {
+      return await querySingle(ceramic, query)
+    },
   }
 }

@@ -1,6 +1,6 @@
 import { CeramicClient } from '@ceramicnetwork/http-client'
-import { Context, createGraphQLSchema } from '@composedb/runtime'
-import { type HTTPServerHandler, ComposeServer } from '@composedb/server'
+import { createContext, createGraphQLSchema } from '@composedb/runtime'
+import { type GraphQLServer, startGraphQLServer } from '@composedb/server'
 import type { RuntimeCompositeDefinition } from '@composedb/types'
 import type { DID } from 'dids'
 
@@ -58,16 +58,18 @@ export type ServeGraphQLParams = ServeParams & {
 /**
  * Create a local GraphQL server to interact with a runtime composite definition.
  */
-export async function serveGraphQL(params: ServeGraphQLParams): Promise<HTTPServerHandler> {
+export async function serveGraphQL(params: ServeGraphQLParams): Promise<GraphQLServer> {
   const { ceramicURL, definition, readonly, did, graphiql, port } = params
   const ceramic = new CeramicClient(ceramicURL)
   if (did != null) {
     ceramic.did = did
   }
-  const context = new Context({ ceramic })
-  const schema = createGraphQLSchema({ definition, readonly })
-  const server = new ComposeServer({ ceramic, contextFactory: () => context, graphiql, schema })
-  return await server.startGraphQLServer({ port })
+  return await startGraphQLServer({
+    ceramic,
+    options: { context: createContext({ ceramic }), graphiql },
+    port,
+    schema: createGraphQLSchema({ definition, readonly }),
+  })
 }
 
 /**
@@ -75,7 +77,7 @@ export async function serveGraphQL(params: ServeGraphQLParams): Promise<HTTPServ
  */
 export async function serveEncodedDefinition(
   params: ServeDefinitionParams
-): Promise<HTTPServerHandler> {
+): Promise<GraphQLServer> {
   const { path, ...rest } = params
   const composite = await readEncodedComposite(params.ceramicURL, path)
   return await serveGraphQL({ ...rest, definition: composite.toRuntime() })

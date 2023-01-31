@@ -30,4 +30,4 @@ npm install @composedb/client
 | `ceramic` | `CeramicApi` \| `string` | Ceramic client instance or HTTP URL. |
 | `definition` | `RuntimeCompositeDefinition` | Runtime composite definition, created using the [`Composite`](../classes/devtools.Composite.md) development tools. |
 | `remoteExecutor?` | `Executor` | Optional remote query executor. |
-| `serverURL?` | `string` | Optional query server URL. |
+| `serverURL?` | `string` | Optional [`query server`](server.md) URL. |

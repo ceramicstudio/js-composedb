@@ -32,13 +32,13 @@ import { ComposeRuntime } from '@composedb/runtime'
 
 ### context
 
-• `get` **context**(): [`Context`](runtime.Context.md)
+• `get` **context**(): [`Context`](../modules/runtime.md#context)
 
-Context instance used internally.
+Context object used internally.
 
 #### Returns
 
-[`Context`](runtime.Context.md)
+[`Context`](../modules/runtime.md#context)
 
 ## Methods
 

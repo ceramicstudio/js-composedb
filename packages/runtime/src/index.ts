@@ -11,7 +11,7 @@
  */
 
 export { ComposeRuntime, type ComposeRuntimeParams } from './runtime.js'
-export { Context, type ContextParams } from './context.js'
+export { type Context, type ContextParams, createContext } from './context.js'
 export type { DocumentCache } from './loader.js'
 export { createGraphQLSchema } from './schema.js'
 export { getSchema, printGraphQLSchema } from './utils.js'

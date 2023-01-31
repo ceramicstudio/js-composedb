@@ -123,7 +123,7 @@ ___
 
 ### serveEncodedDefinition
 
-▸ **serveEncodedDefinition**(`params`): `Promise`<`HTTPServerHandler`\>
+▸ **serveEncodedDefinition**(`params`): `Promise`<`GraphQLServer`\>
 
 Create a local GraphQL server to interact with an encoded composite definition.
 
@@ -135,13 +135,13 @@ Create a local GraphQL server to interact with an encoded composite definition.
 
 #### Returns
 
-`Promise`<`HTTPServerHandler`\>
+`Promise`<`GraphQLServer`\>
 
 ___
 
 ### serveGraphQL
 
-▸ **serveGraphQL**(`params`): `Promise`<`HTTPServerHandler`\>
+▸ **serveGraphQL**(`params`): `Promise`<`GraphQLServer`\>
 
 Create a local GraphQL server to interact with a runtime composite definition.
 
@@ -153,7 +153,7 @@ Create a local GraphQL server to interact with a runtime composite definition.
 
 #### Returns
 
-`Promise`<`HTTPServerHandler`\>
+`Promise`<`GraphQLServer`\>
 
 ___
 

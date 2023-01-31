@@ -3,8 +3,9 @@ import { CeramicClient } from '@ceramicnetwork/http-client'
 import {
   ComposeRuntime,
   type ComposeRuntimeParams,
-  Context,
+  type Context,
   type DocumentCache,
+  createContext,
 } from '@composedb/runtime'
 import type { RuntimeCompositeDefinition } from '@composedb/types'
 import type { Executor } from '@graphql-tools/utils'
@@ -32,7 +33,7 @@ export type ComposeClientParams = {
    */
   remoteExecutor?: Executor
   /**
-   * Optional query server URL.
+   * Optional {@linkcode server query server} URL.
    */
   serverURL?: string
 }
@@ -55,7 +56,7 @@ export class ComposeClient {
   constructor(params: ComposeClientParams) {
     const { ceramic, definition, remoteExecutor, serverURL, ...contextParams } = params
     const ceramicClient = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
-    this.#context = new Context({ ...contextParams, ceramic: ceramicClient })
+    this.#context = createContext({ ...contextParams, ceramic: ceramicClient })
     this.#resources = Object.values(definition.models).map((model) => {
       return `ceramic://*?model=${model.id}`
     })
@@ -94,7 +95,7 @@ export class ComposeClient {
    * Ceramic instance is not authenticated and mutations will fail.
    */
   get id(): string | null {
-    return this.#context.viewerID
+    return this.#context.getViewerID()
   }
 
   /**

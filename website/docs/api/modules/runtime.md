@@ -15,13 +15,34 @@ npm install @composedb/runtime
 ## Classes
 
 - [ComposeRuntime](../classes/runtime.ComposeRuntime.md)
-- [Context](../classes/runtime.Context.md)
 
 ## Type Aliases
 
 ### ComposeRuntimeParams
 
-Ƭ **ComposeRuntimeParams**: [`GetSchemaParams`](runtime.md#getschemaparams) & { `cache?`: [`DocumentCache`](runtime.md#documentcache) \| `boolean` ; `ceramic`: `CeramicApi` \| `string` ; `context?`: [`Context`](../classes/runtime.Context.md)  }
+Ƭ **ComposeRuntimeParams**: [`GetSchemaParams`](runtime.md#getschemaparams) & { `cache?`: [`DocumentCache`](runtime.md#documentcache) \| `boolean` ; `ceramic`: `CeramicApi` \| `string` ; `context?`: [`Context`](runtime.md#context)  }
+
+___
+
+### Context
+
+Ƭ **Context**: `Object`
+
+#### Type declaration
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `ceramic` | `CeramicApi` | Ceramic client instance used internally. |
+| `createDoc` | <Content\>(`model`: `string`, `content`: `Content`) => `Promise`<`ModelInstanceDocument`<`Content`\>\> | Create a new document with the given model and content. |
+| `createSingle` | <Content\>(`model`: `string`, `content`: `Content`) => `Promise`<`ModelInstanceDocument`<`Content`\>\> | Create a new single document with the given model and content. |
+| `getViewerID` | () => `string` \| ``null`` | ID of the current viewer (authenticated DID), if set. |
+| `isAuthenticated` | () => `boolean` | Returns whether the Ceramic client instance used internally is authenticated or not. When not authenticated, mutations will fail. |
+| `loadDoc` | <Content\>(`id`: `string` \| `CommitID` \| `StreamID`, `fresh?`: `boolean`) => `Promise`<`ModelInstanceDocument`<`Content`\>\> | Load a document by ID, using the cache if possible. |
+| `loader` | `DocumentLoader` | Document loader instance used internally. |
+| `queryConnection` | (`query`: `ConnectionQuery`) => `Promise`<`Connection`<`ModelInstanceDocument` \| ``null``\>\> | Query the index for a connection of documents. |
+| `queryCount` | (`query`: `BaseQuery`) => `Promise`<`number`\> | Query the index for the total number of documents matching the query parameters. |
+| `querySingle` | (`query`: `BaseQuery`) => `Promise`<`ModelInstanceDocument` \| ``null``\> | Query the index for a single document. |
+| `updateDoc` | <Content\>(`id`: `string` \| `StreamID`, `content`: `Content`, `options?`: `UpdateDocOptions`) => `Promise`<`ModelInstanceDocument`<`Content`\>\> | Update an existing document. |
 
 ___
 
@@ -67,6 +88,22 @@ ___
 | `schema?` | `GraphQLSchema` | GraphQL Schema to use, ignores the `definition` and `readonly` parameters if provided. |
 
 ## Functions
+
+### createContext
+
+▸ **createContext**(`params`): [`Context`](runtime.md#context)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | [`ContextParams`](runtime.md#contextparams) |
+
+#### Returns
+
+[`Context`](runtime.md#context)
+
+___
 
 ### createGraphQLSchema
 

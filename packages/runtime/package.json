@@ -49,7 +49,7 @@
     "graphql-relay": "^0.10.0"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "2.18.0",
+    "@ceramicnetwork/common": "^2.18.0",
     "@composedb/devtools": "workspace:^0.3.0",
     "@composedb/test-schemas": "workspace:^0.3.0",
     "@composedb/types": "workspace:^0.3.0",
