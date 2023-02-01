@@ -41,7 +41,27 @@ const sidebars = {
     { type: 'doc', id: 'community', label: 'Community' },
   ],
   guides: [
-    'guides/data-composition',
+    {
+      type: 'category',
+      collapsed: false,
+      label: 'Data Modeling',
+      link: { type: 'doc', id: 'guides/data-modeling/data-modeling' },
+      items: [
+        { type: 'doc', id: 'guides/data-modeling/model-catalog', label: 'Model Catalog' },
+        {
+          type: 'category',
+          collapsed: true,
+          label: 'Writing Models',
+          link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
+          items: [
+            { type: 'doc', id: 'guides/data-modeling/introduction-to-modeling', label: 'Introduction to Modeling' },
+            { type: 'doc', id: 'guides/data-modeling/schemas', label: 'Schemas' },
+            { type: 'doc', id: 'guides/data-modeling/relations', label: 'Relations' },
+          ],
+        },
+        { type: 'doc', id: 'guides/data-modeling/composites', label: 'Composites' },
+      ],
+    },
     {
       type: 'category',
       label: 'Using composites',
@@ -81,6 +101,7 @@ const sidebars = {
         },
       ],
     },
+    'guides/data-composition',
   ],
   api: [
     {

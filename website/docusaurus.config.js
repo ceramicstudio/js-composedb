@@ -92,7 +92,7 @@ const config = {
           },
           {
             type: 'doc',
-            docId: 'guides/data-composition',
+            docId: 'guides/data-modeling/data-modeling',
             activeBasePath: 'docs/guides',
             position: 'left',
             label: 'Guides',
