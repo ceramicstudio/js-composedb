@@ -178,7 +178,7 @@ export const GraphQLTime = new GraphQLScalarType({
   },
   parseLiteral(ast) {
     if (ast.kind !== Kind.STRING) {
-      throw new TypeError(`Time cannot represent non string type ${'value' in ast && ast.value}`)
+      throw new TypeError(`Time cannot represent non string type: ${ast.kind}`)
     }
     const value = ast.value
     if (validateTime(value)) {

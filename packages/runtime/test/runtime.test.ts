@@ -132,7 +132,26 @@ describe('runtime', () => {
       mutation CreateScalars($input: CreateExtraScalarsInput!) {
         createExtraScalars(input: $input) {
           document {
-            id
+            accountID
+            chainID
+            cid
+            commitID
+            countryCode
+            date
+            dateTime
+            did {
+              id
+            }
+            latitude
+            localDate
+            locale
+            localTime
+            longitude
+            streamID
+            time
+            timeZone
+            uri
+            utcOffset
           }
         }
       }
@@ -166,6 +185,6 @@ describe('runtime', () => {
         },
       }
     )
-    expect(res.data?.createExtraScalars.document.id).toBeDefined()
-  }, 60000)
+    expect(res.data?.createExtraScalars.document).toMatchSnapshot()
+  }, 20000)
 })

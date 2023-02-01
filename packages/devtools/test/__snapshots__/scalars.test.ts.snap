@@ -99,10 +99,10 @@ exports[`scalars support extra scalars 1`] = `
             "title": "GraphQLTimeZone",
             "type": "string",
           },
-          "GraphQLURL": {
+          "GraphQLURI": {
             "format": "uri",
             "maxLength": 100,
-            "title": "GraphQLURL",
+            "title": "GraphQLURI",
             "type": "string",
           },
           "GraphQLUtcOffset": {
@@ -168,8 +168,8 @@ exports[`scalars support extra scalars 1`] = `
           "timeZone": {
             "$ref": "#/$defs/GraphQLTimeZone",
           },
-          "url": {
-            "$ref": "#/$defs/GraphQLURL",
+          "uri": {
+            "$ref": "#/$defs/GraphQLURI",
           },
           "utcOffset": {
             "$ref": "#/$defs/GraphQLUtcOffset",
@@ -270,9 +270,9 @@ exports[`scalars support extra scalars 2`] = `
         "required": false,
         "type": "timezone",
       },
-      "url": {
+      "uri": {
         "required": false,
-        "type": "url",
+        "type": "uri",
       },
       "utcOffset": {
         "required": false,

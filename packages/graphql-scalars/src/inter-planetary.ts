@@ -2,7 +2,7 @@ import { GraphQLError, GraphQLScalarType, Kind } from 'graphql'
 import { CID } from 'multiformats/cid'
 
 function validateCID(input: unknown): string {
-  const cid = CID.asCID(input)
+  const cid = typeof input === 'string' ? CID.parse(input) : CID.asCID(input)
   if (cid == null) {
     throw new GraphQLError(`Could not parse input as CID: ${input as string}`)
   }

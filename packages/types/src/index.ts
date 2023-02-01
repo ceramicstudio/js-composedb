@@ -205,7 +205,7 @@ export type RuntimeModel = { id: string; accountRelation: ModelAccountRelation }
  */
 export type RuntimeCompositeDefinition = {
   /**
-   * Models names to stream IDs mapping.
+   * Models names to runtime models mapping.
    */
   models: Record<string, RuntimeModel>
   /**
