@@ -24,10 +24,10 @@ creation and interactions with
 
 Create an encoded composite definition from a list of already existing model
 stream ids (usually found by
-[Composites Discovery](../../guides/using-composites/discovery.mdx))
+[Model Catalog](../../guides/data-modeling/model-catalog.mdx))
 
 You can find a detailed guide on using an existing model to create your
-composite [here](../../create-your-composite.mdx)
+composite [here](../../guides/data-modeling/composites.mdx)
 
 ```
 USAGE
@@ -45,7 +45,7 @@ OPTIONS
 ### `composedb composite:create`
 
 Create an encoded composite definition from GraphQL
-[Composite Schema](../../guides/creating-composites/overview.mdx#composite-schema)
+[Composite Schema](../../guides/data-modeling/composites.mdx)
 
 <!-- You can find a detailed guide on the creation of Composites [here](../.././create-your-composite)
 replace with data modelling composites section -->
@@ -119,7 +119,7 @@ Deploy models included in the composite on connected ceramic node
 You will need to use this command to make sure that your DApp's Composite is
 available on the Ceramic Node that yor DApp connects to. You can find a detailed
 guide on Composites' deployment
-[here](../../guides/using-composites/deployment.mdx)
+[here](../../guides/data-modeling/composites.mdx)
 
 ```
 USAGE

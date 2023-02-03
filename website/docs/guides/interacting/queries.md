@@ -2,11 +2,11 @@
 
 The [`ComposeClient`](../../api/classes/client.ComposeClient.md) automatically generates a GraphQL Schema from the runtime composite definition.
 
-It notablly creates a [`CeramicAccount` object](#ceramicaccount-object) that replaces [`DID` scalar](../creating-composites/scalars.md#did) representations, and the root [`Query` object](#query-object) used as an entry-point to acces the graph.
+It notablly creates a [`CeramicAccount` object](#ceramicaccount-object) that replaces scalar representations, and the root [`Query` object](#query-object) used as an entry-point to acces the graph.
 
 ## CeramicAccount object
 
-The `CeramicAccount` object replaces all the [`DID` scalars](../creating-composites/scalars.md#did) from the composite definition, using the following fields:
+The `CeramicAccount` object replaces all the `DID` scalars from the composite definition, using the following fields:
 
 - `id: ID!`: the DID string value.
 - `isViewer: Boolean!`: whether the account authenticated to the Ceramic instance matches the `id`.

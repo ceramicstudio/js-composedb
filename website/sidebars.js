@@ -64,6 +64,83 @@ const sidebars = {
     },
     {
       type: 'category',
+      collapsed: false,
+      label: 'Application Setup',
+      link: { type: 'doc', id: 'guides/data-modeling/data-modeling' },
+      items: [
+        {
+          type: 'category',
+          collapsed: false,
+          label: 'ComposeDB Server',
+          link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
+          items: [
+            { type: 'doc', id: 'guides/data-modeling/introduction-to-modeling', label: 'Running Locally' },
+            {
+              type: 'category',
+              collapsed: true,
+              label: 'Running in the Cloud',
+              link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
+              items: [
+                { type: 'doc', id: 'guides/data-modeling/introduction-to-modeling', label: 'Cloud Templates' },
+                { type: 'doc', id: 'guides/data-modeling/introduction-to-modeling', label: 'Using DockerHub' },
+                { type: 'doc', id: 'guides/data-modeling/schemas', label: 'Using npm' },
+                { type: 'doc', id: 'guides/data-modeling/relations', label: 'Cloud Best Practices' },
+              ],
+            },
+            {
+              type: 'category',
+              collapsed: true,
+              label: 'Server Configurations',
+              link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
+              items: [
+                { type: 'doc', id: 'guides/data-modeling/introduction-to-modeling', label: 'Configuration File' },
+                { type: 'doc', id: 'guides/data-modeling/schemas', label: 'Command Line Config' },
+              ],
+            },
+            { type: 'doc', id: 'guides/data-modeling/relations', label: 'Data Storage' },
+          ],
+        },
+        {
+          type: 'category',
+          collapsed: false,
+          label: 'ComposeDB Client',
+          link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
+          items: [
+            {
+              type: 'category',
+              collapsed: true,
+              label: 'Javascript Client',
+              link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
+              items: [
+                { type: 'doc', id: 'guides/data-modeling/introduction-to-modeling', label: 'Using Apollo' },
+                { type: 'doc', id: 'guides/data-modeling/schemas', label: 'Using Relay' },
+              ],
+            },
+            {
+              type: 'category',
+              collapsed: true,
+              label: 'Authenticate Users',
+              link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
+              items: [
+                { type: 'doc', id: 'guides/data-modeling/schemas', label: 'User Sessions' },
+              ],
+            },          ],
+        },
+      ],
+    },
+    {
+      type: 'category',
+      collapsed: false,
+      label: 'Data Interactions',
+      link: { type: 'doc', id: 'guides/data-modeling/data-modeling' },
+      items: [
+        { type: 'doc', id: 'guides/data-modeling/model-catalog', label: 'Queries' },
+        { type: 'doc', id: 'guides/data-modeling/composites', label: 'Mutations' },
+      ],
+    },
+    {
+      type: 'category',
+      collapsed: true,
       label: 'Interacting with data',
       link: {
         type: 'generated-index',
