@@ -92,7 +92,7 @@ const config = {
           },
           {
             type: 'doc',
-            docId: 'guides/data-modeling/data-modeling',
+            docId: 'guides/index',
             activeBasePath: 'docs/guides',
             position: 'left',
             label: 'Guides',

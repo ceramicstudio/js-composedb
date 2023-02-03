@@ -45,7 +45,10 @@ const sidebars = {
       type: 'category',
       collapsed: false,
       label: 'Data Modeling',
-      link: { type: 'doc', id: 'guides/data-modeling/data-modeling' },
+      link: {
+        type: 'doc',
+        id: 'guides/index',
+      }, //{ type: 'doc', id: 'guides/data-modeling/data-modeling' },
       items: [
         { type: 'doc', id: 'guides/data-modeling/model-catalog', label: 'Model Catalog' },
         {
@@ -54,7 +57,11 @@ const sidebars = {
           label: 'Writing Models',
           link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
           items: [
-            { type: 'doc', id: 'guides/data-modeling/introduction-to-modeling', label: 'Introduction to Modeling' },
+            {
+              type: 'doc',
+              id: 'guides/data-modeling/introduction-to-modeling',
+              label: 'Introduction to Modeling',
+            },
             { type: 'doc', id: 'guides/data-modeling/schemas', label: 'Schemas' },
             { type: 'doc', id: 'guides/data-modeling/relations', label: 'Relations' },
           ],
@@ -74,17 +81,33 @@ const sidebars = {
           label: 'ComposeDB Server',
           link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
           items: [
-            { type: 'doc', id: 'guides/data-modeling/introduction-to-modeling', label: 'Running Locally' },
+            {
+              type: 'doc',
+              id: 'guides/data-modeling/introduction-to-modeling',
+              label: 'Running Locally',
+            },
             {
               type: 'category',
               collapsed: true,
               label: 'Running in the Cloud',
               link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
               items: [
-                { type: 'doc', id: 'guides/data-modeling/introduction-to-modeling', label: 'Cloud Templates' },
-                { type: 'doc', id: 'guides/data-modeling/introduction-to-modeling', label: 'Using DockerHub' },
+                {
+                  type: 'doc',
+                  id: 'guides/data-modeling/introduction-to-modeling',
+                  label: 'Cloud Templates',
+                },
+                {
+                  type: 'doc',
+                  id: 'guides/data-modeling/introduction-to-modeling',
+                  label: 'Using DockerHub',
+                },
                 { type: 'doc', id: 'guides/data-modeling/schemas', label: 'Using npm' },
-                { type: 'doc', id: 'guides/data-modeling/relations', label: 'Cloud Best Practices' },
+                {
+                  type: 'doc',
+                  id: 'guides/data-modeling/relations',
+                  label: 'Cloud Best Practices',
+                },
               ],
             },
             {
@@ -93,7 +116,11 @@ const sidebars = {
               label: 'Server Configurations',
               link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
               items: [
-                { type: 'doc', id: 'guides/data-modeling/introduction-to-modeling', label: 'Configuration File' },
+                {
+                  type: 'doc',
+                  id: 'guides/data-modeling/introduction-to-modeling',
+                  label: 'Configuration File',
+                },
                 { type: 'doc', id: 'guides/data-modeling/schemas', label: 'Command Line Config' },
               ],
             },
@@ -112,7 +139,11 @@ const sidebars = {
               label: 'Javascript Client',
               link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
               items: [
-                { type: 'doc', id: 'guides/data-modeling/introduction-to-modeling', label: 'Using Apollo' },
+                {
+                  type: 'doc',
+                  id: 'guides/data-modeling/introduction-to-modeling',
+                  label: 'Using Apollo',
+                },
                 { type: 'doc', id: 'guides/data-modeling/schemas', label: 'Using Relay' },
               ],
             },
@@ -121,10 +152,9 @@ const sidebars = {
               collapsed: true,
               label: 'Authenticate Users',
               link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
-              items: [
-                { type: 'doc', id: 'guides/data-modeling/schemas', label: 'User Sessions' },
-              ],
-            },          ],
+              items: [{ type: 'doc', id: 'guides/data-modeling/schemas', label: 'User Sessions' }],
+            },
+          ],
         },
       ],
     },
