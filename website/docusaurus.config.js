@@ -127,7 +127,7 @@ const config = {
               },
               {
                 label: 'Guides',
-                to: '/docs/0.3.x/category/guides',
+                to: '/docs/0.3.x/guides',
               },
               {
                 label: 'API',
