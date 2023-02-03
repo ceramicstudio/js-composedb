@@ -64,20 +64,6 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Using composites',
-      link: {
-        type: 'generated-index',
-        description:
-          'Composites are the primary representation for data models used by ComposeDB. They allow developers to create, share, reuse and combine models together in a consistent way.',
-      },
-      items: [
-        { type: 'doc', id: 'guides/using-composites/discovery', label: 'Discovery' },
-        { type: 'doc', id: 'guides/using-composites/deployment', label: 'Deployment' },
-        { type: 'doc', id: 'guides/using-composites/customization', label: 'Customization' },
-      ],
-    },
-    {
-      type: 'category',
       label: 'Interacting with data',
       link: {
         type: 'generated-index',
@@ -101,7 +87,6 @@ const sidebars = {
         },
       ],
     },
-    'guides/data-composition',
   ],
   api: [
     {

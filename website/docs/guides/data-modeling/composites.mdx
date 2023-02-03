@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem'
 Guides for creating, deploying, and using composites.
 
 ## Overview
-In order to start using a new model in your application, first you’ll have to convert it into a composite. Composites are collections of one or more models and represent the complete GraphQL schema for your application.
+In order to start using a new model in your application, first you’ll have to include it within a composite. Composites are collections of one or more models and represent the complete GraphQL schema for your application.
 
 ## Prerequisites
 - If you want to manage your composites from the CLI, you will need to have it installed
@@ -26,7 +26,7 @@ For advanced usage such as merging, extracting or inspecting composites, see [Ad
 :::
 
 ### Creating composites
-Let’s say you have a model written in a `my-schema.graphql` file. To convert this model into a composite, run the following:
+Let’s say you have a model written in a `my-schema.graphql` file. To convert this schema into a composite, run the following:
 
 <Tabs
   defaultValue="cli"
@@ -137,7 +137,7 @@ await composite.startIndexingOn(ceramic)
 This will also automatically add all models contained in the composite to the [Model Catalog](./model-catalog). 
 
 ### Compiling composites
-After deploying your composite, compile it so you can start interacting with data:
+After deploying your composite, compile it so you can start perform [data Interactions](notion.so guide) using the [ComposeDB Client](notion.so app setup)
 
 ```sh
 composedb composite:compile my-first-composite.json runtime-composite.json
