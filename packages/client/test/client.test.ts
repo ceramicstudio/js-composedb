@@ -116,10 +116,12 @@ describe('client', () => {
   }, 60000)
 
   test('with remote executor', async () => {
-    const remoteExecutor = jest.fn() as Executor
+    const remoteExecutor = jest.fn(() => {
+      return { data: {} }
+    }) as Executor
     const composite = await Composite.create({ ceramic, schema: profilesSchema })
     const client = new ComposeClient({ ceramic, definition: composite.toRuntime(), remoteExecutor })
-    await client.executeQuery(`
+    const res = await client.executeQuery(`
       query {
         viewer {
           genericProfile {
@@ -128,6 +130,7 @@ describe('client', () => {
         }
       }
     `)
+    expect(res.errors).not.toBeDefined()
     expect(remoteExecutor).toHaveBeenCalled()
   }, 30000)
 })

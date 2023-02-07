@@ -21,10 +21,22 @@ describe('remote', () => {
 
   describe('createHybridSchema()', () => {
     test('Runs mutations directly', async () => {
+      const createSingle = jest.fn(() => {
+        return {
+          id: 'createdDocumentID',
+          metadata: { model: definition.models['GenericProfile'].id },
+        }
+      })
       const remoteExecutor = jest.fn() as Executor
       const schema = createHybridSchema({ definition, remoteExecutor })
 
-      await execute({
+      const res = await execute({
+        contextValue: {
+          ceramic: {
+            did: { authenticated: true },
+          },
+          createSingle,
+        },
         schema,
         document: parse(`
         mutation CreateProfile($input: CreateGenericProfileInput!) {
@@ -32,24 +44,23 @@ describe('remote', () => {
             document {
               id
             }
-            viewer {
-              genericProfile {
-                name
-              }
-            }
           }
         }
       `),
         variableValues: { input: { content: { name: 'Alice' } } },
       })
+      expect(res.errors).not.toBeDefined()
+      expect(createSingle).toHaveBeenCalled()
       expect(remoteExecutor).not.toHaveBeenCalled()
     })
 
     test('Runs queries remotely', async () => {
-      const remoteExecutor = jest.fn() as Executor
+      const remoteExecutor = jest.fn(() => {
+        return { data: {} }
+      }) as Executor
       const schema = createHybridSchema({ definition, remoteExecutor })
 
-      await execute({
+      const res = await execute({
         schema,
         document: parse(`
         query {
@@ -61,6 +72,7 @@ describe('remote', () => {
         }
       `),
       })
+      expect(res.errors).not.toBeDefined()
       expect(remoteExecutor).toHaveBeenCalledTimes(1)
     })
   })

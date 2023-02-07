@@ -53,8 +53,10 @@
     "@composedb/devtools": "workspace:^0.3.0",
     "@composedb/test-schemas": "workspace:^0.3.0",
     "@composedb/types": "workspace:^0.3.0",
+    "caip": "^1.1.0",
     "dids": "^3.3.0",
-    "jest-environment-composedb": "workspace:^0.3.0"
+    "jest-environment-composedb": "workspace:^0.3.0",
+    "multiformats": "^9.9.0"
   },
   "jest": {
     "extensionsToTreatAsEsm": [

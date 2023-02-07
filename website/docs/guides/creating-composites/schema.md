@@ -1,10 +1,16 @@
 # Schema definition
 
-Composite schemas are based on [GraphQL's Schema Definition Language](https://graphql.org/learn/schema/), using a subset of functionalities offered by GraphQL to describe models used by ComposeDB.
+Composite schemas are based on
+[GraphQL's Schema Definition Language](https://graphql.org/learn/schema/), using
+a subset of functionalities offered by GraphQL to describe models used by
+ComposeDB.
 
 ## Schema Definition Language
 
-The Schema Definition Language (SDL) allows to represent [scalars](#scalars) (values), [shapes](#shapes-and-lists) (key-value mappings) and [lists](#shapes-and-lists) to describe the models structure, as well as validation and other metadata information using [directives](#directives).
+The Schema Definition Language (SDL) allows to represent [scalars](#scalars)
+(values), [shapes](#shapes-and-lists) (key-value mappings) and
+[lists](#shapes-and-lists) to describe the models structure, as well as
+validation and other metadata information using [directives](#directives).
 
 An example composite schema can look like the following:
 
@@ -13,9 +19,16 @@ type Profile @createModel(accountRelation: SINGLE, description: "Very basic prof
   displayName: String! @string(minLength: 3, maxLength: 50)
 }
 
+enum NoteStatus {
+  DEFAULT
+  IMPORTANT
+  ARCHIVE
+}
+
 type Note @createModel(accountRelation: LIST, description: "Very basic note") {
   author: DID! @documentAccount
   version: CommitID! @documentVersion
+  status: NoteStatus
   title: String! @string(minLength: 10, maxLength: 100)
   text: String @string(maxLength: 2000)
 }
@@ -23,9 +36,11 @@ type Note @createModel(accountRelation: LIST, description: "Very basic note") {
 
 ## Scalars
 
-Scalars represent the type of a single value in the schema, such as `String` for UTF-8 character sequences, or `Int` for signed 32-bit integers.
+Scalars represent the type of a single value in the schema, such as `String` for
+UTF-8 character sequences, or `Int` for signed 32-bit integers.
 
-When scalars are followed by a `!` in the schema, it means providing a value is required, for example:
+When scalars are followed by a `!` in the schema, it means providing a value is
+required, for example:
 
 ```graphql
 type SomeShape {
@@ -34,17 +49,34 @@ type SomeShape {
 }
 ```
 
-Scalars can be followed by [directives](#directives) providing additional information about the value, such as validation rules.
+Scalars can be followed by [directives](#directives) providing additional
+information about the value, such as validation rules.
 
-Scalars supported by ComposeDB are described in the [scalars page of the documentation](./scalars.md).
+Scalars supported by ComposeDB are described in the
+[scalars page of the documentation](./scalars.md).
+
+## Enums
+
+Enums represent the type of a single string value in the schema from a set of
+accepted values, for example:
+
+```graphql
+enum NoteStatus {
+  DEFAULT
+  IMPORTANT
+  ARCHIVE
+}
+```
 
 ## Shapes and lists
 
-Scalars and shapes can be composed together in lists and other shapes, such as the `ImageMetadata` shape embedded in the `ImageSources` shape in the following example:
+Scalars and shapes can be composed together in lists and other shapes, such as
+the `ImageMetadata` shape embedded in the `ImageSources` shape in the following
+example:
 
 ```graphql
 type ImageMetadata {
-  src: String! @string(maxLength: 150)
+  src: URI! @string(maxLength: 150)
   mimeType: String! @string(maxLength: 50)
   width: Int! @int(min: 1)
   height: Int! @int(min: 1)
@@ -59,13 +91,15 @@ type ImageSources {
 
 :::caution
 
-The [the `@list` directive](./directives.md#list) **must be used** along with lists to define the `maxLength` of the list.
+The [the `@list` directive](./directives.md#list) **must be used** along with
+lists to define the `maxLength` of the list.
 
 :::
 
 ## Directives
 
-Directives are known keywords preceded by the character `@`, for example `@string` to provide validation rules about a `String` value:
+Directives are known keywords preceded by the character `@`, for example
+`@string` to provide validation rules about a `String` value:
 
 ```graphql
 type SomeShape {
@@ -73,4 +107,5 @@ type SomeShape {
 }
 ```
 
-Directives supported by ComposeDB are described in the [directives page of the documentation](./directives.md).
+Directives supported by ComposeDB are described in the
+[directives page of the documentation](./directives.md).

@@ -9,42 +9,69 @@ import {
 } from 'graphql'
 import {
   GraphQLCountryCode,
-  GraphQLDate,
-  //GraphQLDateTime,
   GraphQLDID,
-  GraphQLTime,
+  GraphQLDuration,
+  GraphQLLatitude,
+  GraphQLLocalDate,
+  GraphQLLocale,
+  GraphQLLocalTime,
+  GraphQLLongitude,
+  GraphQLTimeZone,
+  GraphQLUtcOffset,
 } from 'graphql-scalars'
 
 import { CeramicCommitID, CeramicStreamID } from './ceramic.js'
-
-//@TODO Remove these imports when https://github.com/Urigo/graphql-scalars/pull/1641 is merged
-import { DateTime as GraphQLDateTime } from './datetime.js'
-export { DateTime as GraphQLDateTime } from './datetime.js'
+import { ChainAgnosticAccountID, ChainAgnosticChainID } from './chain-agnostic.js'
+// TODO: Remove these imports when https://github.com/Urigo/graphql-scalars/pull/1641 is merged
+import { GraphQLDate, GraphQLDateTime, GraphQLTime } from './datetime.js'
+import { InterPlanetaryCID } from './inter-planetary.js'
+import { GraphQLURI } from './uri.js'
 
 export {
   GraphQLCountryCode,
-  GraphQLDate,
-  //GraphQLDateTime,
   GraphQLDID,
-  GraphQLTime,
+  GraphQLDuration,
+  GraphQLLatitude,
+  GraphQLLocalDate,
+  GraphQLLocale,
+  GraphQLLocalTime,
+  GraphQLLongitude,
+  GraphQLTimeZone,
+  GraphQLUtcOffset,
 } from 'graphql-scalars'
 export { CeramicCommitID, CeramicStreamID } from './ceramic.js'
+export { ChainAgnosticAccountID, ChainAgnosticChainID } from './chain-agnostic.js'
+export { GraphQLDate, GraphQLDateTime, GraphQLTime } from './datetime.js'
+export { InterPlanetaryCID } from './inter-planetary.js'
+export { GraphQLURI } from './uri.js'
 
 export type ScalarMap = Record<RuntimeScalarType, GraphQLScalarType>
 
 export const scalars: ScalarMap = {
+  accountid: ChainAgnosticAccountID,
   boolean: GraphQLBoolean,
+  chainid: ChainAgnosticChainID,
+  cid: InterPlanetaryCID,
   commitid: CeramicCommitID,
   countrycode: GraphQLCountryCode,
   date: GraphQLDate,
   datetime: GraphQLDateTime,
   did: GraphQLDID,
+  duration: GraphQLDuration,
   float: GraphQLFloat,
   id: GraphQLID,
   integer: GraphQLInt,
+  latitude: GraphQLLatitude,
+  localdate: GraphQLLocalDate,
+  locale: GraphQLLocale,
+  localtime: GraphQLLocalTime,
+  longitude: GraphQLLongitude,
   streamid: CeramicStreamID,
   string: GraphQLString,
   time: GraphQLTime,
+  timezone: GraphQLTimeZone,
+  uri: GraphQLURI,
+  utcoffset: GraphQLUtcOffset,
 }
 
 export const scalarTypes = Object.keys(scalars)

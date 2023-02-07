@@ -56,11 +56,6 @@ scalars to define a different `maxLength` as needed.
 
 :::
 
-### `CommitID`
-
-Identifies a specific version of a Stream in the Ceramic network, following the
-[CommitID specification](https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#commitid).
-
 ### `DID`
 
 A Decentralized Identifier, representing an actor able to create and mutate
@@ -72,6 +67,30 @@ Documents in the graph, using
 Identifies a specific Stream in the Ceramic network, following the
 [StreamID specification](https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#streamid).
 
+### `CommitID`
+
+Identifies a specific version of a Stream in the Ceramic network, following the
+[CommitID specification](https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#commitid).
+
+### `CID`
+
+A Content Identifier, as used by
+[IPFS](https://docs.ipfs.tech/concepts/content-addressing/#what-is-a-cid).
+
+### `ChainID`
+
+A Chain Agnostic Chain Identifier, as
+[specified by Chain Agnostic CAIP-2](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-2.md).
+
+### `AccountID`
+
+A Chain Agnostic Account Identifier, as
+[specified by Chain Agnostic CAIP-10](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-10.md).
+
+### `URI`
+
+RFC 3986 compliant URI string, such as `https://ceramic.network`.
+
 ## Date and time
 
 The following scalars can be used to store date and time values using standard
@@ -79,9 +98,8 @@ representations.
 
 ### `Date`
 
-RFC 3339 compliant date string without time information, `2007-12-03` for
-example, using
-[GraphQL Scalars](https://www.graphql-scalars.dev/docs/scalars/date).
+RFC 3339 compliant date string without time information, such as `2007-12-03`,
+using [GraphQL Scalars](https://www.graphql-scalars.dev/docs/scalars/date).
 
 ### `DateTime`
 
@@ -92,3 +110,52 @@ A date-time string at UTC, such as `2007-12-03T10:15:30Z`, using
 
 A time string at UTC, such as `10:15:30Z`, using
 [GraphQL Scalars](https://www.graphql-scalars.dev/docs/scalars/time).
+
+### `LocalDate`
+
+A local date string (with no associated timezone) in `YYYY-MM-DD` format, such
+as `2007-12-03`, using
+[GraphQL Scalars](https://www.graphql-scalars.dev/docs/scalars/local-date).
+
+### `LocalTime`
+
+A local time string (i.e., with no associated timezone) in 24-hr
+`HH:mm[:ss[.SSS]]` format, such as `14:25`, `14:25:06` or `14:25:06.123`, using
+[GraphQL Scalars](https://www.graphql-scalars.dev/docs/scalars/local-time).
+
+### `TimeZone`
+
+Standard IANA time zone, using
+[GraphQL Scalars](https://the-guild.dev/graphql/scalars/docs/scalars/time-zone).
+
+### `UTCOffset`
+
+A string with format `±hh: mm`, using
+[GraphQL Scalars](https://www.graphql-scalars.dev/docs/scalars/utc-offset).
+
+### `Duration`
+
+ISO 8601 duration string, such as `P1W1DT13H23M34S`, using
+[GraphQL Scalars](https://www.graphql-scalars.dev/docs/scalars/duration).
+
+## Geography and internationalization
+
+### `Latitude`
+
+Decimal degrees latitude number, using
+[GraphQL Scalars](https://the-guild.dev/graphql/scalars/docs/scalars/latitude).
+
+### `Longitude`
+
+Decimal degrees longitude number, using
+[GraphQL Scalars](https://the-guild.dev/graphql/scalars/docs/scalars/longitude).
+
+### `CountryCode`
+
+ISO 3166-1 alpha-2 country code string, using
+[GraphQL Scalars](https://the-guild.dev/graphql/scalars/docs/scalars/country-code).
+
+### `Locale`
+
+RFC 5646 locale string, such as `en-GB`, using
+[GraphQL Scalars](https://the-guild.dev/graphql/scalars/docs/scalars/locale).
