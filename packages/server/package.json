@@ -44,7 +44,7 @@
     "@composedb/runtime": "workspace:^0.3.0",
     "get-port": "^6.1.2",
     "graphql": "^16.5.0",
-    "graphql-yoga": "^3.4.0"
+    "graphql-yoga": "^3.5.1"
   },
   "devDependencies": {
     "@ceramicnetwork/common": "^2.18.0",

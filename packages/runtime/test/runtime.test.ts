@@ -8,6 +8,7 @@ import { Composite } from '@composedb/devtools'
 import {
   createCommentSchemaWithPost,
   loadPostSchemaWithComments,
+  noteSchema,
   postSchema,
   profilesSchema,
   extraScalarsSchema,
@@ -186,5 +187,33 @@ describe('runtime', () => {
       }
     )
     expect(res.data?.createExtraScalars.document).toMatchSnapshot()
+  }, 20000)
+
+  test('create a document with enum', async () => {
+    const composite = await Composite.create({ ceramic, schema: noteSchema })
+    const runtime = new ComposeRuntime({ ceramic, definition: composite.toRuntime() })
+    const res = await runtime.executeQuery<{ createNote: { document: { id: string } } }>(
+      `
+      mutation CreateNote($input: CreateNoteInput!) {
+        createNote(input: $input) {
+          document {
+            status
+            title
+            text
+          }
+        }
+      }
+      `,
+      {
+        input: {
+          content: {
+            status: 'DEFAULT',
+            title: 'A test note',
+            text: 'Test node contents',
+          },
+        },
+      }
+    )
+    expect(res.data?.createNote.document).toMatchSnapshot()
   }, 20000)
 })
