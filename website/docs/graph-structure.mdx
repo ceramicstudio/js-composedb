@@ -7,11 +7,11 @@ ComposeDB is is designed similar to a property graph database.
 
 ## Accounts
 
-Ceramic uses [Decentralized Identifiers (DIDs)](https://w3c.github.io/did-core/) for [Authentication](./guides/composedb-client/user-sessions), which get translated to [`CeramicAccount` objects](./guides/data-interactions/queries#ceramicaccount-object) by the ComposeDB client.
+Ceramic uses [Decentralized Identifiers (DIDs)](https://w3c.github.io/did-core/) for [Authentication](./guides/composedb-client/user-sessions.mdx), which get translated to [`CeramicAccount` objects](./guides/data-interactions/queries.mdx#ceramicaccount-object) by the ComposeDB client.
 
 DIDs can represent any entity that is able to write data on Ceramic and therefore in ComposeDB, which can be end-users of an application, groups, applications or any kind of authenticated service.
 
-In order to write or [mutate data](./guides/data-interactions/mutations)  within ComposeDB, a DID must be authorized within the client instance.
+In order to write or [mutate data](./guides/data-interactions/mutations.mdx)  within ComposeDB, a DID must be authorized within the client instance.
 
 ## Documents
 
@@ -19,4 +19,4 @@ Documents are [Ceramic streams](https://developers.ceramic.network/learn/advanc
 
 Ceramic nodes can be configured to index specific models, storing all the documents using a model in a local database in order to provide fast access and query capabilities.
 
-Using [GraphQL](https://graphql.org/), the ComposeDB client allows to query documents indexed by a Ceramic node, as well as creating new documents and updating existing ones when [mutations](./guides/data-interactions/mutations) are enabled. 
+Using [GraphQL](https://graphql.org/), the ComposeDB client allows to query documents indexed by a Ceramic node, as well as creating new documents and updating existing ones when [mutations](./guides/data-interactions/mutations.mdx) are enabled. 
