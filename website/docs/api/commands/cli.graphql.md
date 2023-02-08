@@ -19,7 +19,7 @@ Load the runtime graphql schema for the composite with given runtime definition
 
 You can use this command to see the ComposeDB GraphQL Execution Schema for your composite.
 
-You will be using this schema in your app to perform [Queries](../../guides/data-interactions/queries) and [Mutations](../../guides/data-interactions/mutations).
+You will be using this schema in your app to perform [Queries](../../guides/data-interactions/queries) and [Mutations](../../guides/data-interactions/mutations.mdx).
 
 ```
 USAGE
