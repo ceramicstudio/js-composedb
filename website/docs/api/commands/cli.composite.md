@@ -44,7 +44,7 @@ OPTIONS
 
 Create an encoded composite definition from GraphQL [Composite Schema](../../guides/data-modeling/composites.mdx)
 
-You can find a detailed guide on the creation of Composites [here](../../guides/data-modeling/composites)
+You can find a detailed guide on the creation of Composites [here](../../guides/data-modeling/composites.mdx)
 
 ```
 USAGE
