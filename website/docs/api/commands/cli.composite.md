@@ -5,7 +5,7 @@ custom_edit_url: null
 ---
 
 The group of [CLI](../modules/cli.md) `composite:*` commands enables the
-creation and interactions with [Composites](../../guides/data-modeling/composites)
+creation and interactions with [Composites](../../guides/data-modeling/composites.mdx)
 
 ## Command List
 
@@ -25,7 +25,7 @@ Create an encoded composite definition from a list of already existing model
 stream ids (usually found within [Model Catalog](../../guides/data-modeling/model-catalog.mdx)
 
 You can find a detailed guide on using an existing model to create your
-composite [here](../../guides/data-modeling/composites)
+composite [here](../../guides/data-modeling/composites.mdx)
 
 ```
 USAGE
