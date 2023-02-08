@@ -42,7 +42,12 @@
     "@ceramicnetwork/http-client": "^2.15.0",
     "@ceramicnetwork/stream-model-instance": "^0.14.0",
     "@ceramicnetwork/streamid": "^2.10.0",
+    "@composedb/constants": "workspace:^0.3.0",
     "@composedb/graphql-scalars": "workspace:^0.3.1",
+    "@composedb/runtime": "workspace:^0.3.0",
+    "@graphql-tools/batch-execute": "^8.5.16",
+    "@graphql-tools/stitch": "^8.7.39",
+    "@graphql-tools/utils": "^9.2.0",
     "dataloader": "^2.1.0",
     "graphql": "^16.5.0",
     "graphql-relay": "^0.10.0"

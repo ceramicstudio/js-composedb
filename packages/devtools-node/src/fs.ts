@@ -1,6 +1,6 @@
 import { CeramicClient } from '@ceramicnetwork/http-client'
 import { Composite } from '@composedb/devtools'
-import { printGraphQLSchema } from '@composedb/client'
+import { printGraphQLSchema } from '@composedb/runtime'
 import type { EncodedCompositeDefinition, RuntimeCompositeDefinition } from '@composedb/types'
 import fs from 'fs-extra'
 import { resolve } from 'path'

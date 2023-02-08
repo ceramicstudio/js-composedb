@@ -1,27 +1,24 @@
 import type { CeramicApi } from '@ceramicnetwork/common'
 import { CeramicClient } from '@ceramicnetwork/http-client'
-import type { RuntimeCompositeDefinition } from '@composedb/types'
-import type { DID } from 'dids'
 import {
-  type DocumentNode,
-  type ExecutionResult,
-  type GraphQLError,
-  type Source,
-  GraphQLSchema,
-  execute,
-  parse,
-  validate,
-} from 'graphql'
+  ComposeRuntime,
+  type ComposeRuntimeParams,
+  type Context,
+  type DocumentCache,
+  createContext,
+} from '@composedb/runtime'
+import type { RuntimeCompositeDefinition } from '@composedb/types'
+import type { Executor } from '@graphql-tools/utils'
+import type { DID } from 'dids'
+import type { DocumentNode, ExecutionResult, Source } from 'graphql'
 
-import { Context } from './context.js'
-import type { DocumentCache } from './loader.js'
-import { createGraphQLSchema } from './schema.js'
+import { createHybridSchema } from './remote.js'
 
 export type ComposeClientParams = {
   /**
    * Optional cache for documents.
    */
-  cache?: DocumentCache | boolean
+  cache?: DocumentCache
   /**
    * Ceramic client instance or HTTP URL.
    */
@@ -31,12 +28,19 @@ export type ComposeClientParams = {
    * development tools.
    */
   definition: RuntimeCompositeDefinition
+  /**
+   * Optional remote query executor.
+   */
+  remoteExecutor?: Executor
+  /**
+   * Optional {@linkcode server query server} URL.
+   */
+  serverURL?: string
 }
 
 /**
  * The ComposeClient class provides APIs to execute queries on a GraphQL schema generated from a
- * `RuntimeCompositeDefinition`. It allows applications to interact with documents using known
- * models on a Ceramic node.
+ * `RuntimeCompositeDefinition`, leveraging the {@linkcode runtime.ComposeRuntime ComposeRuntime class}.
  *
  * It is exported by the {@linkcode client} module.
  *
@@ -47,17 +51,29 @@ export type ComposeClientParams = {
 export class ComposeClient {
   #context: Context
   #resources: Array<string>
-  #schema: GraphQLSchema
+  #runtime: ComposeRuntime
 
   constructor(params: ComposeClientParams) {
-    const { ceramic, definition, ...contextParams } = params
-    const ceramiClient = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
-
-    this.#context = new Context({ ...contextParams, ceramic: ceramiClient })
+    const { ceramic, definition, remoteExecutor, serverURL, ...contextParams } = params
+    const ceramicClient = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
+    this.#context = createContext({ ...contextParams, ceramic: ceramicClient })
     this.#resources = Object.values(definition.models).map((model) => {
       return `ceramic://*?model=${model.id}`
     })
-    this.#schema = createGraphQLSchema({ definition })
+    const runtimeParams: ComposeRuntimeParams = {
+      ceramic: ceramicClient,
+      context: this.#context,
+      definition,
+    }
+    if (remoteExecutor != null || serverURL != null) {
+      runtimeParams.schema = createHybridSchema({
+        definition,
+        getViewerID: () => this.id,
+        remoteExecutor,
+        serverURL,
+      })
+    }
+    this.#runtime = new ComposeRuntime(runtimeParams)
   }
 
   /**
@@ -79,7 +95,7 @@ export class ComposeClient {
    * Ceramic instance is not authenticated and mutations will fail.
    */
   get id(): string | null {
-    return this.#context.viewerID
+    return this.#context.getViewerID()
   }
 
   /**
@@ -104,15 +120,7 @@ export class ComposeClient {
     document: DocumentNode,
     variableValues?: Record<string, unknown>
   ): Promise<ExecutionResult<Data>> {
-    const errors = validate(this.#schema, document)
-    return errors.length > 0
-      ? { errors }
-      : ((await execute({
-          document,
-          variableValues,
-          contextValue: this.#context,
-          schema: this.#schema,
-        })) as unknown as ExecutionResult<Data>)
+    return await this.#runtime.execute<Data>(document, variableValues)
   }
 
   /**
@@ -122,12 +130,6 @@ export class ComposeClient {
     source: string | Source,
     variableValues?: Record<string, unknown>
   ): Promise<ExecutionResult<Data>> {
-    let document: DocumentNode
-    try {
-      document = parse(source)
-    } catch (syntaxError) {
-      return { errors: [syntaxError as GraphQLError] }
-    }
-    return await this.execute<Data>(document, variableValues)
+    return await this.#runtime.executeQuery<Data>(source, variableValues)
   }
 }
