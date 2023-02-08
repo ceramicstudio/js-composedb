@@ -1,5 +1,11 @@
 # @composedb/devtools
 
+## UNRELEASED
+
+### Patch Changes
+
+- Fix relation type during creation of `RuntimeCompositeDefinition`
+
 ## 0.3.1
 
 ### Patch Changes
