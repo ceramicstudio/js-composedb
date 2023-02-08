@@ -4,7 +4,7 @@ Learn how to write high-quality GraphQL schemas for your models.
 ## Overview
 ComposeDB models are written in GraphQL using GraphQL Schema Definition Language [(SDL)](https://graphql.org/learn/schema/). Your schema defines a collection of object types and the relationships between them. Those types will have scalars (values), shapes (key-value mappings), and lists to describe the structure and validation rules for the model, and use directives for other metadata information.
 
-We currently support a subset of SDL’s scalars and directives, but are continually adding more, see the [reference](../../api/sdl/scalars) for a complete list.
+We currently support a subset of SDL’s scalars and directives, but are continually adding more, see the [reference](../../api/sdl/scalars.mdx) for a complete list.
 
 ## Concepts
 Learn about key concepts for the GraphQL Schema Definition Language. 
@@ -43,8 +43,6 @@ GraphQL reserves the use of two special type names, `query` and `mutation`.
 
 - `query` type is used as the entry point when retrieving data using GraphQL
 - `mutation` type is used as the entry point when writing or changing data using GraphQL
-
-You will see more about these special types when you reach the module on **CRUD Operations**. 
 
 ### Embedded Shapes
 
@@ -96,4 +94,4 @@ Where:
 - `@list` adds validation rules to an array, e.g. maximum length
 
 ## Next Steps
-Learn how to add [**Relations**](../data-modeling/relations) to your schema [**→**](../data-modeling/relations)
+Learn how to add [**Relations**](../data-modeling/relations.mdx) to your schema [**→**](../data-modeling/relations.mdx)

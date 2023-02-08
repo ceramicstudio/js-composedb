@@ -44,7 +44,7 @@ Where:
 - The remainder of the query is standard GraphQL to retrieve the desired fields
 
 ## Querying relations
-In [Relations](../data-modeling/relations) you learned how to write models with relationships to other models or accounts. Here we demonstrate how to query those relations. Unlike basic queries, when querying relations allows you to specify fields in a related model to be returned as fields of the original model.
+In [Relations](../data-modeling/relations.mdx) you learned how to write models with relationships to other models or accounts. Here we demonstrate how to query those relations. Unlike basic queries, when querying relations allows you to specify fields in a related model to be returned as fields of the original model.
 
 ### Model to model relations
 
@@ -147,7 +147,7 @@ query ($id: ID!) {
 ComposeDB client automatically generates a GraphQL Schema from a compiled composite. It includes two objects: a  `CeramicAccount` object and a root `Query` object used as an entrypoint to access the graph.
 
 ### CeramicAccount Object
-The `CeramicAccount` object replaces [`DID` scalars](../../api/sdl/scalars#did) in your composite with the following fields:
+The `CeramicAccount` object replaces [`DID` scalars](../../api/sdl/scalars.mdx#did) in your composite with the following fields:
 
 - `id: ID!`: the DID string value
 - `isViewer: Boolean!`: whether the account authenticated to the Ceramic instance matches the `id`
@@ -161,8 +161,8 @@ The `Query` object provides entrypoints for accessing data in the graph, using
 - Other fields will be generated based on the models present in the definition, providing entry-points by querying the index
 
 ## Next Steps
-Head to the next section, [**Mutations**](./mutations), to learn how to write or modify data on the network. 
+Head to the next section, [**Mutations**](./mutations.mdx), to learn how to write or modify data on the network. 
 
 ## Related Guides
-- For additional context on the types of account and model relations, see the [**Relations**](../data-modeling/relations) guide
-- To learn how to compile and deploy a composite, see [**Composites**](../data-modeling/composites) 
+- For additional context on the types of account and model relations, see the [**Relations**](../data-modeling/relations.mdx) guide
+- To learn how to compile and deploy a composite, see [**Composites**](../data-modeling/composites.mdx) 

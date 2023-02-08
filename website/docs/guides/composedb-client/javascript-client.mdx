@@ -96,13 +96,13 @@ const compose = new ComposeClient({ ceramic: 'http://localhost:7007', definition
 
 ```
 
-More details: [`ComposeClient`](../../api/classes/client.ComposeClient)
+More details: [`ComposeClient`](../../api/classes/client.ComposeClient.md)
 
 ## Queries
 
 ### Executing Queries
 
-Execute GraphQL [Queries](../../guides/data-interactions/queries) using the schema that is auto-generated from your compiled composite:
+Execute GraphQL [Queries](../../guides/data-interactions/queries.mdx) using the schema that is auto-generated from your compiled composite:
 
 ```jsx
 // Get account of authenticated user
@@ -117,13 +117,13 @@ await compose.executeQuery(`
 
 ```
 
-More details: [`executeQuery`](../../api/classes/client.ComposeClient#executequery)
+More details: [`executeQuery`](../../api/classes/client.ComposeClient.md#executequery)
 
 ## Mutations
 
 ### Enabling Mutations
 
-**Before enabling mutations you must [Authenticate Users](./../composedb-client/authenticate-users).** After you have an authenticated user, enable [Mutations](../../guides/data-interactions/mutations) by setting their authenticated account on the ComposeDB client:
+**Before enabling mutations you must [Authenticate Users](./../composedb-client/authenticate-users.mdx).** After you have an authenticated user, enable [Mutations](../../guides/data-interactions/mutations.mdx) by setting their authenticated account on the ComposeDB client:
 
 
 <Tabs
@@ -155,10 +155,10 @@ compose.setDID(did)
 </Tabs>
 
 ### Executing mutations
-In your client, you can execute GraphQL mutations using the schema that is auto-generated from your compiled composite. You can follow examples in the [Data Interactions](../../guides/data-interactions) guides to learn more about performing [Queries](../../guides/data-interactions/queries) and [Mutations](../../guides/data-interactions/mutations).
+In your client, you can execute GraphQL mutations using the schema that is auto-generated from your compiled composite. You can follow examples in the [Data Interactions](../../guides/data-interactions/data-interactions.mdx) guides to learn more about performing [Queries](../../guides/data-interactions/queries.mdx) and [Mutations](../../guides/data-interactions/mutations.mdx).
 
 ## Next Steps
-- Learn how to [**Authenticate Users →**](./../composedb-client/authenticate-users)
+- Learn how to [**Authenticate Users →**](./../composedb-client/authenticate-users.mdx)
 
 ## Related Guides
-- ComposeDB’s JavaScript client optionally works with popular GraphQL clients like [**Apollo**](./../composedb-client/using-apollo) or [**Relay**](./../composedb-client/using-relay).
+- ComposeDB’s JavaScript client optionally works with popular GraphQL clients like [**Apollo**](./../composedb-client/using-apollo.mdx) or [**Relay**](./../composedb-client/using-relay.mdx).

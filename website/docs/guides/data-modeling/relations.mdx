@@ -11,7 +11,7 @@ There are a few primary forms of relations currently supported by ComposeDB:
 - [Account to account](#account-to-account)
 
 ## Account to Model
-Account to model relations enable linking and querying data to the account that created it. By default the `@createmodel` directive (used when creating a new model) requires that every model must specify a relation to its author’s account. This was covered in [Writing Models](../../guides/data-modeling/writing-models).
+Account to model relations enable linking and querying data to the account that created it. By default the `@createmodel` directive (used when creating a new model) requires that every model must specify a relation to its author’s account. This was covered in [Writing Models](../../guides/data-modeling/writing-models.mdx).
 
 ### Example: Simple Profile
 
@@ -34,7 +34,7 @@ Where:
 - `SINGLE` limits to one profile per account
 
 ## Model to Account
-Model to account relations enable you to link data to and query data from an account other than the data’s author. When using this type of relation, you need to define a model field that stores an account (e.g. a [DID](../../guides/composedb-client/user-sessions)), then add the `@accountReference` directive to make it queryable.
+Model to account relations enable you to link data to and query data from an account other than the data’s author. When using this type of relation, you need to define a model field that stores an account (e.g. a [DID](../../guides/composedb-client/user-sessions.mdx)), then add the `@accountReference` directive to make it queryable.
 
 ### Example: Direct message (DM)
 
@@ -118,4 +118,4 @@ Account to account relations enable you to define a relationship between an acco
 ## Next Steps
 Now that you understand the fundamentals of creating models with different types of relations, learn how to create composites using them. 
 
-Head to [**Composites**](../data-modeling/composites) next to learn more [**→**](../data-modeling/composites)
+Head to [**Composites**](../data-modeling/composites.mdx) next to learn more [**→**](../data-modeling/composites.mdx)
