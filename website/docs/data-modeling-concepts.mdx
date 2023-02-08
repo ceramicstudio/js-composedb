@@ -5,11 +5,11 @@ Models are [Ceramic streams](https://developers.ceramic.network/learn/advanced/
 
 ### Language
 
-Models are written using a subset of the GraphQL Schema Definition Language [(GraphQL SDL)](./api/sdl/scalars).
+Models are written using a subset of the GraphQL Schema Definition Language [(GraphQL SDL)](./api/sdl/scalars.mdx).
 
 ### Validation
 
-Schema validation: All [documents](./graph-structure#documents) in ComposeDB must use a model, which contains information about the data structure the document must conform to. The validation is performed directly by all Ceramic nodes, allowing application to have guaranties about the documents they interact with even if they don't implement validation themselves.
+Schema validation: All [documents](./graph-structure.mdx#documents) in ComposeDB must use a model, which contains information about the data structure the document must conform to. The validation is performed directly by all Ceramic nodes, allowing application to have guaranties about the documents they interact with even if they don't implement validation themselves.
 
 :::info
 
@@ -21,7 +21,7 @@ Ceramic uses [draft 2020-12 of the JSON Schema specification](https://json-sche
 
 As in other property graphs, on ComposeDB you need a way to define which properties within a document can store relations to other documents.
 
-ComposeDB uses models to define direct relations between [accounts](./graph-structure#accounts) and [documents](./graph-structure#documents) with different constraints, as described in [Writing Models](./guides/data-modeling/relations).
+ComposeDB uses models to define direct relations between [accounts](./graph-structure.mdx#accounts) and [documents](./graph-structure.mdx#documents) with different constraints, as described in [Writing Models](./guides/data-modeling/relations.mdx).
 
 ## Composites
 
