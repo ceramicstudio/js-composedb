@@ -44,12 +44,14 @@ const sidebars = {
     {
       type: 'category',
       collapsed: false,
-      label: 'Data Modeling',
+      label: 'Guides Index',
       link: {
         type: 'doc',
         id: 'guides/index',
+        // id: 'guides/data-modeling/data-modeling',
       }, //{ type: 'doc', id: 'guides/data-modeling/data-modeling' },
       items: [
+        { type: 'doc', id: 'guides/data-modeling/data-modeling', label: 'Data Modeling' },
         { type: 'doc', id: 'guides/data-modeling/model-catalog', label: 'Model Catalog' },
         {
           type: 'category',
@@ -72,87 +74,37 @@ const sidebars = {
     {
       type: 'category',
       collapsed: false,
-      label: 'Application Setup',
-      link: { type: 'doc', id: 'guides/data-modeling/data-modeling' },
+      label: 'ComposeDB Client',
+      link: { type: 'doc', id: 'guides/composedb-client/composedb-client' },
       items: [
         {
           type: 'category',
-          collapsed: false,
-          label: 'ComposeDB Server',
-          link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
+          collapsed: true,
+          label: 'JavaScript Client',
+          link: { type: 'doc', id: 'guides/composedb-client/javascript-client' },
           items: [
             {
               type: 'doc',
-              id: 'guides/data-modeling/introduction-to-modeling',
-              label: 'Running Locally',
+              id: 'guides/composedb-client/using-apollo',
+              label: 'Using Apollo',
             },
             {
-              type: 'category',
-              collapsed: true,
-              label: 'Running in the Cloud',
-              link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
-              items: [
-                {
-                  type: 'doc',
-                  id: 'guides/data-modeling/introduction-to-modeling',
-                  label: 'Cloud Templates',
-                },
-                {
-                  type: 'doc',
-                  id: 'guides/data-modeling/introduction-to-modeling',
-                  label: 'Using DockerHub',
-                },
-                { type: 'doc', id: 'guides/data-modeling/schemas', label: 'Using npm' },
-                {
-                  type: 'doc',
-                  id: 'guides/data-modeling/relations',
-                  label: 'Cloud Best Practices',
-                },
-              ],
+              type: 'doc',
+              id: 'guides/composedb-client/using-relay',
+              label: 'Using Relay',
             },
-            {
-              type: 'category',
-              collapsed: true,
-              label: 'Server Configurations',
-              link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
-              items: [
-                {
-                  type: 'doc',
-                  id: 'guides/data-modeling/introduction-to-modeling',
-                  label: 'Configuration File',
-                },
-                { type: 'doc', id: 'guides/data-modeling/schemas', label: 'Command Line Config' },
-              ],
-            },
-            { type: 'doc', id: 'guides/data-modeling/relations', label: 'Data Storage' },
           ],
         },
         {
           type: 'category',
-          collapsed: false,
-          label: 'ComposeDB Client',
-          link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
+          collapsed: true,
+          label: 'Authenticate Users',
+          link: { type: 'doc', id: 'guides/composedb-client/authenticate-users' },
           items: [
             {
-              type: 'category',
-              collapsed: true,
-              label: 'Javascript Client',
-              link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
-              items: [
-                {
-                  type: 'doc',
-                  id: 'guides/data-modeling/introduction-to-modeling',
-                  label: 'Using Apollo',
-                },
-                { type: 'doc', id: 'guides/data-modeling/schemas', label: 'Using Relay' },
-              ],
-            },
-            {
-              type: 'category',
-              collapsed: true,
-              label: 'Authenticate Users',
-              link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
-              items: [{ type: 'doc', id: 'guides/data-modeling/schemas', label: 'User Sessions' }],
+              type: 'doc',
+              id: 'guides/composedb-client/user-sessions',
+              label: 'User Sessions',
             },
           ],
         },
@@ -162,10 +114,10 @@ const sidebars = {
       type: 'category',
       collapsed: false,
       label: 'Data Interactions',
-      link: { type: 'doc', id: 'guides/data-modeling/data-modeling' },
+      link: { type: 'doc', id: 'guides/data-interactions/data-interactions' },
       items: [
-        { type: 'doc', id: 'guides/data-modeling/model-catalog', label: 'Queries' },
-        { type: 'doc', id: 'guides/data-modeling/composites', label: 'Mutations' },
+        { type: 'doc', id: 'guides/data-interactions/queries', label: 'Queries' },
+        { type: 'doc', id: 'guides/data-interactions/mutations', label: 'Mutations' },
       ],
     },
     {

@@ -1,0 +1,28 @@
+# Using Relay GraphQL Client
+[Relay](https://relay.dev/) is a popular GraphQL client for React.
+
+## Prerequisites
+- Install the [`composedb`](../../set-up-your-environment) packages
+- Install the `relay-runtime`package
+- A compiled composite
+
+## Usage
+The ComposeDB client can be used with Relay by creating a custom [network layer](https://relay.dev/docs/guides/network-layer/), as shown:
+
+```jsx
+import { ComposeClient } from '@composedb/client'
+import { Environment, Network, RecordSource, Store } from 'relay-runtime'
+
+// Path to compiled composite
+import { definition } from './__generated__/definition.js'
+
+const compose = new ComposeClient({ ceramic: 'http://localhost:7007', definition })
+
+// Create custom Network using ComposeClient instance to execute operations
+const network = Network.create(async (request, variables) => {
+  return await client.executeQuery(request.text, variables)
+})
+
+// Use created Network instance to create Relay Environment
+export const environment = new Environment({ network, store: new Store(new RecordSource()) })
+```

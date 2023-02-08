@@ -8,11 +8,9 @@ ComposeDB CLI - the Command Line Interface that enables interactions with a Cera
 
 You can check the [Getting Started](../../set-up-your-environment.mdx) Section for some examples.
 
-<!-- You can also check documentation for particular commands to see more detailed usage explanations and links to examples. -->
-
 ## Installation
 
-```sh
+```bash
 npm install @composedb/cli
 ```
 
@@ -32,7 +30,7 @@ The CLI exposes commands with different prefixes which make it possible to:
 
 To see the list of all available commands with explanations, use:
 
-```sh
+```bash
 composedb help
 ```
 

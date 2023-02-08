@@ -4,7 +4,7 @@ title: "CLI: graphql:* commands"
 custom_edit_url: null
 ---
 
-The group of [CLI](../modules/cli.md) `graphql:*` commands makes it possible to generate GraphQL Schemas from [runtime definitions](./cli.composite.md#composedb-compositecompile) of your [Composites](../../data-modeling-concepts.mdx#composites) and run a local GraphQL HTTP server
+The group of [CLI](../modules/cli.md) `graphql:*` commands makes it possible to generate GraphQL Schemas from compiled [Composites](../../guides/data-modeling/composites) and run a local GraphQL HTTP server
 
 ## Command List
 
@@ -18,7 +18,8 @@ The group of [CLI](../modules/cli.md) `graphql:*` commands makes it possible to 
 Load the runtime graphql schema for the composite with given runtime definition
 
 You can use this command to see the ComposeDB GraphQL Execution Schema for your composite.
-You will be using this schema in your DApp to perform Queries and Mutations. <!-- [Queries](../../guides/interacting/mutations.mdx) and [Mutations](../../guides/interacting/mutations.mdx) -->
+
+You will be using this schema in your app to perform [Queries](../../guides/data-interactions/queries) and [Mutations](../../guides/data-interactions/mutations).
 
 ```
 USAGE
@@ -33,7 +34,7 @@ OPTIONS
 
 ### `composedb graphql:server`
 
-Launch a graphQL server supporting the runtime schema of the composite with given runtime definition
+Launch a GraphQL server supporting the runtime schema of the composite with given runtime definition
 
 You can use this command to launch a local GraphQL HTTP server that will be able to process queries and mutations against
 your Composite's [GraphQL Execution Schema](./cli.graphql.md#composedb-graphqlschema)

@@ -37,7 +37,7 @@ Let’s say you have a model written in a `my-schema.graphql` file. To convert t
   ]}>
   <TabItem value="cli">
 
-```sh
+```bash
 composedb composite:create my-schema.graphql --output=my-composite.json --did-private-key=your-private-key
 ```
 
@@ -93,7 +93,7 @@ After creating the composite, deploy it to your local node:
   ]}>
   <TabItem value="cli">
 
-```sh
+```bash
 composedb composite:deploy my-composite.json --ceramic-url=http://localhost:7007 --did-private-key=your-private-key
 ```
 
@@ -137,9 +137,9 @@ await composite.startIndexingOn(ceramic)
 This will also automatically add all models contained in the composite to the [Model Catalog](./model-catalog). 
 
 ### Compiling composites
-After deploying your composite, compile it so you can start perform [data Interactions](notion.so guide) using the [ComposeDB Client](notion.so app setup)
+After deploying your composite, compile it so you can start perform [Data Interactions](../../guides/data-interactions) using the [ComposeDB Client](../../guides/composedb-client)
 
-```sh
+```bash
 composedb composite:compile my-first-composite.json runtime-composite.json
 ```
 
@@ -163,7 +163,7 @@ Let’s say you have two composites where `simple-profile-composite.json` contai
   ]}>
   <TabItem value="cli">
 
-```sh
+```bash
 composedb composite:merge simple-profile-composite.json post-composite.json --output=merged-composite.json
 ```
 
@@ -190,7 +190,7 @@ await writeEncodedComposite(mergedComposite, 'merged-composite.json')
 :::caution
 ***Note:*** To run the code above, you need a Ceramic JS HTTP client library installed on your machine to connect your app to a Ceramic node. Ceramic JS HTTP client can be installed by running the following command:
 
-`pnpm install @ceramicnetwork/http-client`[](https://composedb.js.org/docs/0.3.x/api/commands/cli.graphql#composedb-graphqlschema)
+`pnpm install @ceramicnetwork/http-client`
 
 :::
 
@@ -213,7 +213,7 @@ As an example, let’s reuse the `merged-composite.json` file from the previous 
   ]}>
   <TabItem value="cli">
 
-```sh
+```bash
 composedb composite:extract-model merged-composite.json kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc --output=new-composite.json
 ```
 
@@ -231,6 +231,8 @@ const sourceComposite = await readEncodedComposite(ceramic, 'merged-composite.js
 const mergedComposite = sourceComposite.copy(['kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc'])
 await writeEncodedComposite(mergedComposite, 'new-composite.json')
 ```
+  </TabItem>
+</Tabs>
 
 This will create a file called `new-composite.json` with your profile model in it. From here you need to deploy the composite to your node, then [compile](#compiling-composites) the composite to start using it. 
 
@@ -241,7 +243,7 @@ If you want to check what models are included in a specific composite, follow th
 `composedb composite:compile my-first-composite.json runtime-composite.json`
 
 2. View the GraphQL schema of the composite:
-`composedb graphql:schema runtime-composite.json --output=schema.graphql`[](https://composedb.js.org/docs/0.3.x/api/commands/cli.graphql#composedb-graphqlschema)
+[`composedb graphql:schema runtime-composite.json --output=schema.graphql`](../../api/commands/cli.graphql#composedb-graphqlschema)
 
 ### Aliasing composites
 In general, models are referenced using their unique model streamIDs which are not memorable. Models can be more easily referenced by aliasing them to your preferred names. 
@@ -254,10 +256,6 @@ To manually set aliases for your models, add the following section to your compo
       "kjzl6hvfrbw6c99mdfpjx1z3fue7sesgua6gsl1vu97229lq56344zu9bawnf96":"Post"
    }
 ```
-
-  </TabItem>
-</Tabs>
-
 
 To do aliases programmatically, use the ComposeDB Devtools library. Here’s an example script that loads a composite JSON file and assigns `SimpleProfile` and `Post`:
 
@@ -288,9 +286,9 @@ This script will create a file named `new-composite.json` including model aliase
 From here you need to [deploy](#deploying-composites) the composite to your node, then [compile](#compiling-composites) the composite to start using it. When interacting with the models inside your app, you can refer to them using their human-readable aliases rather than their streamIDs. 
 
 ## Next Steps
-- [Application Setup](https://www.notion.so/Application-Setup-4ba61ae9757f4fbf9769aff4e95d1b93) to set up your server and configure your app
-- [Data Interactions](https://www.notion.so/Data-Interactions-249a50eba41341e8954511175f468fa2) to interact with data using your composite
+- [ComposeDB Client Setup](../../guides/composedb-client) to set up your server and configure your app
+- [Data Interactions](../../guides/data-interactions) to interact with data using your composite
 
 ## Related Guides
-- [Model Catalog](https://www.notion.so/Model-Catalog-e2eddcca410f4a19b533fdccd7c5c6a0)
-- [Writing Models](https://www.notion.so/Writing-Models-e829e0e595574a0d90987f9acdc011f0)
+- [Model Catalog](../../guides/data-modeling/model-catalog)
+- [Writing Models](../../guides/data-modeling/writing-models)

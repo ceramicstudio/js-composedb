@@ -3,15 +3,17 @@ import TabItem from '@theme/TabItem'
 
 
 # Interact with data
-The final step of getting started with ComposeDB is interacting with your data. In this guide you will learn how to perform GraphQL queries and mutations using your composite.
+The final step of getting started with ComposeDB is interacting with your data using GraphQL. In this guide you will learn how to perform GraphQL queries and mutations using your composite.
 
-<!-- >💡 Want to interact with data from JavaScript? See [Client configuration](https://www.notion.so/Client-configuration-6147b53d9e01478f91bd81194c4a39c2). -->
+:::tip
+Want to interact with data using JavaScript instead? See [Client setup](./guides/composedb-client/javascript-client)
+:::
 
 ## Setup
 ### GraphQL Server
-To interact with data on the network, start a local GraphQL server by running the command below. Note that you have to provide your `did-private-key` here — it is also required for performing mutations, covered below.
+To interact with data on the network, start a local GraphQL server by running the command below. Note that you have to provide the seed to your `did-private-key` here — it is also required for performing mutations, covered below.
 
-```sh
+```bash
 composedb graphql:server --ceramic-url=http://localhost:7007 --graphiql runtime-composite.json --did-private-key=your_private_key --port=5005
 ```
 
@@ -19,13 +21,13 @@ composedb graphql:server --ceramic-url=http://localhost:7007 --graphiql runtime-
 
 
 The output will display a URL, for example:
-```sh
+```bash
 GraphQL server is listening on http://localhost:5005/graphql
 ```
 
 ### GraphQL Web UI
 In your browser, visit the URL that your local GraphQL server is listening on. You will see a simple UI that you can use to easily interact with your data:
-![GraphQL Web UI](/img/data-model-table.png)
+![GraphQL Web UI](/img/graphiql.png)
   
 
 ## Queries
@@ -234,18 +236,20 @@ Although you can query records created by other accounts, you can only perform m
 
 🔑 `did-private-key` plays a very important role for these kind of mutations - it ensures that only you, the account owner, can make changes to the streams that you created.
 
-## Next steps
-Congratulations — you’re on your way to becoming a ComposeDB developer! 🚀 
+## Next Steps
+Congratulations — you’re on your way to becoming a ComposeDB developer! 🔥 
 
 Visit [Next Steps](./next-steps.mdx) for more integration guides and opportunities to contribute to the ComposeDB on Ceramic ecosystem.
 
-<!-- ## Related Guides
+## Related Guides
 For more detailed descriptions and examples, see our advanced guides:
 
-- [Data interactions](https://www.notion.so/Data-interactions-249a50eba41341e8954511175f468fa2)
+- [Authentication for Mutations](./guides/composedb-client/user-sessions)
 
-- [Mutations](https://www.notion.so/Mutations-0a93e6f4a004491c83e9908549f5522a)
+- [Data Interactions](./guides/data-interactions)
 
-- [Queries](https://www.notion.so/Queries-4aba20cbf09d4f2685d9ab5412ce952f)
+- [Queries](./guides/data-interactions/queries)
 
-- [Client configuration](https://www.notion.so/Client-configuration-6147b53d9e01478f91bd81194c4a39c2): Perform queries and mutations from JavaScript -->
+- [Mutations](./guides/data-interactions/mutations)
+
+- [ComposeDB Client setup](./guides/composedb-client/javascript-client)

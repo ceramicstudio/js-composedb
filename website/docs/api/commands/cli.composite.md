@@ -5,8 +5,7 @@ custom_edit_url: null
 ---
 
 The group of [CLI](../modules/cli.md) `composite:*` commands enables the
-creation and interactions with
-[Composites](../../data-modeling-concepts.mdx#composites)
+creation and interactions with [Composites](../../guides/data-modeling/composites)
 
 ## Command List
 
@@ -23,11 +22,10 @@ creation and interactions with
 ### `composedb composite:from-model`
 
 Create an encoded composite definition from a list of already existing model
-stream ids (usually found by
-[Model Catalog](../../guides/data-modeling/model-catalog.mdx))
+stream ids (usually found within [Model Catalog](../../guides/data-modeling/model-catalog.mdx)
 
 You can find a detailed guide on using an existing model to create your
-composite [here](../../guides/data-modeling/composites.mdx)
+composite [here](../../guides/data-modeling/composites)
 
 ```
 USAGE
@@ -44,11 +42,9 @@ OPTIONS
 
 ### `composedb composite:create`
 
-Create an encoded composite definition from GraphQL
-[Composite Schema](../../guides/data-modeling/composites.mdx)
+Create an encoded composite definition from GraphQL [Composite Schema](../../guides/data-modeling/composites.mdx)
 
-<!-- You can find a detailed guide on the creation of Composites [here](../.././create-your-composite)
-replace with data modelling composites section -->
+You can find a detailed guide on the creation of Composites [here](../../guides/data-modeling/composites)
 
 ```
 USAGE

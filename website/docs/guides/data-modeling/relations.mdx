@@ -11,7 +11,7 @@ There are a few primary forms of relations currently supported by ComposeDB:
 - [Account to account](#account-to-account)
 
 ## Account to Model
-Account to model relations enable linking and querying data to the account that created it. By default the `@createmodel` directive (used when creating a new model) requires that every model must specify a relation to its author’s account. This was covered in [Introduction to Modeling](https://www.notion.so/Introduction-to-Modeling-ea065355247e49fb9013e2898597714b).
+Account to model relations enable linking and querying data to the account that created it. By default the `@createmodel` directive (used when creating a new model) requires that every model must specify a relation to its author’s account. This was covered in [Writing Models](../../guides/data-modeling/writing-models).
 
 ### Example: Simple Profile
 
@@ -34,7 +34,7 @@ Where:
 - `SINGLE` limits to one profile per account
 
 ## Model to Account
-Model to account relations enable you to link data to and query data from an account other than the data’s author. When using this type of relation, you need to define a model field that stores an account (e.g. a [DID](https://composedb.js.org/docs/0.3.x/guides/creating-composites/scalars#did)), then add the `@accountReference` directive to make it queryable.
+Model to account relations enable you to link data to and query data from an account other than the data’s author. When using this type of relation, you need to define a model field that stores an account (e.g. a [DID](../../guides/composedb-client/user-sessions)), then add the `@accountReference` directive to make it queryable.
 
 ### Example: Direct message (DM)
 
@@ -116,4 +116,6 @@ Account to account relations are on the roadmap, but not yet supported.
 Account to account relations enable you to define a relationship between an account and a different account, and query both ways based on that relationship. This is useful for creating structures such as social graphs where the relationship represents a follow.
 
 ## Next Steps
-Now that you understand the fundamentals of creating models with different types of relations, you should proceed to learning mode about how you create composites using them. Head to [Composites](https://www.notion.so/Composites-d92f5986e2594ada841586efb21bb5a4) next to learn more.
+Now that you understand the fundamentals of creating models with different types of relations, learn how to create composites using them. 
+
+Head to [**Composites**](../data-modeling/composites) next to learn more [**→**](../data-modeling/composites)

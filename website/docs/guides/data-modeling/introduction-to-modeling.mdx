@@ -26,7 +26,7 @@ Where:
 - `accountRelation` defines the allowable number of instances per account, where `SINGLE` limits one instance per account, and `LIST` allows unlimited instances per account
 - `description` is a string that describes the model
 
-Model names and descriptions are used in the [Model Catalog](https://www.notion.so/Model-Catalog-e2eddcca410f4a19b533fdccd7c5c6a0). Aim for short and descriptive to improve discovery and reuse.
+Model names and descriptions are used in the [Model Catalog](./model-catalog). Aim for short and descriptive to improve discovery and reuse.
 
 ## Schema
 Model schemas are written using the GraphQL Schema Definition Language (SDL). Let’s look at the schema of our new model. It’s a shape that only defines a single field (key) and scalar (value):
@@ -43,11 +43,11 @@ Where:
 - `String!` is a scalar that defines `displayName` is a required (`!`) string
 - `@string` is a directive that sets validation rules for the scalar, in our case min and max length
 
-This is a very basic schema, but your schemas can contain more than one field and include various relations - see [Schemas](https://www.notion.so/Schemas-0dd714405557435d8968e0ac23d5c4cb).
+This is a very basic schema, but your schemas can contain more than one field and include various relations - see [Schemas](./schemas).
 
 ## Next Steps
-To use your new model in your application, you will need to create a [Composites](https://www.notion.so/Composites-d92f5986e2594ada841586efb21bb5a4).
+To use your new model in your application, you will need to create a [**Composite →**](./composites)
 
 ## Related Guides
-- Dive deeper into GraphQL [Schemas](https://www.notion.so/Schemas-0dd714405557435d8968e0ac23d5c4cb)
-- Learn how to add [Relations](https://www.notion.so/Relations-60f78e9672d04ef29a1002a38d7706b7) to your models
+- Dive deeper into GraphQL [**Schemas**](./schemas)
+- Learn how to add [**Relations**](./relations) to your models

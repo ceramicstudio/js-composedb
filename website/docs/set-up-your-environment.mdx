@@ -7,65 +7,183 @@ The first step to build with ComposeDB is setting up your development environmen
 ## Installation
 ### Create your project directory
 Start with creating the project directory. Here you’ll store all your app’s local files:
-```sh
-mkdir my-project
-cd my-project
+```bash
+mkdir my-project #creates a new directory
+cd my-project #targets the created directory
 ```
 
 ### Node.js
-If you don’t already have them installed, you will need to install Node.js v16 and the following package managers:
+If you don’t already have them installed, you will need to install Node.js v16 and a package manager. We primarily use `pnpm`, but `npm` and `yarn` are supported as well.
 - [NodeJS v16](https://nodejs.org/en/)
 - [pnpm v7](https://pnpm.io/installation)
 
-Not sure which version you have? Use this command to make sure you have the correct versions installed.
-```sh
+Use this command to make sure you have the correct versions installed.
+```bash
 node -v
 pnpm -v
 ```
 
 ### Ceramic
-ComposeDB runs on Ceramic, so you will need to run a Ceramic node. To get started, and for testing purposes, we recommend running a local Ceramic node. If you're interested in running the production node, you can follow the [tutorial here](https://blog.ceramic.network/configuring-a-ceramic-node-using-aws/). 
+ComposeDB runs on Ceramic, so you will need to run a Ceramic node. To get started, we recommend running a local Ceramic node. If you're interested in running the production node, you can follow the [tutorial here](https://blog.ceramic.network/configuring-a-ceramic-node-using-aws/). 
+<!-- update link after Server Setup Guode  -->
 
 The Ceramic CLI provides a set of commands that make it easier to run and manage Ceramic nodes. We will start by installing the Ceramic CLI:
 
-```sh
+<Tabs
+  defaultValue="pnpm"
+  groupId="npm-or-pnpm-or-yarnr"
+  values={[
+    {label: 'npm', value: 'npm'},
+    {label: 'pnpm', value: 'pnpm'},
+    {label: 'yarn', value: 'yarn'},
+  ]}>
+  <TabItem value="npm">
+
+```bash
+npm install --location=global @ceramicnetwork/cli
+```
+
+  </TabItem>
+  <TabItem value="pnpm">
+
+```bash
 pnpm install -g @ceramicnetwork/cli
 ```
 
-### ComposeDB
+  </TabItem>
+  <TabItem value="yarn">
 
-  
+:::caution
+
+Global packages are only supported for yarn 2.x and older. For yarn 3.x and newer, use `yarn dlx` to run composedb cli commands
+
+:::
+
+```bash
+yarn global add @ceramicnetwork/cli
+```
+
+  </TabItem>
+</Tabs>
+
+### ComposeDB
 
 Next install the ComposeDB CLI, which enables you to interact with ComposeDB data from your terminal. Install ComposeDB CLI using the following command:
 
-```sh
+<Tabs
+  defaultValue="pnpm"
+  groupId="npm-or-pnpm-or-yarnr"
+  values={[
+    {label: 'npm', value: 'npm'},
+    {label: 'pnpm', value: 'pnpm'},
+    {label: 'yarn', value: 'yarn'},
+  ]}>
+  <TabItem value="npm">
+
+```bash
+npm install --location=global @composedb/cli@^0.3.0
+```
+
+  </TabItem>
+  <TabItem value="pnpm">
+
+```bash
 pnpm add -g @composedb/cli@^0.3.0
 ```
 
-ComposeDB exposes two complementary development libraries: 
-1. [@composedb/devtools](./api/modules/devtools.md) containing utilities related to managing composites, and 
+  </TabItem>
+  <TabItem value="yarn">
+
+:::caution
+
+Global packages are only supported for yarn 2.x and older. For yarn 3.x and newer, use `yarn dlx` to run composedb cli commands
+
+:::
+
+```bash
+yarn global add @composedb/cli@^0.3.0
+```
+
+  </TabItem>
+</Tabs>
+
+ComposeDB provides two additional libraries that support development: 
+1. [@composedb/devtools](./api/modules/devtools.md) containing utilities related to managing composites
 2. [@composedb/devtools-node](./api/modules/devtools_node.md) which contains utilities for interacting with the local file system and starting a local HTTP server. 
 
 To install the development packages, run:
 
-```sh
+<Tabs
+  defaultValue="pnpm"
+  groupId="package-manager"
+  values={[
+    {label: 'npm', value: 'npm'},
+    {label: 'pnpm', value: 'pnpm'},
+    {label: 'yarn', value: 'yarn'},
+  ]}>
+  <TabItem value="npm">
+
+```bash
+npm install -D @composedb/devtools@^0.3.0 @composedb/devtools-node@^0.3.0
+```
+
+  </TabItem>
+  <TabItem value="pnpm">
+
+```bash
 pnpm add -D @composedb/devtools@^0.3.0 @composedb/devtools-node@^0.3.0
 ```
+
+  </TabItem>
+  <TabItem value="yarn">
+
+```bash
+yarn add -D @composedb/devtools@^0.3.0 @composedb/devtools-node@^0.3.0
+```
+
+  </TabItem>
+</Tabs>
 
 ## Setup
 ### Run a Ceramic node
 You can check that everything was installed correctly by spinning up a Ceramic node. Running the command below will start the Ceramic node in local mode and connect to Clay testnet. 
 Indexing is a key component of ComposeDB, which syncs data across nodes. Enable indexing by toggling:
 
-```sh
+<Tabs
+  defaultValue="pnpm"
+  groupId="package-manager"
+  values={[
+    {label: 'npm', value: 'npm'},
+    {label: 'pnpm', value: 'pnpm'},
+    {label: 'yarn', value: 'yarn'},
+  ]}>
+  <TabItem value="npm">
+
+```bash
+CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB='true' npx @ceramicnetwork/cli daemon
+```
+
+  </TabItem>
+  <TabItem value="pnpm">
+
+```bash
 CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB='true' pnpm dlx @ceramicnetwork/cli daemon
 ```
 
-If you see the following output in your terminal, that means you have successfully started a local node and connected to Clay testnet 🚀
-```sh
-IMPORTANT: Ceramic API running on 0.0.0.0:7007'
+  </TabItem>
+  <TabItem value="yarn">
+
+```bash
+CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB='true' yarn dlx @ceramicnetwork/cli daemon
 ```
 
+  </TabItem>
+</Tabs>
+
+If you see the following output in your terminal, that means you have successfully started a local node and connected to Clay testnet 🚀
+```bash
+IMPORTANT: Ceramic API running on 0.0.0.0:7007'
+```
 
 :::note
 
@@ -78,7 +196,7 @@ After you start a node, a node configuration file is created. Later in this guid
 ### Generate your private key
 You will need a private key for authorizing ComposeDB CLI commands in the later stages of development. You can generate it using the command below. Save it for later use:
 
-```sh
+```bash
 composedb did:generate-private-key
 ```
 
@@ -91,7 +209,7 @@ composedb did:generate-private-key
 ### Generate your account
 Indexing is one of the key features of ComposeDB. In order to notify the Ceramic node which models have to be indexed, the ComposeDB tools have to interact with the restricted Admin API. Calling the API requires an authenticated Decentralized Identifier (DID) to be provided in the node configuration file. Create a DID by running the following command, using the private key generated previously:
 
-```sh
+```bash
 composedb did:from-private-key your-private-key
 ```
 
@@ -121,18 +239,18 @@ Save this file. By this point you should have your development environment and a
 ## Confirmation
 As a final test, spin up the Ceramic local node:
 
-```sh
+```bash
 ceramic daemon --network=testnet-clay
 ```
 
 Once again, you should see your local Ceramic node up and running as follows:
 
-```sh
+```bash
 IMPORTANT: Ceramic API running on 0.0.0.0:7007'
 ```
 
 ## Next steps
-After setting up your environment, the next step is to **[Create your composite](./create-your-composite.mdx) →**
+After setting up your environment, the next step is to [**Create your composite →**](./create-your-composite.mdx)
 
 <!-- ## Related Guides
-Ready to go to production? Learn how to deploy your app: [Server configuration](https://www.notion.so/Server-configuration-226c2bf34a6d43e9b7e8331b823735ed) -->
+Ready to upgrade from a local node to production? Learn how to deploy your app: [Server configuration](https://www.notion.so/Server-configuration-226c2bf34a6d43e9b7e8331b823735ed) -->
