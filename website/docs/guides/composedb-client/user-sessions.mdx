@@ -189,6 +189,12 @@ didsession.expiresInSecs
 
 A typical usage pattern is to store sessions in localstorage, when a user loads your app you can load an existing session or create a new one. When you start making mutations with the client instance, you should make sure that the session is not expired. 
 
+:::caution
+
+LocalStorage is used for illustrative purposes here and may not be best for your app, as there is a number of known issues with storing secret material in browser storage. The session string allows anyone with access to that string to make writes for that user for the time and resources that session is valid for. How that session string is stored and managed is the responsibility of the application.
+
+:::
+
 ```jsx
 import { DIDSession } from 'did-session'
 import type { AuthMethod } from '@didtools/cacao'
