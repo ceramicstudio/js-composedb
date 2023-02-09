@@ -1,0 +1,71 @@
+{
+  "name": "@composedb/server",
+  "version": "0.3.0",
+  "author": "3Box Labs",
+  "license": "(Apache-2.0 OR MIT)",
+  "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
+  "keywords": [
+    "ceramic",
+    "composedb",
+    "server"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ceramicstudio/js-composedb",
+    "directory": "packages/server"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build:clean": "del dist",
+    "build:js": "swc src -d ./dist --config-file ../../.swcrc",
+    "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
+    "build": "pnpm build:clean && pnpm build:types && pnpm build:js",
+    "lint": "eslint src --fix",
+    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test:ci": "pnpm run test --ci --coverage",
+    "prepare": "pnpm build",
+    "prepublishOnly": "package-check"
+  },
+  "dependencies": {
+    "@ceramicnetwork/http-client": "^2.15.0",
+    "@composedb/constants": "workspace:^0.3.0",
+    "@composedb/runtime": "workspace:^0.3.0",
+    "get-port": "^6.1.2",
+    "graphql": "^16.5.0",
+    "graphql-yoga": "^3.5.1"
+  },
+  "devDependencies": {
+    "@ceramicnetwork/common": "^2.18.0",
+    "@composedb/types": "workspace:^0.3.0",
+    "@types/node": "^18.13.0"
+  },
+  "jest": {
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.wasm.js$": "$1.wasm.js",
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.(t|j)s$": [
+        "@swc/jest",
+        {
+          "root": "../.."
+        }
+      ]
+    }
+  }
+}

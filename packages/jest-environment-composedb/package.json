@@ -26,7 +26,7 @@
     "@ceramicnetwork/core": "^2.23.0",
     "dids": "^3.4.0",
     "ipfs-core": "^0.17.0",
-    "jest-environment-node": "^29.4.1",
+    "jest-environment-node": "^29.4.2",
     "key-did-provider-ed25519": "^2.0.1",
     "key-did-resolver": "^2.3.0",
     "tmp-promise": "^3.0.3",

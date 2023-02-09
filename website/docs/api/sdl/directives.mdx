@@ -112,7 +112,7 @@ directive.
 
 Example:
 
-```graphql {2,8}
+```graphql {2,6}
 type Post @loadModel(id: "<Post model stream ID>") {
   id: ID!
 }
@@ -164,7 +164,7 @@ the `model` argument of the directive.
 Example where `post` fields allows to access the post document the comment is
 made on, based on the `postID` value stored in the comment document:
 
-```graphql {8,9}
+```graphql {6,7}
 type Post @loadModel(id: "<Post model stream ID>") {
   id: ID!
 }
@@ -186,7 +186,7 @@ Example where a `comments` view is added to an existing Post model, using the
 Comment model described in the
 [`@relationDocument` directive example](#relationdocument):
 
-```graphql {2,8}
+```graphql {6}
 type Comment @loadModel(id: "<Comment model stream ID>") {
   id: ID!
 }
@@ -206,7 +206,7 @@ Example where a `commentsCount` view is added to an existing Post model, using
 the Comment model described in the
 [`@relationDocument` directive example](#relationdocument):
 
-```graphql {2,8}
+```graphql {6}
 type Comment @loadModel(id: "<Comment model stream ID>") {
   id: ID!
 }

@@ -48,8 +48,7 @@ const sidebars = {
       link: {
         type: 'doc',
         id: 'guides/index',
-        // id: 'guides/data-modeling/data-modeling',
-      }, //{ type: 'doc', id: 'guides/data-modeling/data-modeling' },
+      },
       items: [
         { type: 'doc', id: 'guides/data-modeling/data-modeling', label: 'Data Modeling' },
         { type: 'doc', id: 'guides/data-modeling/model-catalog', label: 'Model Catalog' },
@@ -135,12 +134,14 @@ const sidebars = {
     {
       type: 'category',
       collapsed: false,
-      label: 'Client module',
+      label: 'Public APIs',
       link: { type: 'generated-index' },
       items: [
-        { type: 'doc', id: 'api/modules/client', label: 'Overview' },
+        { type: 'doc', id: 'api/modules/client', label: 'ComposeDB Client' },
+        { type: 'doc', id: 'api/modules/runtime', label: 'ComposeDB Runtime' },
+        { type: 'doc', id: 'api/modules/server', label: 'ComposeDB Server' },
         { type: 'doc', id: 'api/classes/client.ComposeClient', label: 'ComposeClient class' },
-        { type: 'doc', id: 'api/classes/client.Context', label: 'Context class' },
+        { type: 'doc', id: 'api/classes/runtime.ComposeRuntime', label: 'ComposeRuntime class' },
       ],
     },
     {

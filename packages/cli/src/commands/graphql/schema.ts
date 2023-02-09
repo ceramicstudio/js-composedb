@@ -1,8 +1,8 @@
 import { Command, CommandFlags } from '../../command.js'
 import { Args, Flags } from '@oclif/core'
 import fs from 'fs-extra'
-import { printGraphQLSchema } from '@composedb/client'
 import { writeGraphQLSchema } from '@composedb/devtools-node'
+import { printGraphQLSchema } from '@composedb/runtime'
 import { RuntimeCompositeDefinition } from '@composedb/types'
 
 type GraphQLSchemaFlags = CommandFlags & {

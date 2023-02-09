@@ -1,29 +1,33 @@
 # Schemas
+
 Learn how to write high-quality GraphQL schemas for your models.
 
 ## Overview
+
 ComposeDB models are written in GraphQL using GraphQL Schema Definition Language [(SDL)](https://graphql.org/learn/schema/). Your schema defines a collection of object types and the relationships between them. Those types will have scalars (values), shapes (key-value mappings), and lists to describe the structure and validation rules for the model, and use directives for other metadata information.
 
 We currently support a subset of SDL’s scalars and directives, but are continually adding more, see the [reference](../../api/sdl/scalars.mdx) for a complete list.
 
 ## Concepts
-Learn about key concepts for the GraphQL Schema Definition Language. 
 
-:::note 
+Learn about key concepts for the GraphQL Schema Definition Language.
+
+:::note
 
 On this page, we provide basic info for you to begin writing GraphQL data models. For more complete information on the GraphQL Schema Definition Language, visit the [GraphQL website](https://graphql.org/learn/schema/).
 
 :::
 
 ### Shapes, Fields, Scalars
+
 The most basic component in a GraphQL schema is an object type, sometimes called a shape. It simply represents the shape of the data you want to query and its properties, consisting of fields (keys) and scalars (values).
 
 ```graphql
 type EducationModule {
-	module_name: String!
-	module_domain: String
-	number_of_topics_covered: Int!
-	learners_enrolled: [Learner!]!
+  module_name: String!
+  module_domain: String
+  number_of_topics_covered: Int!
+  learners_enrolled: [Learner!]!
 }
 ```
 
@@ -35,11 +39,24 @@ Where:
 - `String!` and `Int!` define the data type of the value. By adding `!` to the end of the type declaration, we are telling GraphQL to always return a value when we query this field, which also means that when writing data through a mutation a value is required.
 - `[Learner!]!` defines the data type of the value, but in this case the data type is an array of another type, `Learner`, which is not depicted above. It is required since it includes the `!`.
 
+### Enums
+
+Enums represent the type of a single string value in the schema from a set of
+accepted values, for example:
+
+```graphql
+enum NoteStatus {
+  DEFAULT
+  IMPORTANT
+  ARCHIVE
+}
+```
+
 ### Special Types
 
-GraphQL reserves the use of two special type names, `query` and `mutation`. 
+GraphQL reserves the use of two special type names, `query` and `mutation`.
 
-*Do not* name any of your own custom types, which are the majority of the types you will work with, the same as these two special types.
+_Do not_ name any of your own custom types, which are the majority of the types you will work with, the same as these two special types.
 
 - `query` type is used as the entry point when retrieving data using GraphQL
 - `mutation` type is used as the entry point when writing or changing data using GraphQL
@@ -50,16 +67,16 @@ Our first shape, `EducationModule`, makes use of an embedded shape called `Learn
 
 ```graphql
 type EducationModule {
-	module_name: String!
-	module_domain: String
-	number_of_topics_covered: Int!
-	learners_enrolled: [Learner!]!
+  module_name: String!
+  module_domain: String
+  number_of_topics_covered: Int!
+  learners_enrolled: [Learner!]!
 }
 
 type Learner {
-	first_name: String!
-	last_name: String!
-	username: String!
+  first_name: String!
+  last_name: String!
+  username: String!
 }
 ```
 
@@ -94,4 +111,5 @@ Where:
 - `@list` adds validation rules to an array, e.g. maximum length
 
 ## Next Steps
+
 Learn how to add [**Relations**](../data-modeling/relations.mdx) to your schema [**→**](../data-modeling/relations.mdx)

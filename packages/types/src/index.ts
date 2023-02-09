@@ -102,14 +102,26 @@ export type RuntimeStringScalar = RuntimeScalarCommon & {
 
 /** Ceramic-specific runtime scalar types. */
 export type CustomRuntimeScalarType =
+  | 'accountid'
+  | 'chainid'
+  | 'cid'
   | 'commitid'
   | 'countrycode'
   | 'date'
   | 'datetime'
   | 'did'
+  | 'duration'
   | 'id'
+  | 'latitude'
+  | 'localdate'
+  | 'locale'
+  | 'localtime'
+  | 'longitude'
   | 'streamid'
   | 'time'
+  | 'timezone'
+  | 'uri'
+  | 'utcoffset'
 
 type RuntimeStringScalarType<Type extends CustomRuntimeScalarType> = RuntimeScalarCommon & {
   type: Type
@@ -193,7 +205,7 @@ export type RuntimeModel = { id: string; accountRelation: ModelAccountRelation }
  */
 export type RuntimeCompositeDefinition = {
   /**
-   * Models names to stream IDs mapping.
+   * Models names to runtime models mapping.
    */
   models: Record<string, RuntimeModel>
   /**

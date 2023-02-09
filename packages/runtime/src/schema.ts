@@ -157,7 +157,7 @@ class SchemaBuilder {
             type: new GraphQLNonNull(GraphQLBoolean),
             description:
               'Whether the Ceramic instance is currently authenticated with this account or not',
-            resolve: (did, _, ctx) => ctx.authenticated && ctx.viewerID === did,
+            resolve: (did, _, ctx) => ctx.isAuthenticated() && ctx.getViewerID() === did,
           },
         }
         for (const [alias, reference] of Object.entries(this.#def.accountData ?? {})) {
@@ -199,7 +199,7 @@ class SchemaBuilder {
       viewer: {
         type: accountObject,
         description: 'Account currently authenticated on the Ceramic instance, if set',
-        resolve: (_self, _args, ctx): string | null => ctx.viewerID,
+        resolve: (_self, _args, ctx): string | null => ctx.getViewerID(),
       },
     }
 
