@@ -9,18 +9,15 @@
       "type": "category",
       "collapsed": false,
       "label": "Getting Started",
-      "items": [
-        "installation",
-        "first-composite",
-        "client-setup"
-      ]
+      "items": ["installation", "first-composite", "client-setup"]
     },
     {
       "type": "category",
       "collapsed": false,
       "label": "Guides",
       "link": {
-        "type": "generated-index"
+        "type": "doc",
+        "id": "guides/index"
       },
       "items": [
         "guides/concepts-overview",

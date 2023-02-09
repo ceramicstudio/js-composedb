@@ -5,8 +5,7 @@ custom_edit_url: null
 ---
 
 The group of [CLI](../modules/cli.md) `composite:*` commands enables the
-creation and interactions with
-[Composites](../../data-modeling-concepts.mdx#composites)
+creation and interactions with [Composites](../../guides/data-modeling/composites.mdx)
 
 ## Command List
 
@@ -23,11 +22,10 @@ creation and interactions with
 ### `composedb composite:from-model`
 
 Create an encoded composite definition from a list of already existing model
-stream ids (usually found by
-[Composites Discovery](../../guides/using-composites/discovery.mdx))
+stream ids (usually found within [Model Catalog](../../guides/data-modeling/model-catalog.mdx)
 
 You can find a detailed guide on using an existing model to create your
-composite [here](../../create-your-composite.mdx)
+composite [here](../../guides/data-modeling/composites.mdx)
 
 ```
 USAGE
@@ -44,11 +42,9 @@ OPTIONS
 
 ### `composedb composite:create`
 
-Create an encoded composite definition from GraphQL
-[Composite Schema](../../guides/creating-composites/overview.mdx#composite-schema)
+Create an encoded composite definition from GraphQL [Composite Schema](../../guides/data-modeling/composites.mdx)
 
-<!-- You can find a detailed guide on the creation of Composites [here](../.././create-your-composite)
-replace with data modelling composites section -->
+You can find a detailed guide on the creation of Composites [here](../../guides/data-modeling/composites.mdx)
 
 ```
 USAGE
@@ -119,7 +115,7 @@ Deploy models included in the composite on connected ceramic node
 You will need to use this command to make sure that your DApp's Composite is
 available on the Ceramic Node that yor DApp connects to. You can find a detailed
 guide on Composites' deployment
-[here](../../guides/using-composites/deployment.mdx)
+[here](../../guides/data-modeling/composites.mdx)
 
 ```
 USAGE

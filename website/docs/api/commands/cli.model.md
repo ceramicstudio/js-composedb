@@ -19,7 +19,7 @@ The group of [CLI](../modules/cli.md) `model:*` commands enables discovery of [M
 
 Display a paginated list of models indexed on the connected ceramic node, which needs to be indexing model streams.
 
-This currently is the main entry path to [Composites Discovery](../../data-modeling-concepts.mdx#composites) <!-- replace with dedicated composites discovery page -->
+This currently is the main entry path to the [Model Catalog](../../guides/data-modeling/model-catalog.mdx) 
 
 ```
 USAGE
@@ -34,7 +34,7 @@ OPTIONS
 
 Load the contents of a model stream with a given ID.
 
-You should use this command to check if an existing model found through [Composites Discovery](../../data-modeling-concepts.mdx#composites) has the fields you need.
+You should use this command to check if an existing model found through [Model Catalog](../../guides/data-modeling/model-catalog.mdx) has the fields you need.
 
 ```
 USAGE
@@ -68,8 +68,8 @@ OPTIONS
 Create a model stream with given content.
 
 Most of the time you shouldn't be using this command directly. Instead, you should first check if a model you need
-already exists, using [Composites Discovery](../../guides/using-composites/discovery.mdx) and only if you can't
-find a model that you need, you should create one indirectly by [creating a Composite](../../guides/creating-composites/overview.mdx) from a GraphQL Composite Schema.
+already exists, using the [Model Catalog](../../guides/data-modeling/model-catalog.mdx) and only if you can't
+find a model that you need, you should create one indirectly by [creating a Composite](../../guides/data-modeling/composites.mdx) from a GraphQL Composite Schema.
 
 ```
 USAGE

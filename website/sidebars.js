@@ -39,66 +39,98 @@ const sidebars = {
       ],
     },
     { type: 'doc', id: 'community', label: 'Community' },
+  ],
+  guides: [
     {
       type: 'category',
       collapsed: false,
-      label: 'Guides',
-      link: { type: 'generated-index' },
+      label: 'Guides Index',
+      link: {
+        type: 'doc',
+        id: 'guides/index',
+      },
       items: [
-        'guides/data-composition',
+        { type: 'doc', id: 'guides/data-modeling/data-modeling', label: 'Data Modeling' },
+        { type: 'doc', id: 'guides/data-modeling/model-catalog', label: 'Model Catalog' },
         {
           type: 'category',
-          label: 'Using composites',
-          link: {
-            type: 'generated-index',
-            description:
-              'Composites are the primary representation for data models used by ComposeDB. They allow developers to create, share, reuse and combine models together in a consistent way.',
-          },
+          collapsed: true,
+          label: 'Writing Models',
+          link: { type: 'doc', id: 'guides/data-modeling/writing-models' },
           items: [
-            { type: 'doc', id: 'guides/using-composites/discovery', label: 'Discovery' },
-            { type: 'doc', id: 'guides/using-composites/deployment', label: 'Deployment' },
-            { type: 'doc', id: 'guides/using-composites/customization', label: 'Customization' },
+            {
+              type: 'doc',
+              id: 'guides/data-modeling/introduction-to-modeling',
+              label: 'Introduction to Modeling',
+            },
+            { type: 'doc', id: 'guides/data-modeling/schemas', label: 'Schemas' },
+            { type: 'doc', id: 'guides/data-modeling/relations', label: 'Relations' },
+          ],
+        },
+        { type: 'doc', id: 'guides/data-modeling/composites', label: 'Composites' },
+      ],
+    },
+    {
+      type: 'category',
+      collapsed: false,
+      label: 'ComposeDB Client',
+      link: { type: 'doc', id: 'guides/composedb-client/composedb-client' },
+      items: [
+        {
+          type: 'category',
+          collapsed: true,
+          label: 'JavaScript Client',
+          link: { type: 'doc', id: 'guides/composedb-client/javascript-client' },
+          items: [
+            {
+              type: 'doc',
+              id: 'guides/composedb-client/using-apollo',
+              label: 'Using Apollo',
+            },
+            {
+              type: 'doc',
+              id: 'guides/composedb-client/using-relay',
+              label: 'Using Relay',
+            },
           ],
         },
         {
           type: 'category',
-          label: 'Creating composites',
-          link: { type: 'doc', id: 'guides/creating-composites/overview' },
-          items: [
-            { type: 'doc', id: 'guides/creating-composites/schema', label: 'Schema' },
-            { type: 'doc', id: 'guides/creating-composites/scalars', label: 'Scalars' },
-            { type: 'doc', id: 'guides/creating-composites/directives', label: 'Directives' },
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Interacting with data',
-          link: {
-            type: 'generated-index',
-          },
+          collapsed: true,
+          label: 'Authenticate Users',
+          link: { type: 'doc', id: 'guides/composedb-client/authenticate-users' },
           items: [
             {
               type: 'doc',
-              id: 'guides/interacting/queries',
-            },
-            {
-              type: 'doc',
-              id: 'guides/interacting/mutations',
-            },
-            {
-              type: 'doc',
-              id: 'guides/interacting/using-apollo',
-            },
-            {
-              type: 'doc',
-              id: 'guides/interacting/using-relay',
+              id: 'guides/composedb-client/user-sessions',
+              label: 'User Sessions',
             },
           ],
         },
       ],
     },
+    {
+      type: 'category',
+      collapsed: false,
+      label: 'Data Interactions',
+      link: { type: 'doc', id: 'guides/data-interactions/data-interactions' },
+      items: [
+        { type: 'doc', id: 'guides/data-interactions/queries', label: 'Queries' },
+        { type: 'doc', id: 'guides/data-interactions/mutations', label: 'Mutations' },
+      ],
+    },
   ],
   api: [
+    {
+      type: 'category',
+      collapsed: false,
+      label: 'Schema Definition Language',
+      link: { type: 'doc', id: 'api/sdl/scalars' },
+      items: [
+        { type: 'doc', id: 'api/sdl/scalars', label: 'Scalars' },
+        { type: 'doc', id: 'api/sdl/directives', label: 'Directives' },
+      ],
+    },
     {
       type: 'category',
       collapsed: false,

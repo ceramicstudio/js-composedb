@@ -92,10 +92,17 @@ const config = {
           },
           {
             type: 'doc',
+            docId: 'guides/index',
+            activeBasePath: 'docs/guides',
+            position: 'left',
+            label: 'Guides',
+          },
+          {
+            type: 'doc',
             docId: 'api/modules/client',
             activeBasePath: 'docs/api',
             position: 'left',
-            label: 'API',
+            label: 'Reference',
           },
           {
             type: 'docsVersionDropdown',
@@ -120,7 +127,7 @@ const config = {
               },
               {
                 label: 'Guides',
-                to: '/docs/0.3.x/category/guides',
+                to: '/docs/0.3.x/guides',
               },
               {
                 label: 'API',

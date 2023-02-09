@@ -18,7 +18,7 @@ The group of [CLI](../modules/cli.md) `document:*` commands enables the creation
 
 Create a document with given content
 
-You can use this command to test how document creation works, but in your live app you will use ComposeDB GraphQL Mutations instead. <!-- replace with guide > [](../../guides/interacting/mutations.mdx) -->
+You can use this command to test how document creation works, but in your live app you will use ComposeDB GraphQL [Mutations](../../guides/data-interactions/mutations.mdx) instead.
 
 ```
 USAGE
@@ -37,7 +37,7 @@ OPTIONS
 
 Replace content in a document with a given streamID
 
-You can use this command to test how document updates work, but in your live app you will use ComposeDB GraphQL Mutations. <!-- [] (../../guides/interacting/mutations.mdx) -->
+You can use this command to test how document updates work, but in your live app you will use ComposeDB GraphQL [Mutations](../../guides/data-interactions/mutations.mdx).
 
 ```
 USAGE
@@ -56,7 +56,7 @@ OPTIONS
 
 Load and display the contents of a document with a given ID
 
-You can use this command to manually check the contents of a given document, but in your DApp you will use ComposeDB GraphQL Queries. <!-- [](../../guides/interacting/queries.md) -->
+You can use this command to manually check the contents of a given document, but in your DApp you will use ComposeDB GraphQL [Queries](../../guides/data-interactions/queries.mdx).
 
 ```
 USAGE
