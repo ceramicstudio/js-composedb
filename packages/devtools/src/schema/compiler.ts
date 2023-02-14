@@ -324,6 +324,7 @@ export class SchemaCompiler {
     return {
       action: 'create',
       model: {
+        // TODO: CDB-2264 Use something else other than Composite.VERSION
         version: Composite.VERSION,
         name,
         description: modelDefinition.description,
