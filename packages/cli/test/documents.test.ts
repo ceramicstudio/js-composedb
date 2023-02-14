@@ -1,7 +1,7 @@
 import { execa } from 'execa'
 
 const MY_MODEL_JSON =
-  '{"name":"MyModel","accountRelation":"list","schema":{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","properties":{"stringPropName":{"type":"string","maxLength":80}},"additionalProperties":false,"required":["stringPropName"]}}'
+  '{"version": "1.0", "name":"MyModel","accountRelation":"list","schema":{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","properties":{"stringPropName":{"type":"string","maxLength":80}},"additionalProperties":false,"required":["stringPropName"]}}'
 
 const MODEL_INSTANCE_JSON = '{"stringPropName":"stringPropValue"}'
 

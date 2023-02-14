@@ -177,6 +177,7 @@ exports[`scalars support extra scalars 1`] = `
         },
         "type": "object",
       },
+      "version": "1.0",
       "views": {},
     },
   },
