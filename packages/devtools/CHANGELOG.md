@@ -1,5 +1,11 @@
 # @composedb/devtools
 
+## 0.3.2-rc.0
+
+### Patch Changes
+
+- Added support for `version` field in models
+
 ## 0.3.1
 
 ### Patch Changes

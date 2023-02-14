@@ -19,6 +19,7 @@ import type {
   ScalarFieldDefinition,
   SchemaDefinition,
 } from './types.js'
+import { Composite } from "../composite.js"
 
 type CompileObject = SetRequired<JSONSchema.Object, 'properties'>
 
@@ -323,6 +324,8 @@ export class SchemaCompiler {
     return {
       action: 'create',
       model: {
+        // TODO: CDB-2264 Use something else other than Composite.VERSION
+        version: Composite.VERSION,
         name,
         description: modelDefinition.description,
         // TODO: add once supported in model definition
