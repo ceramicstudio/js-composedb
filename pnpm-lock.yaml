@@ -52,11 +52,11 @@ importers:
       '@ceramicnetwork/stream-model': ^1.1.0-rc.0
       '@ceramicnetwork/stream-model-instance': ^1.1.0-rc.0
       '@ceramicnetwork/streamid': ^2.11.0-rc.0
-      '@composedb/client': workspace:^0.3.1
-      '@composedb/devtools': workspace:^0.3.1
-      '@composedb/devtools-node': workspace:^0.3.1
-      '@composedb/runtime': workspace:^0.3.0
-      '@composedb/types': workspace:^0.3.1
+      '@composedb/client': workspace:^0.3.2-rc.0
+      '@composedb/devtools': workspace:^0.3.2-rc.0
+      '@composedb/devtools-node': workspace:^0.3.2-rc.0
+      '@composedb/runtime': workspace:^0.3.2-rc.0
+      '@composedb/types': workspace:^0.3.2-rc.0
       '@oclif/core': ^2.0.11
       '@oclif/plugin-help': ^5.2.4
       '@oclif/plugin-version': ^1.2.1
@@ -131,11 +131,11 @@ importers:
       '@ceramicnetwork/stream-model-instance': ^1.1.0-rc.0
       '@ceramicnetwork/streamid': ^2.11.0-rc.0
       '@composedb/constants': workspace:^0.3.0
-      '@composedb/devtools': workspace:^0.3.1
-      '@composedb/graphql-scalars': workspace:^0.3.1
-      '@composedb/runtime': workspace:^0.3.0
+      '@composedb/devtools': workspace:^0.3.2-rc.0
+      '@composedb/graphql-scalars': workspace:^0.3.2-rc.0
+      '@composedb/runtime': workspace:^0.3.2-rc.0
       '@composedb/test-schemas': workspace:^0.3.0
-      '@composedb/types': workspace:^0.3.1
+      '@composedb/types': workspace:^0.3.2-rc.0
       '@graphql-tools/batch-execute': ^8.5.17
       '@graphql-tools/stitch': ^8.7.40
       '@graphql-tools/utils': ^9.2.1
@@ -143,7 +143,7 @@ importers:
       dids: ^3.4.0
       graphql: ^16.5.0
       graphql-relay: ^0.10.0
-      jest-environment-composedb: workspace:^0.3.1
+      jest-environment-composedb: workspace:^0.3.2-rc.0
     dependencies:
       '@ceramicnetwork/http-client': 2.16.0-rc.0
       '@ceramicnetwork/stream-model-instance': 1.1.0-rc.0
@@ -174,9 +174,9 @@ importers:
       '@ceramicnetwork/common': ^2.19.0-rc.0
       '@ceramicnetwork/stream-model': ^1.1.0-rc.0
       '@ceramicnetwork/streamid': ^2.11.0-rc.0
-      '@composedb/graphql-scalars': workspace:^0.3.1
+      '@composedb/graphql-scalars': workspace:^0.3.2-rc.0
       '@composedb/test-schemas': workspace:^0.3.0
-      '@composedb/types': workspace:^0.3.1
+      '@composedb/types': workspace:^0.3.2-rc.0
       '@graphql-tools/schema': ^9.0.16
       '@graphql-tools/utils': ^9.2.1
       '@types/jest': ^29.4.0
@@ -189,7 +189,7 @@ importers:
       fs-extra: ^11.1.0
       graphql: ^16.5.0
       graphql-tools: ^8.3.18
-      jest-environment-composedb: workspace:^0.3.1
+      jest-environment-composedb: workspace:^0.3.2-rc.0
       json-ptr: ^3.1.1
       lodash-es: ^4.17.21
       multiformats: ^9.9.0
@@ -227,11 +227,11 @@ importers:
   packages/devtools-node:
     specifiers:
       '@ceramicnetwork/http-client': ^2.16.0-rc.0
-      '@composedb/client': workspace:^0.3.1
-      '@composedb/devtools': workspace:^0.3.1
-      '@composedb/runtime': workspace:^0.3.0
-      '@composedb/server': workspace:^0.3.0
-      '@composedb/types': workspace:^0.3.1
+      '@composedb/client': workspace:^0.3.2-rc.0
+      '@composedb/devtools': workspace:^0.3.2-rc.0
+      '@composedb/runtime': workspace:^0.3.2-rc.0
+      '@composedb/server': workspace:^0.3.2-rc.0
+      '@composedb/types': workspace:^0.3.2-rc.0
       '@types/fs-extra': ^11.0.1
       dids: ^3.4.0
       fs-extra: ^11.1.0
@@ -250,7 +250,7 @@ importers:
   packages/graphql-scalars:
     specifiers:
       '@ceramicnetwork/streamid': ^2.11.0-rc.0
-      '@composedb/types': workspace:^0.3.1
+      '@composedb/types': workspace:^0.3.2-rc.0
       caip: ^1.1.0
       graphql: ^16.5.0
       graphql-scalars: ^1.20.1
@@ -290,16 +290,16 @@ importers:
       '@ceramicnetwork/stream-model': 1.1.0-rc.0
       '@ceramicnetwork/stream-model-instance': 1.1.0-rc.0
       '@ceramicnetwork/streamid': 2.11.0-rc.0
-      '@composedb/devtools': workspace:^0.3.0
-      '@composedb/graphql-scalars': workspace:^0.3.0
+      '@composedb/devtools': workspace:^0.3.2-rc.0
+      '@composedb/graphql-scalars': workspace:^0.3.2-rc.0
       '@composedb/test-schemas': workspace:^0.3.0
-      '@composedb/types': workspace:^0.3.0
+      '@composedb/types': workspace:^0.3.2-rc.0
       caip: ^1.1.0
       dataloader: ^2.2.1
       dids: ^3.3.0
       graphql: ^16.5.0
       graphql-relay: ^0.10.0
-      jest-environment-composedb: workspace:^0.3.0
+      jest-environment-composedb: workspace:^0.3.2-rc.0
       multiformats: ^9.9.0
     dependencies:
       '@ceramicnetwork/http-client': 2.16.0-rc.0
@@ -325,8 +325,8 @@ importers:
       '@ceramicnetwork/common': ^2.19.0-rc.0
       '@ceramicnetwork/http-client': ^2.16.0-rc.0
       '@composedb/constants': workspace:^0.3.0
-      '@composedb/runtime': workspace:^0.3.0
-      '@composedb/types': workspace:^0.3.0
+      '@composedb/runtime': workspace:^0.3.2-rc.0
+      '@composedb/types': workspace:^0.3.2-rc.0
       '@types/node': ^18.13.0
       get-port: ^6.1.2
       graphql: ^16.5.0
@@ -360,7 +360,7 @@ importers:
 
   website:
     specifiers:
-      '@composedb/cli': workspace:^0.3.1
+      '@composedb/cli': workspace:^0.3.2-rc.0
       '@docusaurus/core': ^2.3.1
       '@docusaurus/module-type-aliases': ^2.3.1
       '@docusaurus/plugin-content-docs': ^2.3.1
