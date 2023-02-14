@@ -110,6 +110,7 @@ describe('composites', () => {
         'test/mocks/encoded.composite.undeployed.json',
         `--did-private-key=${seed}`,
       ])
+
       expect(deploy.stderr.toString().includes(`Deploying the composite... Done!`)).toBe(true)
 
       expect(deploy.stdout.toString().includes(nonExistentModelStreamID)).toBe(true)
