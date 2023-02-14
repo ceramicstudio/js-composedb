@@ -11,10 +11,10 @@ import stripAnsi from 'strip-ansi'
 import { TEST_OUTPUT_DIR_PATH } from '../globalConsts.js' // not a module
 
 const MODEL1_JSON =
-  '{"name":"Model1","accountRelation":"list","schema":{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","properties":{"stringPropName":{"type":"string","maxLength":80}},"additionalProperties":false,"required":["stringPropName"]}}'
+  '{"version": "1.0", "name":"Model1","accountRelation":"list","schema":{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","properties":{"stringPropName":{"type":"string","maxLength":80}},"additionalProperties":false,"required":["stringPropName"]}}'
 
 const MODEL2_JSON =
-  '{"name":"Model2","accountRelation":"list","schema":{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","properties":{"stringPropName":{"type":"string","maxLength":80}},"additionalProperties":false,"required":["stringPropName"]}}'
+  '{"version": "1.0", "name":"Model2","accountRelation":"list","schema":{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","properties":{"stringPropName":{"type":"string","maxLength":80}},"additionalProperties":false,"required":["stringPropName"]}}'
 
 describe('composites', () => {
   const seed = '3a6de55a5ef33d110a5a37438704b0f0cb77ca5977131775a70ffd1c23779c8c'
