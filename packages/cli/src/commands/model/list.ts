@@ -26,7 +26,7 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
   static flags = {
     ...BaseCommand.flags,
     'indexer-url': Flags.string({
-      default: 'https://ceramic-private-clay.3boxlabs.com',
+      default: 'https://ceramic-private.3boxlabs.com/',
       char: 'i',
       description: 'URL of a Ceramic API that indexes all models',
     }),
