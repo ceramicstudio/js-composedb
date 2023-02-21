@@ -2,7 +2,9 @@
 Discover, share, and reuse data models.
 
 ## Overview
+---
 The catalog is a free and open source repository of all data models created by the ComposeDB developer community. The catalog aims to make it as easy as possible for developers to discover, share, and reuse each others models and underlying data.
+
 ![Data Model Table](/img/data-model-table.png)
 
 ### Use Cases
@@ -10,20 +12,21 @@ The catalog is a free and open source repository of all data models created by t
 - Discover high-quality models for your app
 - Share and distribute your models to others
 
-## Adding Models
-Models in all deployed composites are automatically available on the catalog. See Deploying Composites.
+## Adding models to the catalog
+---
+Models in all deployed composites are automatically available on the catalog.
 
 How it works:
 
-1. A developer deploys [Composites](./composites.mdx) containing models to testnet or mainnet
+1. A developer deploys a [composite](./composites.mdx) containing models to testnet or mainnet
 2. An indexer builds a catalog of all deployed models and exposes it via API
 3. The catalog is automatically available on various interfaces, including ComposeDB CLI
 
-## Using Models
-
+## Using models from the catalog
+---
 ### Prerequisites
 
-You need a running instance of ComposeDB to use the catalog. See [Set up your environment](../../set-up-your-environment.mdx) to get started.
+You need a running instance of ComposeDB server and CLI to use the catalog. See [set up your environment](../../set-up-your-environment.mdx) to get started.
 
 ### List all models
 
@@ -50,7 +53,9 @@ composedb composite:from-model kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43no
 Run the `composite:from-model` command depicted above for each model you want to use in your application. Remember to change the composite file name to avoid collisions. After you have multiple composite files, merge them. See Merging Composites.
 
 ## Next Steps
+---
 To use your newly created composite in your app, you will need to deploy and compile your composite.
 
 ## Related Guides
-Can’t find what you’re looking for in the catalog? Visit [Writing Models](./writing-models.mdx) to learn how to write your own models.
+---
+Can’t find what you’re looking for in the catalog? See [Writing Models](./writing-models.mdx) to learn how to write your own models.

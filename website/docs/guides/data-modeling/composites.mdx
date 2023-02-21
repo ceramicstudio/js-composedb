@@ -5,26 +5,21 @@ import TabItem from '@theme/TabItem'
 Guides for creating, deploying, and using composites.
 
 ## Overview
-In order to start using a new model in your application, first you’ll have to include it within a composite. Composites are collections of one or more models and represent the complete GraphQL schema for your application.
+---
+In order to start using a model in your app, you’ll have to include it in a composite. Composites are collections of one or more models and represent the complete GraphQL schema for your app. For basic usage, follow these steps:
+
+1. Create a composite containing one or more models
+2. Deploy the composite to your ComposeDB server
+3. Compile the composite for usage by your ComposeDB client
 
 ## Prerequisites
+---
 - If you want to manage your composites from the CLI, you will need to have it installed
 - If you want to manage your composites from JavaScript, you will need to install the [`@composedb/devtools`](../../api/modules/devtools.md) library
 - One or more `.graphql` files containing your models
 
 ## Basic Usage
-For basic composite usage, you will need one or more models. Then follow these steps:
-
-1. Create a composite
-2. Deploy the composite to your node
-3. Compile the composite for usage
-
-:::tip
-
-For advanced usage such as merging, extracting or inspecting composites, see [Advanced](#advanced) below.
-
-:::
-
+---
 ### Creating composites
 Let’s say you have a model written in a `my-schema.graphql` file. To convert this schema into a composite, run the following:
 
@@ -134,16 +129,21 @@ await composite.startIndexingOn(ceramic)
   </TabItem>
 </Tabs>
 
-This will also automatically add all models contained in the composite to the [Model Catalog](./model-catalog.mdx). 
+:::tip
+This will also automatically add all models contained in the composite to the [Model Catalog](./model-catalog.mdx).
+:::
+
 
 ### Compiling composites
-After deploying your composite, compile it so you can start perform [Data Interactions](../../guides/data-interactions/data-interactions.mdx) using the [ComposeDB Client](../../guides/composedb-client/composedb-client.mdx)
+
+After deploying your composite, compile it so you can start perform [data interactions](../../guides/data-interactions/data-interactions.mdx) using the ComposeDB client.
 
 ```bash
 composedb composite:compile my-first-composite.json runtime-composite.json
 ```
 
 ## Advanced
+---
 ### Merging composites
 
 If you have more than one composite, you need to merge them into a single composite for use in your app. This may apply when:
@@ -286,9 +286,10 @@ This script will create a file named `new-composite.json` including model aliase
 From here you need to [deploy](#deploying-composites) the composite to your node, then [compile](#compiling-composites) the composite to start using it. When interacting with the models inside your app, you can refer to them using their human-readable aliases rather than their streamIDs. 
 
 ## Next Steps
-- [ComposeDB Client Setup](../../guides/composedb-client/composedb-client.mdx) to set up your server and configure your app
-- [Data Interactions](../../guides/data-interactions/data-interactions.mdx) to interact with data using your composite
+---
+Set up your [**ComposeDB Client**](../../guides/composedb-client/composedb-client.mdx)
 
 ## Related Guides
+---
 - [Model Catalog](../../guides/data-modeling/model-catalog.mdx)
 - [Writing Models](../../guides/data-modeling/writing-models.mdx)

@@ -3,10 +3,18 @@
 Access data stored on the network.
 
 ## Prerequisites
-- Before your node can index your models, you need to deploy your composite.
-- Before your client can perform queries on those models, you need to [compile your composite](../data-modeling/composites). [`ComposeClient`](../../api/classes/client.ComposeClient) automatically generates a GraphQL Schema from your compiled composite
+---
+- Installed ComposeDB client
+- A compiled composite
+- A deployed composite
+
+
+:::tip
+The ComposeDB Client automatically generates a GraphQL Schema from your compiled composite.
+:::
 
 ## Basic queries
+---
 For our model, let’s say we have a `Post` Data Model:
 
 ```graphql
@@ -44,11 +52,12 @@ Where:
 - The remainder of the query is standard GraphQL to retrieve the desired fields
 
 ## Querying relations
+---
 In [Relations](../data-modeling/relations.mdx) you learned how to write models with relationships to other models or accounts. Here we demonstrate how to query those relations. Unlike basic queries, when querying relations allows you to specify fields in a related model to be returned as fields of the original model.
 
-### Model to model relations
+### Querying model-to-model relations
 
-For our models, let’s say we have a `Post` and we extend it by adding `Comments`. 
+For our models, let’s say we have a `Post` model and we extend it by adding a `Comments` model.
 
 ```graphql
 # Post model
@@ -98,7 +107,7 @@ query {
    }
 ```
 
-### Account-to-Model
+### Querying account-to-model relations
 
 ```graphql
 # $id references the account DID string
@@ -119,7 +128,7 @@ query ($id: ID!) {
 }
 ```
 
-### Model-to-Account
+### Querying model-to-account relations
 
 ```graphql
 # $id references a Post document stream ID
@@ -144,16 +153,17 @@ query ($id: ID!) {
 ```
 
 ## Things to Know
+---
 ComposeDB client automatically generates a GraphQL Schema from a compiled composite. It includes two objects: a  `CeramicAccount` object and a root `Query` object used as an entrypoint to access the graph.
 
-### CeramicAccount Object
+### `CeramicAccount` Object
 The `CeramicAccount` object replaces [`DID` scalars](../../api/sdl/scalars.mdx#did) in your composite with the following fields:
 
 - `id: ID!`: the DID string value
 - `isViewer: Boolean!`: whether the account authenticated to the Ceramic instance matches the `id`
 - Other fields will be generated based on the models present in the definition
 
-### Query Object
+### `Query` Object
 The `Query` object provides entrypoints for accessing data in the graph, using the following fields:
 
 - `node(id: ID!): Node`: loads any `Node` (account or document) by its `id`
@@ -161,8 +171,10 @@ The `Query` object provides entrypoints for accessing data in the graph, using
 - Other fields will be generated based on the models present in the definition, providing entry-points by querying the index
 
 ## Next Steps
+---
 Head to the next section, [**Mutations**](./mutations.mdx), to learn how to write or modify data on the network. 
 
 ## Related Guides
+---
 - For additional context on the types of account and model relations, see the [**Relations**](../data-modeling/relations.mdx) guide
 - To learn how to compile and deploy a composite, see [**Composites**](../data-modeling/composites.mdx) 

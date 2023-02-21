@@ -21,10 +21,10 @@ const sidebars = {
       label: 'Getting Started',
       link: { type: 'doc', id: 'getting-started' },
       items: [
-        { type: 'doc', id: 'set-up-your-environment', label: 'Set up your environment' },
-        { type: 'doc', id: 'create-your-composite', label: 'Create your composite' },
-        { type: 'doc', id: 'interact-with-data', label: 'Interact with data' },
-        { type: 'doc', id: 'next-steps', label: 'Next Steps' },
+        { type: 'doc', id: 'set-up-your-environment', label: '1. Set up your environment' },
+        { type: 'doc', id: 'create-your-composite', label: '2. Create your composite' },
+        { type: 'doc', id: 'interact-with-data', label: '3. Interact with data' },
+        { type: 'doc', id: 'next-steps', label: '4. Next Steps' },
       ],
     },
     {
@@ -33,9 +33,9 @@ const sidebars = {
       label: 'Core Concepts',
       link: { type: 'doc', id: 'core-concepts' },
       items: [
-        { type: 'doc', id: 'graph-structure', label: 'Graph' },
+        /*{ type: 'doc', id: 'graph-structure', label: 'Graph' },
         { type: 'doc', id: 'data-modeling-concepts', label: 'Models' },
-        { type: 'doc', id: 'database', label: 'Database' },
+        { type: 'doc', id: 'database', label: 'Database' },**/
       ],
     },
     { type: 'doc', id: 'community', label: 'Community' },

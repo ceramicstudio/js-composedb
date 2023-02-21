@@ -2,9 +2,12 @@ import Tabs from  '@theme/Tabs'
 import TabItem from  '@theme/TabItem'
 
 # Set up your environment
-The first step to build with ComposeDB is setting up your development environment. This guide will show you how to install and configure relevant packages and tools.
+Install and configure relevant packages and tools for ComposeDB.
 
 ## Installation
+
+---
+
 ### Create your project directory
 Start with creating the project directory. Here you’ll store all your app’s local files:
 ```bash
@@ -145,6 +148,7 @@ yarn add -D @composedb/devtools@^0.3.0 @composedb/devtools-node@^0.3.0
 </Tabs>
 
 ## Setup
+---
 ### Run a Ceramic node
 You can check that everything was installed correctly by spinning up a Ceramic node. Running the command below will start the Ceramic node in local mode and connect to Clay testnet. 
 Indexing is a key component of ComposeDB, which syncs data across nodes. Enable indexing by toggling:
@@ -180,19 +184,18 @@ CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB='true' yarn dlx @ceramicnetwork/cli daemo
   </TabItem>
 </Tabs>
 
-If you see the following output in your terminal, that means you have successfully started a local node and connected to Clay testnet 🚀
-```bash
-IMPORTANT: Ceramic API running on 0.0.0.0:7007'
-```
 
 :::note
+When you see `IMPORTANT: Ceramic API running on 0.0.0.0:7007` in your terminal, you have successfully started a local node on Clay testnet! 🚀
+:::
 
-After you start a node, a node configuration file is created. Later in this guide, you’ll be editing this file. You can find it at the following path: `~/.ceramic/daemon.config.json`
-
+:::note
+After you start a node, a configuration file is created at `~/.ceramic/daemon.config.json`. You can edit this file to modify configurations such as network.
 :::
 
 
 ## Developer Account
+---
 ### Generate your private key
 You will need a private key for authorizing ComposeDB CLI commands in the later stages of development. You can generate it using the command below. Save it for later use:
 
@@ -202,7 +205,7 @@ composedb did:generate-private-key
 
 :::caution
 
-**Important:** Store your private key securely - the key allows changes to be made to you app. In addition, you will need it throughout the app development process.
+**Important:** Store your private key securely, it allows changes to be made to your app.
 
 :::
 
@@ -213,7 +216,9 @@ Indexing is one of the key features of ComposeDB. In order to notify the Ceramic
 composedb did:from-private-key your-private-key
 ```
 
-⚠️ Copy this authenticated DID key and store it in a secure place, just like with your private key above. This DID key will have to be provided in your Ceramic node’s configuration file which will ensure that only authorized users can make changes to your application, e.g. deploy models on your Ceramic node.
+:::note
+Copy the DID output of this command and store it in a secure place, just like with your private key above. This public DID key will have to be provided in your Ceramic node’s configuration file to ensure that only you can make changes to your app, such as deploying composites.
+:::
   
 
 ### Using your account
@@ -237,19 +242,17 @@ Save this file. By this point you should have your development environment and a
   
 
 ## Confirmation
+---
 As a final test, spin up the Ceramic local node:
 
 ```bash
 ceramic daemon --network=testnet-clay
 ```
 
-Once again, you should see your local Ceramic node up and running as follows:
+You should see your Ceramic node up and running with this message `IMPORTANT: Ceramic API running on 0.0.0.0:7007`.
 
-```bash
-IMPORTANT: Ceramic API running on 0.0.0.0:7007'
-```
-
-## Next steps
+## Next Steps
+---
 After setting up your environment, the next step is to [**Create your composite →**](./create-your-composite.mdx)
 
 <!-- ## Related Guides
