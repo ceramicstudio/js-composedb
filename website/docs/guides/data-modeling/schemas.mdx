@@ -82,11 +82,11 @@ type Learner {
 
 `Learner` is not anything different from `EducationModule` in terms of how it is defined. It does contain different fields, but it is just a GraphQL shape that can be used like any other shape.
 
-💡 For this to work, you will want to define both shapes inside the same GraphQL file when writing ComposeDB schemas. Certain Directives are also required by ComposeDB.
+💡 For this to work, you will want to define both shapes inside the same GraphQL file when writing ComposeDB schemas. 
 
 ### Directives
 
-Directives are keywords that help add validation rules to a scalar. Not all scalars need to have directives. Let’s add directives to the two shapes used in this guide:
+Directives are keywords that help add validation rules to a scalar. Not all scalars need to have directives, though Strings are required to have a maxLength. Let’s add directives to the two shapes used in this guide:
 
 ```graphql
 type EducationModule {
@@ -109,8 +109,6 @@ Where:
 - `@string` adds validation rules to values that are strings, e.g. minimum and maximum length
 - `@int` adds validation rules to values that are integers, e.g. minimum and maximum values
 - `@list` adds validation rules to an array, e.g. maximum length
-
-💡 Strings are required to have the maxLength directive when used in ComposeDB
 
 ## Next Steps
 
