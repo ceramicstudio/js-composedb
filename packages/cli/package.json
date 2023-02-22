@@ -104,8 +104,8 @@
     "@types/node": "^18.13.0",
     "@types/update-notifier": "^6.0.2",
     "ajv": "^8.12.0",
-    "execa": "^6.0.0",
-    "jest-dev-server": "^6.2.0",
+    "execa": "^7.0.0",
+    "jest-dev-server": "^7.0.1",
     "oclif": "^3.6.3",
     "strip-ansi": "~7.0.1"
   },
