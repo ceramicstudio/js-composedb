@@ -1,5 +1,5 @@
 import type { CeramicApi, SignedCommit } from '@ceramicnetwork/common'
-import type { MisingDIDError } from '@ceramicnetwork/http-client'
+import type { MissingDIDError } from '@ceramicnetwork/http-client'
 import { Model, type ModelViewsDefinition } from '@ceramicnetwork/stream-model'
 
 import { StreamID } from '@ceramicnetwork/streamid'
