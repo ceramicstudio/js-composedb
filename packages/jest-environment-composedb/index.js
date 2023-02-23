@@ -34,10 +34,6 @@ export default class ComposeEnvironment extends NodeEnvironment {
         Addresses: {
           Swarm: [],
         },
-        Pubsub: {
-          // default "gossipsub" uses CJS and fails to import
-          PubSubRouter: 'floodsub',
-        },
       },
       repo: path.join(this.tmpFolder.path, 'ipfs'),
       silent: true,

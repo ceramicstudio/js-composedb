@@ -39,7 +39,7 @@
     "build": "pnpm build:clean && pnpm build:types && pnpm build:js",
     "lint": "eslint src test --fix",
     "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
-    "test:ci": "pnpm run test --ci --coverage",
+    "--test:ci": "pnpm run test --ci --coverage",
     "prepare": "pnpm build",
     "prepublishOnly": "package-check"
   },
@@ -104,8 +104,8 @@
     "@types/node": "^18.13.0",
     "@types/update-notifier": "^6.0.2",
     "ajv": "^8.12.0",
-    "execa": "^6.0.0",
-    "jest-dev-server": "^6.2.0",
+    "execa": "^7.0.0",
+    "jest-dev-server": "^7.0.1",
     "oclif": "^3.6.3",
     "strip-ansi": "~7.0.1"
   },
