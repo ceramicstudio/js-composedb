@@ -19,7 +19,6 @@ import type {
   ScalarFieldDefinition,
   SchemaDefinition,
 } from './types.js'
-import { Model } from '@ceramicnetwork/stream-model'
 
 type CompileObject = SetRequired<JSONSchema.Object, 'properties'>
 
@@ -324,7 +323,7 @@ export class SchemaCompiler {
     return {
       action: 'create',
       model: {
-        version: Model.VERSION,
+        version: '1.0',
         name,
         description: modelDefinition.description,
         // TODO: add once supported in model definition

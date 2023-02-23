@@ -124,16 +124,6 @@ const sidebars = {
     {
       type: 'category',
       collapsed: false,
-      label: 'Schema Definition Language',
-      link: { type: 'doc', id: 'api/sdl/scalars' },
-      items: [
-        { type: 'doc', id: 'api/sdl/scalars', label: 'Scalars' },
-        { type: 'doc', id: 'api/sdl/directives', label: 'Directives' },
-      ],
-    },
-    {
-      type: 'category',
-      collapsed: false,
       label: 'Public APIs',
       link: { type: 'generated-index' },
       items: [
@@ -167,6 +157,16 @@ const sidebars = {
         { type: 'doc', id: 'api/commands/cli.model', label: 'model commands' },
         { type: 'doc', id: 'api/commands/cli.document', label: 'document commands' },
         { type: 'doc', id: 'api/commands/cli.graphql', label: 'graphql commands' },
+      ],
+    },
+    {
+      type: 'category',
+      collapsed: false,
+      label: 'Schema Definition',
+      link: { type: 'doc', id: 'api/sdl/scalars' },
+      items: [
+        { type: 'doc', id: 'api/sdl/scalars', label: 'Scalars' },
+        { type: 'doc', id: 'api/sdl/directives', label: 'Directives' },
       ],
     },
   ],
