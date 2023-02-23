@@ -58,7 +58,7 @@ export default async function globalSetup() {
   await setup({
     command: `IPFS_PATH=\'${GOIPFS_DIR_PATH.pathname}\' CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB=\'true\' pnpm dlx @ceramicnetwork/cli@next daemon --config ${CONFIG_PATH.pathname}`,
     debug: true,
-    launchTimeout: 360000,
+    launchTimeout: 240000,
     port: 7007,
   })
 }
