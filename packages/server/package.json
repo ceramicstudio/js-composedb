@@ -1,6 +1,6 @@
 {
   "name": "@composedb/server",
-  "version": "0.3.2-rc.0",
+  "version": "0.4.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
@@ -39,17 +39,17 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/http-client": "^2.16.0-rc.0",
-    "@composedb/constants": "workspace:^0.3.0",
-    "@composedb/runtime": "workspace:^0.3.2-rc.0",
+    "@ceramicnetwork/http-client": "^2.17.0",
+    "@composedb/constants": "workspace:^0.4.0",
+    "@composedb/runtime": "workspace:^0.4.0",
     "get-port": "^6.1.2",
     "graphql": "^16.5.0",
-    "graphql-yoga": "^3.5.1"
+    "graphql-yoga": "^3.7.0"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^2.19.0-rc.0",
-    "@composedb/types": "workspace:^0.3.2-rc.0",
-    "@types/node": "^18.13.0"
+    "@ceramicnetwork/common": "^2.20.0",
+    "@composedb/types": "workspace:^0.4.0",
+    "@types/node": "^18.14.0"
   },
   "jest": {
     "extensionsToTreatAsEsm": [

@@ -1,7 +1,7 @@
 import { BaseCommand, type QueryCommandFlags } from '../../command.js'
 import { Flags, ux } from '@oclif/core'
 import { Model } from '@ceramicnetwork/stream-model'
-import Table, {Cell} from 'cli-table3'
+import Table, { Cell } from 'cli-table3'
 import { Edge, Page, PageInfo, StreamState } from '@ceramicnetwork/common'
 import terminalSize from 'term-size'
 import { CeramicClient } from '@ceramicnetwork/http-client'
@@ -121,9 +121,9 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
       definitions.forEach((definition) => {
         table.push([
           { content: definition.name } as Cell,
-          { content: definition.description, truncate: '...' } as Cell
+          { content: definition.description, truncate: '...' } as Cell,
         ])
-        table.push([{ colSpan: 2, content: `ID: ${definition.id.toString()}`}])
+        table.push([{ colSpan: 2, content: `ID: ${definition.id.toString()}` }])
       })
       // Not using the spinner here, so that the table is laid out properly
       this.log(`${table.toString()}\n`)
