@@ -82,7 +82,11 @@ type Comment @createModel(accountRelation: LIST, description: "A comment on a Po
   post: Post! @relationDocument(property: "postID")
   text: String! @string(maxLength: 500)
 }
+```
 
+Relations can also be created between models loaded from known streamIDs
+
+```graphql
 # Load comment model
 
 type Comment @loadModel(id: "kjzl6hvfrbw6c9oo2ync09y6z5c9mas9u49lfzcowepuzxmcn3pzztvzd0c7gh0") {

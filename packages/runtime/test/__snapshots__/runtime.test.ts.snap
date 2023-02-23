@@ -19,7 +19,7 @@ exports[`runtime can create a document using extra scalars 1`] = `
   "longitude": 53.471,
   "streamID": "kjzl6cwe1jw147dvq16zluojmraqvwdmbh61dx9e0c59i344lcrsgqfohexp60s",
   "time": "14:10:20+01:00",
-  "timeZone": "America/Costa_Rica",
+  "timeZone": null,
   "uri": "https://ceramic.network",
   "utcOffset": "+01:15",
 }
