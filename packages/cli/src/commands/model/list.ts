@@ -1,7 +1,7 @@
 import { BaseCommand, type QueryCommandFlags } from '../../command.js'
 import { Flags, ux } from '@oclif/core'
 import { Model } from '@ceramicnetwork/stream-model'
-import Table from 'cli-table3'
+import Table, {Cell} from 'cli-table3'
 import { Edge, Page, PageInfo, StreamState } from '@ceramicnetwork/common'
 import terminalSize from 'term-size'
 import { CeramicClient } from '@ceramicnetwork/http-client'
@@ -26,7 +26,7 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
   static flags = {
     ...BaseCommand.flags,
     'indexer-url': Flags.string({
-      default: 'https://ceramic-private-clay.3boxlabs.com',
+      default: 'https://ceramic-private.3boxlabs.com',
       char: 'i',
       description: 'URL of a Ceramic API that indexes all models',
     }),
@@ -115,11 +115,15 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
     console.clear()
     if (this.flags.table === true) {
       const table = new Table({
-        head: ['#', 'Name', 'ID', 'Description'],
-        colWidths: [4, 32, 65, 100],
+        head: ['Name', 'Description'],
+        colWidths: [32, 52],
       })
-      definitions.forEach((definition, index) => {
-        table.push([index + 1, definition.name, definition.id.toString(), definition.description])
+      definitions.forEach((definition) => {
+        table.push([
+          { content: definition.name } as Cell,
+          { content: definition.description, truncate: '...' } as Cell
+        ])
+        table.push([{ colSpan: 2, content: `ID: ${definition.id.toString()}`}])
       })
       // Not using the spinner here, so that the table is laid out properly
       this.log(`${table.toString()}\n`)
