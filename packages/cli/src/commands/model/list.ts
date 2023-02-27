@@ -17,12 +17,6 @@ type ModelListFlags = QueryCommandFlags & {
   table?: boolean
 }
 
-const INDEXERS_FOR_NETWORK: any = {
-  mainnet: 'https://ceramic-private.3boxlabs.com',
-  'testnet-clay': 'https://ceramic-private-clay.3boxlabs.com/',
-  'dev-unstable': 'https://ceramic-private-qa.3boxlabs.com/',
-}
-
 export default class ModelList extends BaseCommand<ModelListFlags> {
   fetchedFields: Array<PartialModelDefinition> = []
   lastLoadedPageInfo: PageInfo | null = null
@@ -53,12 +47,24 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
     return Math.round(Math.max(20, this.flags.table ? rows / 2 - 3 : rows))
   }
 
+  getIndexerForNetwork(network: string): string {
+    switch (network) {
+      case 'mainnet':
+        return 'https://ceramic-private.3boxlabs.com'
+      case 'testnet-clay':
+        return 'https://ceramic-private-clay.3boxlabs.com/'
+      case 'dev-unstable':
+        return 'https://ceramic-private-qa.3boxlabs.com/'
+      default:
+        throw new Error(
+          `Unrecognized Ceramic network ${network}. Valid values are 'mainnet', 'testnet-clay', and 'dev-unstable'`
+        )
+    }
+  }
+
   getIndexerUrl(): string {
     const network = this.flags['network'] as string
-    let indexerUrl = INDEXERS_FOR_NETWORK[network]
-    if (!indexerUrl) {
-      throw new Error(`Unrecognized Ceramic network ${network}. Valid values are: ${Object.keys(INDEXERS_FOR_NETWORK).join(',')}`)
-    }
+    let indexerUrl = this.getIndexerForNetwork(network)
     const indexerUrlFlag = this.flags['indexer-url']
     if (indexerUrlFlag) {
       indexerUrl = indexerUrlFlag
