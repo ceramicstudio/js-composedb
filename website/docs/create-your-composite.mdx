@@ -22,7 +22,7 @@ To list all models in the model catalog, run the following command:
 composedb model:list --table
 ```
 
-Here, the flag `--table` will display the output in an organized table view and provide more details about each model’s functionality.  By default, this command lists models in production on mainnet.  To see models being developed on clay testnet, specify a clay ceramic node as the list source:
+Here, the flag `--table` will display the output in an organized table view and provide more details about each model’s functionality.  By default, this command lists models in production on mainnet.  To see models being developed on clay testnet, specify a ceramic node running on the clay testnet that is configured to index the set of all models.  Once such node is available at `https://ceramic-private-clay.3boxlabs.com/`, so an example of how to see the models deployed on clay is:
 
 ```bash
 composedb model:list -i https://ceramic-private-clay.3boxlabs.com/ --table
