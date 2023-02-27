@@ -17,6 +17,12 @@ type ModelListFlags = QueryCommandFlags & {
   table?: boolean
 }
 
+const INDEXERS_FOR_NETWORK: any = {
+  mainnet: 'https://ceramic-private.3boxlabs.com',
+  'testnet-clay': 'https://ceramic-private-clay.3boxlabs.com/',
+  'dev-unstable': 'https://ceramic-private-qa.3boxlabs.com/',
+}
+
 export default class ModelList extends BaseCommand<ModelListFlags> {
   fetchedFields: Array<PartialModelDefinition> = []
   lastLoadedPageInfo: PageInfo | null = null
@@ -26,12 +32,17 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
   static flags = {
     ...BaseCommand.flags,
     'indexer-url': Flags.string({
-      default: 'https://ceramic-private.3boxlabs.com',
       char: 'i',
       description: 'URL of a Ceramic API that indexes all models',
+      exclusive: ['network'],
     }),
     table: Flags.boolean({
       description: 'display the results as a table',
+    }),
+    network: Flags.string({
+      default: 'mainnet',
+      char: 'n',
+      description: 'Which Ceramic network you want to list models for',
     }),
   }
 
@@ -42,11 +53,24 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
     return Math.round(Math.max(20, this.flags.table ? rows / 2 - 3 : rows))
   }
 
+  getIndexerUrl(): string {
+    const network = this.flags['network'] as string
+    let indexerUrl = INDEXERS_FOR_NETWORK[network]
+    if (!indexerUrl) {
+      throw new Error(`Unrecognized Ceramic network ${network}. Valid values are: ${Object.keys(INDEXERS_FOR_NETWORK).join(',')}`)
+    }
+    const indexerUrlFlag = this.flags['indexer-url']
+    if (indexerUrlFlag) {
+      indexerUrl = indexerUrlFlag
+    }
+    return indexerUrl
+  }
+
   async run(): Promise<void> {
     try {
       console.clear()
       this.spinner.start('Loading models...')
-      const ceramicIndexer = new CeramicClient(this.flags['indexer-url'])
+      const ceramicIndexer = new CeramicClient(this.getIndexerUrl())
       const page = await ceramicIndexer.index.query({
         first: this.getPageSize(),
         model: Model.MODEL,
