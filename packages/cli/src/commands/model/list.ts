@@ -26,12 +26,17 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
   static flags = {
     ...BaseCommand.flags,
     'indexer-url': Flags.string({
-      default: 'https://ceramic-private.3boxlabs.com',
       char: 'i',
       description: 'URL of a Ceramic API that indexes all models',
+      exclusive: ['network'],
     }),
     table: Flags.boolean({
       description: 'display the results as a table',
+    }),
+    network: Flags.string({
+      default: 'mainnet',
+      char: 'n',
+      description: 'Which Ceramic network you want to list models for',
     }),
   }
 
@@ -42,11 +47,36 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
     return Math.round(Math.max(20, this.flags.table ? rows / 2 - 3 : rows))
   }
 
+  getIndexerForNetwork(network: string): string {
+    switch (network) {
+      case 'mainnet':
+        return 'https://ceramic-private.3boxlabs.com'
+      case 'testnet-clay':
+        return 'https://ceramic-private-clay.3boxlabs.com/'
+      case 'dev-unstable':
+        return 'https://ceramic-private-qa.3boxlabs.com/'
+      default:
+        throw new Error(
+          `Unrecognized Ceramic network ${network}. Valid values are 'mainnet', 'testnet-clay', and 'dev-unstable'`
+        )
+    }
+  }
+
+  getIndexerUrl(): string {
+    const network = this.flags['network'] as string
+    let indexerUrl = this.getIndexerForNetwork(network)
+    const indexerUrlFlag = this.flags['indexer-url']
+    if (indexerUrlFlag) {
+      indexerUrl = indexerUrlFlag
+    }
+    return indexerUrl
+  }
+
   async run(): Promise<void> {
     try {
       console.clear()
       this.spinner.start('Loading models...')
-      const ceramicIndexer = new CeramicClient(this.flags['indexer-url'])
+      const ceramicIndexer = new CeramicClient(this.getIndexerUrl())
       const page = await ceramicIndexer.index.query({
         first: this.getPageSize(),
         model: Model.MODEL,
