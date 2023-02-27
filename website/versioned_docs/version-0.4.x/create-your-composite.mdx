@@ -22,7 +22,11 @@ To list all models in the model catalog, run the following command:
 composedb model:list --table
 ```
 
-Here, the flag `--table` will display the output in an organized table view and provide more details about each model’s functionality.
+Here, the flag `--table` will display the output in an organized table view and provide more details about each model’s functionality. By default, this command lists models in production on mainnet. To see models being developed on clay testnet, specify `--network=testnet-clay`:
+
+```bash
+composedb model:list --network=testnet-clay --table
+```
 
 **Response:** Below see a small snippet of the the output table. Each model has the following properties:
 
