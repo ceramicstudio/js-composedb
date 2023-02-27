@@ -17,7 +17,7 @@ In order to start using a new model in your application, first you’ll have to 
 
 ## Basic Usage
 
-For basic composite usage, you will need one or more models. Then follow these steps:
+For basic composite usage, you will need one or more models. If you don't have a model deployed, then see [Creating Models](#creating_models). To use your composite, follow these steps:
 
 1. Create a composite
 2. Deploy the composite to your node
@@ -29,7 +29,16 @@ For advanced usage such as merging, extracting or inspecting composites, see [Ad
 
 :::
 
-### Creating composites
+### Creating Models
+Let's say you have a model as in [Schemas](./schemas.mds). You will first save that model to a graphql file, `education_module.graphql`. You can then create your model with
+
+    composedb composite:create education_module.graphql --output=education_module.json --ceramic-url=http://localhost:7007
+
+You can then output the json to find the model id, or pass it through jq to locate
+
+    cat education_module.json | jq.models[keys_unsorted[0]]
+
+### Creating Composites
 
 Let’s say you have a model written in a `my-schema.graphql` file. To convert this schema into a composite, run the following:
 
