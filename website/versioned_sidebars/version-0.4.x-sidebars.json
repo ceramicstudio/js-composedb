@@ -69,12 +69,12 @@
     }
   ],
   "guides": [
-      {
+     {
       type: 'doc',
       id: 'guides/index',
       label: 'Guides Index',
-      },
-    {
+     },
+     {
       "type": "category",
       "collapsed": false,
       "label": "Data Modeling",
