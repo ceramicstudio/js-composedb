@@ -70,9 +70,9 @@
   ],
   "guides": [
      {
-      type: 'doc',
-      id: 'guides/index',
-      label: 'Guides Index',
+      type: "doc",
+      id: "guides/index",
+      label: "Guides Index"
      },
      {
       "type": "category",
