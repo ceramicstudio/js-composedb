@@ -42,15 +42,19 @@ const sidebars = {
   ],
   guides: [
     {
+      type: 'doc',
+      id: 'guides/index',
+      label: 'Guides Index',
+    },
+    {
       type: 'category',
       collapsed: false,
-      label: 'Guides Index',
+      label: 'Data Modeling',
       link: {
         type: 'doc',
-        id: 'guides/index',
+        id: 'guides/data-modeling/data-modeling',
       },
       items: [
-        { type: 'doc', id: 'guides/data-modeling/data-modeling', label: 'Data Modeling' },
         { type: 'doc', id: 'guides/data-modeling/model-catalog', label: 'Model Catalog' },
         {
           type: 'category',
