@@ -53,8 +53,8 @@ importers:
       '@ceramicnetwork/stream-model-instance': ^1.2.0
       '@ceramicnetwork/streamid': ^2.12.0
       '@composedb/client': workspace:^0.4.0
-      '@composedb/devtools': workspace:^0.4.0
-      '@composedb/devtools-node': workspace:^0.4.0
+      '@composedb/devtools': workspace:^0.4.2
+      '@composedb/devtools-node': workspace:^0.4.2
       '@composedb/runtime': workspace:^0.4.0
       '@composedb/types': workspace:^0.4.0
       '@oclif/core': ^2.3.0
@@ -228,7 +228,7 @@ importers:
     specifiers:
       '@ceramicnetwork/http-client': ^2.17.0
       '@composedb/client': workspace:^0.4.0
-      '@composedb/devtools': workspace:^0.4.0
+      '@composedb/devtools': workspace:^0.4.2
       '@composedb/runtime': workspace:^0.4.0
       '@composedb/server': workspace:^0.4.0
       '@composedb/types': workspace:^0.4.0
