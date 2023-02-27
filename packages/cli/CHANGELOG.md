@@ -1,5 +1,14 @@
 # @composedb/cli
 
+## 0.4.2
+
+### Patch Changes
+
+- Don't explicitly pin streams
+- Updated dependencies
+  - @composedb/devtools@0.4.2
+  - @composedb/devtools-node@0.4.2
+
 ## 0.4.0
 
 ### Minor Changes

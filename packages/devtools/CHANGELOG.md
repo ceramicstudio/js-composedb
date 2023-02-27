@@ -1,5 +1,11 @@
 # @composedb/devtools
 
+## 0.4.2
+
+### Patch Changes
+
+- Don't explicitly pin streams
+
 ## 0.4.0
 
 ### Minor Changes
