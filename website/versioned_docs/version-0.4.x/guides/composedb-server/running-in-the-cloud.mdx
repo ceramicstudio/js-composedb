@@ -61,12 +61,12 @@ docker run \
 docker pull postgres
 
 docker run -d \
-	-e POSTGRES_PASSWORD=mysecretpassword \
-	-e PGDATA=/var/lib/postgresql/data/pgdata \
-	-v /path_on_volume_for_postgres_data:/var/lib/postgresql/data \
-	-p 5432:5432 \
-	--name postgres \
-	postgres
+  -e POSTGRES_PASSWORD=mysecretpassword \
+  -e PGDATA=/var/lib/postgresql/data/pgdata \
+  -v /path_on_volume_for_postgres_data:/var/lib/postgresql/data \
+  -p 5432:5432 \
+  --name postgres \
+  postgres
 ```
 
 You can also follow the examples from the official Postgres Docker image [documentation](https://hub.docker.com/_/postgres).
