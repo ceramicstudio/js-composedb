@@ -20,7 +20,6 @@ import type { AbstractModelDefinition } from './schema/types.js'
 const MODEL_GENESIS_OPTS = {
   anchor: true,
   publish: true,
-  pin: true,
 }
 
 type StrictCompositeDefinition = Required<InternalCompositeDefinition>

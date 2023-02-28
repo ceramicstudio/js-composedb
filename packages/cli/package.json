@@ -1,6 +1,6 @@
 {
   "name": "@composedb/cli",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://composedb.js.org",
@@ -75,8 +75,8 @@
     "@ceramicnetwork/stream-model-instance": "^1.2.0",
     "@ceramicnetwork/streamid": "^2.12.0",
     "@composedb/client": "workspace:^0.4.0",
-    "@composedb/devtools": "workspace:^0.4.0",
-    "@composedb/devtools-node": "workspace:^0.4.0",
+    "@composedb/devtools": "workspace:^0.4.2",
+    "@composedb/devtools-node": "workspace:^0.4.2",
     "@composedb/runtime": "workspace:^0.4.0",
     "@oclif/core": "^2.3.0",
     "@oclif/plugin-help": "^5.2.5",
