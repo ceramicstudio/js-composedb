@@ -1,5 +1,13 @@
 # @composedb/graphql-scalars
 
+## 0.4.3
+
+### Patch Changes
+
+- Updated Ceramic dependencies
+- Updated dependencies
+  - @composedb/types@0.4.3
+
 ## 0.4.0
 
 ### Minor Changes

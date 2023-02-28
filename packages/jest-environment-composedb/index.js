@@ -22,9 +22,6 @@ export default class ComposeEnvironment extends NodeEnvironment {
   }
 
   async setup() {
-    this.originalEnvValue = process.env.CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB
-    process.env.CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB = 'true'
-
     this.tmpFolder = await dir({ unsafeCleanup: true })
 
     this.global.ipfs = await create({
@@ -60,7 +57,6 @@ export default class ComposeEnvironment extends NodeEnvironment {
   }
 
   async teardown() {
-    process.env.CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB = this.originalEnvValue
     await this.global.ceramic.close()
     await this.global.ipfs.stop()
     await this.tmpFolder.cleanup()

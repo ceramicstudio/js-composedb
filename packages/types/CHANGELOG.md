@@ -1,5 +1,11 @@
 # @composedb/types
 
+## 0.4.3
+
+### Patch Changes
+
+- Updated dependencies
+
 ## 0.4.0
 
 ### Minor Changes

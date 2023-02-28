@@ -1,5 +1,14 @@
 # @composedb/client
 
+## 0.4.3
+
+### Patch Changes
+
+- Updated Ceramic dependencies
+- Updated dependencies
+  - @composedb/graphql-scalars@0.4.3
+  - @composedb/runtime@0.4.1
+
 ## 0.4.0
 
 ### Minor Changes
