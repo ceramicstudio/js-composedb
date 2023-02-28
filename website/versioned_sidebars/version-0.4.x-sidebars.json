@@ -172,6 +172,22 @@
     {
       "type": "category",
       "collapsed": false,
+      "label": "ComposeDB Server",
+      "link": {
+        "type": "doc",
+        "id": "guides/composedb-server/composedb-server"
+      },
+      "items": [
+        {
+          "type": "doc",
+          "id": "guides/composedb-server/test-page",
+          "label": "Test Page"
+        },
+      ]
+    },
+    {
+      "type": "category",
+      "collapsed": false,
       "label": "Data Interactions",
       "link": {
         "type": "doc",
