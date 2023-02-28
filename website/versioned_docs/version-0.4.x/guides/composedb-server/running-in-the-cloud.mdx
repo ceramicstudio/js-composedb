@@ -3,7 +3,7 @@ Run a ComposeDB server in the cloud
 
 ## Things to Know
 - ComposeDB Server requires running a Ceramic node (which uses IPFS) for decentralized data, [IPFS](https://ipfs.tech/), and a Postgres DB. Each should be within a separate Docker container.
-- This guide is focused on running in the cloud using docker. If you use npm, you can follow the same steps as [Running Locally [Deployed]](../../guides/composedb-server/running-locally.mdx).
+- This guide is focused on running in the cloud using docker. If you use npm, you can follow the same steps as [Running Locally](../../guides/composedb-server/running-locally.mdx).
 - Docker images for IPFS are built from the [`go-ipfs-daemon`](https://github.com/ceramicnetwork/go-ipfs-daemon) repository and come pre-configured with plugins that make it easy to run IPFS on cloud infrastructure (e.g. the [S3 plugin](https://github.com/ipfs/go-ds-s3)). Images built from the `main` branch are tagged with `latest`, and the git commit hash of the code from which the image was built.
 - Docker images to run ComposeDB Server are built from the [js-ceramic](https://github.com/ceramicnetwork/js-ceramic) repository. Images built from the `main` branch are tagged with `latest`, the git commit hash of the code from which the image was built, and the npm package version of the corresponding [`@ceramicnetwork/cli`](https://www.npmjs.com/package/@ceramicnetwork/cli) release.
 
