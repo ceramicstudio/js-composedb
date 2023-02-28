@@ -180,9 +180,29 @@
       "items": [
         {
           "type": "doc",
-          "id": "guides/composedb-server/test-page",
-          "label": "Test Page"
+          "id": "guides/composedb-server/running-locally",
+          "label": "Running Locally"
         },
+        {
+          "type": "doc",
+          "id": "guides/composedb-server/running-in-the-cloud",
+          "label": "Running in the Cloud"
+        },
+        {
+          "type": "doc",
+          "id": "guides/composedb-server/server-configurations",
+          "label": "Server Configurations"
+        },
+        {
+          "type": "doc",
+          "id": "guides/composedb-server/access-mainnet",
+          "label": "Access Mainnet"
+        },
+        {
+          "type": "doc",
+          "id": "guides/composedb-server/data-storage",
+          "label": "Data Storage"
+        }
       ]
     },
     {

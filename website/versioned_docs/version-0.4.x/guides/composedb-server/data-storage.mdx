@@ -1,0 +1,15 @@
+# Data Storage
+Store and remove data from your node
+
+## Overview
+In production, node operators can choose what content to store on their node by pinning and unpinning models or streams. Unpinning is not synonymous with deletion.
+
+## Storage & Removal
+In order to prevent the loss of streams due to garbage collection, you need to explicitly pin the streams that you wish to persist. Pinning instructs the node to keep them around in persistent storage until they are explicitly unpinned. To view the commands for pinning & unpinning, see the [Ceramic docs](https://developers.ceramic.network/build/javascript/pinning/#pin-a-stream-while-creating-it) here.
+
+## Deletion
+When using or participating in the Ceramic Network you should know that the data streams created have a slightly different set of operations that can be performed on them from the standard CRUD operations you may be used to in other tech stacks.
+
+All data streams are globally readable.  If you know the streamID of any and all data streams that exist on the network you, and any other app in the world, can access the data values.  This is the backbone of composability.  Without this globally readable trait data created on Ceramic would not be portable from app to app.
+
+There is no “delete” operation on a Ceramic data stream.  By nature the blockchain is a public ledger, and as such once a Ceramic stream is anchored on-chain, it will forever exist there.  Although this data may end up becoming stale over time, it is forever preserved in the state it was last anchored.  Since we cannot mutate the blockchain, we cannot ever perform a full deletion of a Ceramic data stream.  Take this into consideration when deciding what types of data you plan to store on the Ceramic network.
