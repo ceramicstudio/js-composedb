@@ -1,5 +1,16 @@
 # @composedb/cli
 
+## 0.4.3
+
+### Patch Changes
+
+- Updated Ceramic dependencies
+- Updated dependencies
+  - @composedb/devtools-node@0.4.3
+  - @composedb/devtools@0.4.3
+  - @composedb/runtime@0.4.1
+  - @composedb/client@0.4.3
+
 ## 0.4.2
 
 ### Patch Changes
