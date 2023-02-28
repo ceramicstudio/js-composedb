@@ -64,7 +64,8 @@ docker run -d \
 	-e POSTGRES_PASSWORD=mysecretpassword \
 	-e PGDATA=/var/lib/postgresql/data/pgdata \
 	-v /path_on_volume_for_postgres_data:/var/lib/postgresql/data \
-  --name postgres \
+	-p 5432:5432 \
+	--name postgres \
 	postgres
 ```
 
