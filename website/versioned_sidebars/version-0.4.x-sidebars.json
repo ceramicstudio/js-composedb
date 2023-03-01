@@ -108,14 +108,13 @@
               "label": "Schemas"
             },
             {
-              "type": "doc",
-              "id": "guides/data-modeling/relations",
-              "label": "Relations"
-            },
-            {
               "type": "category",
               "collapsed": true,
-              "label": "More Relations Examples",
+              "label": "Relations",
+              "link": {
+                "type": "doc",
+                "id": "guides/data-modeling/relations"
+              },
               "items": [
                 {
                   "type": "doc",
