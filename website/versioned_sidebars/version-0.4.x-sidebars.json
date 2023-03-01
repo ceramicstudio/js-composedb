@@ -108,9 +108,20 @@
               "label": "Schemas"
             },
             {
-              "type": "doc",
-              "id": "guides/data-modeling/relations",
-              "label": "Relations"
+              "type": "category",
+              "collapsed": true,
+              "label": "Relations",
+              "link": {
+                "type": "doc",
+                "id": "guides/data-modeling/relations"
+              },
+              "items": [
+                {
+                  "type": "doc",
+                  "id": "guides/data-modeling/relations-container-of-items",
+                  "label": "Container of Items"
+                }
+              ]
             }
           ]
         },
