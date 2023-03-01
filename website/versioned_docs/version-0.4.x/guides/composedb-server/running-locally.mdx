@@ -1,0 +1,61 @@
+# Running Locally
+Run a ComposeDB server on your local machine, e.g. your laptop
+
+## Things to Know
+- ComposeDB requires running a Ceramic node (which uses IPFS) for decentralized data and a SQL instance for your index database.
+- ComposeDB server can also be run locally [using Docker](../../guides/composedb-server/running-in-the-cloud.mdx).
+
+:::tip
+
+If you want to serve a live application in production, see [Running in the Cloud](../../guides/composedb-server/running-in-the-cloud.mdx).
+
+:::
+
+## Requirements
+**Runtime**
+- Node.js Version 16
+
+**Package Manager**
+- npm Version 6
+
+**xupported Operating Systems**
+- Linux
+- Mac
+- Windows
+
+:::note
+
+For Windows, Windows Subsystem for Linux 2 (WSL2) is strongly recommended. Using the Windows command line is not portable and can cause compatibility issue when running the same configuration on a different operating system (e.g. in a Linux-based cloud deployment).
+
+:::
+
+## Installation
+### Using npm
+
+Install the Ceramic CLI and ComposeDB CLI using npm:
+
+```bash
+npm install -g @ceramicnetwork/cli @composedb/cli
+```
+
+## Basic Setup
+### Admin account
+If you don’t already have one, you’ll need to create an admin account (DID) to handle restricted changes and admin operations on your node. To do so, follow the  steps in [Set up your environment](../../set-up-your-environment.mdx#developer-account) to generate a key & account. Once you’ve added your admin DID to the config file, return here.
+
+### Start the daemon
+Using a command line utility or terminal, start the Ceramic daemon: 
+
+```bash
+ceramic daemon
+```
+
+## Configurations
+You now have a server running with the default configuration and a preconfigured IPFS node that can be used by the [ComposeDB Client](../../guides/composedb-client/composedb-client.mdx). 
+
+## Next Steps
+Edit your [Server Configurations](../../guides/composedb-server/server-configurations.mdx) for your use case. 
+
+## Related Guides
+Check out our other guides for running a node:
+
+- [Running in the Cloud](../../guides/composedb-server/running-in-the-cloud.mdx)
