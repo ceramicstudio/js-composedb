@@ -111,6 +111,18 @@
               "type": "doc",
               "id": "guides/data-modeling/relations",
               "label": "Relations"
+            },
+            {
+              "type": "category",
+              "collapsed": true,
+              "label": "More Relations Examples",
+              "items": [
+                {
+                  "type": "doc",
+                  "id": "guides/data-modeling/relations-container-of-items",
+                  "label": "Container of Items"
+                }
+              ]
             }
           ]
         },
