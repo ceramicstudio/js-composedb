@@ -1,0 +1,116 @@
+# Running in the Cloud
+Run a ComposeDB server in the cloud
+
+## Things to Know
+- ComposeDB Server requires running a Ceramic node (which uses IPFS) for decentralized data, [IPFS](https://ipfs.tech/), and a Postgres DB. Each should be within a separate Docker container.
+- This guide is focused on running in the cloud using docker. If you use npm, you can follow the same steps as [Running Locally](../../guides/composedb-server/running-locally.mdx).
+- Docker images for IPFS are built from the [`go-ipfs-daemon`](https://github.com/ceramicnetwork/go-ipfs-daemon) repository and come pre-configured with plugins that make it easy to run IPFS on cloud infrastructure (e.g. the [S3 plugin](https://github.com/ipfs/go-ds-s3)). Images built from the `main` branch are tagged with `latest`, and the git commit hash of the code from which the image was built.
+- Docker images to run ComposeDB Server are built from the [js-ceramic](https://github.com/ceramicnetwork/js-ceramic) repository. Images built from the `main` branch are tagged with `latest`, the git commit hash of the code from which the image was built, and the npm package version of the corresponding [`@ceramicnetwork/cli`](https://www.npmjs.com/package/@ceramicnetwork/cli) release.
+
+:::danger
+
+To run a Ceramic node in production, it is critical to persist the [Ceramic state store](https://developers.ceramic.network/run/nodes/nodes/#ceramic-state-store) and the [IPFS datastore](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#datastorespec). The form of storage you choose should also be configured for disaster recovery with data redundancy, and some form of snapshotting and/or backups. **Loss of this data can result in permanent loss of Ceramic streams and will cause your node to be in a corrupt state.**
+
+:::
+
+## Cloud Requirements
+**Supported Operating Systems**
+
+- Linux
+- Mac
+- Windows 
+
+:::note
+
+For Windows, Windows Subsystem for Linux 2 (WSL2) is strongly recommended. Using the Windows command line is not portable and can cause compatibility issue when running the same configuration on a different operating system (e.g. in a Linux-based cloud deployment).
+
+:::
+
+**Compute**
+
+You’ll need sufficient compute to power Ceramic, IPFS, and Postgres. At a minimum:
+
+- 4 vCPUs
+- 8GB RAM
+
+## Docker Hub
+You can find the ComposeDB server and IPFS Docker images on [Docker Hub](https://hub.docker.com/u/ceramicnetwork).
+
+## Examples
+
+> Make sure to update the examples by setting your variables.
+
+### Running IPFS
+
+For production deployments you should run your own IPFS process manually and point your Ceramic node at it. This is referred to as running IPFS in "remote" mode in the Ceramic `daemon.config.json` file, versus the pre-configured “bundled” mode used for running locally.
+
+```bash
+docker pull ceramicnetwork/go-ipfs-daemon:latest
+
+docker run \
+  -p 5001:5001 \ # API port
+  -p 8011:8011 \ # Healthcheck port
+  -v /path_on_volume_for_ipfs_repo:/data/ipfs \
+  --name ipfs \
+  go-ipfs-daemon
+```
+
+### Running Postgres
+
+```bash
+docker pull postgres
+
+docker run -d \
+  -e POSTGRES_PASSWORD=mysecretpassword \
+  -e PGDATA=/var/lib/postgresql/data/pgdata \
+  -v /path_on_volume_for_postgres_data:/var/lib/postgresql/data \
+  -p 5432:5432 \
+  --name postgres \
+  postgres
+```
+
+You can also follow the examples from the official Postgres Docker image [documentation](https://hub.docker.com/_/postgres).
+
+### Running Ceramic
+
+```bash
+docker pull ceramicnetwork/js-ceramic:latest
+
+docker run -d \
+  -p 7007:7007 \
+  -v /path_on_volume_for_daemon_config:/root/.ceramic/daemon.config.json \
+  -v /path_on_volume_for_ceramic_logs:/root/.ceramic/logs \
+  -v /path_on_volume_for_ceramic_statestore:/root/.ceramic/statestore \
+  -e NODE_ENV=production \
+  -e CERAMIC_INDEXING_DB_URI=postgres://username:password@host:5432/dbname \
+  --name ceramic \
+  js-ceramic --ipfs-api http://ipfs_ip_address:5001
+```
+
+### Editing the `daemon.config.json` file
+
+To have these IPFS and Postgres settings persist in your Ceramic node, edit the `daemon.config.json` file to include IPFS information. The default location is `~/.ceramic/daemon.config.json`. For a full file example, see the [Ceramic](https://developers.ceramic.network/run/nodes/nodes/#example-daemonconfigjson) docs.
+
+```bash
+...
+    "ipfs": {
+        "mode": "remote",
+        "host": "http://ipfs_ip_address:5001"
+    },
+... 
+```
+
+```bash
+...
+"indexing": {
+    "db": "postgres://username:password@host:5432/dbname",
+    "allow-queries-before-historical-sync": true,
+    "enable-historical-sync": false
+  }
+...
+```
+
+## Next Steps
+
+- Understand the different ways to [configure your server](../../guides/composedb-server/server-configurations.mdx), including choosing a network
+- Use your Admin DID to authenticate your node to gain [access to mainnet](../../guides/composedb-server/access-mainnet.mdx)
