@@ -113,7 +113,7 @@ Where:
 
 ### Example: Container of Items
 
-First, create the SDL for your item.
+First, create the SDL for your item
 
 ```graphql
 type Ball @createModel(accountRelation: LIST, description: "A ball to display") {
@@ -124,54 +124,49 @@ type Ball @createModel(accountRelation: LIST, description: "A ball to display") 
   radius: Float
 }
 ```
+You will then save this to a file, such as `ball.graphql`. You can then add the model and get the id.
 
-Save this SDL to a file, such as `ball.graphql`. You can then add the model to your node with
+     composedb composite:create --output ball.json ball.graphql
+     cat ball.json | jq '.models | keys_unsorted[0]'
 
-    composedb composite:create --output ball.json ball.graphql
-
-From this, you can extract the item's ID
-
-    cat ball.json | js '.models | keys_unsorted[0]'
-
-Next create the SDL for your container
-
+Next, create the SDL for your container, without references to items
 ```graphql
 type World @createModel(accountRelation: LIST, description: "Ball World") {
   name: String! @string(minLength: 3, maxLength: 50)
 }
 ```
-
-Save this SDL to a file, such as `world.graphql`. You can then add the model to your node with
-
-    composedb composite:create --output world.json world.graphql
-
-From this, you can extract the container's ID
-
-    cat world.json | js '.models | keys_unsorted[0]'
-
-Finally, define the relationship between your container and the items it contains
-
+Save this to a file and add as above. Then we will create a model to relate our item and container
 ```graphql
-type Ball @loadModel(id: "kjzl6hvfrbw6c7dye5scv2pi60rh2qh1wyweld0fhqb41vq51ac8emih9ick5tm") {
+type Ball @loadModel(id: "<id of ball>") {
+  id: ID!
+}
+
+type World @loadModel(id: "<id of world>"){
+  id: ID!
+}
+
+type BallRelation @createModel(accountRelation: LIST, description: "Relate a ball to our world") {
+  ballID: StreamID! @documentReference(model: "Ball")
+  worldID: StreamID! @documentReference(model: "World")
+}
+```
+and finally, relate our container to our items
+```graphql
+type BallRelation @loadModel(id: "kjzl6hvfrbw6caa6awyij33sucvc12nfxqcx4454yzmrpe2sq46j29axyqyvohq") {
   id: ID!
 }
 
 type World @loadModel(id: "kjzl6hvfrbw6caa6awyij33sucvc12nfxqcx4454yzmrpe2sq46j29axyqyvohq") {
-  balls: [Ball] @relationFrom(model: "Ball", property: "worldID")
+  balls: [BallRelation] @relationFrom(model: "BallRelation", property: "worldID")
 }
 ```
 
-Save this to a file, such as `world_relation.graphql`.
 :::caution
-This is a view on top of the models, so you cannot require your items, such as with `balls: [Ball!]`
-
-You can create your relation with
-
-    composedb composite:create --output world_relation.json world_relation.graphql
+This is a view on top of the models, so you cannot require your items, such as with `balls: [BallRelation!]`
 
 We can now merge all of these and deploy them as a composite.
 
-    composedb composite:merge ball.json world.json world_relation.json --output=merged.json
+    composedb composite:merge ball.json world.json ball_relation.json world_relation.json --output=merged.json
     composedb composite:deploy merged.json
     composedb composite:compile merged.json runtime.json
 
@@ -208,6 +203,74 @@ and variables
 }
 ```
 
+We can create a container with mutation
+
+```graphql
+mutation CreateNewWorld($i: CreateWorldInput!){
+  createWorld(input: $i){
+    document {
+      id
+    }
+  }
+}
+```
+
+and variables
+
+```graphql
+{
+  "i": {
+    "content": {
+      "name": "test-world",
+    }
+  }
+}
+```
+
+Finally we can define relations between items and the container with mutation
+```graphql
+mutation CreateBallRelation($i: CreateBallRelationInput!){
+  createBallRelation(input: $i){
+    document {
+      id
+    }
+  }
+}
+```
+and variables
+```graphql
+{
+  "i": {
+    "content": {
+      "ballID": "<id from ball mutation>",
+      "worldID": "<id from world mutation>"
+    }
+  }
+}
+```
+Finally, we can query for the container for the items
+```graphql
+query {
+  worldIndex(first: 1) {
+    edges {
+      node {
+        id
+        name
+        balls(first: 5) {
+          edges {
+            node {
+              id
+              red
+              green
+              blue
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
 ## Account to Account
 :::caution
 Account to account relations are on the roadmap, but not yet supported.
