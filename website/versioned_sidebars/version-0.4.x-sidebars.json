@@ -120,6 +120,11 @@
                   "type": "doc",
                   "id": "guides/data-modeling/relations-container-of-items",
                   "label": "Container of Items"
+                },
+                {
+                  "type": "doc",
+                  "id": "guides/data-modeling/relations-combine-items",
+                  "label": "Combine Items"
                 }
               ]
             }
