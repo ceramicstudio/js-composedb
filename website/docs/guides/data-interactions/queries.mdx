@@ -26,11 +26,11 @@ Now, query for posts:
 
 query{
   postIndex(first:2){
-		edges{
+    edges{
       node{
-        title
-				text
         id
+        title
+	text
       }
     }
   }
@@ -64,7 +64,7 @@ type Post @createModel(accountRelation: LIST, description: "A simple text post")
 # Extend post model with comment relations
 
 type Comment @loadModel(id: "...") {
-  id
+  id: ID!
 }
 
 type Post @loadModel(id: "kjzl6hvfrbw6c99mdfpjx1z3fue7sesgua6gsl1vu97229lq56344zu9bawnf96") {
