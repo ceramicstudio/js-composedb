@@ -1,0 +1,44 @@
+{
+  "name": "@composedb/ceramic-codecs",
+  "version": "0.4.0",
+  "author": "3Box Labs",
+  "license": "(Apache-2.0 OR MIT)",
+  "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
+  "keywords": [
+    "ceramic",
+    "composedb"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ceramicstudio/js-composedb",
+    "directory": "packages/ceramic-codecs"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build:clean": "del dist",
+    "build:js": "swc src -d ./dist --config-file ../../.swcrc",
+    "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
+    "build": "pnpm build:clean && pnpm build:types && pnpm build:js",
+    "lint": "eslint src --fix",
+    "prepare": "pnpm build",
+    "prepublishOnly": "package-check"
+  },
+  "dependencies": {
+    "fp-ts": "^2.13.1",
+    "io-ts": "^2.2.20",
+    "multiformats": "^11.0.1",
+    "uint8arrays": "^4.0.3"
+  }
+}
