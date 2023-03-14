@@ -56,7 +56,7 @@
     "caip": "^1.1.0",
     "dids": "^4.0.0",
     "jest-environment-composedb": "workspace:^0.4.1",
-    "multiformats": "^11.0.1"
+    "multiformats": "^11.0.2"
   },
   "jest": {
     "extensionsToTreatAsEsm": [

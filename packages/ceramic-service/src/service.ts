@@ -56,9 +56,3 @@ export class Service {
     return this.#pubsubPromise
   }
 }
-
-export const service = new Service({
-  config: {
-    pubsubTopic: '/test/local',
-  },
-})

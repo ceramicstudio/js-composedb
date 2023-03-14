@@ -1,18 +1,17 @@
 {
-  "name": "@composedb/graphql-scalars",
-  "version": "0.4.3",
+  "name": "@composedb/services-runner",
+  "version": "0.4.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
-  "homepage": "https://composedb.js.org",
+  "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
   "keywords": [
     "ceramic",
-    "composedb",
-    "graphql"
+    "composedb"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ceramicstudio/js-composedb",
-    "directory": "packages/graphql-scalars"
+    "directory": "packages/services-runner"
   },
   "type": "module",
   "main": "dist/index.js",
@@ -37,11 +36,9 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/streamid": "^2.14.0",
-    "@composedb/types": "workspace:^0.4.3",
-    "caip": "^1.1.0",
-    "graphql": "^16.5.0",
-    "graphql-scalars": "^1.20.1",
-    "multiformats": "^11.0.2"
+    "@composedb/ceramic-service": "workspace:*",
+    "@composedb/composite-service": "workspace:*",
+    "@composedb/services-rpc": "workspace:*",
+    "tslog": "^4.8.2"
   }
 }

@@ -1,12 +1,17 @@
-import { CeramicStreamCodec, ioParser } from '@composedb/ceramic-codecs'
+import { CeramicStreamCodec } from '@composedb/ceramic-codecs'
+import { ioParser } from '@composedb/services-rpc'
 import { initTRPC } from '@trpc/server'
 import * as io from 'io-ts'
 
-import { service } from './service.js'
+import type { Service } from './service.js'
 
-const t = initTRPC.create()
+export type Context = {
+  service: Service
+}
 
-export const serviceRouter = t.router({
+const t = initTRPC.context<Context>().create()
+
+export const router = t.router({
   loadStream: t.procedure
     .input(
       ioParser(
@@ -16,9 +21,9 @@ export const serviceRouter = t.router({
       )
     )
     .query(async (req) => {
-      const stream = await service.streams.loadStream(req.input.id)
+      const stream = await req.ctx.service.streams.loadStream(req.input.id)
       return CeramicStreamCodec.encode(stream)
     }),
 })
 
-export type ServiceRouter = typeof serviceRouter
+export type Router = typeof router
