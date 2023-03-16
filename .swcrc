@@ -1,7 +1,11 @@
 {
   "jsc": {
     "parser": {
-      "syntax": "typescript"
+      "syntax": "typescript",
+      "decorators": true
+    },
+    "transform": {
+      "decoratorMetadata": true
     },
     "target": "es2020"
   }

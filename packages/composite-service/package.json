@@ -36,17 +36,25 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
+    "@ceramicnetwork/streamid": "^2.14.0",
     "@composedb/ceramic-codecs": "workspace:*",
+    "@composedb/model-codecs": "workspace:*",
     "@composedb/services-rpc": "workspace:*",
-    "@trpc/client": "^10.15.0",
-    "@trpc/server": "^10.15.0",
-    "ajv": "^8.12.0",
-    "ajv-formats": "^2.1.1",
-    "fast-json-patch": "^3.1.1",
+    "@didtools/pkh-ethereum": "^0.3.0",
+    "@didtools/pkh-solana": "^0.1.0",
+    "@didtools/pkh-tezos": "^0.2.1",
+    "@trpc/client": "^10.16.0",
+    "@trpc/server": "^10.16.0",
+    "fp-ts": "^2.13.1",
+    "io-ts": "^2.2.20",
+    "key-did-resolver": "^3.0.0",
     "tslog": "^4.8.2"
   },
   "devDependencies": {
     "@composedb/ceramic-service": "workspace:*",
+    "@composedb/database-service": "workspace:*",
+    "@didtools/cacao": "^2.0.0",
+    "dids": "^4.0.0",
     "json-schema-typed": "^8.0.1"
   }
 }

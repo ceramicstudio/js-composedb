@@ -1,6 +1,7 @@
-import * as fp from 'fp-ts'
 import * as io from 'io-ts'
 import { CID } from 'multiformats/cid'
+
+import { createDecoder } from './utils.js'
 
 export const cidCodec = new io.Type<CID, string, unknown>(
   'cid',
@@ -28,14 +29,7 @@ export const cidCodec = new io.Type<CID, string, unknown>(
 
 export type CIDInput = string | CID | Uint8Array
 
-export function parseCID(input: CIDInput): CID {
-  return fp.function.pipe(
-    cidCodec.decode(input),
-    fp.either.fold(() => {
-      throw new Error(`Failed to parse CID input: ${input}`)
-    }, fp.function.identity)
-  )
-}
+export const parseCID = createDecoder(cidCodec)
 
 export const JWSSignatureCodec = io.strict(
   {

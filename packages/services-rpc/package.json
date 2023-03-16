@@ -36,8 +36,8 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@trpc/client": "^10.15.0",
-    "@trpc/server": "^10.15.0",
+    "@trpc/client": "^10.16.0",
+    "@trpc/server": "^10.16.0",
     "fp-ts": "^2.13.1",
     "io-ts": "^2.2.20",
     "rxjs": "^7.8.0"

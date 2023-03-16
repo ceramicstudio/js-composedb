@@ -144,9 +144,9 @@ export const CommitDataCommonCodec = io.partial({
   disableTimecheck: io.boolean,
 })
 
-export function createCommitDataCodec(
+export function createCommitDataCodec<CommitCodec extends AnyCeramicCommitCodec>(
   type: CommitTypeCodec,
-  commit: AnyCeramicCommitCodec,
+  commit: CommitCodec,
   name?: string
 ) {
   return io.intersection(
@@ -161,6 +161,13 @@ export const CommitDataCodec = createCommitDataCodec(
   'CommitData'
 )
 export type CommitData = io.TypeOf<typeof CommitDataCodec>
+
+export const GenesisCommitDataCodec = createCommitDataCodec(
+  CommitTypeCodec,
+  GenesisCommitCodec,
+  'GenesisCommitData'
+)
+export type GenesisCommitData = io.TypeOf<typeof GenesisCommitDataCodec>
 
 export const CeramicStreamCodec = io.strict(
   {

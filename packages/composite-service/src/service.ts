@@ -1,6 +1,12 @@
 import type { ServicesBus } from '@composedb/services-rpc'
 
-import { type CeramicClient, createCeramicClient } from './clients.js'
+import {
+  type CeramicClient,
+  // type DatabaseClient,
+  createCeramicClient,
+  createDatabaseClient,
+} from './clients.js'
+import { ModelsManager } from './models.js'
 
 export type ServiceParams = {
   bus: ServicesBus
@@ -8,9 +14,20 @@ export type ServiceParams = {
 
 export class Service {
   #ceramic: CeramicClient
+  // #db: DatabaseClient
+  #models: ModelsManager
 
   constructor(params: ServiceParams) {
-    this.#ceramic = createCeramicClient(params.bus)
+    const ceramic = createCeramicClient(params.bus)
+    const db = createDatabaseClient(params.bus)
+
+    this.#ceramic = ceramic
+    // this.#db = db
+    this.#models = new ModelsManager({ ceramic, db })
+  }
+
+  get models(): ModelsManager {
+    return this.#models
   }
 
   async run() {

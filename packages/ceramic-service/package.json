@@ -40,7 +40,7 @@
     "@composedb/services-rpc": "workspace:*",
     "@ipld/dag-cbor": "^9.0.0",
     "@stablelib/sha256": "^1.0.1",
-    "@trpc/server": "^10.15.0",
+    "@trpc/server": "^10.16.0",
     "fp-ts": "^2.13.1",
     "get-port": "^6.1.2",
     "go-ipfs": "^0.18.1",
