@@ -465,22 +465,38 @@ importers:
     specifiers:
       '@ceramicnetwork/common': ^2.23.0
       '@ceramicnetwork/http-client': ^2.20.0
-      '@composedb/constants': workspace:^0.4.0
-      '@composedb/runtime': workspace:^0.4.1
+      '@composedb/composite-service': workspace:*
+      '@composedb/constants': workspace:*
+      '@composedb/model-codecs': workspace:*
+      '@composedb/runtime': workspace:*
+      '@composedb/services-rpc': workspace:*
+      '@composedb/services-runner': workspace:*
       '@composedb/types': workspace:^0.4.3
+      '@trpc/client': ^10.16.0
+      '@trpc/server': ^10.16.0
       '@types/node': ^18.15.3
+      fp-ts: ^2.13.1
       get-port: ^6.1.2
       graphql: ^16.5.0
       graphql-yoga: ^3.7.3
+      io-ts: ^2.2.20
     dependencies:
       '@ceramicnetwork/http-client': 2.20.0
       '@composedb/constants': link:../constants
+      '@composedb/model-codecs': link:../model-codecs
       '@composedb/runtime': link:../runtime
+      '@composedb/services-runner': link:../services-runner
+      '@trpc/client': 10.16.0_@trpc+server@10.16.0
+      '@trpc/server': 10.16.0
+      fp-ts: 2.13.1
       get-port: 6.1.2
       graphql: 16.6.0
       graphql-yoga: 3.7.3_kedzoti4cg6xiecsge2tvwy5ne
+      io-ts: 2.2.20_fp-ts@2.13.1
     devDependencies:
       '@ceramicnetwork/common': 2.23.0
+      '@composedb/composite-service': link:../composite-service
+      '@composedb/services-rpc': link:../services-rpc
       '@composedb/types': link:../types
       '@types/node': 18.15.3
 

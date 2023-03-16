@@ -11,6 +11,8 @@ import {
   CommitType,
   type SignedCommit,
   SignedCommitCodec,
+  type SignedCommitContainer,
+  SignedCommitContainerCodec,
   parseCID,
 } from '@composedb/ceramic-codecs'
 import type { Cacao } from '@didtools/cacao'
@@ -30,6 +32,7 @@ import {
 } from './pubsub-protocol.js'
 import type { PubsubChannel } from './pubsub-channel.js'
 
+const MAX_COMMIT_SIZE = 256_000 // 256 KB
 const DAG_NODES_CACHE_MAX_SIZE = 1024
 const STREAMS_CACHE_MAX_SIZE = 128
 const STREAM_TIPS_CACHE_MAX_SIZE = 1024
@@ -37,6 +40,10 @@ const NETWORK_QUERY_TIMEOUT = 30_000 // 30 secs
 
 export function base64urlToJSON<T = Record<string, unknown>>(input: string): T {
   return JSON.parse(toString(fromString(input, 'base64url')))
+}
+
+export function toCID(input: CID | string): CID {
+  return typeof input === 'string' ? CID.parse(input.replace('ipfs://', '')) : input
 }
 
 export type StreamsHandlerParams = {
@@ -50,6 +57,7 @@ export type LoadDagNodeOptions = GetOptions
 export class StreamsHandler {
   #dagNodesPromises: QuickLRU<string, Promise<unknown>>
   #ipfsPromise: Promise<IPFS>
+  #logger: Logger
   #pubsubPromise: Promise<PubsubChannel>
   #streamsPromises: QuickLRU<string, Promise<CeramicStream>>
   #streamTipsPromises: QuickLRU<string, Promise<string>>
@@ -57,6 +65,7 @@ export class StreamsHandler {
   constructor(params: StreamsHandlerParams) {
     this.#dagNodesPromises = new QuickLRU({ maxSize: DAG_NODES_CACHE_MAX_SIZE })
     this.#ipfsPromise = params.ipfsPromise
+    this.#logger = params.logger
     this.#pubsubPromise = params.pubsubPromise
     this.#streamsPromises = new QuickLRU({ maxSize: STREAMS_CACHE_MAX_SIZE })
     this.#streamTipsPromises = new QuickLRU({ maxSize: STREAM_TIPS_CACHE_MAX_SIZE })
@@ -137,7 +146,7 @@ export class StreamsHandler {
     if (SignedCommitCodec.is(commit)) {
       const [linkedCommit, capability] = await Promise.all([
         this.loadCommit(commit.link),
-        this.extractCapability(commit),
+        this._extractCapability(commit),
       ])
       return { ...commitData, capability, commit: linkedCommit, envelope: commit }
     }
@@ -154,7 +163,7 @@ export class StreamsHandler {
     return commitData
   }
 
-  async extractCapability(commit: SignedCommit): Promise<Cacao | undefined> {
+  async _extractCapability(commit: SignedCommit): Promise<Cacao | undefined> {
     const protectedHeader = commit.signatures[0]?.protected
     if (protectedHeader == null) {
       return
@@ -200,5 +209,71 @@ export class StreamsHandler {
       previousTip = (commitData.commit as any).prev
     }
     return log
+  }
+
+  async storeCommit(commit: unknown, streamID?: string): Promise<CID> {
+    try {
+      if (SignedCommitContainerCodec.is(commit)) {
+        return await this._storeSignedCommitContainer(commit)
+      }
+
+      const cid = await this.#ipfsPromise.then((ipfs) => ipfs.dag.put(commit))
+      await this._restrictCommitSize(cid)
+      return cid
+    } catch (err) {
+      this.#logger.error('Error while storing commit to IPFS', {
+        streamID,
+        message: (err as Error).message,
+      })
+      throw err
+    }
+  }
+
+  async _storeSignedCommitContainer(commit: SignedCommitContainer): Promise<CID> {
+    const { jws, linkedBlock, cacaoBlock } = commit
+    const link = jws.link as CID
+
+    // if cacao is present, put it into ipfs dag
+    const cacaoStored = cacaoBlock
+      ? this._putBlock(base64urlToJSON(jws.signatures[0].protected).cap as string, cacaoBlock)
+      : undefined
+
+    // put the JWS into the ipfs dag
+    const jwsStored = this.#ipfsPromise
+      .then((ipfs) => ipfs.dag.put(jws, { hashAlg: 'sha2-256', storeCodec: 'dag-jose' }))
+      .then((cid) => {
+        return this._restrictCommitSize(cid).then(() => cid)
+      })
+
+    // put the payload into the ipfs dag
+    const payloadStored = this._putBlock(link, linkedBlock).then(() => {
+      return this._restrictCommitSize(link)
+    })
+
+    const [cid] = await Promise.all([jwsStored, cacaoStored, payloadStored])
+    return cid
+  }
+
+  async _putBlock(cidInput: CID | string, block: Uint8Array, signal?: AbortSignal): Promise<CID> {
+    const cid = toCID(cidInput)
+    const ipfs = await this.#ipfsPromise
+    const [format, mhtype] = await Promise.all([
+      ipfs.codecs.getCodec(cid.code).then((f) => f.name),
+      ipfs.hashers.getHasher(cid.multihash.code).then((mh) => mh.name),
+    ])
+    return await ipfs.block.put(block, { format, mhtype, version: cid.version, signal })
+  }
+
+  async _restrictCommitSize(cidInput: CID | string, signal?: AbortSignal): Promise<void> {
+    const cid = toCID(cidInput)
+    const ipfs = await this.#ipfsPromise
+    const stat = await ipfs.block.stat(cid, { signal, timeout: NETWORK_QUERY_TIMEOUT })
+    if (stat.size > MAX_COMMIT_SIZE) {
+      throw new Error(
+        `${cid.toString()} commit size ${
+          stat.size
+        } exceeds the maximum block size of ${MAX_COMMIT_SIZE}`
+      )
+    }
   }
 }

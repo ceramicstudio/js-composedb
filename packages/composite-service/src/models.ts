@@ -1,7 +1,9 @@
 import { StreamID } from '@ceramicnetwork/streamid'
 import {
-  GenesisCommitDataCodec,
+  // CommitType,
   type GenesisCommitData,
+  GenesisCommitDataCodec,
+  // type SignedCommitContainer,
   createDecoder,
 } from '@composedb/ceramic-codecs'
 import { ModelCodec, type Model } from '@composedb/model-codecs'
@@ -11,7 +13,7 @@ import { verifyCommitSignature } from './stream.js'
 
 const decodeGenesisCommitData = createDecoder(GenesisCommitDataCodec)
 
-export async function modelFromGenesis(commitData: GenesisCommitData): Promise<ModelStream> {
+export async function modelFromGenesis(commitData: GenesisCommitData): Promise<Model> {
   if (!GenesisCommitDataCodec.is(commitData)) {
     throw Error('Invalid model genesis commit data')
   }
@@ -51,6 +53,16 @@ export class ModelsManager {
     this.#db = params.db
   }
 
+  // async createFromGenesis(commit: SignedCommitContainer): Promise<Model> {
+  //   const genesis = await this.#ceramic.storeCommit.mutate({ commit })
+
+  //   // TODO: load model content and metadata from commit, is it part of the JWS?
+  //   const model: Model = { id: new StreamID(CommitType.GENESIS, genesis.cid) }
+
+  //   await this.#db.createModel.mutate({ model, indexDocuments: false })
+  //   return model
+  // }
+
   async loadFromNetwork(id: string): Promise<Model> {
     const stream = await this.#ceramic.loadStream.query({ id })
     const commitData = decodeGenesisCommitData(stream.log[0])
@@ -68,9 +80,4 @@ export class ModelsManager {
 
     return model
   }
-
-  // async create(commitData: GenesisCommitData) {
-  //   const stream = await modelFromGenesis(commitData)
-  //   // TODO: upsert in DB + publish to network
-  // }
 }

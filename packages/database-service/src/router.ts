@@ -1,5 +1,5 @@
 import { META_MODEL_BYTES, type ContentDefinition, ModelCodec } from '@composedb/model-codecs'
-import { ioParser } from '@composedb/services-rpc'
+import { ioDecode, ioEncode } from '@composedb/services-rpc'
 import { initTRPC } from '@trpc/server'
 import * as io from 'io-ts'
 // Workaround for TS2742 error - https://github.com/microsoft/TypeScript/issues/47663#issuecomment-1270716220
@@ -16,7 +16,7 @@ const t = initTRPC.context<Context>().create()
 
 export const router = t.router({
   createModel: t.procedure
-    .input(ioParser(io.type({ model: ModelCodec, indexDocuments: io.boolean })))
+    .input(ioDecode(io.type({ model: ModelCodec, indexDocuments: io.boolean })))
     .mutation(async (req) => {
       const { model, indexDocuments } = req.input
       const entity: ModelEntity = {
@@ -31,8 +31,8 @@ export const router = t.router({
       await req.ctx.service.createModel(entity)
     }),
   getModel: t.procedure
-    .input(ioParser(io.type({ id: io.string })))
-    .output(ioParser(io.type({ model: io.union([ModelCodec, io.null]) })))
+    .input(ioDecode(io.type({ id: io.string })))
+    .output(ioEncode(io.type({ model: io.union([ModelCodec, io.null]) })))
     .query(async (req) => {
       const entity = await req.ctx.service.getModel(req.input.id)
       const model = entity

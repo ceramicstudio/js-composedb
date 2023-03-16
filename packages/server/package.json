@@ -40,14 +40,22 @@
   },
   "dependencies": {
     "@ceramicnetwork/http-client": "^2.20.0",
-    "@composedb/constants": "workspace:^0.4.0",
-    "@composedb/runtime": "workspace:^0.4.1",
+    "@composedb/constants": "workspace:*",
+    "@composedb/model-codecs": "workspace:*",
+    "@composedb/runtime": "workspace:*",
+    "@composedb/services-runner": "workspace:*",
+    "@trpc/client": "^10.16.0",
+    "@trpc/server": "^10.16.0",
+    "fp-ts": "^2.13.1",
     "get-port": "^6.1.2",
     "graphql": "^16.5.0",
-    "graphql-yoga": "^3.7.3"
+    "graphql-yoga": "^3.7.3",
+    "io-ts": "^2.2.20"
   },
   "devDependencies": {
     "@ceramicnetwork/common": "^2.23.0",
+    "@composedb/composite-service": "workspace:*",
+    "@composedb/services-rpc": "workspace:*",
     "@composedb/types": "workspace:^0.4.3",
     "@types/node": "^18.15.3"
   },

@@ -1,14 +1,14 @@
 import { ModelCodec } from '@composedb/model-codecs'
 import { ioDecode } from '@composedb/services-rpc'
+import { ServicesRunner } from '@composedb/services-runner'
 import { initTRPC } from '@trpc/server'
 import * as io from 'io-ts'
-// Workaround for TS2742 error - https://github.com/microsoft/TypeScript/issues/47663#issuecomment-1270716220
-import type {} from 'json-schema-typed/draft-2020-12.js'
 
-import type { Service } from './service.js'
+import { type CompositeClient } from './clients.js'
 
 export type Context = {
-  service: Service
+  composite: CompositeClient
+  runner: ServicesRunner
 }
 
 const t = initTRPC.context<Context>().create()
@@ -24,7 +24,7 @@ export const router = t.router({
       )
     )
     .mutation(async () => {
-      // return await req.ctx.service.models.create()
+      // return await req.ctx.composite.createModel
     }),
 })
 
