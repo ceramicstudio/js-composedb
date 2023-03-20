@@ -1,3 +1,4 @@
+import type { ServiceLifecycle } from '@composedb/services-rpc'
 import type { IPFSOptions } from 'ipfsd-ctl'
 import type { IPFS } from 'ipfs-core-types'
 
@@ -15,7 +16,7 @@ export type ServiceParams = {
   config: ServiceConfig
 }
 
-export class Service {
+export class Service implements ServiceLifecycle {
   #config: ServiceConfig
   #ipfsPromise: Promise<IPFS>
   #logger: Logger
@@ -34,6 +35,14 @@ export class Service {
     this.#logger = logger
     this.#pubsubPromise = pubsubPromise
     this.#streamsHandler = new StreamsHandler({ ipfsPromise, logger, pubsubPromise })
+  }
+
+  start() {
+    // Nothing to do
+  }
+
+  async stop() {
+    // TODO: stop IPFS?
   }
 
   get config(): ServiceConfig {

@@ -38,7 +38,11 @@
   "dependencies": {
     "@composedb/ceramic-service": "workspace:*",
     "@composedb/composite-service": "workspace:*",
+    "@composedb/database-service": "workspace:*",
     "@composedb/services-rpc": "workspace:*",
     "tslog": "^4.8.2"
+  },
+  "devDependencies": {
+    "@trpc/server": "^10.16.0"
   }
 }

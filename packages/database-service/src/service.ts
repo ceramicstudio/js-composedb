@@ -1,3 +1,4 @@
+import type { ServiceLifecycle } from '@composedb/services-rpc'
 import { DataSource, type DataSourceOptions } from 'typeorm'
 
 import { Model as ModelEntity } from './entities/model.js'
@@ -18,12 +19,16 @@ export type ServiceParams = {
   dataSource: DataSourceOptions
 }
 
-export class Service {
+export class Service implements ServiceLifecycle {
   #dataSourcePromise: Promise<DataSource>
 
   constructor(params: ServiceParams) {
     this.#dataSourcePromise = initializeDataSource(params.dataSource)
   }
+
+  start() {}
+
+  stop() {}
 
   async createModel(entity: ModelEntity): Promise<ModelEntity> {
     const ds = await this.#dataSourcePromise

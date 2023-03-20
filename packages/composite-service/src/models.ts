@@ -8,8 +8,8 @@ import {
 } from '@composedb/ceramic-codecs'
 import { ModelCodec, type Model } from '@composedb/model-codecs'
 
-import type { CeramicClient, DatabaseClient } from './clients.js'
 import { verifyCommitSignature } from './stream.js'
+import type { ServiceClients } from './types.js'
 
 const decodeGenesisCommitData = createDecoder(GenesisCommitDataCodec)
 
@@ -40,17 +40,14 @@ export async function modelFromGenesis(commitData: GenesisCommitData): Promise<M
 }
 
 export type ModelsManagerParams = {
-  ceramic: CeramicClient
-  db: DatabaseClient
+  clients: ServiceClients
 }
 
 export class ModelsManager {
-  #ceramic: CeramicClient
-  #db: DatabaseClient
+  #clients: ServiceClients
 
   constructor(params: ModelsManagerParams) {
-    this.#ceramic = params.ceramic
-    this.#db = params.db
+    this.#clients = params.clients
   }
 
   // async createFromGenesis(commit: SignedCommitContainer): Promise<Model> {
@@ -64,19 +61,19 @@ export class ModelsManager {
   // }
 
   async loadFromNetwork(id: string): Promise<Model> {
-    const stream = await this.#ceramic.loadStream.query({ id })
+    const stream = await this.#clients.ceramic.loadStream.query({ id })
     const commitData = decodeGenesisCommitData(stream.log[0])
     return await modelFromGenesis(commitData)
   }
 
   async load(id: string): Promise<Model> {
-    const existing = await this.#db.getModel.query({ id })
+    const existing = await this.#clients.database.getModel.query({ id })
     if (existing.model != null && ModelCodec.is(existing.model)) {
       return existing.model
     }
 
     const model = await this.loadFromNetwork(id)
-    await this.#db.createModel.mutate({ model, indexDocuments: false })
+    await this.#clients.database.createModel.mutate({ model, indexDocuments: false })
 
     return model
   }

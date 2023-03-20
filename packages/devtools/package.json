@@ -56,7 +56,7 @@
     "@ceramicnetwork/common": "^2.23.0",
     "@composedb/test-schemas": "workspace:^0.4.0",
     "@composedb/types": "workspace:^0.4.3",
-    "@types/jest": "^29.4.2",
+    "@types/jest": "^29.5.0",
     "@types/lodash-es": "^4.17.7",
     "@types/node": "^18.15.3",
     "@types/object-hash": "^3.0.2",

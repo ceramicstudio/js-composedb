@@ -8,9 +8,9 @@ importers:
       '@jest/globals': ^29.5.0
       '@skypack/package-check': ^0.2.2
       '@swc/cli': ^0.1.62
-      '@swc/core': ^1.3.40
+      '@swc/core': ^1.3.41
       '@swc/jest': ^0.2.24
-      '@types/jest': ^29.4.2
+      '@types/jest': ^29.5.0
       '@typescript-eslint/eslint-plugin': ^5.55.0
       '@typescript-eslint/parser': ^5.55.0
       del-cli: ^5.0.0
@@ -18,7 +18,7 @@ importers:
       eslint-config-3box: ^0.4.1
       eslint-plugin-jest: ^27.2.1
       jest: ^29.5.0
-      prettier: ^2.8.4
+      prettier: ^2.8.5
       turbo: ^1.8.3
       typedoc: 0.23.26
       typedoc-plugin-markdown: ^3.14.0
@@ -27,18 +27,18 @@ importers:
       '@changesets/cli': 2.26.0
       '@jest/globals': 29.5.0
       '@skypack/package-check': 0.2.2
-      '@swc/cli': 0.1.62_@swc+core@1.3.40
-      '@swc/core': 1.3.40
-      '@swc/jest': 0.2.24_@swc+core@1.3.40
-      '@types/jest': 29.4.2
+      '@swc/cli': 0.1.62_@swc+core@1.3.41
+      '@swc/core': 1.3.41
+      '@swc/jest': 0.2.24_@swc+core@1.3.41
+      '@types/jest': 29.5.0
       '@typescript-eslint/eslint-plugin': 5.55.0_342y7v4tc7ytrrysmit6jo4wri
       '@typescript-eslint/parser': 5.55.0_vgl77cfdswitgr47lm5swmv43m
       del-cli: 5.0.0
       eslint: 8.36.0
-      eslint-config-3box: 0.4.1_cs5myhmd446kc3y4vbpny7udjy
+      eslint-config-3box: 0.4.1_lw4q34yymzrwjugiihlwftr2oa
       eslint-plugin-jest: 27.2.1_c5np4xxgeczfzqnstagjdh5md4
       jest: 29.5.0
-      prettier: 2.8.4
+      prettier: 2.8.5
       turbo: 1.8.3
       typedoc: 0.23.26_typescript@4.9.5
       typedoc-plugin-markdown: 3.14.0_typedoc@0.23.26
@@ -118,12 +118,12 @@ importers:
       '@composedb/devtools-node': workspace:^0.4.3
       '@composedb/runtime': workspace:^0.4.1
       '@composedb/types': workspace:^0.4.3
-      '@oclif/core': ^2.6.3
+      '@oclif/core': ^2.6.4
       '@oclif/plugin-help': ^5.2.8
-      '@oclif/plugin-version': ^1.3.0
+      '@oclif/plugin-version': ^1.3.1
       '@swc-node/register': ^1.6.2
       '@types/fs-extra': ^11.0.1
-      '@types/jest': ^29.4.2
+      '@types/jest': ^29.5.0
       '@types/listr': ^0.14.4
       '@types/node': ^18.15.3
       '@types/update-notifier': ^6.0.2
@@ -140,7 +140,7 @@ importers:
       listr: ^0.14.3
       listr-update-renderer: ^0.5.0
       oclif: ^3.7.0
-      ora: ^6.1.0
+      ora: ^6.2.0
       strip-ansi: ~7.0.1
       term-size: ^3.0.2
       uint8arrays: ^4.0.3
@@ -154,9 +154,9 @@ importers:
       '@composedb/devtools': link:../devtools
       '@composedb/devtools-node': link:../devtools-node
       '@composedb/runtime': link:../runtime
-      '@oclif/core': 2.6.3_@types+node@18.15.3
+      '@oclif/core': 2.6.4_@types+node@18.15.3
       '@oclif/plugin-help': 5.2.8_@types+node@18.15.3
-      '@oclif/plugin-version': 1.3.0_@types+node@18.15.3
+      '@oclif/plugin-version': 1.3.1_@types+node@18.15.3
       cli-table3: 0.6.3
       did-resolver: 4.1.0
       dids: 4.0.0
@@ -166,7 +166,7 @@ importers:
       key-did-resolver: 3.0.0
       listr: 0.14.3
       listr-update-renderer: 0.5.0_listr@0.14.3
-      ora: 6.1.2
+      ora: 6.2.0
       term-size: 3.0.2
       uint8arrays: 4.0.3
     devDependencies:
@@ -174,7 +174,7 @@ importers:
       '@composedb/types': link:../types
       '@swc-node/register': 1.6.2
       '@types/fs-extra': 11.0.1
-      '@types/jest': 29.4.2
+      '@types/jest': 29.5.0
       '@types/listr': 0.14.4
       '@types/node': 18.15.3
       '@types/update-notifier': 6.0.2
@@ -304,7 +304,7 @@ importers:
       '@composedb/types': workspace:^0.4.3
       '@graphql-tools/schema': ^9.0.17
       '@graphql-tools/utils': ^9.2.1
-      '@types/jest': ^29.4.2
+      '@types/jest': ^29.5.0
       '@types/lodash-es': ^4.17.7
       '@types/node': ^18.15.3
       '@types/object-hash': ^3.0.2
@@ -338,7 +338,7 @@ importers:
       '@ceramicnetwork/common': 2.23.0
       '@composedb/test-schemas': link:../test-schemas
       '@composedb/types': link:../types
-      '@types/jest': 29.4.2
+      '@types/jest': 29.5.0
       '@types/lodash-es': 4.17.7
       '@types/node': 18.15.3
       '@types/object-hash': 3.0.2
@@ -518,13 +518,18 @@ importers:
     specifiers:
       '@composedb/ceramic-service': workspace:*
       '@composedb/composite-service': workspace:*
+      '@composedb/database-service': workspace:*
       '@composedb/services-rpc': workspace:*
+      '@trpc/server': ^10.16.0
       tslog: ^4.8.2
     dependencies:
       '@composedb/ceramic-service': link:../ceramic-service
       '@composedb/composite-service': link:../composite-service
+      '@composedb/database-service': link:../database-service
       '@composedb/services-rpc': link:../services-rpc
       tslog: 4.8.2
+    devDependencies:
+      '@trpc/server': 10.16.0
 
   packages/test-schemas:
     specifiers: {}
@@ -2602,7 +2607,7 @@ packages:
       fs-extra: 7.0.1
       lodash.startcase: 4.4.0
       outdent: 0.5.0
-      prettier: 2.8.4
+      prettier: 2.8.5
       resolve-from: 5.0.0
       semver: 5.7.1
     dev: true
@@ -2770,7 +2775,7 @@ packages:
       '@changesets/types': 5.2.1
       fs-extra: 7.0.1
       human-id: 1.0.2
-      prettier: 2.8.4
+      prettier: 2.8.5
     dev: true
 
   /@colors/colors/1.5.0:
@@ -4488,7 +4493,7 @@ packages:
       chalk: 4.1.2
       ci-info: 3.8.0
       exit: 0.1.2
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-changed-files: 29.5.0
       jest-config: 29.5.0_@types+node@18.15.3
       jest-haste-map: 29.5.0
@@ -4587,7 +4592,7 @@ packages:
       collect-v8-coverage: 1.0.1
       exit: 0.1.2
       glob: 7.2.3
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       istanbul-lib-coverage: 3.2.0
       istanbul-lib-instrument: 5.2.1
       istanbul-lib-report: 3.0.0
@@ -4616,7 +4621,7 @@ packages:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.17
       callsites: 3.1.0
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
     dev: true
 
   /@jest/test-result/29.5.0:
@@ -4634,7 +4639,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/test-result': 29.5.0
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-haste-map: 29.5.0
       slash: 3.0.0
     dev: true
@@ -4650,7 +4655,7 @@ packages:
       chalk: 4.1.2
       convert-source-map: 2.0.0
       fast-json-stable-stringify: 2.1.0
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-haste-map: 29.5.0
       jest-regex-util: 29.4.3
       jest-util: 29.5.0
@@ -5881,8 +5886,8 @@ packages:
       tslib: 2.5.0
     dev: true
 
-  /@oclif/core/2.6.3_@types+node@18.15.3:
-    resolution: {integrity: sha512-kLwg+lmeZt4vfUlYN1XI8bPkcNBozfPOqciFOJMzHkPnq18lmoMu3+Xnm4wL1A9dXEyzoa5jidFhdyP/kZMBCw==}
+  /@oclif/core/2.6.4_@types+node@18.15.3:
+    resolution: {integrity: sha512-QkmPEdMsC8z/9d02bQvYZuviJhvK92YD/GJ5LlUk7cc8hEZ1JOLSwFg3i2EjlLNXn8OtOQHoe+EeOEaRWROuVA==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@types/cli-progress': 3.11.0
@@ -5924,7 +5929,7 @@ packages:
     resolution: {integrity: sha512-Fl1DD6Hm7USG/BYqcUmc/hMXK6Bnd3HvkZsRG+qi0dbYaNtY9zJ58C5b3lgPn69bXJlyi1eWX4S8djSUWD8VYg==}
     engines: {node: '>=12.0.0'}
     dependencies:
-      '@oclif/core': 2.6.3_@types+node@18.15.3
+      '@oclif/core': 2.6.4_@types+node@18.15.3
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -5936,7 +5941,7 @@ packages:
     engines: {node: '>=12.0.0'}
     dependencies:
       '@oclif/color': 1.0.4
-      '@oclif/core': 2.6.3_@types+node@18.15.3
+      '@oclif/core': 2.6.4_@types+node@18.15.3
       fast-levenshtein: 3.0.0
       lodash: 4.17.21
     transitivePeerDependencies:
@@ -5946,11 +5951,11 @@ packages:
       - typescript
     dev: true
 
-  /@oclif/plugin-version/1.3.0_@types+node@18.15.3:
-    resolution: {integrity: sha512-cUu+wtCemorXm+JaOx8Bbs4L2FKTfs8QlANZj5yEnGieTqPwpk64dXdPi03vV6zAHKVcTTebAtsEjfvPpJ7S1g==}
+  /@oclif/plugin-version/1.3.1_@types+node@18.15.3:
+    resolution: {integrity: sha512-WTRJaHmDUaDGPn0FeE9ZMFCModsPY6+FvrxwOlS0vZugoqRIL7VhxR6Fn8C70pgfkZH8/5jlVMwOHi08b0dzYQ==}
     engines: {node: '>=14.0.0'}
     dependencies:
-      '@oclif/core': 2.6.3_@types+node@18.15.3
+      '@oclif/core': 2.6.4_@types+node@18.15.3
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -5962,7 +5967,7 @@ packages:
     resolution: {integrity: sha512-j1xZYlYfz9arRGwwlxT0jPWqZX1SqZV0jmqDUBLSEPRu7Zsh9UNX2NxuNQx96wO4K0paPg/hFvx9McAEaS4+gQ==}
     engines: {node: '>=12.0.0'}
     dependencies:
-      '@oclif/core': 2.6.3_@types+node@18.15.3
+      '@oclif/core': 2.6.4_@types+node@18.15.3
       chalk: 4.1.2
       debug: 4.3.4
       fs-extra: 9.1.0
@@ -6817,7 +6822,7 @@ packages:
       tslib: 2.5.0
     dev: true
 
-  /@swc/cli/0.1.62_@swc+core@1.3.40:
+  /@swc/cli/0.1.62_@swc+core@1.3.41:
     resolution: {integrity: sha512-kOFLjKY3XH1DWLfXL1/B5MizeNorHR8wHKEi92S/Zi9Md/AK17KSqR8MgyRJ6C1fhKHvbBCl8wboyKAFXStkYw==}
     engines: {node: '>= 12.13'}
     hasBin: true
@@ -6829,7 +6834,7 @@ packages:
         optional: true
     dependencies:
       '@mole-inc/bin-wrapper': 8.0.1
-      '@swc/core': 1.3.40
+      '@swc/core': 1.3.41
       commander: 7.2.0
       fast-glob: 3.2.12
       semver: 7.3.8
@@ -6837,8 +6842,8 @@ packages:
       source-map: 0.7.4
     dev: true
 
-  /@swc/core-darwin-arm64/1.3.40:
-    resolution: {integrity: sha512-x4JHshTVB2o5xOedLL54/jsKkfUlsMw25tNM5fWkehiKWXlQuxEasl5/roceAFETWm8mEESuL8pWgZaiyTDl4Q==}
+  /@swc/core-darwin-arm64/1.3.41:
+    resolution: {integrity: sha512-D4fybODToO/BvuP35bionDUrSuTVVr8eW+mApr1unOqb3mfiqOrVv0VP2fpWNRYiA+xMq+oBCB6KcGpL60HKWQ==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [darwin]
@@ -6846,8 +6851,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-darwin-x64/1.3.40:
-    resolution: {integrity: sha512-2QaW9HtlvatiQscQACVIyKtj+vAEFEC6Tn+8rqxm8ikYHUD33M/FVXGWEvMLTI7T3P25zjhs+toAlLsjHgfzQQ==}
+  /@swc/core-darwin-x64/1.3.41:
+    resolution: {integrity: sha512-0RoVyiPCnylf3TG77C3S86PRSmaq+SaYB4VDLJFz3qcEHz1pfP0LhyskhgX4wjQV1mveDzFEn1BVAuo0eOMwZA==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [darwin]
@@ -6855,8 +6860,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-arm-gnueabihf/1.3.40:
-    resolution: {integrity: sha512-cJPgSg8222gezj5Db2S8PNvcALJLokvXqvFjyzRR253SMFFkq9JKWk0uwO3wg8i8jhe78xMB6EO6AteQqFWvCg==}
+  /@swc/core-linux-arm-gnueabihf/1.3.41:
+    resolution: {integrity: sha512-mZW7GeY7Uw1nkKoWpx898ou20oCSt8MR+jAVuAhMjX+G4Zr0WWXYSigWNiRymhR6Q9KhyvoFpMckguSvYWmXsw==}
     engines: {node: '>=10'}
     cpu: [arm]
     os: [linux]
@@ -6864,8 +6869,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-arm64-gnu/1.3.40:
-    resolution: {integrity: sha512-s76n4/vpQzV7dpS703m1WnCxyG7OfGk+EeJf+KEl/m6KP7c5MHHOLOf8hpagI/QI1H8jb9j1ADqNu2C7tEUR8Q==}
+  /@swc/core-linux-arm64-gnu/1.3.41:
+    resolution: {integrity: sha512-e91LGn+6KuLFw3sWk5swwGc/dP4tXs0mg3HrhjImRoofU02Bb9aHcj5zgrSO8ZByvDtm/Knn16h1ojxIMOFaxg==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
@@ -6873,8 +6878,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-arm64-musl/1.3.40:
-    resolution: {integrity: sha512-aTkeImCq1WrkljAQNnqlbk/1ermotONkBl11GH7Ia+8yhsmgt8ZiNBIi0tJ5UjdfXDtnl58Iek43Vo8LWaPUKA==}
+  /@swc/core-linux-arm64-musl/1.3.41:
+    resolution: {integrity: sha512-Q7hmrniLWsQ7zjtImGcjx1tl5/Qxpel+fC+OXTnGvAyyoGssSftIBlXMnqVLteL78zhxIPAzi+gizWAe5RGqrA==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
@@ -6882,8 +6887,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-x64-gnu/1.3.40:
-    resolution: {integrity: sha512-ZsfVlzXSXvNZBuK1fCrenoLSLVv0Zk7OdmkAG9cWN3bKkc/ynxO+6njXLEKWfv9bRfDBXhxifyHGOVOQlIFIAA==}
+  /@swc/core-linux-x64-gnu/1.3.41:
+    resolution: {integrity: sha512-h4sv1sCfZQgRIwmykz8WPqVpbvHb13Qm3SsrbOudhAp2MuzpWzsgMP5hAEpdCP/nWreiCz3aoM6L8JeakRDq0g==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
@@ -6891,8 +6896,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-x64-musl/1.3.40:
-    resolution: {integrity: sha512-5GgMuadbd6fhHg/+7W25i+9OQTW4nTMGECias0BNPlcW8nnohzSphpj5jLI/Ub5bWzMwE2hua6e2uiZ17rTySg==}
+  /@swc/core-linux-x64-musl/1.3.41:
+    resolution: {integrity: sha512-Z7c26i38378d0NT/dcz8qPSAXm41lqhNzykdhKhI+95mA9m4pskP18T/0I45rmyx1ywifypu+Ip+SXmKeVSPgQ==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
@@ -6900,8 +6905,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-win32-arm64-msvc/1.3.40:
-    resolution: {integrity: sha512-TqiK28eaK3YOKSp8iESlrrbSzDGRQqM0zR4hvCgfHwL4L1BPh/M0aIMC/vyYh2gqpz2quyNqgi/DxoZ2+WxlUg==}
+  /@swc/core-win32-arm64-msvc/1.3.41:
+    resolution: {integrity: sha512-I0CYnPc+ZGc912YeN0TykIOf/Q7yJQHRwDuhewwD6RkbiSEaVfSux5pAmmdoKw2aGMSq+cwLmgPe9HYLRNz+4w==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [win32]
@@ -6909,8 +6914,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-win32-ia32-msvc/1.3.40:
-    resolution: {integrity: sha512-PqtCXFs5+ZbrfFe1VZAcCl8k9h47wE65mKDhDvZ9/SQhXxZX2+f5mUGXuH4G5rA0CyijsVpHnpA/5rqE7f2Sxw==}
+  /@swc/core-win32-ia32-msvc/1.3.41:
+    resolution: {integrity: sha512-EygN4CVDWF29/U2T5fXGfWyLvRbMd2hiUgkciAl7zHuyJ6nKl+kpodqV2A0Wd4sFtSNedU0gQEBEXEe7cqvmsA==}
     engines: {node: '>=10'}
     cpu: [ia32]
     os: [win32]
@@ -6918,8 +6923,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-win32-x64-msvc/1.3.40:
-    resolution: {integrity: sha512-73DGsjsJYSzmoRbfomPj5jcQawtK2H0bCDi/1wgfl8NKVOuzrq+PpaTry3lzx+gvTHxUX6mUHV22i7C9ITL74Q==}
+  /@swc/core-win32-x64-msvc/1.3.41:
+    resolution: {integrity: sha512-Mfp8qD1hNwWWRy0ISdwQJu1g0UYoVTtuQlO0z3aGbXqL51ew9e56+8j3M1U9i95lXFyWkARgjDCcKkQi+WezyA==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [win32]
@@ -6927,31 +6932,31 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core/1.3.40:
-    resolution: {integrity: sha512-ZQJ+NID24PQkPIHnbO2B68YNQ6aMEyDz6dcsZucpRK4r7+aPqQ2yVLaqFcQU9VcGMyo4JJydmokzyTr1roWPIQ==}
+  /@swc/core/1.3.41:
+    resolution: {integrity: sha512-v6P2dfqJDpZ/7RXPvWge9oI6YgolDM0jtNhQZ2qdXrLBzaWQdDoBGBTJ8KN/nTgGhX3IkNvSB1fafXQ+nVnqAQ==}
     engines: {node: '>=10'}
     requiresBuild: true
     optionalDependencies:
-      '@swc/core-darwin-arm64': 1.3.40
-      '@swc/core-darwin-x64': 1.3.40
-      '@swc/core-linux-arm-gnueabihf': 1.3.40
-      '@swc/core-linux-arm64-gnu': 1.3.40
-      '@swc/core-linux-arm64-musl': 1.3.40
-      '@swc/core-linux-x64-gnu': 1.3.40
-      '@swc/core-linux-x64-musl': 1.3.40
-      '@swc/core-win32-arm64-msvc': 1.3.40
-      '@swc/core-win32-ia32-msvc': 1.3.40
-      '@swc/core-win32-x64-msvc': 1.3.40
+      '@swc/core-darwin-arm64': 1.3.41
+      '@swc/core-darwin-x64': 1.3.41
+      '@swc/core-linux-arm-gnueabihf': 1.3.41
+      '@swc/core-linux-arm64-gnu': 1.3.41
+      '@swc/core-linux-arm64-musl': 1.3.41
+      '@swc/core-linux-x64-gnu': 1.3.41
+      '@swc/core-linux-x64-musl': 1.3.41
+      '@swc/core-win32-arm64-msvc': 1.3.41
+      '@swc/core-win32-ia32-msvc': 1.3.41
+      '@swc/core-win32-x64-msvc': 1.3.41
     dev: true
 
-  /@swc/jest/0.2.24_@swc+core@1.3.40:
+  /@swc/jest/0.2.24_@swc+core@1.3.41:
     resolution: {integrity: sha512-fwgxQbM1wXzyKzl1+IW0aGrRvAA8k0Y3NxFhKigbPjOJ4mCKnWEcNX9HQS3gshflcxq8YKhadabGUVfdwjCr6Q==}
     engines: {npm: '>= 7.0.0'}
     peerDependencies:
       '@swc/core': '*'
     dependencies:
       '@jest/create-cache-key-function': 27.5.1
-      '@swc/core': 1.3.40
+      '@swc/core': 1.3.41
       jsonc-parser: 3.2.0
     dev: true
 
@@ -7030,7 +7035,6 @@ packages:
 
   /@trpc/server/10.16.0:
     resolution: {integrity: sha512-lCUq7AB7vcgrNbaN+xP/AN62OjKDgrRyG7fTDPv5K633ut7KJ3m57qs60VRBOgp9vow6elAg51pKFFDtPHbTRA==}
-    dev: false
 
   /@trysound/sax/0.2.0:
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
@@ -7233,8 +7237,8 @@ packages:
     dependencies:
       '@types/istanbul-lib-report': 3.0.0
 
-  /@types/jest/29.4.2:
-    resolution: {integrity: sha512-bbne90W7is+m88ezmZrLiTpp41tIoTdvPC5t3gLoNgu/6qbGdWTC2JWqPWQRJn2Q7rVYTr8aTWqOjhGJDXyvAQ==}
+  /@types/jest/29.5.0:
+    resolution: {integrity: sha512-3Emr5VOl/aoBwnWcH/EFQvlSAmjV+XtV9GGu5mwdYew5vhQh0IUZx/60x0TzHDu09Bi7HMx10t/namdJw5QIcg==}
     dependencies:
       expect: 29.5.0
       pretty-format: 29.5.0
@@ -8381,7 +8385,7 @@ packages:
       babel-plugin-istanbul: 6.1.1
       babel-preset-jest: 29.5.0_@babel+core@7.21.0
       chalk: 4.1.2
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       slash: 3.0.0
     transitivePeerDependencies:
       - supports-color
@@ -8692,14 +8696,14 @@ packages:
     dependencies:
       buffer: 5.7.1
       inherits: 2.0.4
-      readable-stream: 3.6.1
+      readable-stream: 3.6.2
 
   /bl/5.1.0:
     resolution: {integrity: sha512-tv1ZJHLfTDnXE6tMHv73YgSJaWR2AFuPwMntBe7XL/GBFHnT0CLnsHMogfk5+GzCDC5ZWarSCYaIGATZt9dNsQ==}
     dependencies:
       buffer: 6.0.3
       inherits: 2.0.4
-      readable-stream: 3.6.0
+      readable-stream: 3.6.2
     dev: false
 
   /blakejs/1.2.1:
@@ -10395,7 +10399,7 @@ packages:
     engines: {node: '>=14.16'}
     dependencies:
       globby: 13.1.3
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       is-glob: 4.0.3
       is-path-cwd: 3.0.0
       is-path-inside: 4.0.0
@@ -10977,14 +10981,14 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /eslint-config-3box/0.4.1_cs5myhmd446kc3y4vbpny7udjy:
+  /eslint-config-3box/0.4.1_lw4q34yymzrwjugiihlwftr2oa:
     resolution: {integrity: sha512-R284dKxLDCBsX2kZ8YbkMz8kHF7rBh3OGuo7zNId1JFpmAT83dw1QsI9Fh4Xh1jKJAlVVXMiOHSlmfTVude81g==}
     dependencies:
       '@typescript-eslint/eslint-plugin': 5.55.0_342y7v4tc7ytrrysmit6jo4wri
       '@typescript-eslint/parser': 5.55.0_vgl77cfdswitgr47lm5swmv43m
       eslint-config-prettier: 8.6.0_eslint@8.36.0
       eslint-plugin-jest: 26.9.0_c5np4xxgeczfzqnstagjdh5md4
-      eslint-plugin-prettier: 4.2.1_ovhg4hbmpryd7jmw2dmp54yjza
+      eslint-plugin-prettier: 4.2.1_mn6z2h26clknwhb6crqgvlipxu
       eslint-plugin-react: 7.32.1_eslint@8.36.0
       eslint-plugin-react-hooks: 4.6.0_eslint@8.36.0
     transitivePeerDependencies:
@@ -11048,7 +11052,7 @@ packages:
       - typescript
     dev: true
 
-  /eslint-plugin-prettier/4.2.1_ovhg4hbmpryd7jmw2dmp54yjza:
+  /eslint-plugin-prettier/4.2.1_mn6z2h26clknwhb6crqgvlipxu:
     resolution: {integrity: sha512-f/0rXLXUt0oFYs8ra4w49wYZBG5GKZpAYsJSm6rnYL5uVDjd+zowwMwVZHnAjf4edNrKpCDYfXDgmRE/Ak7QyQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -11061,7 +11065,7 @@ packages:
     dependencies:
       eslint: 8.36.0
       eslint-config-prettier: 8.6.0_eslint@8.36.0
-      prettier: 2.8.4
+      prettier: 2.8.5
       prettier-linter-helpers: 1.0.0
     dev: true
 
@@ -11897,7 +11901,7 @@ packages:
     resolution: {integrity: sha512-YJDaCJZEnBmcbw13fvdAM9AwNOJwOzrE4pqMqBq5nFiEqXUqHwlK4B+3pUw6JNvfSPtX05xFHtYy/1ni01eGCw==}
     engines: {node: '>=6 <7 || >=8'}
     dependencies:
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jsonfile: 4.0.0
       universalify: 0.1.2
     dev: true
@@ -11906,7 +11910,7 @@ packages:
     resolution: {integrity: sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==}
     engines: {node: '>=6 <7 || >=8'}
     dependencies:
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jsonfile: 4.0.0
       universalify: 0.1.2
     dev: true
@@ -11916,7 +11920,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       at-least-node: 1.0.0
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jsonfile: 6.1.0
       universalify: 2.0.0
 
@@ -12243,6 +12247,9 @@ packages:
 
   /graceful-fs/4.2.10:
     resolution: {integrity: sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==}
+
+  /graceful-fs/4.2.11:
+    resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
   /grapheme-splitter/1.0.4:
     resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
@@ -14337,7 +14344,7 @@ packages:
       '@jest/types': 29.5.0
       chalk: 4.1.2
       exit: 0.1.2
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       import-local: 3.1.0
       jest-config: 29.5.0
       jest-util: 29.5.0
@@ -14370,7 +14377,7 @@ packages:
       ci-info: 3.8.0
       deepmerge: 4.3.0
       glob: 7.2.3
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-circus: 29.5.0
       jest-environment-node: 29.5.0
       jest-get-type: 29.4.3
@@ -14409,7 +14416,7 @@ packages:
       ci-info: 3.8.0
       deepmerge: 4.3.0
       glob: 7.2.3
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-circus: 29.5.0
       jest-environment-node: 29.5.0
       jest-get-type: 29.4.3
@@ -14496,7 +14503,7 @@ packages:
       '@types/node': 18.15.3
       anymatch: 3.1.3
       fb-watchman: 2.0.2
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-regex-util: 29.4.3
       jest-util: 29.5.0
       jest-worker: 29.5.0
@@ -14532,7 +14539,7 @@ packages:
       '@jest/types': 29.5.0
       '@types/stack-utils': 2.0.1
       chalk: 4.1.2
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       micromatch: 4.0.5
       pretty-format: 29.5.0
       slash: 3.0.0
@@ -14578,7 +14585,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       chalk: 4.1.2
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-haste-map: 29.5.0
       jest-pnp-resolver: 1.2.3_jest-resolve@29.5.0
       jest-util: 29.5.0
@@ -14600,7 +14607,7 @@ packages:
       '@types/node': 18.15.3
       chalk: 4.1.2
       emittery: 0.13.1
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-docblock: 29.4.3
       jest-environment-node: 29.5.0
       jest-haste-map: 29.5.0
@@ -14633,7 +14640,7 @@ packages:
       cjs-module-lexer: 1.2.2
       collect-v8-coverage: 1.0.1
       glob: 7.2.3
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-haste-map: 29.5.0
       jest-message-util: 29.5.0
       jest-mock: 29.5.0
@@ -14665,7 +14672,7 @@ packages:
       babel-preset-current-node-syntax: 1.0.1_@babel+core@7.21.0
       chalk: 4.1.2
       expect: 29.5.0
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-diff: 29.5.0
       jest-get-type: 29.4.3
       jest-matcher-utils: 29.5.0
@@ -14686,7 +14693,7 @@ packages:
       '@types/node': 18.15.3
       chalk: 4.1.2
       ci-info: 3.8.0
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       picomatch: 2.3.1
 
   /jest-validate/29.5.0:
@@ -14869,7 +14876,7 @@ packages:
   /jsonfile/4.0.0:
     resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}
     optionalDependencies:
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
     dev: true
 
   /jsonfile/6.1.0:
@@ -15328,7 +15335,7 @@ packages:
     resolution: {integrity: sha512-OfCBkGEw4nN6JLtgRidPX6QxjBQGQf72q3si2uvqyFEMbycSFFHwAZeXx6cJgFM9wmLrf9zBwCP3Ivqa+LLZPw==}
     engines: {node: '>=6'}
     dependencies:
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       js-yaml: 3.14.1
       pify: 4.0.1
       strip-bom: 3.0.0
@@ -16281,7 +16288,7 @@ packages:
     dependencies:
       env-paths: 2.2.1
       glob: 7.2.3
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       make-fetch-happen: 9.1.0
       nopt: 5.0.0
       npmlog: 6.0.2
@@ -16549,7 +16556,7 @@ packages:
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
-      '@oclif/core': 2.6.3_@types+node@18.15.3
+      '@oclif/core': 2.6.4_@types+node@18.15.3
       '@oclif/plugin-help': 5.2.8_@types+node@18.15.3
       '@oclif/plugin-not-found': 2.3.20_@types+node@18.15.3
       '@oclif/plugin-warn-if-update-available': 2.0.28_@types+node@18.15.3
@@ -16669,17 +16676,17 @@ packages:
       wcwidth: 1.0.1
     dev: true
 
-  /ora/6.1.2:
-    resolution: {integrity: sha512-EJQ3NiP5Xo94wJXIzAyOtSb0QEIAUu7m8t6UZ9krbz0vAJqr92JpcK/lEXg91q6B9pEGqrykkd2EQplnifDSBw==}
+  /ora/6.2.0:
+    resolution: {integrity: sha512-c1qb/1rdE+EFDYiLXh10VY459uMh7DN9zlgd8mZJLoeiPpYllN8eAOiih2Rkah5ywxRm5tHN5C9zPheDq8d1MA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
-      bl: 5.1.0
       chalk: 5.2.0
       cli-cursor: 4.0.0
       cli-spinners: 2.7.0
       is-interactive: 2.0.0
       is-unicode-supported: 1.3.0
       log-symbols: 5.1.0
+      stdin-discarder: 0.1.0
       strip-ansi: 7.0.1
       wcwidth: 1.0.1
     dev: false
@@ -17713,8 +17720,8 @@ packages:
       fast-diff: 1.2.0
     dev: true
 
-  /prettier/2.8.4:
-    resolution: {integrity: sha512-vIS4Rlc2FNh0BySk3Wkd6xmwxB0FpOndW5fisM5H8hsZSxU2VWVB5CWIkIjWvrHjIhxk2g3bfMKM87zNTrZddw==}
+  /prettier/2.8.5:
+    resolution: {integrity: sha512-3gzuxrHbKUePRBB4ZeU08VNkUcqEHaUaouNt0m7LGP4Hti/NuB07C7PPTM/LkWqXoJYJn2McEo5+kxPNrtQkLQ==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
@@ -18344,7 +18351,7 @@ packages:
     resolution: {integrity: sha512-VIMnQi/Z4HT2Fxuwg5KrY174U1VdUIASQVWXXyqtNRtxSr9IYkn1rsI6Tb6HsrHCmB7gVpNwX6JxPTHcH6IoTA==}
     engines: {node: '>=6'}
     dependencies:
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       js-yaml: 3.14.1
       pify: 4.0.1
       strip-bom: 3.0.0
@@ -18389,6 +18396,7 @@ packages:
       inherits: 2.0.4
       string_decoder: 1.3.0
       util-deprecate: 1.0.2
+    dev: false
 
   /readable-stream/3.6.2:
     resolution: {integrity: sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA==}
@@ -18421,7 +18429,7 @@ packages:
     dependencies:
       debuglog: 1.0.1
       dezalgo: 1.0.4
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       once: 1.4.0
     dev: true
 
@@ -19509,6 +19517,13 @@ packages:
 
   /std-env/3.3.2:
     resolution: {integrity: sha512-uUZI65yrV2Qva5gqE0+A7uVAvO40iPo6jGhs7s8keRfHCmtg+uB2X6EiLGCI9IgL1J17xGhvoOqSz79lzICPTA==}
+    dev: false
+
+  /stdin-discarder/0.1.0:
+    resolution: {integrity: sha512-xhV7w8S+bUwlPTb4bAOUQhv8/cSS5offJuX8GQGq32ONF0ZtDWKfkdomM3HMRA+LhX6um/FZ0COqlwsjD53LeQ==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      bl: 5.1.0
     dev: false
 
   /steed/1.1.3:
@@ -20937,7 +20952,7 @@ packages:
     resolution: {integrity: sha512-BoJDj+ca3D9xOuPEM6RWVtWQtvEPQiQYn82LvdxhLWplfQsBzBqtgK0yhCP0s1BNTi6dH9BO+dzybvyQIacifg==}
     engines: {node: '>=4'}
     dependencies:
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       pify: 2.3.0
       strip-bom-buf: 1.0.0
       strip-bom-stream: 2.0.0

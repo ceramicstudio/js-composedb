@@ -1,13 +1,10 @@
 import { ModelCodec } from '@composedb/model-codecs'
 import { ioDecode } from '@composedb/services-rpc'
-import { ServicesRunner } from '@composedb/services-runner'
+import type { ServicesRunner } from '@composedb/services-runner'
 import { initTRPC } from '@trpc/server'
 import * as io from 'io-ts'
 
-import { type CompositeClient } from './clients.js'
-
 export type Context = {
-  composite: CompositeClient
   runner: ServicesRunner
 }
 
@@ -23,8 +20,8 @@ export const router = t.router({
         ])
       )
     )
-    .mutation(async () => {
-      // return await req.ctx.composite.createModel
+    .mutation(async (req) => {
+      return await req.ctx.runner.clients.composite.createModel.mutate(req.input)
     }),
 })
 
