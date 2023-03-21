@@ -4,11 +4,15 @@ import {
   router as compositeRouter,
 } from '@composedb/composite-service'
 import { Service as DatabaseService, router as databaseRouter } from '@composedb/database-service'
-import { type ServiceLifecycle, ServicesBus, createServiceHandler } from '@composedb/services-rpc'
+import {
+  type Logger,
+  type ServiceLifecycle,
+  ServicesBus,
+  createServiceHandler,
+} from '@composedb/services-rpc'
 import type { AnyRouter } from '@trpc/server'
 
-import { type Clients, createClients } from './clients.js'
-import { createLogger } from './logger.js'
+import { type ServiceClientOf, type TargetRouter, createClient } from './clients.js'
 
 type Services = {
   ceramic: CeramicService
@@ -23,61 +27,67 @@ const routers: Record<ServiceID, AnyRouter> = {
   database: databaseRouter,
 }
 
+export type ServicesRunnerParams = {
+  logger: Logger
+}
+
 export class ServicesRunner {
   #bus: ServicesBus
-  #clients: Clients
+  #logger: Logger
   #services: Services
 
-  constructor() {
+  constructor(params: ServicesRunnerParams) {
+    const { logger } = params
+
     const bus = new ServicesBus()
-    this.#bus = bus
-
-    const clients = createClients(bus)
-    this.#clients = clients
-
-    const logger = createLogger()
-    bus.subscribe((msg) => {
-      logger.trace('bus message', msg)
-    })
 
     const services = {
       ceramic: new CeramicService({
         config: {
           pubsubTopic: '/test/local',
         },
+        logger: logger.getSubLogger({ name: 'ceramic-service' }),
       }),
       composite: new CompositeService({
         bus,
-        clients: { ceramic: clients.ceramic, database: clients.database },
+        clients: {
+          ceramic: createClient(bus, 'composite', 'ceramic'),
+          database: createClient(bus, 'composite', 'database'),
+        },
+        logger: logger.getSubLogger({ name: 'composite-service' }),
       }),
       database: new DatabaseService({
         dataSource: {
           type: 'sqlite',
           database: 'test.db',
         },
+        logger: logger.getSubLogger({ name: 'database-service' }),
       }),
     }
-    this.#services = services
 
     const servicesEntries = Object.entries(services) as Array<[ServiceID, ServiceLifecycle]>
     for (const [id, service] of servicesEntries) {
       // First pass over services to create RPC handlers
       createServiceHandler({ bus, context: { service }, service: id, router: routers[id] })
-      logger.debug(`Router added for service: ${id}`)
+      logger.debug('Router added for service', { service: id })
     }
     for (const [id, service] of servicesEntries) {
       // Second pass over services to start them now that RPC handlers are created
       service.start()
-      logger.debug(`Service started: ${id} `)
+      logger.debug('Service started', { service: id })
     }
+
+    this.#bus = bus
+    this.#logger = logger
+    this.#services = services
   }
 
   get bus(): ServicesBus {
     return this.#bus
   }
 
-  get clients(): Clients {
-    return this.#clients
+  createClient<Target extends TargetRouter>(from: string, to: Target): ServiceClientOf<Target> {
+    return createClient(this.#bus, from, to)
   }
 
   async stop() {
@@ -86,7 +96,7 @@ export class ServicesRunner {
         try {
           await service.stop()
         } catch (err) {
-          console.warn(`Error stopping service ${id}: ${(err as Error).message}`)
+          this.#logger.warn('Error stopping service', { service: id, error: err })
         }
       })
     )

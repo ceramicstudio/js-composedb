@@ -1,9 +1,9 @@
-import type { ServiceLifecycle } from '@composedb/services-rpc'
+import type { CeramicCommit, CeramicStream } from '@composedb/ceramic-codecs'
+import type { Logger, ServiceLifecycle } from '@composedb/services-rpc'
 import type { IPFSOptions } from 'ipfsd-ctl'
 import type { IPFS } from 'ipfs-core-types'
 
 import { createIPFS } from './ipfs.js'
-import { type Logger, createLogger } from './logger.js'
 import { PubsubChannel } from './pubsub-channel.js'
 import { StreamsHandler } from './streams-handler.js'
 
@@ -14,6 +14,7 @@ export type ServiceConfig = Readonly<{
 
 export type ServiceParams = {
   config: ServiceConfig
+  logger: Logger
 }
 
 export class Service implements ServiceLifecycle {
@@ -25,16 +26,24 @@ export class Service implements ServiceLifecycle {
 
   constructor(params: ServiceParams) {
     const ipfsPromise = createIPFS(params.config.ipfs)
-    const logger = createLogger()
-    const pubsubPromise = ipfsPromise.then(
-      (ipfs) => new PubsubChannel({ ipfs, logger, topic: params.config.pubsubTopic })
-    )
+    const logger = params.logger
+    const pubsubPromise = ipfsPromise.then((ipfs) => {
+      return new PubsubChannel({
+        ipfs,
+        logger: logger.getSubLogger({ name: 'pubsub' }),
+        topic: params.config.pubsubTopic,
+      })
+    })
 
     this.#config = params.config
     this.#ipfsPromise = ipfsPromise
     this.#logger = logger
     this.#pubsubPromise = pubsubPromise
-    this.#streamsHandler = new StreamsHandler({ ipfsPromise, logger, pubsubPromise })
+    this.#streamsHandler = new StreamsHandler({
+      ipfsPromise,
+      logger: logger.getSubLogger({ name: 'streams' }),
+      pubsubPromise,
+    })
   }
 
   start() {
@@ -63,5 +72,11 @@ export class Service implements ServiceLifecycle {
 
   getPubsub(): Promise<PubsubChannel> {
     return this.#pubsubPromise
+  }
+
+  async createStream(commit: CeramicCommit): Promise<CeramicStream> {
+    const tip = await this.#streamsHandler.storeCommit(commit)
+    const commitData = await this.#streamsHandler.loadCommitData(tip)
+    return { tip, log: [commitData] }
   }
 }

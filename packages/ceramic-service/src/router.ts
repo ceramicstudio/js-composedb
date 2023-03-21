@@ -12,24 +12,30 @@ export type Context = {
 const t = initTRPC.context<Context>().create()
 
 export const router = t.router({
-  loadStream: t.procedure.input(ioDecode(io.strict({ id: io.string }))).query(async (req) => {
-    const stream = await req.ctx.service.streams.loadStream(req.input.id)
-    return CeramicStreamCodec.encode(stream)
-  }),
+  createStream: t.procedure
+    .input(ioDecode(io.strict({ commit: CeramicCommitCodec }, 'ceramic.createStreamInput')))
+    .output(ioEncode(CeramicStreamCodec))
+    .mutation((req) => req.ctx.service.createStream(req.input.commit)),
+
+  loadStream: t.procedure
+    .input(ioDecode(io.strict({ id: io.string }, 'ceramic.loadStreamInput')))
+    .output(ioEncode(CeramicStreamCodec))
+    .query((req) => req.ctx.service.streams.loadStream(req.input.id)),
+
   storeCommit: t.procedure
     .input(
       ioDecode(
-        io.intersection([
-          io.strict({ commit: CeramicCommitCodec }),
-          io.partial({ streamID: io.string }), // TODO: StreamID codecs
-        ])
+        io.intersection(
+          [
+            io.strict({ commit: CeramicCommitCodec }),
+            io.partial({ streamID: io.string }), // TODO: StreamID codecs
+          ],
+          'ceramic.storeCommitInput'
+        )
       )
     )
-    .output(ioEncode(io.strict({ cid: cidCodec })))
-    .mutation(async (req) => {
-      const cid = await req.ctx.service.streams.storeCommit(req.input.commit)
-      return { cid }
-    }),
+    .output(ioEncode(cidCodec))
+    .mutation((req) => req.ctx.service.streams.storeCommit(req.input.commit)),
 })
 
 export type Router = typeof router

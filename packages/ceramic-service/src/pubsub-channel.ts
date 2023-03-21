@@ -1,3 +1,4 @@
+import type { Logger } from '@composedb/services-rpc'
 import type { Message, SignedMessage } from '@libp2p/interface-pubsub'
 import type { IPFS } from 'ipfs-core-types'
 import {
@@ -12,7 +13,6 @@ import {
   tap,
 } from 'rxjs'
 
-import type { Logger } from './logger.js'
 import { type PubsubMessage, deserialize, serialize } from './pubsub-protocol.js'
 
 export function createObservableTopic(

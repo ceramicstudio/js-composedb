@@ -2,7 +2,8 @@ import type { TRPCRequestMessage, TRPCResponseMessage } from '@trpc/server/rpc'
 import { Observable, Subject, filter, map } from 'rxjs'
 
 export type Envelope<Message = unknown, Context = unknown> = {
-  service?: string
+  from: string
+  to?: string
   message: Message
   context?: Context
 }
@@ -12,7 +13,7 @@ export type RPCEnvelope<
     | TRPCRequestMessage
     | TRPCResponseMessage,
   Context = unknown
-> = Envelope<Message, Context> & { service: string }
+> = Envelope<Message, Context> & { to: string }
 
 export type RequestEnvelope<
   Message extends TRPCRequestMessage = TRPCRequestMessage,
@@ -24,21 +25,27 @@ export type ResponseEnvelope<
   Context = unknown
 > = RPCEnvelope<Message, Context>
 
+export type ServiceRequest<Context = unknown> = {
+  from: string
+  to: string
+  message: TRPCRequestMessage
+  context?: Context
+}
+
 export class ServicesBus<Context = unknown> extends Subject<Envelope> {
-  request(
-    service: string,
-    message: TRPCRequestMessage,
-    context?: Context
-  ): Observable<TRPCResponseMessage> {
+  request(req: ServiceRequest<Context>): Observable<TRPCResponseMessage> {
+    const { from, to, message, context } = req
     const responses$ = this.pipe(
       filter((e): e is ResponseEnvelope => {
         return (
-          (e.message as TRPCResponseMessage).id === message.id && (e.message as any).method == null
+          e.to === from &&
+          (e.message as TRPCResponseMessage).id === message.id &&
+          (e.message as any).method == null
         )
       }),
       map((e) => e.message)
     )
-    this.next({ service, message, context })
+    this.next({ from, to, message, context })
     return responses$
   }
 }

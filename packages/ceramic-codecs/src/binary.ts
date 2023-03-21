@@ -7,6 +7,9 @@ export const bytesCodec = new io.Type<Uint8Array, string>(
   'bytes',
   (input): input is Uint8Array => input instanceof Uint8Array,
   (input, context) => {
+    if (input instanceof Uint8Array) {
+      return io.success(input)
+    }
     return typeof input === 'string'
       ? io.success(fromString(input, BYTES_ENCODING))
       : io.failure(

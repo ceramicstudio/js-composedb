@@ -30,13 +30,14 @@ function transformResult(response: TRPCResponseMessage, runtime: TRPCClientRunti
 
 export type ServiceLinkParams = {
   bus: ServicesBus
-  service: string
+  from: string
+  to: string
 }
 
 export function createServiceLink<Router extends AnyRouter>(
   params: ServiceLinkParams
 ): TRPCLink<Router> {
-  const { bus, service } = params
+  const { bus, from, to } = params
 
   return (runtime) => {
     return ({ op }) => {
@@ -52,7 +53,7 @@ export function createServiceLink<Router extends AnyRouter>(
         }
 
         let isDone = false
-        const subscription = bus.request(service, request, context).subscribe({
+        const subscription = bus.request({ from, to, context, message: request }).subscribe({
           complete() {
             if (isDone) {
               observer.complete()

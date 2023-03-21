@@ -47,14 +47,14 @@
     "@trpc/server": "^10.16.0",
     "fp-ts": "^2.13.1",
     "io-ts": "^2.2.20",
-    "key-did-resolver": "^3.0.0",
-    "tslog": "^4.8.2"
+    "key-did-resolver": "^3.0.0"
   },
   "devDependencies": {
     "@composedb/ceramic-service": "workspace:*",
     "@composedb/database-service": "workspace:*",
     "@didtools/cacao": "^2.0.0",
     "dids": "^4.0.0",
-    "json-schema-typed": "^8.0.1"
+    "json-schema-typed": "^8.0.1",
+    "multiformats": "^11.0.2"
   }
 }

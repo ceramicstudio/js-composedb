@@ -52,7 +52,6 @@
     "quick-lru": "^6.1.1",
     "rxjs": "^7.8.0",
     "tmp-promise": "^3.0.3",
-    "tslog": "^4.8.2",
     "uint8arrays": "^4.0.3"
   },
   "devDependencies": {

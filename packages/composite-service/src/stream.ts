@@ -56,14 +56,11 @@ export async function verifyCommitSignature(params: VerifyCommitSignatureParams)
       throw new Error('Missing envelope in commit data')
     }
 
-    const capability = await verifyCapability(commitData, streamID, model)
-    if (capability == null) {
-      throw new Error('Can not verify capability')
-    }
-
     const atTime = commitData.timestamp ? new Date(commitData.timestamp * 1000) : undefined
+    const capability = (await verifyCapability(commitData, streamID, model)) ?? undefined
+
     await verifierDID.verifyJWS(commitData.envelope, {
-      atTime: atTime,
+      atTime,
       issuer: controller,
       disableTimecheck: commitData.disableTimecheck,
       capability,

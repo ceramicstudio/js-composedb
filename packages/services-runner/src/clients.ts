@@ -3,16 +3,19 @@ import type { Router as CompositeRouter } from '@composedb/composite-service'
 import type { Router as DatabaseRouter } from '@composedb/database-service'
 import { type ServicesBus, type ServiceClient, createServiceClient } from '@composedb/services-rpc'
 
-export type Clients = {
-  ceramic: ServiceClient<CeramicRouter>
-  composite: ServiceClient<CompositeRouter>
-  database: ServiceClient<DatabaseRouter>
+export type Routers = {
+  ceramic: CeramicRouter
+  composite: CompositeRouter
+  database: DatabaseRouter
 }
+export type TargetRouter = keyof Routers
 
-export function createClients(bus: ServicesBus): Clients {
-  return {
-    ceramic: createServiceClient<CeramicRouter>({ bus, service: 'ceramic' }),
-    composite: createServiceClient<CompositeRouter>({ bus, service: 'composite' }),
-    database: createServiceClient<DatabaseRouter>({ bus, service: 'database' }),
-  }
+export type ServiceClientOf<RouterKey extends TargetRouter> = ServiceClient<Routers[RouterKey]>
+
+export function createClient<RouterKey extends TargetRouter>(
+  bus: ServicesBus,
+  from: string,
+  to: RouterKey
+): ServiceClientOf<RouterKey> {
+  return createServiceClient({ bus, from, to })
 }

@@ -5,6 +5,8 @@ import type { Subscription } from 'rxjs'
 
 import type { ServicesBus } from './bus.js'
 
+type Respond = (message: TRPCResponseMessage) => void
+
 export type ServiceHandlerParams<Router extends AnyRouter> = {
   bus: ServicesBus
   context: Router['_def']['_config']['$types']['ctx']
@@ -18,12 +20,9 @@ export function createServiceHandler<Router extends AnyRouter>(
   const { bus, context, router, service } = params
   const clientSubscriptions = new Map<number | string, Unsubscribable>()
 
-  function respond(message: TRPCResponseMessage) {
-    bus.next({ message, service })
-  }
-
   function stopSubscription(
     subscription: Unsubscribable,
+    respond: Respond,
     { id, jsonrpc }: { id: JSONRPC2.RequestId } & JSONRPC2.BaseEnvelope
   ) {
     subscription.unsubscribe()
@@ -37,7 +36,7 @@ export function createServiceHandler<Router extends AnyRouter>(
     })
   }
 
-  async function handleRequest(msg: TRPCClientOutgoingMessage) {
+  async function handleRequest(msg: TRPCClientOutgoingMessage, respond: Respond) {
     const { id, jsonrpc } = msg
     if (id === null) {
       throw new TRPCError({
@@ -48,7 +47,7 @@ export function createServiceHandler<Router extends AnyRouter>(
     if (msg.method === 'subscription.stop') {
       const sub = clientSubscriptions.get(id)
       if (sub) {
-        stopSubscription(sub, { id, jsonrpc })
+        stopSubscription(sub, respond, { id, jsonrpc })
       }
       clientSubscriptions.delete(id)
       return
@@ -122,7 +121,7 @@ export function createServiceHandler<Router extends AnyRouter>(
 
       if (clientSubscriptions.has(id)) {
         // duplicate request ids for client
-        stopSubscription(sub, { id, jsonrpc })
+        stopSubscription(sub, respond, { id, jsonrpc })
         throw new TRPCError({
           message: `Duplicate id ${id}`,
           code: 'BAD_REQUEST',
@@ -153,8 +152,10 @@ export function createServiceHandler<Router extends AnyRouter>(
   }
 
   return bus.subscribe((e) => {
-    if (e.service === service && (e.message as TRPCClientOutgoingMessage).method != null) {
-      void handleRequest(e.message as TRPCClientOutgoingMessage)
+    if (e.to === service && (e.message as TRPCClientOutgoingMessage).method != null) {
+      void handleRequest(e.message as TRPCClientOutgoingMessage, (message: TRPCResponseMessage) => {
+        bus.next({ from: service, to: e.from, message, context: e.context })
+      })
     }
   })
 }

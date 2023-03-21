@@ -16,7 +16,11 @@ const t = initTRPC.context<Context>().create()
 
 export const router = t.router({
   createModel: t.procedure
-    .input(ioDecode(io.type({ model: ModelCodec, indexDocuments: io.boolean })))
+    .input(
+      ioDecode(
+        io.type({ model: ModelCodec, indexDocuments: io.boolean }, 'database.createModelInput')
+      )
+    )
     .mutation(async (req) => {
       const { model, indexDocuments } = req.input
       const entity: ModelEntity = {
@@ -31,8 +35,10 @@ export const router = t.router({
       await req.ctx.service.createModel(entity)
     }),
   getModel: t.procedure
-    .input(ioDecode(io.type({ id: io.string })))
-    .output(ioEncode(io.type({ model: io.union([ModelCodec, io.null]) })))
+    .input(ioDecode(io.type({ id: io.string }, 'database.getModelInput')))
+    .output(
+      ioEncode(io.type({ model: io.union([ModelCodec, io.null]) }, 'database.getModelOutput'))
+    )
     .query(async (req) => {
       const entity = await req.ctx.service.getModel(req.input.id)
       const model = entity

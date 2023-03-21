@@ -15,6 +15,7 @@ import {
   SignedCommitContainerCodec,
   parseCID,
 } from '@composedb/ceramic-codecs'
+import type { Logger } from '@composedb/services-rpc'
 import type { Cacao } from '@didtools/cacao'
 import type { IPFS } from 'ipfs-core-types'
 import type { GetOptions } from 'ipfs-core-types/dist/src/dag'
@@ -23,7 +24,6 @@ import QuickLRU from 'quick-lru'
 import { type Observable, filter, firstValueFrom, from, map, mergeMap, timeout } from 'rxjs'
 import { fromString, toString } from 'uint8arrays'
 
-import type { Logger } from './logger.js'
 import {
   MessageType,
   type PubsubMessage,
@@ -241,9 +241,7 @@ export class StreamsHandler {
     // put the JWS into the ipfs dag
     const jwsStored = this.#ipfsPromise
       .then((ipfs) => ipfs.dag.put(jws, { hashAlg: 'sha2-256', storeCodec: 'dag-jose' }))
-      .then((cid) => {
-        return this._restrictCommitSize(cid).then(() => cid)
-      })
+      .then((cid) => this._restrictCommitSize(cid).then(() => cid))
 
     // put the payload into the ipfs dag
     const payloadStored = this._putBlock(link, linkedBlock).then(() => {
