@@ -46,11 +46,13 @@ importers:
 
   packages/ceramic-codecs:
     specifiers:
+      '@ceramicnetwork/streamid': ^2.14.0
       fp-ts: ^2.13.1
       io-ts: ^2.2.20
       multiformats: ^11.0.2
       uint8arrays: ^4.0.3
     dependencies:
+      '@ceramicnetwork/streamid': 2.14.0
       fp-ts: 2.13.1
       io-ts: 2.2.20_fp-ts@2.13.1
       multiformats: 11.0.2
@@ -58,6 +60,7 @@ importers:
 
   packages/ceramic-service:
     specifiers:
+      '@ceramicnetwork/streamid': ^2.14.0
       '@composedb/ceramic-codecs': workspace:*
       '@composedb/services-rpc': workspace:*
       '@didtools/cacao': ^2.0.0
@@ -98,6 +101,7 @@ importers:
       tmp-promise: 3.0.3
       uint8arrays: 4.0.3
     devDependencies:
+      '@ceramicnetwork/streamid': 2.14.0
       '@didtools/cacao': 2.0.0
       '@libp2p/interface-pubsub': 3.0.6
       dids: 4.0.0

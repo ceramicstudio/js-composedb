@@ -1,10 +1,10 @@
 import { StreamID } from '@ceramicnetwork/streamid'
 import {
-  type CeramicStream,
-  CeramicStreamCodec,
   type GenesisCommitData,
   GenesisCommitDataCodec,
   type SignedCommitContainer,
+  type StreamLog,
+  StreamLogCodec,
   createDecoder,
 } from '@composedb/ceramic-codecs'
 import { ModelCodec, type Model } from '@composedb/model-codecs'
@@ -12,7 +12,7 @@ import { ModelCodec, type Model } from '@composedb/model-codecs'
 import { verifyCommitSignature } from './stream.js'
 import type { ServiceClients } from './types.js'
 
-const decodeStream = createDecoder(CeramicStreamCodec)
+const decodeStream = createDecoder(StreamLogCodec)
 const decodeGenesisCommitData = createDecoder(GenesisCommitDataCodec)
 const decodeModel = createDecoder(ModelCodec)
 
@@ -47,7 +47,7 @@ export async function modelFromGenesis(commitData: GenesisCommitData): Promise<M
   })
 }
 
-export async function modelFromStream(stream: CeramicStream): Promise<Model> {
+export async function modelFromStream(stream: StreamLog): Promise<Model> {
   const commitData = decodeGenesisCommitData(stream.log[0])
   return await modelFromGenesis(commitData)
 }
@@ -65,7 +65,9 @@ export class ModelsManager {
 
   async create(commit: SignedCommitContainer): Promise<Model> {
     const stream = await this.#clients.ceramic.createStream.mutate({ commit })
-    return await modelFromStream(decodeStream(stream))
+    const model = await modelFromStream(decodeStream(stream))
+    await this.#clients.database.createModel.mutate({ model, indexDocuments: false })
+    return model
   }
 
   async loadFromNetwork(id: string): Promise<Model> {
@@ -75,13 +77,12 @@ export class ModelsManager {
 
   async load(id: string): Promise<Model> {
     const existing = await this.#clients.database.getModel.query({ id })
-    if (existing.model != null && ModelCodec.is(existing.model)) {
-      return existing.model
+    if (existing != null) {
+      return decodeModel(existing)
     }
 
     const model = await this.loadFromNetwork(id)
     await this.#clients.database.createModel.mutate({ model, indexDocuments: false })
-
     return model
   }
 }

@@ -55,6 +55,7 @@
     "uint8arrays": "^4.0.3"
   },
   "devDependencies": {
+    "@ceramicnetwork/streamid": "^2.14.0",
     "@didtools/cacao": "^2.0.0",
     "@libp2p/interface-pubsub": "^3.0.6",
     "dids": "^4.0.0",

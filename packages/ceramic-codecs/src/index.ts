@@ -1,4 +1,5 @@
 export * from './binary.js'
+export * from './commit.js'
 export * from './did.js'
 export * from './ipld.js'
 export * from './stream.js'

@@ -37,5 +37,8 @@ const commit = await createModelGenesis(did, {
 })
 console.log('signed commit', commit)
 
-const res = await caller.createModel({ commit })
-console.log('result from caller.createModel', res)
+const created = await caller.createModel({ commit })
+console.log('created model', created)
+
+const loaded = await caller.loadModel({ id: created.id })
+console.log('loaded model', loaded)

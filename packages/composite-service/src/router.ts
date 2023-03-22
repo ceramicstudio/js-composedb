@@ -30,6 +30,11 @@ export const router = t.router({
     )
     .output(ioEncode(ModelCodec))
     .mutation((req) => req.ctx.service.models.create(req.input.commit)),
+
+  loadModel: t.procedure
+    .input(ioDecode(io.strict({ id: io.string }, 'composite.loadModelInput')))
+    .output(ioEncode(ModelCodec))
+    .query((req) => req.ctx.service.models.load(req.input.id)),
 })
 
 export type Router = typeof router

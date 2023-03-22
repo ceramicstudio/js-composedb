@@ -3,16 +3,16 @@ import {
   type AnchorProof,
   AnchorProofCodec,
   CacaoCodec,
-  CeramicCommitCodec,
-  type CeramicCommit,
-  type CeramicStream,
   type CIDInput,
+  type Commit,
+  CommitCodec,
   type CommitData,
   CommitType,
   type SignedCommit,
   SignedCommitCodec,
   type SignedCommitContainer,
   SignedCommitContainerCodec,
+  type StreamLog,
   parseCID,
 } from '@composedb/ceramic-codecs'
 import type { Logger } from '@composedb/services-rpc'
@@ -59,7 +59,7 @@ export class StreamsHandler {
   #ipfsPromise: Promise<IPFS>
   #logger: Logger
   #pubsubPromise: Promise<PubsubChannel>
-  #streamsPromises: QuickLRU<string, Promise<CeramicStream>>
+  #streamsPromises: QuickLRU<string, Promise<StreamLog>>
   #streamTipsPromises: QuickLRU<string, Promise<string>>
 
   constructor(params: StreamsHandlerParams) {
@@ -104,12 +104,12 @@ export class StreamsHandler {
     return loading
   }
 
-  async loadCommit(cid: CID): Promise<CeramicCommit> {
+  async loadCommit(cid: CID): Promise<Commit> {
     const commit = await this.loadDagNode(cid)
     if (commit == null) {
       throw new Error(`No commit found for CID: ${cid.toString()}`)
     }
-    if (CeramicCommitCodec.is(commit)) {
+    if (CommitCodec.is(commit)) {
       return commit
     }
     throw new Error(`Invalid commit for CID: ${cid.toString()}`)
@@ -178,7 +178,7 @@ export class StreamsHandler {
     return await this.loadCacao(cid)
   }
 
-  loadStream(streamID: string, refreshCache = false): Promise<CeramicStream> {
+  loadStream(streamID: string, refreshCache = false): Promise<StreamLog> {
     const existing = this.#streamsPromises.get(streamID)
     if (!refreshCache && existing != null) {
       return existing

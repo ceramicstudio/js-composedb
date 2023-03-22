@@ -1,4 +1,4 @@
-import type { CeramicCommit, CeramicStream } from '@composedb/ceramic-codecs'
+import type { Commit, StreamLog } from '@composedb/ceramic-codecs'
 import type { Logger, ServiceLifecycle } from '@composedb/services-rpc'
 import type { IPFSOptions } from 'ipfsd-ctl'
 import type { IPFS } from 'ipfs-core-types'
@@ -70,7 +70,7 @@ export class Service implements ServiceLifecycle {
     return this.#pubsubPromise
   }
 
-  async createStream(commit: CeramicCommit): Promise<CeramicStream> {
+  async createStream(commit: Commit): Promise<StreamLog> {
     const tip = await this.#streamsHandler.storeCommit(commit)
     const commitData = await this.#streamsHandler.loadCommitData(tip)
     return { tip, log: [commitData] }

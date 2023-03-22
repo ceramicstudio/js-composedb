@@ -14,7 +14,7 @@ export class Model {
   @Column()
   name!: string
 
-  @Column()
+  @Column({ nullable: true })
   description?: string
 
   @Column({ type: 'simple-json' })

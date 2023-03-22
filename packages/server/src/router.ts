@@ -15,15 +15,20 @@ export const router = t.router({
   createModel: t.procedure
     .input(
       ioDecode(
-        io.intersection([
-          io.strict({ commit: SignedCommitContainerCodec }),
-          io.partial({ indexDocuments: io.boolean }),
-        ])
+        io.intersection(
+          [
+            io.strict({ commit: SignedCommitContainerCodec }),
+            io.partial({ indexDocuments: io.boolean }),
+          ],
+          'server.createModelInput'
+        )
       )
     )
-    .mutation(async (req) => {
-      return await req.ctx.composite.createModel.mutate(req.input)
-    }),
+    .mutation((req) => req.ctx.composite.createModel.mutate(req.input)),
+
+  loadModel: t.procedure
+    .input(ioDecode(io.strict({ id: io.string }, 'server.loadModelInput')))
+    .mutation((req) => req.ctx.composite.loadModel.query(req.input)),
 })
 
 export type Router = typeof router

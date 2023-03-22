@@ -34,11 +34,10 @@ export const router = t.router({
       }
       await req.ctx.service.createModel(entity)
     }),
+
   getModel: t.procedure
     .input(ioDecode(io.type({ id: io.string }, 'database.getModelInput')))
-    .output(
-      ioEncode(io.type({ model: io.union([ModelCodec, io.null]) }, 'database.getModelOutput'))
-    )
+    .output(ioEncode(io.union([ModelCodec, io.null], 'database.getModelOutput')))
     .query(async (req) => {
       const entity = await req.ctx.service.getModel(req.input.id)
       const model = entity
@@ -48,7 +47,7 @@ export const router = t.router({
             metadata: { controller: entity.controller, model: META_MODEL_BYTES },
           }
         : null
-      return { model }
+      return model
     }),
 })
 
