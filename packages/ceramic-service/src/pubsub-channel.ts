@@ -32,7 +32,7 @@ export function createObservableTopic(
     ipfs.pubsub.subscribe(topic, onMessage, { onError }).catch(onError)
 
     return () => {
-      ipfs.pubsub.unsubscribe(topic, onMessage)
+      void ipfs.pubsub.unsubscribe(topic, onMessage)
     }
   })
 }
@@ -87,7 +87,11 @@ export class PubsubChannel extends Observable<PubsubMessage> {
     this._publishMessage = (message: PubsubMessage) => {
       logger.trace('Publish message to pubsub channel', { topic, message })
       ipfs.pubsub.publish(topic, serialize(message)).catch((error) => {
-        logger.warn('Failed to publish message to pubsub channel', { topic, message, error })
+        logger.warn('Failed to publish message to pubsub channel', {
+          topic,
+          message,
+          error: error as unknown,
+        })
       })
     }
   }

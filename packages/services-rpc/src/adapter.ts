@@ -1,4 +1,11 @@
-import { type AnyRouter, TRPCError, callProcedure, getTRPCErrorFromUnknown } from '@trpc/server'
+import {
+  type AnyRouter,
+  type DefaultErrorShape,
+  type ProcedureRouterRecord,
+  TRPCError,
+  callProcedure,
+  getTRPCErrorFromUnknown,
+} from '@trpc/server'
 import { type Unsubscribable, isObservable } from '@trpc/server/observable'
 import type { JSONRPC2, TRPCClientOutgoingMessage, TRPCResponseMessage } from '@trpc/server/rpc'
 import type { Subscription } from 'rxjs'
@@ -56,7 +63,7 @@ export function createServiceHandler<Router extends AnyRouter>(
     const type = msg.method
     try {
       const result = await callProcedure({
-        procedures: router._def.procedures,
+        procedures: router._def.procedures as ProcedureRouterRecord,
         path,
         rawInput: input,
         ctx: context,
@@ -105,7 +112,7 @@ export function createServiceHandler<Router extends AnyRouter>(
               path,
               input,
               ctx: context,
-            }),
+            }) as DefaultErrorShape,
           })
         },
         complete() {
@@ -146,7 +153,7 @@ export function createServiceHandler<Router extends AnyRouter>(
           path,
           input,
           ctx: context,
-        }),
+        }) as DefaultErrorShape,
       })
     }
   }

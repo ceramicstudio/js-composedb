@@ -62,5 +62,5 @@ export function serialize(message: PubsubMessage): Uint8Array {
 }
 
 export function deserialize(message: Message): PubsubMessage {
-  return JSON.parse(textDecoder.decode(message.data))
+  return JSON.parse(textDecoder.decode(message.data)) as PubsubMessage
 }

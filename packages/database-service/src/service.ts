@@ -27,9 +27,10 @@ export class Service implements ServiceLifecycle {
     this.#dataSourcePromise = initializeDataSource(params.dataSource)
   }
 
-  start() {}
-
-  stop() {}
+  async stop() {
+    const ds = await this.#dataSourcePromise
+    await ds.destroy()
+  }
 
   async createModel(entity: ModelEntity): Promise<ModelEntity> {
     const ds = await this.#dataSourcePromise

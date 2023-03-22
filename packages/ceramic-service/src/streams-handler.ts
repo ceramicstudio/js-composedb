@@ -39,7 +39,7 @@ const STREAM_TIPS_CACHE_MAX_SIZE = 1024
 const NETWORK_QUERY_TIMEOUT = 30_000 // 30 secs
 
 export function base64urlToJSON<T = Record<string, unknown>>(input: string): T {
-  return JSON.parse(toString(fromString(input, 'base64url')))
+  return JSON.parse(toString(fromString(input, 'base64url'))) as T
 }
 
 export function toCID(input: CID | string): CID {
@@ -99,7 +99,7 @@ export class StreamsHandler {
 
     const loading = this.#ipfsPromise
       .then((ipfs) => ipfs.dag.get(cid, options))
-      .then((res) => res.value)
+      .then((res) => res.value as unknown)
     this.#dagNodesPromises.set(cacheKey, loading)
     return loading
   }
@@ -156,7 +156,7 @@ export class StreamsHandler {
       return { ...commitData, type: CommitType.ANCHOR, proof }
     }
 
-    if ((commitData.commit as any).prev == null) {
+    if ((commitData.commit as { prev?: CID }).prev == null) {
       commitData.type = CommitType.GENESIS
     }
 
@@ -206,7 +206,7 @@ export class StreamsHandler {
     while (previousTip != null) {
       const commitData = await this.loadCommitData(previousTip)
       log.push(commitData)
-      previousTip = (commitData.commit as any).prev
+      previousTip = (commitData.commit as { prev: CID }).prev
     }
     return log
   }

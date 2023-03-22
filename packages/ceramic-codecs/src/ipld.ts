@@ -8,7 +8,7 @@ export const cidCodec = new io.Type<CID, string, unknown>(
   (input): input is CID => input instanceof CID,
   (input, context) => {
     try {
-      let cid = CID.asCID(input)
+      const cid = CID.asCID(input)
       if (cid != null) {
         return io.success(cid)
       }

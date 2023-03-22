@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore missing type definition
 import ipfsBin from 'go-ipfs'
 import type { IPFS } from 'ipfs-core-types'
@@ -69,6 +70,7 @@ const factory = createFactory(
   },
   {
     go: {
+      // eslint-disable-next-line
       ipfsBin: ipfsBin.path(),
     },
   }
@@ -95,7 +97,7 @@ async function createIPFSOptions(
     },
     repoPath ? { repo: `${repoPath}/ipfs${swarmPort}/` } : {},
     options
-  )
+  ) as IPFSOptions
 }
 
 export async function createIPFSController(

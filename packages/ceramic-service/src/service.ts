@@ -46,10 +46,6 @@ export class Service implements ServiceLifecycle {
     })
   }
 
-  start() {
-    // Nothing to do
-  }
-
   async stop() {
     // TODO: stop IPFS?
   }

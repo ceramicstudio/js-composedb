@@ -16,9 +16,9 @@ export class Service implements ServiceLifecycle {
     this.#models = new ModelsManager({ clients: params.clients })
   }
 
-  start() {}
-
-  stop() {}
+  start() {
+    // TODO: load composites and compile GraphQL schemas
+  }
 
   get models(): ModelsManager {
     return this.#models

@@ -17,11 +17,11 @@ const verifiersCACAO = {
   ...getTezosVerifier(),
 }
 
-export async function verifyCapability(
+export function verifyCapability(
   commitData: CommitData,
   streamID: string,
   model: string | null
-): Promise<Cacao | null> {
+): Cacao | null {
   const { capability, envelope } = commitData
   const resources = capability?.p.resources
   const payloadCID = envelope?.link?.toString()
@@ -57,7 +57,7 @@ export async function verifyCommitSignature(params: VerifyCommitSignatureParams)
     }
 
     const atTime = commitData.timestamp ? new Date(commitData.timestamp * 1000) : undefined
-    const capability = (await verifyCapability(commitData, streamID, model)) ?? undefined
+    const capability = verifyCapability(commitData, streamID, model) ?? undefined
 
     await verifierDID.verifyJWS(commitData.envelope, {
       atTime,
@@ -67,9 +67,9 @@ export async function verifyCommitSignature(params: VerifyCommitSignatureParams)
       revocationPhaseOutSecs: DEFAULT_CACAO_REVOCATION_PHASE_OUT,
       verifiers: verifiersCACAO,
     })
-  } catch (e: any) {
-    const original = e.message ? e.message : String(e)
-    throw new Error(`Can not verify signature for commit ${commitData.cid}: ${original}`)
+  } catch (e) {
+    const original = (e as Error).message ? (e as Error).message : String(e)
+    throw new Error(`Can not verify signature for commit ${commitData.cid.toString()}: ${original}`)
   }
 }
 

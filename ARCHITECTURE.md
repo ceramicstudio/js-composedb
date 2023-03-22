@@ -13,6 +13,7 @@ flowchart TD
   end
   DEVC & RUNC -.->|RPC| SER
   SER --> SRUN
+  SER -.->|RPC| COMS
   SRUN --> CERS & COMS & DBS & SRPC
 
   subgraph Services

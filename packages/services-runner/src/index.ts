@@ -14,12 +14,7 @@ import type { AnyRouter } from '@trpc/server'
 
 import { type ServiceClientOf, type TargetRouter, createClient } from './clients.js'
 
-type Services = {
-  ceramic: CeramicService
-  composite: CompositeService
-  database: DatabaseService
-}
-type ServiceID = keyof Services
+type ServiceID = 'ceramic' | 'composite' | 'database'
 
 const routers: Record<ServiceID, AnyRouter> = {
   ceramic: ceramicRouter,
@@ -34,7 +29,7 @@ export type ServicesRunnerParams = {
 export class ServicesRunner {
   #bus: ServicesBus
   #logger: Logger
-  #services: Services
+  #services: Record<ServiceID, ServiceLifecycle>
 
   constructor(params: ServicesRunnerParams) {
     const { logger } = params
@@ -73,7 +68,7 @@ export class ServicesRunner {
     }
     for (const [id, service] of servicesEntries) {
       // Second pass over services to start them now that RPC handlers are created
-      service.start()
+      service.start?.()
       logger.debug('Service started', { service: id })
     }
 
@@ -94,7 +89,7 @@ export class ServicesRunner {
     await Promise.all(
       Object.entries(this.#services).map(async ([id, service]) => {
         try {
-          await service.stop()
+          await service.stop?.()
         } catch (err) {
           this.#logger.warn('Error stopping service', { service: id, error: err })
         }

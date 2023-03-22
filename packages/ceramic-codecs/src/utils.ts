@@ -5,7 +5,7 @@ export function decode<A = unknown, I = unknown>(codec: io.Type<A, unknown, I>, 
   return fp.function.pipe(
     codec.decode(input),
     fp.either.fold(() => {
-      throw new Error(`Codec ${codec.name} failed to parse input: ${input}`)
+      throw new Error(`Codec ${codec.name} failed to parse input: ${input as string}`)
     }, fp.function.identity)
   )
 }

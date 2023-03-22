@@ -152,7 +152,7 @@ export function isValidVersion(input: unknown): input is string {
 
 export function parseVersion(input: string): [number, number] {
   if (!isValidVersion(input)) {
-    throw new Error(`Unsupported version format: ${input}`)
+    throw new Error(`Unsupported version format: ${input as string}`)
   }
   const [major, minor] = input.split('.').map((part) => parseInt(part, 10))
   return [major, minor]
@@ -164,7 +164,7 @@ export const VersionCodec = new io.Type<string>(
   (input, context) => {
     return isValidVersion(input)
       ? io.success(input)
-      : io.failure(input, context, `Invalid model version format: ${input}`)
+      : io.failure(input, context, `Invalid model version format: ${input as string}`)
   },
   identity
 )

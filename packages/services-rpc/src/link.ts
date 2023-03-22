@@ -8,11 +8,13 @@ import type { ServicesBus } from './bus.js'
 
 function transformResult(response: TRPCResponseMessage, runtime: TRPCClientRuntime) {
   if ('error' in response) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const error = runtime.transformer.deserialize(response.error)
     return {
       ok: false,
       error: {
         ...response,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         error,
       },
     } as const
@@ -22,6 +24,7 @@ function transformResult(response: TRPCResponseMessage, runtime: TRPCClientRunti
     ...response.result,
     ...((!response.result.type || response.result.type === 'data') && {
       type: 'data',
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       data: runtime.transformer.deserialize(response.result.data),
     }),
   }

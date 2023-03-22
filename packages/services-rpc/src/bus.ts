@@ -40,7 +40,7 @@ export class ServicesBus<Context = unknown> extends Subject<Envelope> {
         return (
           e.to === from &&
           (e.message as TRPCResponseMessage).id === message.id &&
-          (e.message as any).method == null
+          (e.message as { method?: string }).method == null
         )
       }),
       map((e) => e.message)

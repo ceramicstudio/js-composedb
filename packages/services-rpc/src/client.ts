@@ -9,6 +9,7 @@ export function createServiceClient<Router extends AnyRouter>(
   params: ServiceLinkParams
 ): ServiceClient<Router> {
   const link = createServiceLink(params)
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore options type mismatch somehow
   return createTRPCProxyClient<Router>({ links: [link] })
 }
