@@ -29,9 +29,13 @@ flowchart TD
 
   subgraph Codecs
     CERC[ceramic-codecs]
+    COMC[composite-codecs]
     DOCC[document-codecs]
+    JSSC[json-schema-codecs]
     MODC[model-codecs]
   end
+  COMC --> CERC & JSSC & MODC
+  MODC --> JSSC
 
   subgraph Services dependencies
     SRPC[services-rpc]

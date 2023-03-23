@@ -1,17 +1,8 @@
-import Ajv from 'ajv/dist/2020.js'
-import addFormats from 'ajv-formats'
+import { ObjectSchemaCodec } from '@composedb/json-schema-codecs'
 import * as io from 'io-ts'
-import type { JSONSchema } from 'json-schema-typed/draft-2020-12'
 import { equals } from 'uint8arrays'
-
-const ajv = new Ajv({
-  strict: true,
-  allErrors: true,
-  allowMatchingProperties: false,
-  ownProperties: false,
-  unevaluated: false,
-})
-addFormats(ajv)
+// Workaround for TS2742 error - https://github.com/microsoft/TypeScript/issues/47663#issuecomment-1270716220
+import type {} from 'json-schema-typed/draft-2020-12.js'
 
 function identity<T>(input: T): T {
   return input
@@ -135,12 +126,6 @@ export const ViewsDefinitionCodec = io.record(
 )
 export type ViewsDefinition = io.TypeOf<typeof ViewsDefinitionCodec>
 
-function isSchemaObject(input: unknown): input is JSONSchema.Object {
-  return (
-    typeof input === 'object' && input != null && (input as JSONSchema.Object).type === 'object'
-  )
-}
-
 /**
  * Model version validation
  */
@@ -170,28 +155,6 @@ export const VersionCodec = new io.Type<string>(
 )
 
 /**
- * Model schema validation
- */
-export const SchemaDefinitionCodec = new io.Type<JSONSchema.Object>(
-  'ModelSchemaDefinition',
-  isSchemaObject,
-  (input, context) => {
-    if (!isSchemaObject(input)) {
-      return io.failure(input, context, 'Input is not a JSON schema object')
-    }
-
-    const isValid = ajv.validateSchema(input)
-    // Remove schema from the Ajv instance's cache, otherwise the ajv cache grows unbounded
-    ajv.removeSchema(input)
-
-    return isValid
-      ? io.success(input)
-      : io.failure(input, context, `Schema validation failed: ${ajv.errorsText()}`)
-  },
-  identity
-)
-
-/**
  * Contents of a Model Stream.
  */
 export const ContentDefinitionCodec = io.intersection(
@@ -200,7 +163,7 @@ export const ContentDefinitionCodec = io.intersection(
       version: VersionCodec,
       name: io.string,
       accountRelation: AccountRelationCodec,
-      schema: SchemaDefinitionCodec,
+      schema: ObjectSchemaCodec,
     }),
     io.partial({
       description: io.string,

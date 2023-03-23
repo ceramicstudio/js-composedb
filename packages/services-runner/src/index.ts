@@ -1,9 +1,17 @@
-import { Service as CeramicService, router as ceramicRouter } from '@composedb/ceramic-service'
+import {
+  Service as CeramicService,
+  type ServiceConfig as CeramicConfig,
+  router as ceramicRouter,
+} from '@composedb/ceramic-service'
 import {
   Service as CompositeService,
   router as compositeRouter,
 } from '@composedb/composite-service'
-import { Service as DatabaseService, router as databaseRouter } from '@composedb/database-service'
+import {
+  Service as DatabaseService,
+  type DataSourceOptions,
+  router as databaseRouter,
+} from '@composedb/database-service'
 import {
   type Logger,
   type ServiceLifecycle,
@@ -23,6 +31,8 @@ const routers: Record<ServiceID, AnyRouter> = {
 }
 
 export type ServicesRunnerParams = {
+  ceramic?: CeramicConfig
+  dataSource: DataSourceOptions
   logger: Logger
 }
 
@@ -32,15 +42,13 @@ export class ServicesRunner {
   #services: Record<ServiceID, ServiceLifecycle>
 
   constructor(params: ServicesRunnerParams) {
-    const { logger } = params
+    const { ceramic, dataSource, logger } = params
 
     const bus = new ServicesBus()
 
     const services = {
       ceramic: new CeramicService({
-        config: {
-          pubsubTopic: '/test/local',
-        },
+        config: ceramic ?? { pubsubTopic: '/test/local' },
         logger: logger.getSubLogger({ name: 'ceramic-service' }),
       }),
       composite: new CompositeService({
@@ -52,10 +60,7 @@ export class ServicesRunner {
         logger: logger.getSubLogger({ name: 'composite-service' }),
       }),
       database: new DatabaseService({
-        dataSource: {
-          type: 'sqlite',
-          database: 'test.db',
-        },
+        dataSource,
         logger: logger.getSubLogger({ name: 'database-service' }),
       }),
     }

@@ -23,7 +23,13 @@ async function createModelGenesis(did: DID, data: ContentDefinition): Promise<Da
 }
 
 const logger = createLogger({ minLevel: 0 })
-const runner = new ServicesRunner({ logger })
+const runner = new ServicesRunner({
+  dataSource: {
+    type: 'sqlite',
+    database: 'data/test.db',
+  },
+  logger,
+})
 const composite = runner.createClient('server', 'composite')
 const caller = router.createCaller({ composite })
 

@@ -229,6 +229,25 @@ importers:
       dids: 4.0.0
       jest-environment-composedb: link:../jest-environment-composedb
 
+  packages/composite-codecs:
+    specifiers:
+      '@composedb/ceramic-codecs': workspace:*
+      '@composedb/json-schema-codecs': workspace:*
+      '@composedb/model-codecs': workspace:*
+      fp-ts: ^2.13.1
+      io-ts: ^2.2.20
+      json-schema-typed: ^8.0.1
+      multiformats: ^11.0.2
+    dependencies:
+      '@composedb/ceramic-codecs': link:../ceramic-codecs
+      '@composedb/json-schema-codecs': link:../json-schema-codecs
+      '@composedb/model-codecs': link:../model-codecs
+      fp-ts: 2.13.1
+      io-ts: 2.2.20_fp-ts@2.13.1
+    devDependencies:
+      json-schema-typed: 8.0.1
+      multiformats: 11.0.2
+
   packages/composite-service:
     specifiers:
       '@ceramicnetwork/streamid': ^2.14.0
@@ -410,21 +429,34 @@ importers:
       tmp-promise: 3.0.3
       uint8arrays: 4.0.3
 
-  packages/model-codecs:
+  packages/json-schema-codecs:
     specifiers:
       ajv: ^8.12.0
       ajv-formats: ^2.1.1
       fp-ts: ^2.13.1
       io-ts: ^2.2.20
       json-schema-typed: ^8.0.1
-      uint8arrays: ^4.0.3
     dependencies:
       ajv: 8.12.0
       ajv-formats: 2.1.1_ajv@8.12.0
       fp-ts: 2.13.1
       io-ts: 2.2.20_fp-ts@2.13.1
       json-schema-typed: 8.0.1
+
+  packages/model-codecs:
+    specifiers:
+      '@composedb/json-schema-codecs': workspace:*
+      fp-ts: ^2.13.1
+      io-ts: ^2.2.20
+      json-schema-typed: ^8.0.1
+      uint8arrays: ^4.0.3
+    dependencies:
+      '@composedb/json-schema-codecs': link:../json-schema-codecs
+      fp-ts: 2.13.1
+      io-ts: 2.2.20_fp-ts@2.13.1
       uint8arrays: 4.0.3
+    devDependencies:
+      json-schema-typed: 8.0.1
 
   packages/runtime:
     specifiers:
