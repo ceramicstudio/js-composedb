@@ -38,6 +38,10 @@
   "dependencies": {
     "@ceramicnetwork/streamid": "^2.14.0",
     "@composedb/ceramic-codecs": "workspace:*",
+    "@composedb/composite-codecs": "workspace:*",
+    "@composedb/graph-codecs": "workspace:*",
+    "@composedb/graphql-scalars": "workspace:*",
+    "@composedb/json-schema-codecs": "workspace:*",
     "@composedb/model-codecs": "workspace:*",
     "@composedb/services-rpc": "workspace:*",
     "@didtools/pkh-ethereum": "^0.3.0",
@@ -45,14 +49,21 @@
     "@didtools/pkh-tezos": "^0.2.1",
     "@trpc/client": "^10.16.0",
     "@trpc/server": "^10.16.0",
+    "change-case": "^4.1.2",
     "fp-ts": "^2.13.1",
+    "graphql": "^16.5.0",
+    "graphql-relay": "^0.10.0",
     "io-ts": "^2.2.20",
-    "key-did-resolver": "^3.0.0"
+    "json-ptr": "^3.1.1",
+    "key-did-resolver": "^3.0.0",
+    "lodash-es": "^4.17.21",
+    "nanoid": "^4.0.1"
   },
   "devDependencies": {
     "@composedb/ceramic-service": "workspace:*",
     "@composedb/database-service": "workspace:*",
     "@didtools/cacao": "^2.0.0",
+    "@types/lodash-es": "^4.17.7",
     "dids": "^4.0.0",
     "json-schema-typed": "^8.0.1",
     "multiformats": "^11.0.2"

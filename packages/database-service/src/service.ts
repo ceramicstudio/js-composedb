@@ -1,14 +1,15 @@
 import type { Logger, ServiceLifecycle } from '@composedb/services-rpc'
 import { DataSource, type DataSourceOptions } from 'typeorm'
 
-import { Model as ModelEntity } from './entities/model.js'
+import { Composite } from './entities/composite.js'
+import { Model } from './entities/model.js'
 
 export async function initializeDataSource(options: DataSourceOptions): Promise<DataSource> {
   const dataSource = new DataSource({
     synchronize: true,
     logging: true,
     ...options,
-    entities: [ModelEntity],
+    entities: [Composite, Model],
     subscribers: [],
     migrations: [],
   })
@@ -32,13 +33,23 @@ export class Service implements ServiceLifecycle {
     await ds.destroy()
   }
 
-  async createModel(entity: ModelEntity): Promise<ModelEntity> {
+  async findComposite(id: string): Promise<Composite | null> {
     const ds = await this.#dataSourcePromise
-    return await ds.manager.save(ModelEntity, entity)
+    return await ds.manager.findOneBy(Composite, { id })
   }
 
-  async getModel(id: string): Promise<ModelEntity | null> {
+  async saveComposite(entity: Composite): Promise<Composite> {
     const ds = await this.#dataSourcePromise
-    return await ds.manager.findOneBy(ModelEntity, { id })
+    return await ds.manager.save(Composite, entity)
+  }
+
+  async findModel(id: string): Promise<Model | null> {
+    const ds = await this.#dataSourcePromise
+    return await ds.manager.findOneBy(Model, { id })
+  }
+
+  async saveModel(entity: Model): Promise<Model> {
+    const ds = await this.#dataSourcePromise
+    return await ds.manager.save(Model, entity)
   }
 }

@@ -232,6 +232,7 @@ importers:
   packages/composite-codecs:
     specifiers:
       '@composedb/ceramic-codecs': workspace:*
+      '@composedb/graph-codecs': workspace:*
       '@composedb/json-schema-codecs': workspace:*
       '@composedb/model-codecs': workspace:*
       fp-ts: ^2.13.1
@@ -240,6 +241,7 @@ importers:
       multiformats: ^11.0.2
     dependencies:
       '@composedb/ceramic-codecs': link:../ceramic-codecs
+      '@composedb/graph-codecs': link:../graph-codecs
       '@composedb/json-schema-codecs': link:../json-schema-codecs
       '@composedb/model-codecs': link:../model-codecs
       fp-ts: 2.13.1
@@ -253,7 +255,11 @@ importers:
       '@ceramicnetwork/streamid': ^2.14.0
       '@composedb/ceramic-codecs': workspace:*
       '@composedb/ceramic-service': workspace:*
+      '@composedb/composite-codecs': workspace:*
       '@composedb/database-service': workspace:*
+      '@composedb/graph-codecs': workspace:*
+      '@composedb/graphql-scalars': workspace:*
+      '@composedb/json-schema-codecs': workspace:*
       '@composedb/model-codecs': workspace:*
       '@composedb/services-rpc': workspace:*
       '@didtools/cacao': ^2.0.0
@@ -262,15 +268,26 @@ importers:
       '@didtools/pkh-tezos': ^0.2.1
       '@trpc/client': ^10.16.0
       '@trpc/server': ^10.16.0
+      '@types/lodash-es': ^4.17.7
+      change-case: ^4.1.2
       dids: ^4.0.0
       fp-ts: ^2.13.1
+      graphql: ^16.5.0
+      graphql-relay: ^0.10.0
       io-ts: ^2.2.20
+      json-ptr: ^3.1.1
       json-schema-typed: ^8.0.1
       key-did-resolver: ^3.0.0
+      lodash-es: ^4.17.21
       multiformats: ^11.0.2
+      nanoid: ^4.0.1
     dependencies:
       '@ceramicnetwork/streamid': 2.14.0
       '@composedb/ceramic-codecs': link:../ceramic-codecs
+      '@composedb/composite-codecs': link:../composite-codecs
+      '@composedb/graph-codecs': link:../graph-codecs
+      '@composedb/graphql-scalars': link:../graphql-scalars
+      '@composedb/json-schema-codecs': link:../json-schema-codecs
       '@composedb/model-codecs': link:../model-codecs
       '@composedb/services-rpc': link:../services-rpc
       '@didtools/pkh-ethereum': 0.3.0
@@ -278,13 +295,20 @@ importers:
       '@didtools/pkh-tezos': 0.2.1
       '@trpc/client': 10.17.0_@trpc+server@10.17.0
       '@trpc/server': 10.17.0
+      change-case: 4.1.2
       fp-ts: 2.13.1
+      graphql: 16.6.0
+      graphql-relay: 0.10.0_graphql@16.6.0
       io-ts: 2.2.20_fp-ts@2.13.1
+      json-ptr: 3.1.1
       key-did-resolver: 3.0.0
+      lodash-es: 4.17.21
+      nanoid: 4.0.1
     devDependencies:
       '@composedb/ceramic-service': link:../ceramic-service
       '@composedb/database-service': link:../database-service
       '@didtools/cacao': 2.0.0
+      '@types/lodash-es': 4.17.7
       dids: 4.0.0
       json-schema-typed: 8.0.1
       multiformats: 11.0.2
@@ -294,6 +318,7 @@ importers:
 
   packages/database-service:
     specifiers:
+      '@composedb/graph-codecs': workspace:*
       '@composedb/model-codecs': workspace:*
       '@composedb/services-rpc': workspace:*
       '@trpc/server': ^10.16.0
@@ -304,6 +329,7 @@ importers:
       sqlite3: ^5.1.6
       typeorm: ^0.3.12
     dependencies:
+      '@composedb/graph-codecs': link:../graph-codecs
       '@composedb/model-codecs': link:../model-codecs
       '@composedb/services-rpc': link:../services-rpc
       '@trpc/server': 10.17.0
@@ -392,6 +418,25 @@ importers:
       '@composedb/types': link:../types
       '@types/fs-extra': 11.0.1
       dids: 4.0.0
+
+  packages/graph-codecs:
+    specifiers:
+      '@composedb/ceramic-codecs': workspace:*
+      '@composedb/json-schema-codecs': workspace:*
+      '@composedb/model-codecs': workspace:*
+      fp-ts: ^2.13.1
+      io-ts: ^2.2.20
+      json-schema-typed: ^8.0.1
+      multiformats: ^11.0.2
+    dependencies:
+      '@composedb/ceramic-codecs': link:../ceramic-codecs
+      '@composedb/json-schema-codecs': link:../json-schema-codecs
+      '@composedb/model-codecs': link:../model-codecs
+      fp-ts: 2.13.1
+      io-ts: 2.2.20_fp-ts@2.13.1
+    devDependencies:
+      json-schema-typed: 8.0.1
+      multiformats: 11.0.2
 
   packages/graphql-scalars:
     specifiers:
@@ -500,8 +545,10 @@ importers:
       '@ceramicnetwork/common': ^2.23.0
       '@ceramicnetwork/http-client': ^2.20.0
       '@composedb/ceramic-codecs': workspace:*
+      '@composedb/composite-codecs': workspace:*
       '@composedb/composite-service': workspace:*
       '@composedb/constants': workspace:*
+      '@composedb/graph-codecs': workspace:*
       '@composedb/model-codecs': workspace:*
       '@composedb/runtime': workspace:*
       '@composedb/services-rpc': workspace:*
@@ -522,7 +569,9 @@ importers:
     dependencies:
       '@ceramicnetwork/http-client': 2.20.0
       '@composedb/ceramic-codecs': link:../ceramic-codecs
+      '@composedb/composite-codecs': link:../composite-codecs
       '@composedb/constants': link:../constants
+      '@composedb/graph-codecs': link:../graph-codecs
       '@composedb/model-codecs': link:../model-codecs
       '@composedb/runtime': link:../runtime
       '@composedb/services-runner': link:../services-runner

@@ -16,6 +16,8 @@ function identity<T>(input: T): T {
   return input
 }
 
+export type { JSONSchema } from 'json-schema-typed/draft-2020-12'
+
 export type SchemaType =
   | JSONSchema.Boolean
   | JSONSchema.Integer
@@ -72,3 +74,9 @@ export type ArraySchema = io.TypeOf<typeof ArraySchemaCodec>
 
 export const ObjectSchemaCodec = createSchemaCodec<JSONSchema.Object>('object', 'ObjectSchema')
 export type ObjectSchema = io.TypeOf<typeof ObjectSchemaCodec>
+
+export const AnySchemaCodec = io.union(
+  [ScalarSchemaCodec, ArraySchemaCodec, ObjectSchemaCodec],
+  'AnySchema'
+)
+export type AnySchema = io.TypeOf<typeof AnySchemaCodec>

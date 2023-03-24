@@ -1,5 +1,5 @@
 {
-  "name": "@composedb/composite-codecs",
+  "name": "@composedb/graph-codecs",
   "version": "0.4.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
@@ -11,7 +11,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/ceramicstudio/js-composedb",
-    "directory": "packages/composite-codecs"
+    "directory": "packages/graph-codecs"
   },
   "type": "module",
   "main": "dist/index.js",
@@ -37,7 +37,6 @@
   },
   "dependencies": {
     "@composedb/ceramic-codecs": "workspace:*",
-    "@composedb/graph-codecs": "workspace:*",
     "@composedb/json-schema-codecs": "workspace:*",
     "@composedb/model-codecs": "workspace:*",
     "fp-ts": "^2.13.1",

@@ -1,4 +1,5 @@
 import { SignedCommitContainerCodec } from '@composedb/ceramic-codecs'
+import { CompositeDefinitionCodec } from '@composedb/composite-codecs'
 import type { Router as CompositeRouter } from '@composedb/composite-service'
 import { type ServiceClient, ioDecode } from '@composedb/services-rpc'
 import { initTRPC } from '@trpc/server'
@@ -29,6 +30,10 @@ export const router = t.router({
   loadModel: t.procedure
     .input(ioDecode(io.strict({ id: io.string }, 'server.loadModelInput')))
     .mutation((req) => req.ctx.composite.loadModel.query(req.input)),
+
+  saveComposite: t.procedure
+    .input(ioDecode(io.strict({ composite: CompositeDefinitionCodec })))
+    .mutation((req) => req.ctx.composite.saveComposite.mutate(req.input)),
 })
 
 export type Router = typeof router

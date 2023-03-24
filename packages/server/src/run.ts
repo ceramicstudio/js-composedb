@@ -1,3 +1,4 @@
+import { inspect } from 'node:util'
 import { META_MODEL_BYTES, type ContentDefinition } from '@composedb/model-codecs'
 import { createLogger } from '@composedb/services-rpc'
 import { ServicesRunner } from '@composedb/services-runner'
@@ -35,16 +36,28 @@ const caller = router.createCaller({ composite })
 
 const did = new DID({ provider: new Ed25519Provider(new Uint8Array(32)), resolver: getResolver() })
 
-const commit = await createModelGenesis(did, {
-  version: '1.0',
-  accountRelation: { type: 'single' },
-  name: 'test',
-  schema: { type: 'object', properties: { test: { type: 'string' } } },
+const [commit1, commit2] = await Promise.all([
+  createModelGenesis(did, {
+    version: '1.0',
+    accountRelation: { type: 'single' },
+    name: 'Test1',
+    schema: { type: 'object', properties: { foo: { type: 'string' } } },
+  }),
+  createModelGenesis(did, {
+    version: '1.0',
+    accountRelation: { type: 'single' },
+    name: 'Test2',
+    schema: { type: 'object', properties: { bar: { type: 'string' } } },
+  }),
+])
+
+const created = await caller.saveComposite({
+  composite: {
+    models: {
+      Test1: { action: 'create', commit: commit1 },
+      Test2: { action: 'create', commit: commit2 },
+    },
+    commonEmbeds: [],
+  },
 })
-console.log('signed commit', commit)
-
-const created = await caller.createModel({ commit })
-console.log('created model', created)
-
-const loaded = await caller.loadModel({ id: created.id })
-console.log('loaded model', loaded)
+console.log('created composite graph', inspect(created.graph, { colors: true, depth: null }))

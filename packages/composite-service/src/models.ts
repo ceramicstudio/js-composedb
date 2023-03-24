@@ -52,6 +52,10 @@ export async function modelFromStream(stream: StreamLog): Promise<Model> {
   return await modelFromGenesis(commitData)
 }
 
+export type SaveModelOptions = {
+  indexDocuments?: boolean
+}
+
 export type ModelsManagerParams = {
   clients: ServiceClients
 }
@@ -63,10 +67,13 @@ export class ModelsManager {
     this.#clients = params.clients
   }
 
-  async create(commit: SignedCommitContainer): Promise<Model> {
+  async create(commit: SignedCommitContainer, options: SaveModelOptions = {}): Promise<Model> {
     const stream = await this.#clients.ceramic.createStream.mutate({ commit })
     const model = await modelFromStream(decodeStream(stream))
-    await this.#clients.database.createModel.mutate({ model, indexDocuments: false })
+    await this.#clients.database.saveModel.mutate({
+      model,
+      indexDocuments: options.indexDocuments ?? false,
+    })
     return model
   }
 
@@ -75,14 +82,17 @@ export class ModelsManager {
     return await modelFromStream(decodeStream(stream))
   }
 
-  async load(id: string): Promise<Model> {
+  async load(id: string, options: SaveModelOptions = {}): Promise<Model> {
     const existing = await this.#clients.database.getModel.query({ id })
     if (existing != null) {
       return decodeModel(existing)
     }
 
     const model = await this.loadFromNetwork(id)
-    await this.#clients.database.createModel.mutate({ model, indexDocuments: false })
+    await this.#clients.database.saveModel.mutate({
+      model,
+      indexDocuments: options.indexDocuments ?? false,
+    })
     return model
   }
 }

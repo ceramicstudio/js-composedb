@@ -41,6 +41,8 @@
   "dependencies": {
     "@ceramicnetwork/http-client": "^2.20.0",
     "@composedb/ceramic-codecs": "workspace:*",
+    "@composedb/composite-codecs": "workspace:*",
+    "@composedb/graph-codecs": "workspace:*",
     "@composedb/constants": "workspace:*",
     "@composedb/model-codecs": "workspace:*",
     "@composedb/runtime": "workspace:*",

@@ -36,6 +36,7 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
+    "@composedb/graph-codecs": "workspace:*",
     "@composedb/model-codecs": "workspace:*",
     "@composedb/services-rpc": "workspace:*",
     "@trpc/server": "^10.16.0",

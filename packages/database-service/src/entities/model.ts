@@ -1,4 +1,7 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm'
+import type { ContentDefinition } from '@composedb/model-codecs'
+import { Column, Entity, ManyToMany, PrimaryColumn } from 'typeorm'
+
+import { Composite } from './composite.js'
 
 @Entity()
 export class Model {
@@ -18,8 +21,11 @@ export class Model {
   description?: string
 
   @Column({ type: 'simple-json' })
-  content!: unknown
+  content!: ContentDefinition
 
   @Column()
   indexDocuments!: boolean
+
+  @ManyToMany(() => Composite, (composite) => composite.models)
+  composites?: Array<Composite>
 }
