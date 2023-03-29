@@ -3,6 +3,21 @@ import * as io from 'io-ts'
 import { bytesCodec } from './binary.js'
 import { DagJWSCodec } from './ipld.js'
 
+export function isDID(input: unknown): input is string {
+  return typeof input === 'string' && input.startsWith('did:')
+}
+
+export const didCodec = new io.Type<string>(
+  'did',
+  isDID,
+  (input, context) => {
+    return isDID(input)
+      ? io.success(input)
+      : io.failure(input, context, `Invalid DID string input to decode: ${typeof input}`)
+  },
+  io.identity
+)
+
 export const DagJWSResultCodec = io.intersection(
   [
     io.type({

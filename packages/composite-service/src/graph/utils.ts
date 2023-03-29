@@ -41,6 +41,7 @@ export function viewDefinitionToGraph(view: ViewDefinition): GraphViewField {
         relation: viewDefinitionToGraphRelation(view),
       }
     default:
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore unexpected view type
       throw new Error(`Unsupported view type: ${view.type as string}`)
   }

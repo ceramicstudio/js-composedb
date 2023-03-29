@@ -257,6 +257,7 @@ importers:
       '@composedb/ceramic-service': workspace:*
       '@composedb/composite-codecs': workspace:*
       '@composedb/database-service': workspace:*
+      '@composedb/document-codecs': workspace:*
       '@composedb/graph-codecs': workspace:*
       '@composedb/graphql-scalars': workspace:*
       '@composedb/json-schema-codecs': workspace:*
@@ -270,6 +271,7 @@ importers:
       '@trpc/server': ^10.16.0
       '@types/lodash-es': ^4.17.7
       change-case: ^4.1.2
+      dataloader: ^2.2.2
       dids: ^4.0.0
       fp-ts: ^2.13.1
       graphql: ^16.5.0
@@ -285,6 +287,7 @@ importers:
       '@ceramicnetwork/streamid': 2.14.0
       '@composedb/ceramic-codecs': link:../ceramic-codecs
       '@composedb/composite-codecs': link:../composite-codecs
+      '@composedb/document-codecs': link:../document-codecs
       '@composedb/graph-codecs': link:../graph-codecs
       '@composedb/graphql-scalars': link:../graphql-scalars
       '@composedb/json-schema-codecs': link:../json-schema-codecs
@@ -296,6 +299,7 @@ importers:
       '@trpc/client': 10.17.0_@trpc+server@10.17.0
       '@trpc/server': 10.17.0
       change-case: 4.1.2
+      dataloader: 2.2.2
       fp-ts: 2.13.1
       graphql: 16.6.0
       graphql-relay: 0.10.0_graphql@16.6.0
@@ -318,27 +322,35 @@ importers:
 
   packages/database-service:
     specifiers:
+      '@composedb/document-codecs': workspace:*
       '@composedb/graph-codecs': workspace:*
       '@composedb/model-codecs': workspace:*
       '@composedb/services-rpc': workspace:*
       '@trpc/server': ^10.16.0
+      '@types/object-hash': ^3.0.2
       fp-ts: ^2.13.1
       io-ts: ^2.2.20
       json-schema-typed: ^8.0.1
+      object-hash: ^3.0.0
       reflect-metadata: ^0.1.13
       sqlite3: ^5.1.6
       typeorm: ^0.3.12
+      uint8arrays: ^4.0.3
     dependencies:
+      '@composedb/document-codecs': link:../document-codecs
       '@composedb/graph-codecs': link:../graph-codecs
       '@composedb/model-codecs': link:../model-codecs
       '@composedb/services-rpc': link:../services-rpc
       '@trpc/server': 10.17.0
       fp-ts: 2.13.1
       io-ts: 2.2.20_fp-ts@2.13.1
+      object-hash: 3.0.0
       reflect-metadata: 0.1.13
       sqlite3: 5.1.6
       typeorm: 0.3.12_sqlite3@5.1.6
+      uint8arrays: 4.0.3
     devDependencies:
+      '@types/object-hash': 3.0.2
       json-schema-typed: 8.0.1
 
   packages/devtools:
@@ -419,6 +431,16 @@ importers:
       '@types/fs-extra': 11.0.1
       dids: 4.0.0
 
+  packages/document-codecs:
+    specifiers:
+      '@composedb/ceramic-codecs': workspace:*
+      fp-ts: ^2.13.1
+      io-ts: ^2.2.20
+    dependencies:
+      '@composedb/ceramic-codecs': link:../ceramic-codecs
+      fp-ts: 2.13.1
+      io-ts: 2.2.20_fp-ts@2.13.1
+
   packages/graph-codecs:
     specifiers:
       '@composedb/ceramic-codecs': workspace:*
@@ -490,12 +512,14 @@ importers:
 
   packages/model-codecs:
     specifiers:
+      '@composedb/ceramic-codecs': workspace:*
       '@composedb/json-schema-codecs': workspace:*
       fp-ts: ^2.13.1
       io-ts: ^2.2.20
       json-schema-typed: ^8.0.1
       uint8arrays: ^4.0.3
     dependencies:
+      '@composedb/ceramic-codecs': link:../ceramic-codecs
       '@composedb/json-schema-codecs': link:../json-schema-codecs
       fp-ts: 2.13.1
       io-ts: 2.2.20_fp-ts@2.13.1

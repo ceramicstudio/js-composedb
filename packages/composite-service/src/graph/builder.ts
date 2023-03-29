@@ -282,6 +282,7 @@ export function createGraphDefinition(
       const relationType = modelDefinition.accountRelation.type
       if (relationType === 'single') {
         graph.accountData[key] = { type: 'node', name: modelName }
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore TS2367, should be unnecessary check based on type definition but more types
         // could be added later
       } else if (relationType === 'list') {

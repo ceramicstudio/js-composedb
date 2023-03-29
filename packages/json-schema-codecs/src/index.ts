@@ -12,10 +12,6 @@ const ajv = new Ajv({
 })
 addFormats(ajv)
 
-function identity<T>(input: T): T {
-  return input
-}
-
 export type { JSONSchema } from 'json-schema-typed/draft-2020-12'
 
 export type SchemaType =
@@ -47,7 +43,7 @@ export function createSchemaCodec<T extends SchemaType>(type: T['type'], name: s
         ? io.success(input)
         : io.failure(input, context, `Schema validation failed: ${ajv.errorsText()}`)
     },
-    identity
+    io.identity
   )
 }
 

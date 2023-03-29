@@ -23,9 +23,9 @@ flowchart TD
     COMS -.->|RPC| CERS & DBS
   end
   CERS & COMS & DBS --> SRPC
-  COMS --> CERC & COMC & JSSC & GRAC & MODC
+  COMS --> CERC & COMC & DOCC & JSSC & GRAC & MODC
   CERS --> CERC
-  DBS --> GRAC & MODC
+  DBS --> DOCC & GRAC & MODC
 
   subgraph Codecs
     CERC[ceramic-codecs]
@@ -36,8 +36,9 @@ flowchart TD
     MODC[model-codecs]
   end
   COMC --> CERC & JSSC & GRAC & MODC
+  DOCC --> CERC
   GRAC --> CERC & JSSC & MODC
-  MODC --> JSSC
+  MODC --> CERC & JSSC
 
   subgraph Services dependencies
     SRPC[services-rpc]

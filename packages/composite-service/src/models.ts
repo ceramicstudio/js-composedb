@@ -4,16 +4,13 @@ import {
   GenesisCommitDataCodec,
   type SignedCommitContainer,
   type StreamLog,
-  StreamLogCodec,
   createDecoder,
 } from '@composedb/ceramic-codecs'
 import { ModelCodec, type Model } from '@composedb/model-codecs'
 
-import { verifyCommitSignature } from './stream.js'
+import { decodeGenesisCommitData, decodeStream, verifyCommitSignature } from './stream.js'
 import type { ServiceClients } from './types.js'
 
-const decodeStream = createDecoder(StreamLogCodec)
-const decodeGenesisCommitData = createDecoder(GenesisCommitDataCodec)
 const decodeModel = createDecoder(ModelCodec)
 
 export async function modelFromGenesis(commitData: GenesisCommitData): Promise<Model> {
@@ -77,15 +74,20 @@ export class ModelsManager {
     return model
   }
 
+  async loadFromDatabase(id: string): Promise<Model | null> {
+    const model = await this.#clients.database.getModel.query({ id })
+    return model ? decodeModel(model) : null
+  }
+
   async loadFromNetwork(id: string): Promise<Model> {
     const stream = await this.#clients.ceramic.loadStream.query({ id })
     return await modelFromStream(decodeStream(stream))
   }
 
   async load(id: string, options: SaveModelOptions = {}): Promise<Model> {
-    const existing = await this.#clients.database.getModel.query({ id })
-    if (existing != null) {
-      return decodeModel(existing)
+    const fromDB = await this.loadFromDatabase(id)
+    if (fromDB != null) {
+      return fromDB
     }
 
     const model = await this.loadFromNetwork(id)

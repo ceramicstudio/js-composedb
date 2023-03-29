@@ -1,4 +1,11 @@
-import type { CommitData, CommitType, LogEntry } from '@composedb/ceramic-codecs'
+import {
+  type CommitData,
+  type CommitType,
+  GenesisCommitDataCodec,
+  type LogEntry,
+  StreamLogCodec,
+  createDecoder,
+} from '@composedb/ceramic-codecs'
 import type { Cacao } from '@didtools/cacao'
 import { getEIP191Verifier } from '@didtools/pkh-ethereum'
 import { getSolanaVerifier } from '@didtools/pkh-solana'
@@ -86,3 +93,7 @@ export function commitDataToLogEntry(commitData: CommitData, commitType: CommitT
   }
   return logEntry
 }
+
+export const decodeStream = createDecoder(StreamLogCodec)
+
+export const decodeGenesisCommitData = createDecoder(GenesisCommitDataCodec)

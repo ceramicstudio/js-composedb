@@ -5,6 +5,7 @@ import type { Logger, ServiceLifecycle, ServicesBus } from '@composedb/services-
 import * as io from 'io-ts'
 import { nanoid } from 'nanoid'
 
+import { DocumentsManager } from './documents.js'
 import { createGraphDefinition } from './graph/builder.js'
 import { ModelsManager } from './models.js'
 import type { IntermediaryCompositeDefinition, ServiceClients } from './types.js'
@@ -27,19 +28,34 @@ export type SaveCompositeOptions = io.TypeOf<typeof SaveCompositeOptionsCodec>
 
 export class Service implements ServiceLifecycle {
   #clients: ServiceClients
+  #documents: DocumentsManager
   #models: ModelsManager
 
   constructor(params: ServiceParams) {
+    const models = new ModelsManager({ clients: params.clients })
     this.#clients = params.clients
-    this.#models = new ModelsManager({ clients: params.clients })
+    this.#documents = new DocumentsManager({ clients: params.clients, models })
+    this.#models = models
   }
 
-  start() {
-    // TODO: load composites and compile GraphQL schemas
+  get documents(): DocumentsManager {
+    return this.#documents
   }
 
   get models(): ModelsManager {
     return this.#models
+  }
+
+  async stop() {
+    // TODO: stop all active subscriptions
+  }
+
+  async executeGraphQL() {
+    // TODO:
+    // - load composite graph
+    // - compile GraphQL schema
+    // - execute GraphQL query
+    // - (future) keep track of subscriptions
   }
 
   async saveComposite(

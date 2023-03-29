@@ -1,12 +1,9 @@
+import { didCodec } from '@composedb/ceramic-codecs'
 import { ObjectSchemaCodec } from '@composedb/json-schema-codecs'
 import * as io from 'io-ts'
 import { equals } from 'uint8arrays'
 // Workaround for TS2742 error - https://github.com/microsoft/TypeScript/issues/47663#issuecomment-1270716220
 import type {} from 'json-schema-typed/draft-2020-12.js'
-
-function identity<T>(input: T): T {
-  return input
-}
 
 /**
  * Meta model (constant model ID used in models metadata) codec
@@ -151,7 +148,7 @@ export const VersionCodec = new io.Type<string>(
       ? io.success(input)
       : io.failure(input, context, `Invalid model version format: ${input as string}`)
   },
-  identity
+  io.identity
 )
 
 /**
@@ -180,7 +177,7 @@ export type ContentDefinition = io.TypeOf<typeof ContentDefinitionCodec>
  */
 export const MetadataDefinitionCodec = io.strict(
   {
-    controller: io.string,
+    controller: didCodec,
     model: MetaModelCodec,
   },
   'ModelMetadataDefinition'

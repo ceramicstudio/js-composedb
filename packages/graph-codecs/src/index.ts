@@ -96,7 +96,7 @@ function createReferenceCodec(refType: io.Mixed, name?: string) {
 }
 
 export const GraphReferenceCodec = createReferenceCodec(GraphReferenceTypeCodec, 'GraphReference')
-export type GraphReference<Type extends GraphReferenceType> = io.TypeOf<
+export type GraphReference<Type extends GraphReferenceType = GraphReferenceType> = io.TypeOf<
   typeof GraphReferenceCodec
 > & { refType: Type }
 
@@ -114,6 +114,9 @@ export const GraphListCodec = io.intersection(
   'GraphList'
 )
 export type GraphList = io.TypeOf<typeof GraphListCodec>
+
+export const GraphMetaCodec = io.strict({ type: io.literal('meta') }, 'GraphMeta')
+export type GraphMeta = io.TypeOf<typeof GraphMetaCodec>
 
 export const GraphRelationSourceCodec = io.keyof(
   {
@@ -155,7 +158,7 @@ export const GraphViewFieldCodec = io.union(
 export type GraphViewField = io.TypeOf<typeof GraphViewFieldCodec>
 
 export const GraphObjectFieldCodec = io.union(
-  [GraphScalarCodec, GraphListCodec, GraphReferenceCodec, GraphViewFieldCodec],
+  [GraphScalarCodec, GraphListCodec, GraphMetaCodec, GraphReferenceCodec, GraphViewFieldCodec],
   'GraphObjectField'
 )
 export type GraphObjectField = io.TypeOf<typeof GraphObjectFieldCodec>

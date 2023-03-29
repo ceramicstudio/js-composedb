@@ -36,17 +36,21 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
+    "@composedb/document-codecs": "workspace:*",
     "@composedb/graph-codecs": "workspace:*",
     "@composedb/model-codecs": "workspace:*",
     "@composedb/services-rpc": "workspace:*",
     "@trpc/server": "^10.16.0",
     "fp-ts": "^2.13.1",
     "io-ts": "^2.2.20",
+    "object-hash": "^3.0.0",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.1.6",
-    "typeorm": "^0.3.12"
+    "typeorm": "^0.3.12",
+    "uint8arrays": "^4.0.3"
   },
   "devDependencies": {
+    "@types/object-hash": "^3.0.2",
     "json-schema-typed": "^8.0.1"
   }
 }

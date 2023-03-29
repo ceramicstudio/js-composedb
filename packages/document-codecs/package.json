@@ -1,5 +1,5 @@
 {
-  "name": "@composedb/model-codecs",
+  "name": "@composedb/document-codecs",
   "version": "0.4.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
@@ -11,7 +11,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/ceramicstudio/js-composedb",
-    "directory": "packages/model-codecs"
+    "directory": "packages/document-codecs"
   },
   "type": "module",
   "main": "dist/index.js",
@@ -37,12 +37,7 @@
   },
   "dependencies": {
     "@composedb/ceramic-codecs": "workspace:*",
-    "@composedb/json-schema-codecs": "workspace:*",
     "fp-ts": "^2.13.1",
-    "io-ts": "^2.2.20",
-    "uint8arrays": "^4.0.3"
-  },
-  "devDependencies": {
-    "json-schema-typed": "^8.0.1"
+    "io-ts": "^2.2.20"
   }
 }
