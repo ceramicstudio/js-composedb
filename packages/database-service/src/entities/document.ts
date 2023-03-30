@@ -6,6 +6,8 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryColumn,
+  PrimaryGeneratedColumn,
+  type Relation,
   UpdateDateColumn,
 } from 'typeorm'
 
@@ -14,11 +16,14 @@ import { Model } from './model.js'
 @Entity()
 @Index(['documentId', 'key'], { unique: true })
 export class IndexedStringField {
+  @PrimaryGeneratedColumn()
+  id!: string
+
   @Column()
   documentId!: string
 
   @ManyToOne(() => Document, (document) => document.stringFields)
-  document?: Document
+  document?: Relation<Document>
 
   @Column()
   key!: string
@@ -49,7 +54,7 @@ export class Document<Content extends Record<string, unknown> = Record<string, u
   modelId!: string
 
   @ManyToOne(() => Model, (model) => model.documents)
-  model?: Model
+  model?: Relation<Model>
 
   @Column()
   tip!: string
@@ -58,7 +63,7 @@ export class Document<Content extends Record<string, unknown> = Record<string, u
   content!: Content
 
   @OneToMany(() => IndexedStringField, (field) => field.document)
-  stringFields?: Array<IndexedStringField>
+  stringFields?: Array<Relation<IndexedStringField>>
 
   @CreateDateColumn()
   firstIndexedAt?: Date

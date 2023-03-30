@@ -1,5 +1,5 @@
 import type { ContentDefinition } from '@composedb/model-codecs'
-import { Column, Entity, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm'
+import { Column, Entity, ManyToMany, OneToMany, PrimaryColumn, type Relation } from 'typeorm'
 
 import { Composite } from './composite.js'
 import { Document } from './document.js'
@@ -28,8 +28,8 @@ export class Model {
   indexDocuments!: boolean
 
   @OneToMany(() => Document, (document) => document.model)
-  documents?: Array<Document>
+  documents?: Array<Relation<Document>>
 
   @ManyToMany(() => Composite, (composite) => composite.models)
-  composites?: Array<Composite>
+  composites?: Array<Relation<Composite>>
 }

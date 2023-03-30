@@ -24,7 +24,7 @@ export const StoredCompositeCodec = io.intersection(
       enableMutations: io.boolean,
       enableSubscriptions: io.boolean,
     }),
-    io.partial({ description: io.string }),
+    io.partial({ description: io.union([io.string, io.null]) }),
   ],
   'StoredComposite'
 )

@@ -1,6 +1,5 @@
 import { SignedCommitContainerCodec } from '@composedb/ceramic-codecs'
-import { CompositeDefinitionCodec } from '@composedb/composite-codecs'
-import { GraphDefinitionCodec } from '@composedb/graph-codecs'
+import { CompositeDefinitionCodec, GraphQLQueryCodec } from '@composedb/composite-codecs'
 import { ModelCodec } from '@composedb/model-codecs'
 import { ioDecode, ioEncode } from '@composedb/services-rpc'
 import { initTRPC } from '@trpc/server'
@@ -9,7 +8,7 @@ import * as io from 'io-ts'
 import type {} from 'json-schema-typed/draft-2020-12.js'
 import type {} from 'multiformats/cid'
 
-import { SaveCompositeOptionsCodec, type Service } from './service.js'
+import { SaveCompositeOptionsCodec, SavedCompositeCodec, type Service } from './service.js'
 
 export type Context = {
   service: Service
@@ -47,12 +46,15 @@ export const router = t.router({
         )
       )
     )
-    .output(ioEncode(io.strict({ graph: GraphDefinitionCodec })))
+    .output(ioEncode(SavedCompositeCodec))
     .mutation(async (req) => {
       const { composite, ...options } = req.input
-      const graph = await req.ctx.service.saveComposite(composite, options)
-      return { graph }
+      return await req.ctx.service.saveComposite(composite, options)
     }),
+
+  graphql: t.procedure
+    .input(ioDecode(GraphQLQueryCodec))
+    .query((req) => req.ctx.service.executeGraphQL(req.input)),
 })
 
 export type Router = typeof router

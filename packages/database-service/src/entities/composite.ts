@@ -1,5 +1,5 @@
 import type { GraphDefinition } from '@composedb/graph-codecs'
-import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm'
+import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn, type Relation } from 'typeorm'
 
 import { Model } from './model.js'
 
@@ -16,7 +16,7 @@ export class Composite {
 
   @ManyToMany(() => Model, (model) => model.composites)
   @JoinTable()
-  models!: Array<Model>
+  models!: Array<Relation<Model>>
 
   @Column()
   enable!: boolean

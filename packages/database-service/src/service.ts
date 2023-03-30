@@ -3,7 +3,7 @@ import type { Logger, ServiceLifecycle } from '@composedb/services-rpc'
 import { DataSource, type DataSourceOptions, In, type SelectQueryBuilder } from 'typeorm'
 
 import { Composite } from './entities/composite.js'
-import { Document } from './entities/document.js'
+import { Document, IndexedStringField } from './entities/document.js'
 import { Model } from './entities/model.js'
 import { createQueryHash, decodeCursor, encodeCursor } from './pagination.js'
 
@@ -20,7 +20,7 @@ export async function initializeDataSource(options: DataSourceOptions): Promise<
     synchronize: true,
     logging: true,
     ...options,
-    entities: [Composite, Document, Model],
+    entities: [Composite, Document, IndexedStringField, Model],
     subscribers: [],
     migrations: [],
   })
