@@ -18,7 +18,7 @@ export type PaginationResult = {
 export async function initializeDataSource(options: DataSourceOptions): Promise<DataSource> {
   const dataSource = new DataSource({
     synchronize: true,
-    logging: true,
+    logging: false,
     ...options,
     entities: [Composite, Document, IndexedStringField, Model],
     subscribers: [],
@@ -34,9 +34,11 @@ export type ServiceParams = {
 
 export class Service implements ServiceLifecycle {
   #dataSourcePromise: Promise<DataSource>
+  #logger: Logger
 
   constructor(params: ServiceParams) {
     this.#dataSourcePromise = initializeDataSource(params.dataSource)
+    this.#logger = params.logger
   }
 
   async stop() {
@@ -51,7 +53,9 @@ export class Service implements ServiceLifecycle {
 
   async saveComposite(entity: Composite): Promise<Composite> {
     const ds = await this.#dataSourcePromise
-    return await ds.manager.save(Composite, entity)
+    const saved = await ds.manager.save(Composite, entity)
+    this.#logger.trace('Composite saved', { id: saved.id })
+    return saved
   }
 
   async findDocument(id: string): Promise<Document | null> {
@@ -66,14 +70,18 @@ export class Service implements ServiceLifecycle {
 
   async #createDocumentQuery(query: DocumentQuery): Promise<SelectQueryBuilder<Document>> {
     const ds = await this.#dataSourcePromise
-    let builder = ds
-      .createQueryBuilder(Document, 'doc')
-      .select('doc')
-      .where({ model: query.models.length > 1 ? In(query.models) : query.models })
-    // Handle filters
+    let builder = ds.createQueryBuilder(Document, 'doc').select('doc')
+    // Model filter
+    if (query.models.length > 1) {
+      builder = builder.where('doc.modelId IN(:...models)', { models: query.models })
+    } else {
+      builder = builder.where('doc.modelId = :model', { model: query.models[0] })
+    }
+    //Account filter
     if (query.account != null) {
       builder = builder.andWhere({ controller: query.account })
     }
+    // Fields filters
     for (const [key, valueFilter] of Object.entries(query.filter ?? {})) {
       builder = builder.innerJoin('doc.stringFields', key, `${key}.key = :key`, { key })
       if (valueFilter.is != null) {
@@ -81,7 +89,7 @@ export class Service implements ServiceLifecycle {
       } else if (valueFilter.not != null) {
         builder = builder.andWhere(`${key}.value != :value`, { value: valueFilter.not })
       } else if (valueFilter.in != null) {
-        builder = builder.andWhere(`${key}.value IN(:...value]`, { value: valueFilter.in })
+        builder = builder.andWhere(`${key}.value IN(:...value)`, { value: valueFilter.in })
       }
     }
     return builder
@@ -142,8 +150,8 @@ export class Service implements ServiceLifecycle {
       edges,
       pageInfo: {
         totalCount,
-        startCursor: edges[0].cursor,
-        endCursor: edges[edges.length - 1].cursor,
+        startCursor: edges.length === 0 ? null : edges[0].cursor,
+        endCursor: edges.length === 0 ? null : edges[edges.length - 1].cursor,
         hasNextPage: before ? true : hasMore,
         hasPreviousPage: after ? true : false,
       },
@@ -155,7 +163,9 @@ export class Service implements ServiceLifecycle {
     const existing = await this.findDocument(doc.id)
     // Ensure cursor is always set but never updated
     const cursor = existing?.cursor ?? `${Date.now()}${doc.id.slice(-3)}`
-    return await ds.manager.save(Document, { ...doc, cursor })
+    const saved = await ds.manager.save(Document, { ...doc, cursor })
+    this.#logger.trace('Document saved', { id: saved.id })
+    return saved
   }
 
   async findModel(id: string): Promise<Model | null> {
@@ -165,6 +175,8 @@ export class Service implements ServiceLifecycle {
 
   async saveModel(entity: Model): Promise<Model> {
     const ds = await this.#dataSourcePromise
-    return await ds.manager.save(Model, entity)
+    const saved = await ds.manager.save(Model, entity)
+    this.#logger.trace('Model saved', { id: saved.id })
+    return saved
   }
 }

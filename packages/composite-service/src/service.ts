@@ -62,9 +62,10 @@ export class Service implements ServiceLifecycle {
   #models: ModelsManager
 
   constructor(params: ServiceParams) {
-    const models = new ModelsManager({ clients: params.clients })
-    this.#clients = params.clients
-    this.#documents = new DocumentsManager({ clients: params.clients, models })
+    const { clients } = params
+    const models = new ModelsManager({ clients })
+    this.#clients = clients
+    this.#documents = new DocumentsManager({ clients, models })
     this.#models = models
   }
 
@@ -80,7 +81,7 @@ export class Service implements ServiceLifecycle {
     // TODO: stop all active subscriptions
   }
 
-  async getGraphQLSchema(compositeID: string, readonly = false): Promise<GraphQLSchema> {
+  async getGraphQLSchema(compositeID: string): Promise<GraphQLSchema> {
     const composite = await this.#clients.database.getComposite.query({ id: compositeID })
     if (composite == null) {
       throw new GraphQLError(`Composite not found: ${compositeID}`)
@@ -95,7 +96,7 @@ export class Service implements ServiceLifecycle {
       throw new GraphQLError(message)
     }
 
-    return createGraphQLSchema({ definition, readonly })
+    return createGraphQLSchema({ definition, readonly: false }) // !composite.enableMutations
   }
 
   async executeGraphQL(query: GraphQLQuery): Promise<ExecutionResult<Record<string, unknown>>> {
@@ -108,7 +109,7 @@ export class Service implements ServiceLifecycle {
 
     let schema: GraphQLSchema
     try {
-      schema = await this.getGraphQLSchema(query.composite, query.readonly)
+      schema = await this.getGraphQLSchema(query.composite)
     } catch (schemaError) {
       return { errors: [schemaError as GraphQLError] }
     }
@@ -121,7 +122,11 @@ export class Service implements ServiceLifecycle {
     return execute({
       document,
       variableValues: query.variables,
-      contextValue: createContext({ documents: this.#documents, viewerID: query.viewerID }),
+      contextValue: createContext({
+        documents: this.#documents,
+        viewerID: query.viewerID,
+        commit: query.commit,
+      }),
       schema,
     })
   }

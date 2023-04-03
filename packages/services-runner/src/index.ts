@@ -49,7 +49,7 @@ export class ServicesRunner {
     const services = {
       ceramic: new CeramicService({
         config: ceramic ?? { pubsubTopic: '/test/local' },
-        logger: logger.getSubLogger({ name: 'ceramic-service' }),
+        logger: logger.getSubLogger({ name: 'ceramic' }),
       }),
       composite: new CompositeService({
         bus,
@@ -57,11 +57,11 @@ export class ServicesRunner {
           ceramic: createClient(bus, 'composite', 'ceramic'),
           database: createClient(bus, 'composite', 'database'),
         },
-        logger: logger.getSubLogger({ name: 'composite-service' }),
+        logger: logger.getSubLogger({ name: 'composite' }),
       }),
       database: new DatabaseService({
         dataSource,
-        logger: logger.getSubLogger({ name: 'database-service' }),
+        logger: logger.getSubLogger({ name: 'database' }),
       }),
     }
 

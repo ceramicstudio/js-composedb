@@ -596,7 +596,7 @@ class SchemaBuilder {
   _buildNodeMutations(
     queryFields: GraphQLFieldConfigMap<unknown, Context>,
     name: string,
-    _model: GraphModel
+    model: GraphModel
   ) {
     this.#mutations[`create${name}`] = mutationWithClientMutationId({
       name: `Create${name}`,
@@ -607,16 +607,15 @@ class SchemaBuilder {
         ...queryFields,
         document: { type: new GraphQLNonNull(this.#types[name]) },
       }),
-      mutateAndGetPayload: async (_input: { content: Record<string, unknown> }, _ctx: Context) => {
-        // if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
-        //   throw new Error('Ceramic instance is not authenticated')
-        // }
-        // const document =
-        //   model.accountRelation.type === 'single'
-        //     ? await ctx.createSingle(model.id, input.content)
-        //     : await ctx.createDoc(model.id, input.content)
-        // return { document }
-        throw new Error('Not implemented')
+      mutateAndGetPayload: async (_input: { content: Record<string, unknown> }, ctx: Context) => {
+        if (ctx.commit == null) {
+          throw new Error('Missing mutation commit')
+        }
+        const document =
+          model.accountRelation.type === 'single'
+            ? await ctx.documents.singleFromCommit(ctx.commit)
+            : await ctx.documents.create(ctx.commit)
+        return { document }
       },
     })
 
@@ -632,10 +631,14 @@ class SchemaBuilder {
         document: { type: new GraphQLNonNull(this.#types[name]) },
       }),
       mutateAndGetPayload: async (
-        _input: { id: string; content: Record<string, unknown>; options?: UpdateDocOptions },
-        _ctx: Context
+        input: { id: string; content: Record<string, unknown>; options?: UpdateDocOptions },
+        ctx: Context
       ) => {
-        throw new Error('Not implemented')
+        if (ctx.commit == null) {
+          throw new Error('Missing mutation commit')
+        }
+        const document = await ctx.documents.update(input.id, ctx.commit)
+        return { document }
       },
     })
   }

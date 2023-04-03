@@ -1,3 +1,4 @@
+import type { SignedCommitContainer } from '@composedb/ceramic-codecs'
 import type { Document } from '@composedb/document-codecs'
 import DataLoader from 'dataloader'
 
@@ -16,14 +17,16 @@ export function createLoader(documents: DocumentsManager): DataLoader<string, Do
   })
 }
 
-export type Context = { documents: DocumentsManager; loader: Loader; viewerID?: string }
-
-export type ContextParams = {
+export type PartialContext = {
   documents: DocumentsManager
   viewerID?: string
+  commit?: SignedCommitContainer
 }
 
-export function createContext(params: ContextParams): Context {
-  const { documents, viewerID } = params
-  return { documents, loader: createLoader(documents), viewerID }
+export type Context = PartialContext & {
+  loader: Loader
+}
+
+export function createContext(partial: PartialContext): Context {
+  return { ...partial, loader: createLoader(partial.documents) }
 }

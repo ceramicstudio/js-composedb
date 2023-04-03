@@ -48,10 +48,15 @@
     "@didtools/pkh-ethereum": "^0.3.0",
     "@didtools/pkh-solana": "^0.1.0",
     "@didtools/pkh-tezos": "^0.2.1",
+    "@ipld/dag-cbor": "^9.0.0",
     "@trpc/client": "^10.16.0",
     "@trpc/server": "^10.16.0",
+    "ajv": "^8.12.0",
+    "ajv-formats": "^2.1.1",
     "change-case": "^4.1.2",
     "dataloader": "^2.2.2",
+    "dids": "^4.0.0",
+    "fast-json-patch": "^3.1.1",
     "fp-ts": "^2.13.1",
     "graphql": "^16.5.0",
     "graphql-relay": "^0.10.0",
@@ -59,14 +64,14 @@
     "json-ptr": "^3.1.1",
     "key-did-resolver": "^3.0.0",
     "lodash-es": "^4.17.21",
-    "nanoid": "^4.0.1"
+    "nanoid": "^4.0.1",
+    "sizeof": "^1.0.0"
   },
   "devDependencies": {
     "@composedb/ceramic-service": "workspace:*",
     "@composedb/database-service": "workspace:*",
     "@didtools/cacao": "^2.0.0",
     "@types/lodash-es": "^4.17.7",
-    "dids": "^4.0.0",
     "json-schema-typed": "^8.0.1",
     "multiformats": "^11.0.2"
   }

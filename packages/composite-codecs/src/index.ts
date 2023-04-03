@@ -114,17 +114,12 @@ export type CompositeDefinition = io.TypeOf<typeof CompositeDefinitionCodec>
 export const GraphQLQueryCodec = io.intersection(
   [
     io.strict({ composite: io.string, source: io.string }),
-    io.partial({ readonly: io.boolean, variables: io.UnknownRecord, viewerID: didCodec }),
+    io.partial({
+      commit: SignedCommitContainerCodec,
+      variables: io.UnknownRecord,
+      viewerID: didCodec,
+    }),
   ],
   'GraphQLQuery'
 )
 export type GraphQLQuery = io.TypeOf<typeof GraphQLQueryCodec>
-
-export const GraphQLMutationCodec = io.intersection(
-  [
-    io.strict({ commit: SignedCommitContainerCodec, composite: io.string, source: io.string }),
-    io.partial({ variables: io.UnknownRecord, viewerID: didCodec }),
-  ],
-  'GraphQLMutation'
-)
-export type GraphQLMutation = io.TypeOf<typeof GraphQLMutationCodec>

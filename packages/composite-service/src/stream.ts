@@ -1,8 +1,10 @@
 import {
   type CommitData,
+  type CommitHeader,
   type CommitType,
   GenesisCommitDataCodec,
   type LogEntry,
+  type SignedCommitContainer,
   StreamLogCodec,
   createDecoder,
 } from '@composedb/ceramic-codecs'
@@ -10,8 +12,11 @@ import type { Cacao } from '@didtools/cacao'
 import { getEIP191Verifier } from '@didtools/pkh-ethereum'
 import { getSolanaVerifier } from '@didtools/pkh-solana'
 import { getTezosVerifier } from '@didtools/pkh-tezos'
+import * as dagCBOR from '@ipld/dag-cbor'
 import { DID } from 'dids'
 import { getResolver } from 'key-did-resolver'
+import * as Block from 'multiformats/block'
+import { sha256 } from 'multiformats/hashes/sha2'
 
 const DEFAULT_CACAO_REVOCATION_PHASE_OUT = 24 * 60 * 60
 
@@ -97,3 +102,39 @@ export function commitDataToLogEntry(commitData: CommitData, commitType: CommitT
 export const decodeStream = createDecoder(StreamLogCodec)
 
 export const decodeGenesisCommitData = createDecoder(GenesisCommitDataCodec)
+
+type BlockValue = { data: unknown; header: CommitHeader }
+
+export type VerifiedCommit = {
+  controller: string
+  content: unknown
+  model: Uint8Array
+}
+
+export async function verifySignedCommit(
+  commit: SignedCommitContainer,
+  expectedController?: string
+): Promise<VerifiedCommit> {
+  const [block, verified] = await Promise.all([
+    Block.decode({ bytes: commit.linkedBlock, codec: dagCBOR, hasher: sha256 }),
+    verifierDID.verifyJWS(commit.jws),
+  ])
+
+  const value = block.value as BlockValue
+  const controller = value.header.controllers?.[0]
+  if (expectedController != null && controller !== expectedController) {
+    throw new Error('Invalid controller')
+  }
+
+  const signer = verified.kid.split('#')[0]
+  if (signer !== controller) {
+    throw new Error('Invalid signer')
+  }
+
+  const model = value.header.model
+  if (model == null) {
+    throw new Error('Missing model')
+  }
+
+  return { content: value.data, controller, model }
+}

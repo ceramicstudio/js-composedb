@@ -1,8 +1,10 @@
 import { StreamID } from '@ceramicnetwork/streamid'
 import {
+  type GenesisCommit,
   type GenesisCommitData,
   GenesisCommitDataCodec,
   type SignedCommitContainer,
+  SignedCommitContainerCodec,
   type StreamLog,
   createDecoder,
 } from '@composedb/ceramic-codecs'
@@ -12,13 +14,59 @@ import {
   type DocumentQuery,
   type PaginationQuery,
   type PaginationResult,
+  type UniqueDocument,
 } from '@composedb/document-codecs'
+import type { JSONSchema } from '@composedb/json-schema-codecs'
+import type { Model } from '@composedb/model-codecs'
+import { encode as encodeCommit } from '@ipld/dag-cbor'
+import Ajv from 'ajv/dist/2020.js'
+import addFormats from 'ajv-formats'
+import jsonpatch, { type Operation } from 'fast-json-patch'
+
+const ajv = new Ajv({
+  strict: true,
+  allErrors: true,
+  allowMatchingProperties: false,
+  ownProperties: false,
+  unevaluated: false,
+})
+addFormats(ajv)
 
 import type { ModelsManager } from './models.js'
-import { decodeGenesisCommitData, decodeStream, verifyCommitSignature } from './stream.js'
+import {
+  decodeGenesisCommitData,
+  decodeStream,
+  verifyCommitSignature,
+  verifySignedCommit,
+} from './stream.js'
 import type { ServiceClients } from './types.js'
 
 const decodeDocument = createDecoder(DocumentCodec)
+
+export function validateDocumentSchema<T extends Record<string, unknown> = Record<string, unknown>>(
+  content: unknown,
+  schema: JSONSchema.Object
+): asserts content is T {
+  const validate = ajv.compile(schema)
+  validate(content)
+  ajv.removeSchema(schema)
+  if (validate.errors?.length) {
+    throw new Error('Document failed model schema validation')
+  }
+}
+
+export function createSingleGenesis(model: StreamID, controller: string): GenesisCommit {
+  const commit = {
+    header: {
+      controllers: [controller],
+      model: model.bytes,
+      sep: 'model', // See CIP-120 for more details on this field
+    },
+  }
+  // Ensure commit can be encoded to DAG-CBOR
+  encodeCommit(commit)
+  return commit
+}
 
 export async function documentFromGenesis(commitData: GenesisCommitData): Promise<Document> {
   if (!GenesisCommitDataCodec.is(commitData)) {
@@ -45,21 +93,47 @@ export async function documentFromGenesis(commitData: GenesisCommitData): Promis
   })
 
   return decodeDocument({
-    content: commitData.commit.data,
     id,
-    metadata: { controller, model: modelBytes },
+    tip: commitData.cid.toString(),
+    model: StreamID.fromBytes(modelBytes).toString(),
+    controller,
+    content: commitData.commit.data,
   })
 }
 
 export async function documentFromStream(stream: StreamLog): Promise<Document> {
-  const commitData = decodeGenesisCommitData(stream.log[0])
-  // TODO: also apply updates
-  return await documentFromGenesis(commitData)
+  const [genesis, ...commits] = stream.log
+  const doc = await documentFromGenesis(decodeGenesisCommitData(genesis))
+
+  for (const commit of commits) {
+    // TODO: handle anchor commits
+    if (SignedCommitContainerCodec.is(commit)) {
+      const verified = await verifySignedCommit(commit, doc.controller)
+      // applyPatch() mutates doc.content
+      jsonpatch.applyPatch(doc.content, verified.content as Array<Operation>)
+    }
+  }
+
+  return doc
+}
+
+export type SingleFromMedadata = {
+  model: StreamID | string
+  controller: string
 }
 
 export type DocumentsManagerParams = {
   clients: ServiceClients
   models: ModelsManager
+}
+
+export type ApplyUpdateParams = {
+  commit: SignedCommitContainer
+  content: unknown
+  doc: Document
+  model: Model
+  patch?: Array<Operation>
+  unique?: string
 }
 
 export class DocumentsManager {
@@ -71,16 +145,41 @@ export class DocumentsManager {
     this.#models = params.models
   }
 
+  async _applyUpdate(params: ApplyUpdateParams): Promise<Document> {
+    const { commit, content, doc, model, patch, unique } = params
+
+    if (patch != null) {
+      // applyPatch() mutates content
+      jsonpatch.applyPatch(content, patch)
+    }
+
+    validateDocumentSchema(content, model.content.schema)
+    const tip = await this.#clients.ceramic.storeCommit.mutate({ commit })
+
+    const document = { ...doc, content, tip } as UniqueDocument
+    if (unique != null) {
+      document.unique = unique
+    }
+    // TODO: also provide indexed fields information
+    await this.#clients.database.saveDocument.mutate({ document })
+
+    return document
+  }
+
+  async _getModel(id: string): Promise<Model> {
+    const model = await this.#models.loadFromDatabase(id)
+    if (model == null) {
+      throw new Error(`Model ${id} is not stored on the node`)
+    }
+    return model
+  }
+
   async create(commit: SignedCommitContainer): Promise<Document> {
     const stream = await this.#clients.ceramic.createStream.mutate({ commit })
     const doc = await documentFromStream(decodeStream(stream))
+    const model = await this._getModel(doc.model)
 
-    const model = await this.#models.loadFromDatabase(doc.model)
-    if (model == null) {
-      throw new Error(`Model ${doc.model} is not stored on the node`)
-    }
-
-    // TODO: validate JSON schema
+    validateDocumentSchema(doc.content, model.content.schema)
 
     let unique: string
     switch (model.content.accountRelation.type) {
@@ -99,8 +198,75 @@ export class DocumentsManager {
         )
     }
 
+    // TODO: also provide indexed fields information
     await this.#clients.database.saveDocument.mutate({ document: { ...doc, unique } })
     return doc
+  }
+
+  async singleFromCommit(commit: SignedCommitContainer): Promise<Document> {
+    const verified = await verifySignedCommit(commit)
+    const genesisCommit = createSingleGenesis(
+      StreamID.fromBytes(verified.model),
+      verified.controller
+    )
+    const stream = await this.#clients.ceramic.createStream.mutate({ commit: genesisCommit })
+    const doc = await documentFromStream(decodeStream(stream))
+
+    // TODO: load doc with model
+    const existing = await this.loadFromDatabase(doc.id)
+    const model = await this._getModel(doc.model)
+
+    if (existing != null && existing.controller !== verified.controller) {
+      throw new Error('Invalid controller')
+    }
+
+    return await this._applyUpdate({
+      commit,
+      content: existing ? existing.content : {},
+      doc,
+      model,
+      patch: verified.content as Array<Operation>,
+      unique: '',
+    })
+  }
+
+  async singleFromMetadata(metadata: SingleFromMedadata): Promise<Document> {
+    const modelID =
+      typeof metadata.model === 'string' ? StreamID.fromString(metadata.model) : metadata.model
+    const genesisCommit = createSingleGenesis(modelID, metadata.controller)
+    const stream = await this.#clients.ceramic.createStream.mutate({ commit: genesisCommit })
+    const doc = await documentFromStream(decodeStream(stream))
+
+    const existing = await this.loadFromDatabase(doc.id)
+    if (existing != null) {
+      return existing
+    }
+
+    await this.#clients.database.saveDocument.mutate({ document: { ...doc, unique: '' } })
+    return doc
+  }
+
+  async update(id: string, commit: SignedCommitContainer): Promise<Document> {
+    // TODO: load doc with model in one call
+    const doc = await this.loadFromDatabase(id)
+    if (doc == null) {
+      throw new Error(`Document ${id} not found`)
+    }
+
+    const model = await this._getModel(doc.model)
+
+    const verified = await verifySignedCommit(commit, doc.controller)
+    return await this._applyUpdate({
+      commit,
+      content: doc.content,
+      doc,
+      model,
+      patch: verified.content as Array<Operation>,
+    })
+  }
+
+  async loadFromDatabase(id: string): Promise<Document | null> {
+    return await this.#clients.database.getDocument.query({ id })
   }
 
   async load(ids: ReadonlyArray<string>): Promise<Array<Document>> {
