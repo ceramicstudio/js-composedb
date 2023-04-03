@@ -65,6 +65,8 @@
     "key-did-resolver": "^3.0.0",
     "lodash-es": "^4.17.21",
     "nanoid": "^4.0.1",
+    "rxjs": "^7.8.0",
+    "rxjs-for-await": "^1.0.0",
     "sizeof": "^1.0.0"
   },
   "devDependencies": {

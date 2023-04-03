@@ -4,6 +4,7 @@ import type { Router as CompositeRouter } from '@composedb/composite-service'
 import { type ServiceClient, ioDecode } from '@composedb/services-rpc'
 import { initTRPC } from '@trpc/server'
 import * as io from 'io-ts'
+import { Subject } from 'rxjs'
 import type {} from 'multiformats/cid'
 
 export type Context = {
@@ -40,6 +41,23 @@ export const router = t.router({
   graphql: t.procedure
     .input(ioDecode(GraphQLQueryCodec))
     .query((req) => req.ctx.composite.graphql.query(req.input)),
+
+  graphqlSubscription: t.procedure.input(ioDecode(GraphQLQueryCodec)).subscription((req) => {
+    const subject = new Subject()
+    // TODO: handle stopping subscription
+    req.ctx.composite.graphqlSubscription.subscribe(req.input, {
+      onComplete() {
+        subject.complete()
+      },
+      onData(value) {
+        subject.next(value)
+      },
+      onError(err) {
+        subject.error(err)
+      },
+    })
+    return subject.asObservable()
+  }),
 })
 
 export type Router = typeof router

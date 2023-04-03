@@ -1,4 +1,5 @@
 import {
+  type Document as EncodedDocument,
   DocumentCodec,
   DocumentQueryCodec,
   PaginationQueryCodec,
@@ -10,9 +11,12 @@ import { META_MODEL_BYTES, ModelCodec } from '@composedb/model-codecs'
 import { ioDecode, ioEncode } from '@composedb/services-rpc'
 import { initTRPC } from '@trpc/server'
 import * as io from 'io-ts'
+import { map } from 'rxjs'
 // Workaround for TS2742 error - https://github.com/microsoft/TypeScript/issues/47663#issuecomment-1270716220
 import type {} from 'json-schema-typed/draft-2020-12.js'
 
+import type { Document as DocumentEntity } from './entities/document.js'
+import { documentInserted$ } from './events.js'
 import type { Service } from './service.js'
 
 export const StoredCompositeCodec = io.intersection(
@@ -34,6 +38,16 @@ export type Context = {
 }
 
 const t = initTRPC.context<Context>().create()
+
+function docEntityToCodec(entity: DocumentEntity): EncodedDocument {
+  return {
+    id: entity.id,
+    tip: entity.tip,
+    model: entity.modelId,
+    controller: entity.controller,
+    content: entity.content,
+  }
+}
 
 export const router = t.router({
   getComposite: t.procedure
@@ -72,15 +86,7 @@ export const router = t.router({
     .output(ioEncode(io.union([DocumentCodec, io.null], 'database.getDocumentOutput')))
     .query(async (req) => {
       const entity = await req.ctx.service.findDocument(req.input.id)
-      return entity
-        ? {
-            id: entity.id,
-            tip: entity.tip,
-            model: entity.modelId,
-            controller: entity.controller,
-            content: entity.content,
-          }
-        : null
+      return entity ? docEntityToCodec(entity) : null
     }),
 
   getDocuments: t.procedure
@@ -88,15 +94,7 @@ export const router = t.router({
     .output(ioEncode(io.array(DocumentCodec, 'database.getDocumentsOutput')))
     .query(async (req) => {
       const results = await req.ctx.service.findDocuments(req.input.ids)
-      return results.map((entity) => {
-        return {
-          id: entity.id,
-          tip: entity.tip,
-          model: entity.modelId,
-          controller: entity.controller,
-          content: entity.content,
-        }
-      })
+      return results.map(docEntityToCodec)
     }),
 
   pageDocuments: t.procedure
@@ -105,18 +103,7 @@ export const router = t.router({
     .query(async (req) => {
       const { edges, pageInfo } = await req.ctx.service.queryDocuments(req.input)
       return {
-        edges: edges.map((e) => {
-          return {
-            cursor: e.cursor,
-            node: {
-              id: e.node.id,
-              tip: e.node.tip,
-              model: e.node.modelId,
-              controller: e.node.controller,
-              content: e.node.content,
-            },
-          }
-        }),
+        edges: edges.map((e) => ({ cursor: e.cursor, node: docEntityToCodec(e.node) })),
         pageInfo,
       }
     }),
@@ -127,6 +114,10 @@ export const router = t.router({
       const { model, ...doc } = req.input.document
       await req.ctx.service.saveDocument({ ...doc, modelId: model })
     }),
+
+  documentInserted: t.procedure.subscription(() => {
+    return documentInserted$.pipe(map(docEntityToCodec))
+  }),
 
   getModel: t.procedure
     .input(ioDecode(io.strict({ id: io.string }, 'database.getModelInput')))

@@ -58,7 +58,8 @@
     "graphql-yoga": "^3.7.3",
     "io-ts": "^2.2.20",
     "key-did-provider-ed25519": "^3.0.0",
-    "key-did-resolver": "^3.0.0"
+    "key-did-resolver": "^3.0.0",
+    "rxjs": "^7.8.0"
   },
   "devDependencies": {
     "@ceramicnetwork/common": "^2.23.0",

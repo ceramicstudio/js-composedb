@@ -138,8 +138,24 @@ const postsQuery = await caller.graphql({
       }
     }
   `,
-  variables: {
-    input: { content: { foo: 'hello' } },
-  },
 })
 logObject('query result', postsQuery)
+
+const postCreated$ = await caller.graphqlSubscription({
+  composite: postComposite.id,
+  source: `
+    subscription {
+      postCreated {
+        id
+        title
+      }
+    }
+  `,
+})
+
+postCreated$.subscribe((post) => {
+  logObject('new post created', post)
+})
+
+await createPost({ title: 'Another post!' })
+await createPost({ title: 'OK last one...' })

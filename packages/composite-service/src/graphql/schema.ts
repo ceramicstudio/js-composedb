@@ -95,17 +95,20 @@ const UpdateOptionsInput = new GraphQLInputObjectType({
 export type CreateSchemaParams = {
   definition: GraphDefinition
   readonly?: boolean
+  subscriptions?: boolean
 }
 
 class SchemaBuilder {
   // Source composite
   #def: GraphDefinition
   // Schema options
+  #enableSubscriptions: boolean = true
   #isReadonly: boolean
   // Internal records
   #types: Record<string, GraphQLEnumType | GraphQLObjectType> = {}
   #inputObjects: Record<string, GraphQLInputObjectType> = {}
   #mutations: Record<string, GraphQLFieldConfig<any, Context>> = {}
+  #subscriptions: Record<string, GraphQLFieldConfig<any, Context>> = {}
   // Internal mapping of model IDs to object names
   #modelAliases: Record<string, string>
 
@@ -270,6 +273,10 @@ class SchemaBuilder {
     if (!this.#isReadonly) {
       this._buildInputObjectType(name, fields)
       this._buildNodeMutations(definitions.queryFields, name, model)
+    }
+
+    if (this.#enableSubscriptions) {
+      this._buildNodeSubscriptions(name)
     }
   }
 
@@ -643,6 +650,14 @@ class SchemaBuilder {
     })
   }
 
+  _buildNodeSubscriptions(name: string) {
+    this.#subscriptions[`${name.toLowerCase()}Created`] = {
+      type: new GraphQLNonNull(this.#types[name]),
+      resolve: (doc) => doc,
+      subscribe: (_src, _args, ctx: Context) => ctx.documents.insertedIterable(),
+    }
+  }
+
   _createSchema(definitions: SharedDefinitions) {
     const queryFields = { ...definitions.queryFields }
 
@@ -663,6 +678,12 @@ class SchemaBuilder {
     }
     if (!this.#isReadonly && Object.keys(this.#mutations).length !== 0) {
       schemaFields.mutation = new GraphQLObjectType({ name: 'Mutation', fields: this.#mutations })
+    }
+    if (this.#enableSubscriptions && Object.keys(this.#subscriptions).length !== 0) {
+      schemaFields.subscription = new GraphQLObjectType({
+        name: 'Subscription',
+        fields: this.#subscriptions,
+      })
     }
 
     return new GraphQLSchema(schemaFields)

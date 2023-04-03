@@ -14,6 +14,7 @@ import {
   type GraphQLSchema,
   execute,
   parse,
+  subscribe,
   validate,
 } from 'graphql'
 import * as io from 'io-ts'
@@ -120,6 +121,43 @@ export class Service implements ServiceLifecycle {
     }
 
     return execute({
+      document,
+      variableValues: query.variables,
+      contextValue: createContext({
+        documents: this.#documents,
+        viewerID: query.viewerID,
+        commit: query.commit,
+      }),
+      schema,
+    })
+  }
+
+  async subscribeGraphQL(
+    query: GraphQLQuery
+  ): Promise<
+    | ExecutionResult<Record<string, unknown>>
+    | AsyncGenerator<ExecutionResult<Record<string, unknown>>>
+  > {
+    let document: DocumentNode
+    try {
+      document = parse(query.source)
+    } catch (syntaxError) {
+      return { errors: [syntaxError as GraphQLError] }
+    }
+
+    let schema: GraphQLSchema
+    try {
+      schema = await this.getGraphQLSchema(query.composite)
+    } catch (schemaError) {
+      return { errors: [schemaError as GraphQLError] }
+    }
+
+    const errors = validate(schema, document)
+    if (errors.length > 0) {
+      return { errors }
+    }
+
+    return subscribe({
       document,
       variableValues: query.variables,
       contextValue: createContext({

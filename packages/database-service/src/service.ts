@@ -5,6 +5,7 @@ import { DataSource, type DataSourceOptions, In, type SelectQueryBuilder } from 
 import { Composite } from './entities/composite.js'
 import { Document, IndexedStringField } from './entities/document.js'
 import { Model } from './entities/model.js'
+import { DocumentSubscriber } from './subscribers/documents.js'
 import { createQueryHash, decodeCursor, encodeCursor } from './pagination.js'
 
 const PAGE_DEFAULT_SIZE = 20
@@ -21,7 +22,7 @@ export async function initializeDataSource(options: DataSourceOptions): Promise<
     logging: false,
     ...options,
     entities: [Composite, Document, IndexedStringField, Model],
-    subscribers: [],
+    subscribers: [DocumentSubscriber],
     migrations: [],
   })
   return await dataSource.initialize()

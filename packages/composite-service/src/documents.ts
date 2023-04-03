@@ -22,6 +22,8 @@ import { encode as encodeCommit } from '@ipld/dag-cbor'
 import Ajv from 'ajv/dist/2020.js'
 import addFormats from 'ajv-formats'
 import jsonpatch, { type Operation } from 'fast-json-patch'
+import { Subject } from 'rxjs'
+import { latestValueFrom } from 'rxjs-for-await'
 
 const ajv = new Ajv({
   strict: true,
@@ -284,5 +286,22 @@ export class DocumentsManager {
 
   async count(query: DocumentQuery): Promise<number> {
     return await this.#clients.database.countDocuments.query(query)
+  }
+
+  insertedIterable(): AsyncIterable<Document> {
+    const subject = new Subject<Document>()
+    // TODO: handle stopping subscription
+    this.#clients.database.documentInserted.subscribe(undefined, {
+      onComplete() {
+        subject.complete()
+      },
+      onData(document) {
+        subject.next(document)
+      },
+      onError(err) {
+        subject.error(err)
+      },
+    })
+    return latestValueFrom(subject)
   }
 }
