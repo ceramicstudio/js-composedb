@@ -18,7 +18,7 @@ To run a Ceramic node in production, it is critical to persist the [Ceramic stat
 
 - Linux
 - Mac
-- Windows 
+- Windows
 
 :::note
 
@@ -32,6 +32,155 @@ You’ll need sufficient compute to power Ceramic, IPFS, and Postgres. At a mini
 
 - 4 vCPUs
 - 8GB RAM
+
+## Kubernetes on the Cloud
+
+You can run ComposeDB Server on Kubernetes on the cloud, such as [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine) or [Amazon Elastic Kubernetes Service](https://aws.amazon.com/eks/).
+You can also run ComposeDB Server on [DigitalOcean Kubernetes](https://www.digitalocean.com/products/kubernetes/).
+
+Running Kubernetes on the Cloud means a provider will manage the underlying infrastructure for you. You can also run Kubernetes on your own infrastructure, but that is outside the scope of this guide.
+
+### Kubernetes on DigitalOcean
+
+Digital Ocean Kubernetes deployment will require 2 tools, `[kubectl](https://kubernetes.io/docs/tasks/tools)` and `[doctl](https://docs.digitalocean.com/reference/doctl/how-to/install/)`.
+
+With the tools installed, you can proceed to Step 1, `Creating a Kubernetes Cluster`.
+
+#### Creating a Kubernetes Cluster
+Log into the [DigitalOcean console](https://cloud.digitalocean.com/login) and click `Create` > `Kubernetes`.
+
+Scroll down to `Choose cluster capacity`. Save yourself some money and choose the smallest cluster size. You can always scale up later. A single node is sufficent for testing this example.
+
+Scroll down to the botton and click `Create Cluster`.
+
+This will take you to a `Getting Started with Kubernetes` page and Digital Ocean will start provisioing your nodes. The process may take up to 10 minutes.
+
+#### `Connecting to Kubernetes`.
+
+We'll use the `doctl` command to authenticate to Digital Ocean and retrieve the credentials for our cluster.
+
+The `Connecting to Kubernetes` step will provide the command to setup cluster authentication.
+
+It will look something like this:
+
+```bash
+doctl kubernetes cluster kubeconfig save 362dda8b-b555-4c47-9bf0-1a81cf58e0a8
+```
+
+Copy and paste the command into your terminal and press enter.
+
+Click `Continue` to proceed to the next step.
+
+#### Verify cluster connectivity
+
+Digital Ocean provides some command to view the cluster and ensure you're connected successfully.
+
+None of this is required, but it's a good way to verify your cluster is up and running.
+
+#### Deploy ComposeDB Server
+
+Clone the [ceramic-infra-scripts repo](https://github.com/3box/ceramic-infra-scripts.git) and enter the created directory.
+
+```
+git clone https://github.com/3box/ceramic-infra-scripts.git
+cd ceramic-infra-scripts
+```
+
+Deploy the stack!
+```
+# Create a namespace for the deployment
+kubectl create namespace ceramic
+
+# Create the necessary secrets
+./k8s/base/composedb/create-secrets.sh
+
+# Apply the deployment
+kubectl apply -k k8s/base/composedb/
+```
+
+It will take a few minutes for the deployment to pull the docker images and start the containers.
+
+You can watch the process with the following command:
+
+```bash
+kubectl get pods --watch --namespace ceramic
+```
+
+Use `^c` to exit the watch.
+
+Your deployment should look something like this:
+
+```bash
+NAME          READY   STATUS    RESTARTS   AGE
+composedb-0   0/1     Running   0          77s
+ipfs-0        1/1     Running   0          77s
+postgres-0    1/1     Running   0          77s
+```
+
+:tada:
+
+#### Check the Deployment logs
+
+You can tail the logs of any of the containers.
+
+For example, watch the ceramic node logs with the following command:
+
+```bash
+kubectl logs --follow --namespace ceramic composedb-0
+```
+
+#### Access the ComposeDB api
+
+To access the ceramic node, use local port forwarding to access the node from your local machine.
+
+This is a block operation, so you'll need to open a new terminal window to run the next command.
+
+The port forward will stop when the command is exited.
+
+```bash
+kubectl port-forward --namespace ceramic composedb-0 7007:7007
+Forwarding from 127.0.0.1:7007 -> 7007
+Forwarding from [::1]:7007 -> 7007
+```
+
+```
+# In a new terminal window
+$ curl http://127.0.0.1:7007/api/v0/node/healthcheck
+Alive!
+```
+
+#### Expose the node endpoint to the internet
+
+This simple example will expose the ceramic node to the internet using a Digital Ocean Load Balancer.
+
+```bash
+kubectl apply -f k8s/base/composedb/do-lb.yaml
+```
+
+You can get the IP address of the load balancer with the following command:
+
+```bash
+kubectl get svc --namespace ceramic composedb-lb
+NAME           TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)          AGE
+composedb-lb   LoadBalancer   10.245.10.130   174.138.109.159   7007:31284/TCP   4m4s
+```
+
+Test it out!
+```
+$ curl http://174.138.109.159:7007/api/v0/node/healthcheck
+Alive!
+```
+
+#### Where is my data stored?
+
+#### What is my admin DID?
+
+#### How do I connect to the Postgres database?
+
+#### How do I connect to the IPFS node?
+
+#### How shut it all down?
+
 
 ## Docker Hub
 You can find the ComposeDB server and IPFS Docker images on [Docker Hub](https://hub.docker.com/u/ceramicnetwork).
@@ -97,7 +246,7 @@ To have these IPFS and Postgres settings persist in your Ceramic node, edit the 
         "mode": "remote",
         "host": "http://ipfs_ip_address:5001"
     },
-... 
+...
 ```
 
 ```bash
