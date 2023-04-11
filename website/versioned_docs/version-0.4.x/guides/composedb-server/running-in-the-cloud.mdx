@@ -157,7 +157,7 @@ This simple example will expose the ceramic node to the internet using a Digital
 kubectl apply -f k8s/base/composedb/do-lb.yaml
 ```
 
-You can get the IP address of the load balancer with the following command:
+You can get the EXTERNAL IP address of the load balancer with the following command:
 
 ```bash
 kubectl get svc --namespace ceramic composedb-lb
