@@ -41,7 +41,7 @@ exports[`scalars support extra scalars 1`] = `
           },
           "GraphQLDID": {
             "maxLength": 100,
-            "pattern": "^did:[a-zA-Z0-9.!#$%&'*+\\/=?^_\`{|}~-]+:[a-zA-Z0-9.!#$%&'*+\\/=?^_\`{|}~-]+$",
+            "pattern": "^did:[a-zA-Z0-9.!#$%&'*+\\/=?^_\`{|}~-]+:[a-zA-Z0-9.!#$%&'*+\\/=?^_\`{|}~-]*:?[a-zA-Z0-9.!#$%&'*+\\/=?^_\`{|}~-]*:?[a-zA-Z0-9.!#$%&'*+\\/=?^_\`{|}~-]*$",
             "title": "GraphQLDID",
             "type": "string",
           },
