@@ -4,5 +4,5 @@ import fs from "fs-extra";
 
 export default async function globalTeardown() {
   await fs.rm(TEMP_DIR_PATH, { force: true, recursive: true })
-  await teardown()
+  await teardown(globalThis.servers)
 }

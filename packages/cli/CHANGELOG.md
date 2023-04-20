@@ -1,5 +1,16 @@
 # @composedb/cli
 
+## 0.4.4
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+  - @composedb/devtools-node@0.4.4
+  - @composedb/devtools@0.4.4
+  - @composedb/runtime@0.4.2
+  - @composedb/client@0.4.4
+
 ## 0.4.3
 
 ### Patch Changes
