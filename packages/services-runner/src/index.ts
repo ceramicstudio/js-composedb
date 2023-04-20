@@ -42,7 +42,8 @@ export class ServicesRunner {
   #services: Record<ServiceID, ServiceLifecycle>
 
   constructor(params: ServicesRunnerParams) {
-    const { ceramic, dataSource, logger } = params
+    const { ceramic, dataSource } = params
+    const logger = params.logger.getSubLogger({ name: 'services' })
 
     const bus = new ServicesBus()
 

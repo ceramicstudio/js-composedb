@@ -839,6 +839,9 @@ importers:
       '@composedb/services-runner':
         specifier: workspace:*
         version: link:../services-runner
+      '@stablelib/random':
+        specifier: ^1.0.2
+        version: 1.0.2
       '@trpc/client':
         specifier: ^10.16.0
         version: 10.17.0(@trpc/server@10.17.0)

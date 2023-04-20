@@ -16,7 +16,10 @@ export type PaginationResult = {
   pageInfo: PageInfo
 }
 
-export async function initializeDataSource(options: DataSourceOptions): Promise<DataSource> {
+export async function initializeDataSource(
+  options: DataSourceOptions,
+  logger: Logger
+): Promise<DataSource> {
   const dataSource = new DataSource({
     synchronize: true,
     logging: false,
@@ -25,7 +28,9 @@ export async function initializeDataSource(options: DataSourceOptions): Promise<
     subscribers: [DocumentSubscriber],
     migrations: [],
   })
-  return await dataSource.initialize()
+  await dataSource.initialize()
+  logger.debug('Data source initialized', options)
+  return dataSource
 }
 
 export type ServiceParams = {
@@ -38,7 +43,7 @@ export class Service implements ServiceLifecycle {
   #logger: Logger
 
   constructor(params: ServiceParams) {
-    this.#dataSourcePromise = initializeDataSource(params.dataSource)
+    this.#dataSourcePromise = initializeDataSource(params.dataSource, params.logger)
     this.#logger = params.logger
   }
 
@@ -78,7 +83,7 @@ export class Service implements ServiceLifecycle {
     } else {
       builder = builder.where('doc.modelId = :model', { model: query.models[0] })
     }
-    //Account filter
+    // Account filter
     if (query.account != null) {
       builder = builder.andWhere({ controller: query.account })
     }

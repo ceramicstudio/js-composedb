@@ -65,7 +65,7 @@ export class StreamsHandler {
   constructor(params: StreamsHandlerParams) {
     this.#dagNodesPromises = new QuickLRU({ maxSize: DAG_NODES_CACHE_MAX_SIZE })
     this.#ipfsPromise = params.ipfsPromise
-    this.#logger = params.logger
+    this.#logger = params.logger.getSubLogger({ name: 'streams' })
     this.#pubsubPromise = params.pubsubPromise
     this.#streamsPromises = new QuickLRU({ maxSize: STREAMS_CACHE_MAX_SIZE })
     this.#streamTipsPromises = new QuickLRU({ maxSize: STREAM_TIPS_CACHE_MAX_SIZE })
@@ -213,12 +213,14 @@ export class StreamsHandler {
 
   async storeCommit(commit: unknown, streamID?: string): Promise<CID> {
     try {
+      let cid: CID
       if (SignedCommitContainerCodec.is(commit)) {
-        return await this._storeSignedCommitContainer(commit)
+        cid = await this._storeSignedCommitContainer(commit)
+      } else {
+        cid = await this.#ipfsPromise.then((ipfs) => ipfs.dag.put(commit))
+        await this._restrictCommitSize(cid)
       }
-
-      const cid = await this.#ipfsPromise.then((ipfs) => ipfs.dag.put(commit))
-      await this._restrictCommitSize(cid)
+      this.#logger.debug('Commit stored', { cid: cid.toString() })
       return cid
     } catch (err) {
       this.#logger.error('Error while storing commit to IPFS', {

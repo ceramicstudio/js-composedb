@@ -6,6 +6,7 @@ import type {
   GraphDefinition,
   GraphList,
   GraphModel,
+  GraphObjectField,
   GraphObjectFields,
   GraphReference,
   GraphRelation,
@@ -19,8 +20,9 @@ import {
   type GraphQLEnumValueConfigMap,
   type GraphQLFieldConfig,
   type GraphQLFieldConfigMap,
-  type GraphQLInputFieldConfigMap,
+  GraphQLFloat,
   GraphQLID,
+  type GraphQLInputFieldConfigMap,
   GraphQLInputObjectType,
   GraphQLInt,
   GraphQLInterfaceType,
@@ -28,7 +30,9 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   type GraphQLOutputType,
+  type GraphQLScalarType,
   GraphQLSchema,
+  GraphQLString,
   assertValidSchema,
 } from 'graphql'
 import {
@@ -66,6 +70,11 @@ type BuildDocumentObjectParams = BuildObjectParams & { model: GraphModel }
 type ConnectionAccountArgument = { account?: string }
 type ConnectionArgumentsWithAccount = ConnectionArguments & ConnectionAccountArgument
 
+const NON_SCALAR_FIELD_TYPES = ['meta', 'reference', 'list', 'view']
+function isScalarField(field: GraphObjectField): field is GraphScalar {
+  return !NON_SCALAR_FIELD_TYPES.includes(field.type)
+}
+
 const connectionArgsWithAccount = {
   ...connectionArgs,
   account: {
@@ -89,6 +98,42 @@ const UpdateOptionsInput = new GraphQLInputObjectType({
   },
 })
 
+function createValueFilterInput(type: GraphQLEnumType | GraphQLScalarType): GraphQLInputObjectType {
+  return new GraphQLInputObjectType({
+    name: `${type.name}ValueFilterInput`,
+    fields: {
+      isNull: { type: GraphQLBoolean },
+      equalTo: { type },
+      notEqualTo: { type },
+      in: { type: new GraphQLList(new GraphQLNonNull(type)) },
+      notIn: { type: new GraphQLList(new GraphQLNonNull(type)) },
+      lessThan: { type },
+      lessThanOrEqualTo: { type },
+      greaterThan: { type },
+      greaterThanOrEqualTo: { type },
+    },
+  })
+}
+
+const valueFilterInputs = {
+  BooleanValueFilter: new GraphQLInputObjectType({
+    name: 'BooleanValueFilterInput',
+    fields: {
+      isNull: { type: GraphQLBoolean },
+      equalTo: { type: GraphQLBoolean },
+    },
+  }),
+  FloatValueFilter: createValueFilterInput(GraphQLFloat),
+  IntValueFilter: createValueFilterInput(GraphQLInt),
+  StringValueFilter: createValueFilterInput(GraphQLString),
+} as const
+const valueFilterInputsTypes: Record<string, string> = {
+  boolean: 'BooleanValueFilter',
+  float: 'FloatValueFilter',
+  int: 'IntValueFilter',
+  string: 'StringValueFilter',
+}
+
 /**
  * GraphQL schema creation parameters.
  */
@@ -106,7 +151,7 @@ class SchemaBuilder {
   #isReadonly: boolean
   // Internal records
   #types: Record<string, GraphQLEnumType | GraphQLObjectType> = {}
-  #inputObjects: Record<string, GraphQLInputObjectType> = {}
+  #inputObjects: Record<string, GraphQLInputObjectType> = { ...valueFilterInputs }
   #mutations: Record<string, GraphQLFieldConfig<any, Context>> = {}
   #subscriptions: Record<string, GraphQLFieldConfig<any, Context>> = {}
   // Internal mapping of model IDs to object names
@@ -269,6 +314,9 @@ class SchemaBuilder {
         return config
       },
     })
+
+    // TODO: should only build filters for indexed fields
+    this._buildFilterType(name, fields)
 
     if (!this.#isReadonly) {
       this._buildInputObjectType(name, fields)
@@ -453,7 +501,10 @@ class SchemaBuilder {
       case 'queryConnection':
         return {
           type: new GraphQLNonNull(this.#types[`${modelAlias}Connection`]),
-          args: connectionArgsWithAccount,
+          args: {
+            ...connectionArgsWithAccount,
+            filter: { type: this.#inputObjects[`${modelAlias}Filter`] },
+          },
           resolve: async (
             doc,
             args: ConnectionArgumentsWithAccount,
@@ -600,6 +651,48 @@ class SchemaBuilder {
     }
   }
 
+  _buildFilterType(objectName: string, fields: GraphObjectFields) {
+    const objectInputName = `${objectName}ObjectFilter`
+    const inputName = `${objectName}Filter`
+
+    this.#inputObjects[objectInputName] = new GraphQLInputObjectType({
+      name: `${objectInputName}Input`,
+      fields: () => {
+        const config: GraphQLInputFieldConfigMap = {}
+        for (const [key, field] of Object.entries(fields)) {
+          let type: GraphQLInputObjectType | undefined
+          if (field.type === 'reference') {
+            if (field.refType === 'enum') {
+              const enumType = this.#types[field.refName] as GraphQLEnumType
+              type = createValueFilterInput(enumType)
+              this.#inputObjects[type.name] = type
+            } else if (field.refType === 'node') {
+              type = this.#inputObjects.StringValueFilterInput
+            }
+          } else if (isScalarField(field)) {
+            type =
+              this.#inputObjects[valueFilterInputsTypes[field.type] ?? 'StringValueFilterInput']
+          }
+          if (type != null) {
+            config[key] = { type }
+          }
+        }
+        return config
+      },
+    })
+    const inputObjectType = this.#inputObjects[objectInputName]
+
+    this.#inputObjects[inputName] = new GraphQLInputObjectType({
+      name: `${inputName}Input`,
+      fields: () => ({
+        doc: { type: inputObjectType },
+        and: { type: new GraphQLList(new GraphQLNonNull(this.#inputObjects[inputName])) },
+        or: { type: new GraphQLList(new GraphQLNonNull(this.#inputObjects[inputName])) },
+        not: { type: this.#inputObjects[inputName] },
+      }),
+    })
+  }
+
   _buildNodeMutations(
     queryFields: GraphQLFieldConfigMap<unknown, Context>,
     name: string,
@@ -666,7 +759,7 @@ class SchemaBuilder {
       const rest = alias.slice(1)
       queryFields[`${first}${rest}Index`] = {
         type: this.#types[`${alias}Connection`],
-        args: connectionArgs,
+        args: { ...connectionArgs, filter: { type: this.#inputObjects[`${alias}Filter`] } },
         resolve: async (_, args: ConnectionArguments, ctx): Promise<Connection<any> | null> => {
           return await ctx.documents.queryPage({ ...args, models: [model.id] })
         },

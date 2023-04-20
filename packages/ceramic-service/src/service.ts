@@ -28,6 +28,7 @@ export class Service implements ServiceLifecycle {
     const ipfsPromise = createIPFS(params.config.ipfs)
     const logger = params.logger
     const pubsubPromise = ipfsPromise.then((ipfs) => {
+      logger.debug('IPFS initialized', params.config.ipfs)
       return new PubsubChannel({
         ipfs,
         logger: logger.getSubLogger({ name: 'pubsub' }),
@@ -39,11 +40,7 @@ export class Service implements ServiceLifecycle {
     this.#ipfsPromise = ipfsPromise
     this.#logger = logger
     this.#pubsubPromise = pubsubPromise
-    this.#streamsHandler = new StreamsHandler({
-      ipfsPromise,
-      logger: logger.getSubLogger({ name: 'streams' }),
-      pubsubPromise,
-    })
+    this.#streamsHandler = new StreamsHandler({ ipfsPromise, logger, pubsubPromise })
   }
 
   async stop() {

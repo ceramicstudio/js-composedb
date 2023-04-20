@@ -20,7 +20,7 @@ export const didCodec = new io.Type<string>(
 
 export const DagJWSResultCodec = io.intersection(
   [
-    io.type({
+    io.strict({
       jws: DagJWSCodec,
       linkedBlock: bytesCodec,
     }),

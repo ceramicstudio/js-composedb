@@ -48,6 +48,7 @@
     "@composedb/model-codecs": "workspace:*",
     "@composedb/runtime": "workspace:*",
     "@composedb/services-runner": "workspace:*",
+    "@stablelib/random": "^1.0.2",
     "@trpc/client": "^10.16.0",
     "@trpc/server": "^10.16.0",
     "dids": "^4.0.0",
