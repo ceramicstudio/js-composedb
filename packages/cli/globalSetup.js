@@ -55,7 +55,7 @@ export default async function globalSetup() {
   // Write the config file so that its path can be passed to deamon below
   await fs.writeJson(CONFIG_PATH, TEST_DAEMON_CONFIG)
 
-  await setup({
+  globalThis.servers = await setup({
     command: `IPFS_PATH=\'${GOIPFS_DIR_PATH.pathname}\' pnpm dlx @ceramicnetwork/cli daemon --config ${CONFIG_PATH.pathname}`,
     debug: true,
     launchTimeout: 240000,
