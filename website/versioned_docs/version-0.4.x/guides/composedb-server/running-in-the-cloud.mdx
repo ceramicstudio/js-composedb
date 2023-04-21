@@ -173,13 +173,71 @@ Alive!
 
 #### Where is my data stored?
 
+Each part of the stack (js-ceramic, ipfs, postgres) has its own [Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
+
+You can view the volumes with the following command:
+
+```bash
+kubectl get PersistentVolumeClaim --namespace ceramic
+```
+
+This output includes identifiers for the volume on the cloud provider as well as the size and storage class, which defines the properties of the volume.
+
 #### What is my admin DID?
 
+The example deployment creates a random seed for the admin DID.
+
+The seed is stored in a Kubernetes secret, which you can view with the following command:
+
+The `private-key` value is the base64 encoded seed.
+
+Example:
+```bash
+$ kubectl get secrets  ceramic-admin -o yaml
+apiVersion: v1
+data:
+  private-key: ZjlkZjU3ZjBjODBmZjRiMWU5NGE1NzllMGZhNDgwNGE3M2Y4YmRmOWVlMTY0MjA4YTRiM2JkNmEyZjBkZjM1Nw==
+kind: Secret
+...
+```
+
+
 #### How do I connect to the Postgres database?
+
+You can create a session to the postgres database with the following command:
+
+```bash
+kubectl exec --namespace ceramic -ti postgres-0 -- psql -U ceramic
+```
+
+A `postgres` service is also created and can be exposed locally with port-forwarding.
+
+```bash
+kubectl port-forward --namespace ceramic svc/postgres 5432
+```
+
+The `ceramic` user password randomly generated during deployment.
+It is also available in the `postgres-auth` secret.
+
+```bash
+$ kubectl get secrets postgres-auth -o yaml
+apiVersion: v1
+data:
+  password: NzNjNzQ4ZDkxM2Y5NGQ2MmQwOTRiYzQ2YzIzMmM4YzdlYzFhODA2MA==
+  username: Y2VyYW1pYw==
+kind: Secret
+...
+```
 
 #### How do I connect to the IPFS node?
 
 #### How shut it all down?
+
+To remove the workload from the cluster, you can delete the namespace.
+
+```bash
+kubectl delete namespace ceramic
+```
 
 
 ## Docker Hub
