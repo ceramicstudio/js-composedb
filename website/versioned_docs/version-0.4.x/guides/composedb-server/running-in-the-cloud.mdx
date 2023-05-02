@@ -117,6 +117,8 @@ ipfs-0        1/1     Running   0          77s
 postgres-0    1/1     Running   0          77s
 ```
 
+Hit `^C` on your keyboard to exit this view.
+
 :::note
 
 You can easily access the logs of each of the containers by using the command below and configuring the container name. For example, to access the Ceramic node logs, you can run:
@@ -128,22 +130,27 @@ You can easily access the logs of each of the containers by using the command be
 
 #### Access the ComposeDB API
 
-You can use local port forwarding to access the Ceramic node from your local machine. Open a new terminal and run the command below. The result of this command will be the output
-showing the port forwarding as shown below. The port forward will stop when the command is exited.
+You can use local port forwarding to access the Ceramic node from your local machine. Open a new terminal and run the command below. The port forward will stop when the command is exited 
+so make sure to keep this command running for the rest of this guide.
 
 ```bash
 kubectl port-forward --namespace ceramic composedb-0 7007:7007
+```
+Once you run the command you should see the following output in your terminal:
 
+```bash
 Forwarding from 127.0.0.1:7007 -> 7007
 Forwarding from [::1]:7007 -> 7007
 ```
 
 To check the connection, open a new terminal and run the command below. A successful connection should utter a response `Alive!` as follows:
 
+```bash
+curl http://127.0.0.1:7007/api/v0/node/healthcheck
 ```
-# In a new terminal window
-$ curl http://127.0.0.1:7007/api/v0/node/healthcheck
 
+Expected output:
+```bash
 Alive!
 ```
 
@@ -159,19 +166,25 @@ You can get the EXTERNAL IP address of the load balancer with the following comm
 
 ```bash
 kubectl get svc --namespace ceramic composedb-lb
+```
 
+The result of this command will be an output similar to the one below. Keep in mind that might take a few minutes for the EXTERMAL-IP to be configured and change the status from `<pending>`:
+
+```bash
 NAME           TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)          AGE
 composedb-lb   LoadBalancer   10.245.10.130   174.138.109.159   7007:31284/TCP   4m4s
 ```
 
 This external IP address can now be used for accessing your node. To test it out, copy the external IP address provided above and substitute it in the following health check command:
-```
-$ curl http://174.138.109.159:7007/api/v0/node/healthcheck
 
+```bash
+curl http://174.138.109.159:7007/api/v0/node/healthcheck
+```
+
+Once again, a successful connection will provide an output `Alive!`:
+```bash
 Alive!
 ```
-
-Once again, a successful connection will provide an output `Alive!`.
 
 ## Commonly asked questions
 
@@ -194,7 +207,10 @@ The seed is stored in a Kubernetes secret, which you can view with the following
 
 
 ```bash
-$ kubectl get secrets  ceramic-admin -o yaml
+kubectl --namespace ceramic get secrets ceramic-admin -o yaml
+```
+You should get the following output:
+```bash
 apiVersion: v1
 data:
   private-key: ZjlkZjU3ZjBjODBmZjRiMWU5NGE1NzllMGZhNDgwNGE3M2Y4YmRmOWVlMTY0MjA4YTRiM2JkNmEyZjBkZjM1Nw==
@@ -227,7 +243,12 @@ The `ceramic` user password randomly generated during deployment.
 It is also available in the `postgres-auth` secret:
 
 ```bash
-$ kubectl get secrets postgres-auth -o yaml
+kubectl --namespace ceramic get secrets postgres-auth -o yaml
+```
+
+Here you should get the following output:
+
+```bash
 apiVersion: v1
 data:
   password: NzNjNzQ4ZDkxM2Y5NGQ2MmQwOTRiYzQ2YzIzMmM4YzdlYzFhODA2MA==
