@@ -2,9 +2,9 @@
 
 Packages providing the reference TypeScript implementation of ComposeDB.
 
-## ⚠️ Preview releases
+## ComposeDB Docs
 
-ComposeDB packages and tools are still under early development, breaking changes are to be expected between releases until a stable v1 is released.
+Visit our docsite [here](https://composedb.js.org/) to get started.
 
 ## Installation
 
