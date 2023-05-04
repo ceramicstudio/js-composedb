@@ -56,12 +56,13 @@ DigitalOcean Kubernetes (DOKS) allows developers to deploy Kubernetes clusters u
 Make sure you have these tools installed on your machine before proceeding to the next step of this guide.
 
 ### Creating a Kubernetes Cluster
-First, you will have to create your DigitalOcean Kubernetes cluster. To do that, follow an official DigitalOcean tutorial. The process of setting up your Kubernetes cluster will take about 10 minutes. 
+First, you will have to create your DigitalOcean Kubernetes cluster. To do that, follow an [official DigitalOcean tutorial](https://docs.digitalocean.com/products/kubernetes/how-to/create-clusters/). The process of setting up your Kubernetes cluster will take about 10 minutes. 
 Once it’s up and running, you are good to continue with the next step.
 
 :::note
 
-When it comes to choosing your cluster capacity, we recommend starting with the smallest cluster size and upgrading later. For example, to follow this guide you can start with a 1GB RAM and 1vCPU cluster.
+When it comes to choosing your cluster capacity, we recommend starting with the most cost-effective option - starting with the smallest cluster size and upgrading later. For example, to follow this guide you can start with a 1GB RAM and 1vCPU cluster. Also, keep in mind that 
+Digital Ocean offers free credits for the new users to start building their projects. 
 
 :::
 
@@ -128,7 +129,7 @@ You can easily access the logs of each of the containers by using the command be
 :::
 
 
-#### Access the ComposeDB API
+### Access the ComposeDB API
 
 You can use local port forwarding to access the Ceramic node from your local machine. Open a new terminal and run the command below. The port forward will stop when the command is exited 
 so make sure to keep this command running for the rest of this guide.
