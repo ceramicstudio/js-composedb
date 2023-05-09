@@ -2,14 +2,14 @@
 Run a ComposeDB server in the cloud
 
 ## Things to Know
-- This guide is focused on running in the cloud using Docker and Kubernetes. For local deployment instructions check out [Running Locally](../../guides/composedb-server/running-locally.mdx).
-- ComposeDB Server requires running a Ceramic node (which uses IPFS) for decentralized data, [IPFS](https://ipfs.tech/), and a Postgres DB. Each of these components should be running within a separate Docker container.
+- ComposeDB Server requires running a Ceramic node (which uses IPFS) for decentralized data, [IPFS](https://ipfs.tech/), and a Postgres DB. Each should be within a separate Docker container.
+- This guide is focused on running in the cloud using docker. If you use npm, you can follow the same steps as [Running Locally](../../guides/composedb-server/running-locally.mdx).
 - Docker images for IPFS are built from the [`go-ipfs-daemon`](https://github.com/ceramicnetwork/go-ipfs-daemon) repository and come pre-configured with plugins that make it easy to run IPFS on cloud infrastructure (e.g. the [S3 plugin](https://github.com/ipfs/go-ds-s3)). Images built from the `main` branch are tagged with `latest`, and the git commit hash of the code from which the image was built.
 - Docker images to run ComposeDB Server are built from the [js-ceramic](https://github.com/ceramicnetwork/js-ceramic) repository. Images built from the `main` branch are tagged with `latest`, the git commit hash of the code from which the image was built, and the npm package version of the corresponding [`@ceramicnetwork/cli`](https://www.npmjs.com/package/@ceramicnetwork/cli) release.
 
 :::danger
 
-To run a Ceramic node in production, it is critical to persist the [Ceramic state store](https://developers.ceramic.network/run/nodes/nodes/#ceramic-state-store), [IPFS datastore](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#datastorespec) as well as Posgres database. The form of storage you choose should also be configured for an emergency recovery with data redundancy, and some form of snapshotting and/or backups. **Loss of this data can result in permanent loss of Ceramic streams and will cause your node to be in a corrupt state.**
+To run a Ceramic node in production, it is critical to persist the [Ceramic state store](https://developers.ceramic.network/run/nodes/nodes/#ceramic-state-store) and the [IPFS datastore](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#datastorespec). The form of storage you choose should also be configured for disaster recovery with data redundancy, and some form of snapshotting and/or backups. **Loss of this data can result in permanent loss of Ceramic streams and will cause your node to be in a corrupt state.**
 
 :::
 
@@ -26,72 +26,67 @@ For Windows, Windows Subsystem for Linux 2 (WSL2) is strongly recommended. Using
 
 :::
 
-**Compute requirements**
+**Compute**
 
-You’ll need sufficient compute resources to power Ceramic, IPFS, and Postgres. Below are the recommended requirements:
+You’ll need sufficient compute to power Ceramic, IPFS, and Postgres. At a minimum:
 
 - 4 vCPUs
 - 8GB RAM
 
-:::note
-
-If you are just getting started with a brand new project, you can start with a much smaller instance. For example, to follow this guide, you can start with a 1GB RAM and 1vCPU cluster and scale your instance afterwards.
-
-:::
-
-## Running ComposeDB server on Kubernetes
+## Kubernetes on the Cloud
 
 You can run ComposeDB Server on Kubernetes on the cloud, such as [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine) or [Amazon Elastic Kubernetes Service](https://aws.amazon.com/eks/).
 You can also run ComposeDB Server on [DigitalOcean Kubernetes](https://www.digitalocean.com/products/kubernetes/).
 
 Running Kubernetes on the Cloud means a provider will manage the underlying infrastructure for you. You can also run Kubernetes on your own infrastructure, but that is outside the scope of this guide.
 
-### Running ComposeDB server on DigitalOcean Kubernetes
+### Kubernetes on DigitalOcean
 
-DigitalOcean Kubernetes (DOKS) allows developers to deploy Kubernetes clusters using simple managed service. ComposeDB deployment on DigitalOcean Kubernetes will require 2 tools:
+Digital Ocean Kubernetes deployment will require 2 tools, `[kubectl](https://kubernetes.io/docs/tasks/tools)` and `[doctl](https://docs.digitalocean.com/reference/doctl/how-to/install/)`.
 
--  [kubectl](https://kubernetes.io/docs/tasks/tools) - the Kubernetes command line tool
-- [doctl](https://docs.digitalocean.com/reference/doctl/how-to/install/) - the DigitalOcean command line tool 
+With the tools installed, you can proceed to Step 1, `Creating a Kubernetes Cluster`.
 
-Make sure you have these tools installed on your machine before proceeding to the next step of this guide.
+#### Creating a Kubernetes Cluster
+Log into the [DigitalOcean console](https://cloud.digitalocean.com/login) and click `Create` > `Kubernetes`.
 
-### Creating a Kubernetes Cluster
-First, you will have to create your DigitalOcean Kubernetes cluster. To do that, follow an [official DigitalOcean tutorial](https://docs.digitalocean.com/products/kubernetes/how-to/create-clusters/). The process of setting up your Kubernetes cluster will take about 10 minutes. 
-Once it’s up and running, you are good to continue with the next step.
+Scroll down to `Choose cluster capacity`. Save yourself some money and choose the smallest cluster size. You can always scale up later. A single node is sufficent for testing this example.
 
-:::note
+Scroll down to the botton and click `Create Cluster`.
 
-When it comes to choosing your cluster capacity, we recommend starting with the most cost-effective option - starting with the smallest cluster size and upgrading later. For example, to follow this guide you can start with a 1GB RAM and 1vCPU cluster. Also, keep in mind that 
-Digital Ocean offers free credits for the new users to start building their projects. 
+This will take you to a `Getting Started with Kubernetes` page and Digital Ocean will start provisioing your nodes. The process may take up to 10 minutes.
 
-:::
+#### `Connecting to Kubernetes`.
 
-### Connecting to Kubernetes cluster
+We'll use the `doctl` command to authenticate to Digital Ocean and retrieve the credentials for our cluster.
 
-First, you will have to configure the authentication of your cluster and retrieve the credentials. This can be achieved using the doctl command  below and substituting the authentication number provided 
-to you by Digital Ocean right after your cluster is launched:
+The `Connecting to Kubernetes` step will provide the command to setup cluster authentication.
+
+It will look something like this:
 
 ```bash
 doctl kubernetes cluster kubeconfig save 362dda8b-b555-4c47-9bf0-1a81cf58e0a8
 ```
 
-After authenticating your cluster, it’s a good idea to verify the connectivity. This can be achieved using the following command which should list your cluster name, user and namespace:
+Copy and paste the command into your terminal and press enter.
 
-```bash
-kubectl config get-contexts
+Click `Continue` to proceed to the next step.
+
+#### Verify cluster connectivity
+
+Digital Ocean provides some command to view the cluster and ensure you're connected successfully.
+
+None of this is required, but it's a good way to verify your cluster is up and running.
+
+#### Deploy ComposeDB Server
+
+Clone the [ceramic-infra-scripts repo](https://github.com/3box/ceramic-infra-scripts.git) and enter the created directory.
+
 ```
-
-### Deploy ComposeDB Server
-In this section we will focus on deploying the ComposeDB Server on the DigitalOcean Kubernetes cluster.
-
-1. Clone the [ceramic-infra-scripts repo](https://github.com/ceramicstudio/ceramic-infra-scripts.git) and enter the created directory.
-
-```
-git clone https://github.com/ceramicstudio/ceramic-infra-scripts.git
+git clone https://github.com/3box/ceramic-infra-scripts.git
 cd ceramic-infra-scripts
 ```
 
-2. Run the following commands to deploy the stack:
+Deploy the stack!
 ```
 # Create a namespace for the deployment
 kubectl create namespace ceramic
@@ -103,13 +98,17 @@ kubectl create namespace ceramic
 kubectl apply -k k8s/base/composedb/
 ```
 
-3. It will take a few minutes for the deployment to pull the docker images and start the containers. You can watch the process with the following command:
+It will take a few minutes for the deployment to pull the docker images and start the containers.
+
+You can watch the process with the following command:
 
 ```bash
 kubectl get pods --watch --namespace ceramic
 ```
 
-You will know that your deployment is up and running when all of the processes have a status `Running` as follows:
+Use `^c` to exit the watch.
+
+Your deployment should look something like this:
 
 ```bash
 NAME          READY   STATUS    RESTARTS   AGE
@@ -118,46 +117,41 @@ ipfs-0        1/1     Running   0          77s
 postgres-0    1/1     Running   0          77s
 ```
 
-Hit `^C` on your keyboard to exit this view.
+:tada:
 
-:::note
+#### Check the Deployment logs
 
-You can easily access the logs of each of the containers by using the command below and configuring the container name. For example, to access the Ceramic node logs, you can run:
+You can tail the logs of any of the containers.
 
-`kubectl logs --follow --namespace ceramic composedb-0`
+For example, watch the ceramic node logs with the following command:
 
-:::
+```bash
+kubectl logs --follow --namespace ceramic composedb-0
+```
 
+#### Access the ComposeDB api
 
-### Access the ComposeDB API
+To access the ceramic node, use local port forwarding to access the node from your local machine.
 
-You can use local port forwarding to access the Ceramic node from your local machine. Open a new terminal and run the command below. The port forward will stop when the command is exited 
-so make sure to keep this command running for the rest of this guide.
+This is a block operation, so you'll need to open a new terminal window to run the next command.
+
+The port forward will stop when the command is exited.
 
 ```bash
 kubectl port-forward --namespace ceramic composedb-0 7007:7007
-```
-Once you run the command you should see the following output in your terminal:
-
-```bash
 Forwarding from 127.0.0.1:7007 -> 7007
 Forwarding from [::1]:7007 -> 7007
 ```
 
-To check the connection, open a new terminal and run the command below. A successful connection should utter a response `Alive!` as follows:
-
-```bash
-curl http://127.0.0.1:7007/api/v0/node/healthcheck
 ```
-
-Expected output:
-```bash
+# In a new terminal window
+$ curl http://127.0.0.1:7007/api/v0/node/healthcheck
 Alive!
 ```
 
-### Expose the node endpoint to the internet
+#### Expose the node endpoint to the internet
 
-The last step is to expose your Ceramic node to the internet so that it’s accessible for your application. This can be done using a DigitalOcean Load Balancer: 
+This simple example will expose the ceramic node to the internet using a Digital Ocean Load Balancer.
 
 ```bash
 kubectl apply -f k8s/base/composedb/do-lb.yaml
@@ -167,31 +161,20 @@ You can get the EXTERNAL IP address of the load balancer with the following comm
 
 ```bash
 kubectl get svc --namespace ceramic composedb-lb
-```
-
-The result of this command will be an output similar to the one below. Keep in mind that might take a few minutes for the EXTERMAL-IP to be configured and change the status from `<pending>`:
-
-```bash
 NAME           TYPE           CLUSTER-IP      EXTERNAL-IP       PORT(S)          AGE
 composedb-lb   LoadBalancer   10.245.10.130   174.138.109.159   7007:31284/TCP   4m4s
 ```
 
-This external IP address can now be used for accessing your node. To test it out, copy the external IP address provided above and substitute it in the following health check command:
-
-```bash
-curl http://174.138.109.159:7007/api/v0/node/healthcheck
+Test it out!
 ```
-
-Once again, a successful connection will provide an output `Alive!`:
-```bash
+$ curl http://174.138.109.159:7007/api/v0/node/healthcheck
 Alive!
 ```
 
-## Commonly asked questions
-
-### Where is my data stored?
+#### Where is my data stored?
 
 Each part of the stack (js-ceramic, ipfs, postgres) has its own [Persistent Volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
+
 You can view the volumes with the following command:
 
 ```bash
@@ -200,33 +183,26 @@ kubectl get PersistentVolumeClaim --namespace ceramic
 
 This output includes identifiers for the volume on the cloud provider as well as the size and storage class, which defines the properties of the volume.
 
-### What is my admin DID?
+#### What is my admin DID and how do I use it to connect?
 
-The example deployment creates a random seed for the admin DID.
-The seed is stored in a Kubernetes secret, which you can view with the following command:
+The ceramic node is configured with an admin DID. This DID is used to authenticate with the ceramic node.
+The DID is derived from a seed, which is stored in a kubernetes secret named `ceramic-admin` and the `private-key` key's value is the base64 encoded seed.
 
+While the example deployment creates a random seed for the admin DID, you can use your own seed by creating a secret with the same name and key instead of using the `create-secrets.sh` script.
 
-
+Example:
 ```bash
-kubectl --namespace ceramic get secrets ceramic-admin -o yaml
-```
-You should get the following output:
-```bash
-apiVersion: v1
-data:
-  private-key: ZjlkZjU3ZjBjODBmZjRiMWU5NGE1NzllMGZhNDgwNGE3M2Y4YmRmOWVlMTY0MjA4YTRiM2JkNmEyZjBkZjM1Nw==
-kind: Secret
-...
+$ kubectl create secret generic ceramic-admin --from-literal=private-key=<YOUR SEED>
 ```
 
-:::note
+To view the currently configured admin DID seed, you can use the following command (requires [jq](https://stedolan.github.io/jq/)):
 
-The `private-key` value is the base64 encoded seed.
+```bash
+kubectl get secrets --namespace ceramic ceramic-admin -o json | jq -r '.data."private-key"' | base64 -d
+```
 
-:::
 
-
-### How do I connect to the Postgres database?
+#### How do I connect to the Postgres database?
 
 You can create a session to the postgres database with the following command:
 
@@ -234,22 +210,17 @@ You can create a session to the postgres database with the following command:
 kubectl exec --namespace ceramic -ti postgres-0 -- psql -U ceramic
 ```
 
-A `postgres` service is also created and can be exposed locally with port-forwarding:
+A `postgres` service is also created and can be exposed locally with port-forwarding.
 
 ```bash
 kubectl port-forward --namespace ceramic svc/postgres 5432
 ```
 
 The `ceramic` user password randomly generated during deployment.
-It is also available in the `postgres-auth` secret:
+It is also available in the `postgres-auth` secret.
 
 ```bash
-kubectl --namespace ceramic get secrets postgres-auth -o yaml
-```
-
-Here you should get the following output:
-
-```bash
+$ kubectl get secrets postgres-auth -o yaml
 apiVersion: v1
 data:
   password: NzNjNzQ4ZDkxM2Y5NGQ2MmQwOTRiYzQ2YzIzMmM4YzdlYzFhODA2MA==
@@ -258,9 +229,11 @@ kind: Secret
 ...
 ```
 
-### How do I shut it all down?
+#### How do I connect to the IPFS node?
 
-To remove the workload from the cluster, you can delete the namespace. For example:
+#### How shut it all down?
+
+To remove the workload from the cluster, you can delete the namespace.
 
 ```bash
 kubectl delete namespace ceramic
@@ -268,10 +241,11 @@ kubectl delete namespace ceramic
 
 
 ## Docker Hub
-You can find the ComposeDB server and IPFS Docker images on [Docker Hub](https://hub.docker.com/u/ceramicnetwork). 
-Below, you can find examples of how you can run IPFS, Postgres and Ceramic processes using Docker. 
+You can find the ComposeDB server and IPFS Docker images on [Docker Hub](https://hub.docker.com/u/ceramicnetwork).
 
+## Examples
 
+> Make sure to update the examples by setting your variables.
 
 ### Running IPFS
 
@@ -289,7 +263,6 @@ docker run \
 ```
 
 ### Running Postgres
-An example below demonstrates how you can run a Postgres process. Make sure to update the variables to fit your use case:
 
 ```bash
 docker pull postgres
@@ -306,7 +279,6 @@ docker run -d \
 You can also follow the examples from the official Postgres Docker image [documentation](https://hub.docker.com/_/postgres).
 
 ### Running Ceramic
-An example below demonstrates how you can run a Ceramic server using Docker. Make sure to update the variables to fit your use case:
 
 ```bash
 docker pull ceramicnetwork/js-ceramic:latest
