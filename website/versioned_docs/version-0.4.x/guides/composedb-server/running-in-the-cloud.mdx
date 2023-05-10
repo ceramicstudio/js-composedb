@@ -144,6 +144,18 @@ Forwarding from 127.0.0.1:7007 -> 7007
 Forwarding from [::1]:7007 -> 7007
 ```
 
+:::note
+
+The Ceramic node must be ready to accept connections before you can access it.
+The pod's state must be `Running` and the `READY` column must be `1/1`.
+You can check the status of the node by running the command below:
+
+$ kubectl get pods composedb-0
+NAME          READY   STATUS    RESTARTS      AGE
+composedb-0   1/1     Running   1 (28h ago)   28h
+
+:::
+
 To check the connection, open a new terminal and run the command below. A successful connection should utter a response `Alive!` as follows:
 
 ```bash
