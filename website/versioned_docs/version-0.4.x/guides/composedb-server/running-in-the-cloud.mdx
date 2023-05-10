@@ -195,7 +195,7 @@ First you will need to install [ComposeDB Cli](../../set-up-your-environment.mdx
 your environment to properly talk to your server
 
 ```bash
-export CERAMIC_URL=$(kubectl get service composedb-lb --namespace ceramic -o json | jq -r '.status.loadBalancer.ingress[0].ip')
+export CERAMIC_URL="http://"$(kubectl get service composedb-lb --namespace ceramic -o json | jq -r '.status.loadBalancer.ingress[0].ip')":7007"
 export DID_PRIVATE_KEY=$(kubectl get secrets --namespace ceramic ceramic-admin -o json | jq -r '.data."private-key"' | base64 -d)
 ```
 
