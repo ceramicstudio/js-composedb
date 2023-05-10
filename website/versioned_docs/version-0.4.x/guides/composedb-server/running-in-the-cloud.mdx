@@ -81,8 +81,8 @@ After authenticating your cluster, it’s a good idea to verify the connectivity
 kubectl config get-contexts
 ```
 
-### Deploy a Ceramic with ComposeDB Server
-In this section we will focus on deploying the Ceramic with ComposeDB Server on the DigitalOcean Kubernetes cluster.
+### Deploy ComposeDB Server
+In this section we will focus on deploying the ComposeDB Server on the DigitalOcean Kubernetes cluster.
 
 1. Clone the [ceramic-infra-scripts repo](https://github.com/ceramicstudio/ceramic-infra-scripts.git) and enter the created directory.
 
@@ -129,7 +129,7 @@ You can easily access the logs of each of the containers by using the command be
 :::
 
 
-### Access the Ceramic with ComposeDB API
+### Access the ComposeDB API
 
 You can use local port forwarding to access the Ceramic node from your local machine. Open a new terminal and run the command below. The port forward will stop when the command is exited
 so make sure to keep this command running for the rest of this guide.
@@ -186,33 +186,6 @@ Once again, a successful connection will provide an output `Alive!`:
 ```bash
 Alive!
 ```
-
-### Utilize the Deployed Assets with ComposeDB CLI and Graphiql Server
-Now that you have a Ceramic with ComposeDB server deployed, you can utilize the [ComposeDB Cli](../../set-up-your-environment.mdx#composedb) to create models and
-composites, as well as standing up a Graphiql server backed by the Ceramic with ComposeDB server.
-
-First you will need to install [ComposeDB Cli](../../set-up-your-environment.mdx#composedb). Next you will need to setup,
-your environment to properly talk to your server
-
-```bash
-export CERAMIC_URL="http://"$(kubectl get service composedb-lb --namespace ceramic -o json | jq -r '.status.loadBalancer.ingress[0].ip')":7007"
-export DID_PRIVATE_KEY=$(kubectl get secrets --namespace ceramic ceramic-admin -o json | jq -r '.data."private-key"' | base64 -d)
-```
-
-You can now follow the existing guides, omitting adding `--ceramic-url` or `--did-private-key` to your composdb calls. For
-example
-
-```bash
-composedb composite:from-model kjzl6hvfrbw6c5ajfmes842lu09vjxu5956e3xq0xk12gp2jcf9s90cagt2god9 --output=my-first-composite-single.json
-```
-
-will create a new composite, utilizing your remote Ceramic with ComposeDB server. You can also run Graphiql locally
-
-```bash
-composedb graphql:server --graphiql runtime-composite.json --port=5005
-```
-
-You can access the graphiql server at [http://localhost:5005/graphql](http://localhost:5005/graphql)
 
 ## Commonly asked questions
 
