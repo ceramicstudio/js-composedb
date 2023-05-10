@@ -15,9 +15,20 @@
       },
       "items": [
         {
-          "type": "doc",
-          "id": "set-up-your-environment",
-          "label": "Set up your environment"
+          "type": "category",
+          "collapsed": true,
+          "label": "Set up your environment",
+          "link": {
+            "type": "doc",
+            "id": "set-up-your-environment"
+          },
+          "items": [
+            {
+              "type": "doc",
+              "id": "wheel-reference",
+              "label": "Wheel Reference"
+            }
+          ]
         },
         {
           "type": "doc",
