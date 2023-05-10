@@ -51,24 +51,24 @@ Running Kubernetes on the Cloud means a provider will manage the underlying infr
 DigitalOcean Kubernetes (DOKS) allows developers to deploy Kubernetes clusters using simple managed service. ComposeDB deployment on DigitalOcean Kubernetes will require 2 tools:
 
 -  [kubectl](https://kubernetes.io/docs/tasks/tools) - the Kubernetes command line tool
-- [doctl](https://docs.digitalocean.com/reference/doctl/how-to/install/) - the DigitalOcean command line tool 
+- [doctl](https://docs.digitalocean.com/reference/doctl/how-to/install/) - the DigitalOcean command line tool
 
 Make sure you have these tools installed on your machine before proceeding to the next step of this guide.
 
 ### Creating a Kubernetes Cluster
-First, you will have to create your DigitalOcean Kubernetes cluster. To do that, follow an [official DigitalOcean tutorial](https://docs.digitalocean.com/products/kubernetes/how-to/create-clusters/). The process of setting up your Kubernetes cluster will take about 10 minutes. 
+First, you will have to create your DigitalOcean Kubernetes cluster. To do that, follow an [official DigitalOcean tutorial](https://docs.digitalocean.com/products/kubernetes/how-to/create-clusters/). The process of setting up your Kubernetes cluster will take about 10 minutes.
 Once it’s up and running, you are good to continue with the next step.
 
 :::note
 
-When it comes to choosing your cluster capacity, we recommend starting with the most cost-effective option - starting with the smallest cluster size and upgrading later. For example, to follow this guide you can start with a 1GB RAM and 1vCPU cluster. Also, keep in mind that 
-Digital Ocean offers free credits for the new users to start building their projects. 
+When it comes to choosing your cluster capacity, we recommend starting with the most cost-effective option - starting with the smallest cluster size and upgrading later. For example, to follow this guide you can start with a 1GB RAM and 1vCPU cluster. Also, keep in mind that
+Digital Ocean offers free credits for the new users to start building their projects.
 
 :::
 
 ### Connecting to Kubernetes cluster
 
-First, you will have to configure the authentication of your cluster and retrieve the credentials. This can be achieved using the doctl command  below and substituting the authentication number provided 
+First, you will have to configure the authentication of your cluster and retrieve the credentials. This can be achieved using the doctl command  below and substituting the authentication number provided
 to you by Digital Ocean right after your cluster is launched:
 
 ```bash
@@ -84,10 +84,10 @@ kubectl config get-contexts
 ### Deploy ComposeDB Server
 In this section we will focus on deploying the ComposeDB Server on the DigitalOcean Kubernetes cluster.
 
-1. Clone the [ceramic-infra-scripts repo](https://github.com/3box/ceramic-infra-scripts.git) and enter the created directory.
+1. Clone the [ceramic-infra-scripts repo](https://github.com/ceramicstudio/ceramic-infra-scripts.git) and enter the created directory.
 
 ```
-git clone https://github.com/3box/ceramic-infra-scripts.git
+git clone https://github.com/ceramicstudio/ceramic-infra-scripts.git
 cd ceramic-infra-scripts
 ```
 
@@ -131,7 +131,7 @@ You can easily access the logs of each of the containers by using the command be
 
 ### Access the ComposeDB API
 
-You can use local port forwarding to access the Ceramic node from your local machine. Open a new terminal and run the command below. The port forward will stop when the command is exited 
+You can use local port forwarding to access the Ceramic node from your local machine. Open a new terminal and run the command below. The port forward will stop when the command is exited
 so make sure to keep this command running for the rest of this guide.
 
 ```bash
@@ -157,7 +157,7 @@ Alive!
 
 ### Expose the node endpoint to the internet
 
-The last step is to expose your Ceramic node to the internet so that it’s accessible for your application. This can be done using a DigitalOcean Load Balancer: 
+The last step is to expose your Ceramic node to the internet so that it’s accessible for your application. This can be done using a DigitalOcean Load Balancer:
 
 ```bash
 kubectl apply -f k8s/base/composedb/do-lb.yaml
@@ -200,31 +200,19 @@ kubectl get PersistentVolumeClaim --namespace ceramic
 
 This output includes identifiers for the volume on the cloud provider as well as the size and storage class, which defines the properties of the volume.
 
-### What is my admin DID?
+### What is my admin DID and how do I use it to connect?
+The ceramic node is configured with an admin DID. This DID is used to authenticate with the ceramic node. The DID is derived from a seed, which is stored in a kubernetes secret named ceramic-admin and the private-key key's value is the base64 encoded seed.
 
-The example deployment creates a random seed for the admin DID.
-The seed is stored in a Kubernetes secret, which you can view with the following command:
+While the example deployment creates a random seed for the admin DID, you can use your own seed by creating a secret with the same name and key instead of using the create-secrets.sh script.
 
-
-
-```bash
-kubectl --namespace ceramic get secrets ceramic-admin -o yaml
+Example:
 ```
-You should get the following output:
-```bash
-apiVersion: v1
-data:
-  private-key: ZjlkZjU3ZjBjODBmZjRiMWU5NGE1NzllMGZhNDgwNGE3M2Y4YmRmOWVlMTY0MjA4YTRiM2JkNmEyZjBkZjM1Nw==
-kind: Secret
-...
+$ kubectl create secret generic ceramic-admin --from-literal=private-key=<YOUR SEED>
 ```
-
-:::note
-
-The `private-key` value is the base64 encoded seed.
-
-:::
-
+To view the currently configured admin DID seed, you can use the following command (requires jq):
+```
+kubectl get secrets --namespace ceramic ceramic-admin -o json | jq -r '.data."private-key"' | base64 -d
+```
 
 ### How do I connect to the Postgres database?
 
@@ -268,8 +256,8 @@ kubectl delete namespace ceramic
 
 
 ## Docker Hub
-You can find the ComposeDB server and IPFS Docker images on [Docker Hub](https://hub.docker.com/u/ceramicnetwork). 
-Below, you can find examples of how you can run IPFS, Postgres and Ceramic processes using Docker. 
+You can find the ComposeDB server and IPFS Docker images on [Docker Hub](https://hub.docker.com/u/ceramicnetwork).
+Below, you can find examples of how you can run IPFS, Postgres and Ceramic processes using Docker.
 
 
 
