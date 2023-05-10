@@ -7,7 +7,7 @@ The first step to build with ComposeDB is setting up your development environmen
 
 ## Installation using Wheel
 
-The easiest and recommended way to configure your local development environment is by using Wheel - a CLI starter tool for Ceramic that makes it easy to install necessary dependencies
+The easiest and recommended way to configure your local development environment is by using [Wheel](https://github.com/ceramicstudio/wheel.git) - a CLI starter tool for Ceramic that makes it easy to install necessary dependencies
  and run a Ceramic node enabled with ComposeDB.
 
 
@@ -17,7 +17,7 @@ In order to use Wheel, you’ll have to install a few necessary dependencies:
 
 - Node.js
 - jq
-- PostgreSQL
+- PostgreSQL (optional dependent on the network, see below)
 
 :::caution
 
@@ -73,7 +73,7 @@ GRANT ALL PRIVILEGES ON DATABASE "ceramic" to ceramic;
 ### Configure the development environment
 
 We will use Wheel to install all of the dependencies needed to run Ceramic and ComposeDB as well as configure the working environment
-for your project. To download the wheel, open your terminal and run the command below:
+for your project. To download Wheel, open your terminal and run the command below:
 
 
 ```bash
@@ -89,16 +89,23 @@ Once Wheel is downloaded you are good to start configuring your project working 
 This command will start a prompt in your command line allowing you to configure your entire working environment - from what Ceramic dependencies
  you’d like to install to how your Ceramic node should be configured. 
 
+ You can run the following command to learn more about available Wheel commands and options:
+
+ ```bash
+ ./wheel --help
+ ```
+
 For developers who are completely new to Ceramic, we highly recommend starting the configuration with all default parameters. Go through the prompt
-and press Enter on your keyboard for each step. This will install the Ceramic and ComposeDB dependencies and spin up a local node running in-memory.
+and press Enter on your keyboard for each step. This will install the Ceramic and ComposeDB dependencies and spin up a local node running `InMemory`.
 This option will allow to test all of the features of Ceramic and ComposeDB in a very lightweight way without requiring you configure authentication 
 for Ceramic Anchor Service.
 
 
+
 :::caution
 
-**Important:** Ceramic Anchor Service (CAS) is used to anchor Ceramic streams on a blockchain. Since InMemory option doesn’t use CAS, data generated
-for your project will not be persisted. 
+**Important:** [Ceramic Anchor Service (CAS)](https://composedb.js.org/docs/0.4.x/guides/composedb-server/access-mainnet) is used to anchor Ceramic streams on a blockchain.
+CAS is require for `dev`, `testnet-clay` and `mainnet` networks. Since `InMemory` option doesn’t use CAS, data generated for your project will not be persisted. 
 
 :::
 

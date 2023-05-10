@@ -28,7 +28,8 @@ Your project type based on the project development stage. You can choose one of
  project at any point of the development. Clay testnet, just like dev-unstable network gets wiped out periodically for 
  housekeeping reasons.
 - `Mainnet` - for projects in the production stage. This option will require you to do more advanced configurations for
- your working environment. Opt for this option only when you are ready to move your application to production stage.
+ your working environment. Generally, this option is only recommended for generating a production cofiguration file to be
+ used with a production deployment like [Kubernetes](https://composedb.js.org/docs/0.4.x/guides/composedb-server/running-in-the-cloud). 
 
 ### Project Name 
 Set the name for your project. You can use a default option ceramic-test-app or type a custom one. This
@@ -44,7 +45,7 @@ Defaults to `Y` - yes. To skip Ceramic installation, type `n`.
 
 ### Include ComposeDB 
 An option to install ComposeDB CLI and dependencies in your working environment.
-Defaults to Y - yes. To skip ComposeDB installation, type n.
+Defaults to `Y` - yes. To skip ComposeDB installation, type `n`.
 
 ### Admin DID Configuration
 Indexing is one of the key features of ComposeDB. In order to notify the Ceramic node which models have to be indexed, the
@@ -66,8 +67,8 @@ use the default suggestion (recommended in most of the cases) or specify a custo
 
 
 ### CAS Authentication
-In order to control the nodes connected to CAS (Ceramic Anchor Service), you will have to configure the authentication. This will allow
- you to set or revoke DIDs for your nodes. You can choose from the following options:
+In order to control the nodes connected to CAS (Ceramic Anchor Service), you will have to [configure the authentication](https://composedb.js.org/docs/0.4.x/guides/composedb-server/access-mainnet).
+This will allow you to set or revoke DIDs for your nodes. You can choose from the following options:
 
 - Email Based Authentication - an email authentication methid. You will be asked to provide an email that will be used to provide you with an OTP code (a passcode) needed for the authentication.
 - IP Based Authentication (Deprecated) - currently deprecated authentication method. Not recommended for new Ceramic users.
