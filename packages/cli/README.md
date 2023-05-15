@@ -6,7 +6,7 @@
 ## Installation
 
 ```sh
-npm install -g @composedbd/cli
+npm install -g @composedb/cli
 ```
 
 ## Usage
