@@ -39,7 +39,7 @@
     "@composedb/ceramic-codecs": "workspace:*",
     "@composedb/json-schema-codecs": "workspace:*",
     "@composedb/model-codecs": "workspace:*",
-    "fp-ts": "^2.13.1",
+    "fp-ts": "^2.15.0",
     "io-ts": "^2.2.20"
   },
   "devDependencies": {

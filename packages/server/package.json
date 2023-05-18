@@ -39,7 +39,7 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/http-client": "^2.20.0",
+    "@ceramicnetwork/http-client": "^2.22.0",
     "@ceramicnetwork/streamid": "^2.14.0",
     "@composedb/ceramic-codecs": "workspace:*",
     "@composedb/composite-codecs": "workspace:*",
@@ -49,25 +49,25 @@
     "@composedb/runtime": "workspace:*",
     "@composedb/services-runner": "workspace:*",
     "@stablelib/random": "^1.0.2",
-    "@trpc/client": "^10.16.0",
-    "@trpc/server": "^10.16.0",
-    "dids": "^4.0.0",
+    "@trpc/client": "^10.26.0",
+    "@trpc/server": "^10.26.0",
+    "dids": "^4.0.1",
     "fast-json-patch": "^3.1.1",
-    "fp-ts": "^2.13.1",
+    "fp-ts": "^2.15.0",
     "get-port": "^6.1.2",
-    "graphql": "^16.5.0",
-    "graphql-yoga": "^3.7.3",
+    "graphql": "^16.6.0",
+    "graphql-yoga": "^3.9.1",
     "io-ts": "^2.2.20",
-    "key-did-provider-ed25519": "^3.0.0",
+    "key-did-provider-ed25519": "^3.0.1",
     "key-did-resolver": "^3.0.0",
-    "rxjs": "^7.8.0"
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^2.23.0",
+    "@ceramicnetwork/common": "^2.25.0",
     "@composedb/composite-service": "workspace:*",
     "@composedb/services-rpc": "workspace:*",
     "@composedb/types": "workspace:^0.4.3",
-    "@types/node": "^18.15.3",
+    "@types/node": "^20.2.1",
     "multiformats": "^11.0.2"
   },
   "jest": {

@@ -44,7 +44,7 @@ flowchart TD
 
   subgraph Server
     SER[server]
-    SRUN[services-runner]    
+    SRUN[services-runner]
   end
   DEVC & RUNC -.->|RPC| SER
   SER --> SRUN

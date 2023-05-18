@@ -57,6 +57,8 @@ export const SavedCompositeCodec = io.strict(
 )
 export type SavedComposite = io.TypeOf<typeof SavedCompositeCodec>
 
+export type GraphQLResult = ExecutionResult<Record<string, unknown>>
+
 export class Service implements ServiceLifecycle {
   #clients: ServiceClients
   #documents: DocumentsManager
@@ -100,7 +102,7 @@ export class Service implements ServiceLifecycle {
     return createGraphQLSchema({ definition, readonly: false }) // !composite.enableMutations
   }
 
-  async executeGraphQL(query: GraphQLQuery): Promise<ExecutionResult<Record<string, unknown>>> {
+  async executeGraphQL(query: GraphQLQuery): Promise<GraphQLResult> {
     let document: DocumentNode
     try {
       document = parse(query.source)
@@ -134,10 +136,7 @@ export class Service implements ServiceLifecycle {
 
   async subscribeGraphQL(
     query: GraphQLQuery
-  ): Promise<
-    | ExecutionResult<Record<string, unknown>>
-    | AsyncGenerator<ExecutionResult<Record<string, unknown>>>
-  > {
+  ): Promise<GraphQLResult | AsyncGenerator<GraphQLResult>> {
     let document: DocumentNode
     try {
       document = parse(query.source)

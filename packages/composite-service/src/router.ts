@@ -17,36 +17,34 @@ export type Context = {
 
 const t = initTRPC.context<Context>().create()
 
+const CreateModelInputCodec = io.intersection(
+  [io.strict({ commit: SignedCommitContainerCodec }), io.partial({ indexDocuments: io.boolean })],
+  'composite.createModelInput'
+)
+export type CreateModelInput = io.TypeOf<typeof CreateModelInputCodec>
+
+const LoadModelInputCodec = io.strict({ id: io.string }, 'composite.loadModelInput')
+export type LoadModelInput = io.TypeOf<typeof LoadModelInputCodec>
+
+const SaveCompositeInputCodec = io.intersection(
+  [io.strict({ composite: CompositeDefinitionCodec }), SaveCompositeOptionsCodec],
+  'composite.saveCompositeInput'
+)
+export type SaveCompositeInput = io.TypeOf<typeof SaveCompositeInputCodec>
+
 export const router = t.router({
   createModel: t.procedure
-    .input(
-      ioDecode(
-        io.intersection(
-          [
-            io.strict({ commit: SignedCommitContainerCodec }),
-            io.partial({ indexDocuments: io.boolean }),
-          ],
-          'composite.createModelInput'
-        )
-      )
-    )
+    .input(ioDecode(CreateModelInputCodec))
     .output(ioEncode(ModelCodec))
     .mutation((req) => req.ctx.service.models.create(req.input.commit)),
 
   loadModel: t.procedure
-    .input(ioDecode(io.strict({ id: io.string }, 'composite.loadModelInput')))
+    .input(ioDecode(LoadModelInputCodec))
     .output(ioEncode(ModelCodec))
     .query((req) => req.ctx.service.models.load(req.input.id)),
 
   saveComposite: t.procedure
-    .input(
-      ioDecode(
-        io.intersection(
-          [io.strict({ composite: CompositeDefinitionCodec }), SaveCompositeOptionsCodec],
-          'composite.saveCompositeInput'
-        )
-      )
-    )
+    .input(ioDecode(SaveCompositeInputCodec))
     .output(ioEncode(SavedCompositeCodec))
     .mutation(async (req) => {
       const { composite, ...options } = req.input

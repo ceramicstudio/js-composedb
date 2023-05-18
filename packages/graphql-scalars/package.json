@@ -40,8 +40,8 @@
     "@ceramicnetwork/streamid": "^2.14.0",
     "@composedb/types": "workspace:^0.4.3",
     "caip": "^1.1.0",
-    "graphql": "^16.5.0",
-    "graphql-scalars": "^1.20.4",
+    "graphql": "^16.6.0",
+    "graphql-scalars": "^1.22.0",
     "multiformats": "^11.0.2"
   }
 }
