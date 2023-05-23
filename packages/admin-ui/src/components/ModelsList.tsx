@@ -13,11 +13,8 @@ export const modelsQuery = graphql`
       streamID
       name
       description
-      indexDocuments
-      composites {
-        id
-        compositeID
-      }
+      indexingEnabled
+      compositesCount
     }
   }
 `
@@ -26,14 +23,6 @@ export default function ModelsList() {
   const data = useRouteQuery<ModelsListQuery>(modelsQuery)
 
   const rows = data.models.map((model) => {
-    const composites = model.composites.map((composite) => (
-      <li key={composite.id}>
-        <Tooltip label={composite.compositeID}>
-          <Text>{shortID(composite.compositeID, 30)}</Text>
-        </Tooltip>
-      </li>
-    ))
-
     return (
       <tr key={model.id}>
         <td>
@@ -44,10 +33,8 @@ export default function ModelsList() {
           </Tooltip>
         </td>
         <td>{model.description}</td>
-        <td>
-          <ul>{composites}</ul>
-        </td>
-        <td>{model.indexDocuments ? 'Yes' : 'No'}</td>
+        <td>{model.compositesCount}</td>
+        <td>{model.indexingEnabled ? 'Yes' : 'No'}</td>
       </tr>
     )
   })

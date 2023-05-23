@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b68a497b98e81f448f6acc1bcd6a517e>>
+ * @generated SignedSource<<bafb025cef761995d1272c4c65c78018>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,13 +12,10 @@ import { ConcreteRequest, Query } from 'relay-runtime';
 export type ModelsListQuery$variables = {};
 export type ModelsListQuery$data = {
   readonly models: ReadonlyArray<{
-    readonly composites: ReadonlyArray<{
-      readonly compositeID: string;
-      readonly id: string;
-    }>;
+    readonly compositesCount: number;
     readonly description: string | null;
     readonly id: string;
-    readonly indexDocuments: boolean;
+    readonly indexingEnabled: boolean;
     readonly name: string;
     readonly streamID: string;
   }>;
@@ -29,14 +26,7 @@ export type ModelsListQuery = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v1 = [
+var v0 = [
   {
     "alias": null,
     "args": null,
@@ -45,7 +35,13 @@ v1 = [
     "name": "models",
     "plural": true,
     "selections": [
-      (v0/*: any*/),
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "id",
+        "storageKey": null
+      },
       {
         "alias": null,
         "args": null,
@@ -71,26 +67,14 @@ v1 = [
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "indexDocuments",
+        "name": "indexingEnabled",
         "storageKey": null
       },
       {
         "alias": null,
         "args": null,
-        "concreteType": "Composite",
-        "kind": "LinkedField",
-        "name": "composites",
-        "plural": true,
-        "selections": [
-          (v0/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "compositeID",
-            "storageKey": null
-          }
-        ],
+        "kind": "ScalarField",
+        "name": "compositesCount",
         "storageKey": null
       }
     ],
@@ -103,7 +87,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "ModelsListQuery",
-    "selections": (v1/*: any*/),
+    "selections": (v0/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
@@ -112,19 +96,19 @@ return {
     "argumentDefinitions": [],
     "kind": "Operation",
     "name": "ModelsListQuery",
-    "selections": (v1/*: any*/)
+    "selections": (v0/*: any*/)
   },
   "params": {
-    "cacheID": "9c97442642ebe45387ca96699da83f72",
+    "cacheID": "f6191f943e29fcaa586b4c07b6c13d51",
     "id": null,
     "metadata": {},
     "name": "ModelsListQuery",
     "operationKind": "query",
-    "text": "query ModelsListQuery {\n  models {\n    id\n    streamID\n    name\n    description\n    indexDocuments\n    composites {\n      id\n      compositeID\n    }\n  }\n}\n"
+    "text": "query ModelsListQuery {\n  models {\n    id\n    streamID\n    name\n    description\n    indexingEnabled\n    compositesCount\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "17e5c35d241bb3dcba4e53da0be90879";
+(node as any).hash = "bbdf2bcc1a1bef306621a076c8ab8f8e";
 
 export default node;

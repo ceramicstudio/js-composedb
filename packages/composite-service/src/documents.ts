@@ -163,7 +163,7 @@ export class DocumentsManager {
       document.unique = unique
     }
     // TODO: also provide indexed fields information
-    await this.#clients.database.saveDocument.mutate({ document })
+    await this.#clients.database.saveDocument.mutate(document)
 
     return document
   }
@@ -201,7 +201,7 @@ export class DocumentsManager {
     }
 
     // TODO: also provide indexed fields information
-    await this.#clients.database.saveDocument.mutate({ document: { ...doc, unique } })
+    await this.#clients.database.saveDocument.mutate({ ...doc, unique })
     return doc
   }
 
@@ -244,7 +244,7 @@ export class DocumentsManager {
       return existing
     }
 
-    await this.#clients.database.saveDocument.mutate({ document: { ...doc, unique: '' } })
+    await this.#clients.database.saveDocument.mutate({ ...doc, unique: '' })
     return doc
   }
 

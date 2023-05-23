@@ -39,6 +39,7 @@
     "@ceramicnetwork/streamid": "^2.14.0",
     "@composedb/ceramic-codecs": "workspace:*",
     "@composedb/composite-codecs": "workspace:*",
+    "@composedb/database-codecs": "workspace:*",
     "@composedb/document-codecs": "workspace:*",
     "@composedb/graph-codecs": "workspace:*",
     "@composedb/graphql-scalars": "workspace:*",

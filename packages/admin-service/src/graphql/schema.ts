@@ -3,6 +3,7 @@
 import {
   GraphQLBoolean,
   GraphQLID,
+  GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
@@ -49,17 +50,26 @@ const CompositeObject: GraphQLObjectType<{}, Context> = new GraphQLObjectType({
     description: {
       type: GraphQLString,
     },
-    enable: {
+    isEnabled: {
       type: new GraphQLNonNull(GraphQLBoolean),
     },
-    enableMutations: {
+    mutationsEnabled: {
       type: new GraphQLNonNull(GraphQLBoolean),
     },
-    enableSubscriptions: {
+    subscriptionsEnabled: {
       type: new GraphQLNonNull(GraphQLBoolean),
     },
     models: {
       type: toList(ModelObject),
+      resolve: async (src, _args, ctx) => {
+        return await ctx.db.findModels.query({ composite: src.id })
+      },
+    },
+    modelsCount: {
+      type: new GraphQLNonNull(GraphQLInt),
+      resolve: async (src, _args, ctx) => {
+        return await ctx.db.countModels.query({ composite: src.id })
+      },
     },
   }),
 })
@@ -84,9 +94,24 @@ const ModelObject: GraphQLObjectType<{}, Context> = new GraphQLObjectType({
     },
     composites: {
       type: toList(CompositeObject),
+      resolve: async (src, _args, ctx) => {
+        return await ctx.db.findComposites.query({ model: src.id })
+      },
     },
-    indexDocuments: {
+    compositesCount: {
+      type: new GraphQLNonNull(GraphQLInt),
+      resolve: async (src, _args, ctx) => {
+        return await ctx.db.countComposites.query({ model: src.id })
+      },
+    },
+    indexingEnabled: {
       type: new GraphQLNonNull(GraphQLBoolean),
+    },
+    documentsCount: {
+      type: new GraphQLNonNull(GraphQLInt),
+      resolve: async (src, _args, ctx) => {
+        return await ctx.db.countDocuments.query({ models: [src.id] })
+      },
     },
   }),
 })
@@ -97,14 +122,14 @@ const QueryObject = new GraphQLObjectType({
     node: nodeField,
     composites: {
       type: toList(CompositeObject),
-      resolve: async (_src, _args, context) => {
-        return await context.db.listComposites.query()
+      resolve: async (_src, _args, ctx) => {
+        return await ctx.db.findComposites.query({})
       },
     },
     models: {
       type: toList(ModelObject),
-      resolve: async (_src, _args, context) => {
-        return await context.db.listModels.query()
+      resolve: async (_src, _args, ctx) => {
+        return await ctx.db.findModels.query({})
       },
     },
   }),

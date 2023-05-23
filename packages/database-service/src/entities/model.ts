@@ -1,5 +1,14 @@
 import type { ContentDefinition } from '@composedb/model-codecs'
-import { Column, Entity, ManyToMany, OneToMany, PrimaryColumn, type Relation } from 'typeorm'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  PrimaryColumn,
+  type Relation,
+  UpdateDateColumn,
+} from 'typeorm'
 
 import { Composite } from './composite.js'
 import { Document } from './document.js'
@@ -25,11 +34,17 @@ export class Model {
   content!: ContentDefinition
 
   @Column()
-  indexDocuments!: boolean
+  indexingEnabled!: boolean
 
   @OneToMany(() => Document, (document) => document.model)
   documents?: Array<Relation<Document>>
 
   @ManyToMany(() => Composite, (composite) => composite.models)
   composites?: Array<Relation<Composite>>
+
+  @CreateDateColumn()
+  createdAt?: string
+
+  @UpdateDateColumn()
+  updatedAt?: string
 }

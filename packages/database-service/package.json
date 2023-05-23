@@ -36,6 +36,7 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
+    "@composedb/database-codecs": "workspace:*",
     "@composedb/document-codecs": "workspace:*",
     "@composedb/graph-codecs": "workspace:*",
     "@composedb/model-codecs": "workspace:*",

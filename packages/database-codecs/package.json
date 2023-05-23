@@ -1,5 +1,5 @@
 {
-  "name": "@composedb/ceramic-service",
+  "name": "@composedb/database-codecs",
   "version": "0.4.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
@@ -11,7 +11,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/ceramicstudio/js-composedb",
-    "directory": "packages/ceramic-service"
+    "directory": "packages/database-codecs"
   },
   "type": "module",
   "main": "dist/index.js",
@@ -36,29 +36,12 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@composedb/ceramic-codecs": "workspace:*",
-    "@composedb/services-rpc": "workspace:*",
-    "@ipld/dag-cbor": "^9.0.0",
-    "@stablelib/sha256": "^1.0.1",
-    "@trpc/server": "^10.27.1",
+    "@composedb/graph-codecs": "workspace:*",
+    "@composedb/model-codecs": "workspace:*",
     "fp-ts": "^2.15.0",
-    "get-port": "^6.1.2",
-    "go-ipfs": "^0.18.1",
-    "io-ts": "^2.2.20",
-    "ipfs-http-client": "^60.0.0",
-    "ipfsd-ctl": "^13.0.0",
-    "merge-options": "^3.0.4",
-    "multiformats": "^11.0.2",
-    "quick-lru": "^6.1.1",
-    "rxjs": "^7.8.1",
-    "tmp-promise": "^3.0.3",
-    "uint8arrays": "^4.0.3"
+    "io-ts": "^2.2.20"
   },
   "devDependencies": {
-    "@ceramicnetwork/streamid": "^2.14.0",
-    "@didtools/cacao": "^2.0.0",
-    "@libp2p/interface-pubsub": "^4.0.1",
-    "dids": "^4.0.1",
-    "ipfs-core-types": "^0.14.0"
+    "json-schema-typed": "^8.0.1"
   }
 }

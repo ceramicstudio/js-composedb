@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<9f42d7d7c100d627e2bd3e45be4dfa95>>
+ * @generated SignedSource<<97e0deab35fca177f64dc7775358ccd6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,16 +14,11 @@ export type CompositesListQuery$data = {
   readonly composites: ReadonlyArray<{
     readonly compositeID: string;
     readonly description: string | null;
-    readonly enable: boolean;
-    readonly enableMutations: boolean;
-    readonly enableSubscriptions: boolean;
     readonly id: string;
-    readonly models: ReadonlyArray<{
-      readonly description: string | null;
-      readonly id: string;
-      readonly name: string;
-      readonly streamID: string;
-    }>;
+    readonly isEnabled: boolean;
+    readonly modelsCount: number;
+    readonly mutationsEnabled: boolean;
+    readonly subscriptionsEnabled: boolean;
   }>;
 };
 export type CompositesListQuery = {
@@ -32,21 +27,7 @@ export type CompositesListQuery = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "description",
-  "storageKey": null
-},
-v2 = [
+var v0 = [
   {
     "alias": null,
     "args": null,
@@ -55,7 +36,13 @@ v2 = [
     "name": "composites",
     "plural": true,
     "selections": [
-      (v0/*: any*/),
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "id",
+        "storageKey": null
+      },
       {
         "alias": null,
         "args": null,
@@ -63,53 +50,39 @@ v2 = [
         "name": "compositeID",
         "storageKey": null
       },
-      (v1/*: any*/),
       {
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "enable",
+        "name": "description",
         "storageKey": null
       },
       {
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "enableMutations",
+        "name": "isEnabled",
         "storageKey": null
       },
       {
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "enableSubscriptions",
+        "name": "mutationsEnabled",
         "storageKey": null
       },
       {
         "alias": null,
         "args": null,
-        "concreteType": "Model",
-        "kind": "LinkedField",
-        "name": "models",
-        "plural": true,
-        "selections": [
-          (v0/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "streamID",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "name",
-            "storageKey": null
-          },
-          (v1/*: any*/)
-        ],
+        "kind": "ScalarField",
+        "name": "subscriptionsEnabled",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "modelsCount",
         "storageKey": null
       }
     ],
@@ -122,7 +95,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "CompositesListQuery",
-    "selections": (v2/*: any*/),
+    "selections": (v0/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
@@ -131,19 +104,19 @@ return {
     "argumentDefinitions": [],
     "kind": "Operation",
     "name": "CompositesListQuery",
-    "selections": (v2/*: any*/)
+    "selections": (v0/*: any*/)
   },
   "params": {
-    "cacheID": "1bfd25a32cf02fbebdbf3d3a4262e2da",
+    "cacheID": "6dbddb66753491d732e10636c163800e",
     "id": null,
     "metadata": {},
     "name": "CompositesListQuery",
     "operationKind": "query",
-    "text": "query CompositesListQuery {\n  composites {\n    id\n    compositeID\n    description\n    enable\n    enableMutations\n    enableSubscriptions\n    models {\n      id\n      streamID\n      name\n      description\n    }\n  }\n}\n"
+    "text": "query CompositesListQuery {\n  composites {\n    id\n    compositeID\n    description\n    isEnabled\n    mutationsEnabled\n    subscriptionsEnabled\n    modelsCount\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "0f98b46768283da6f5c7653d21088159";
+(node as any).hash = "92bbd4d1da0234fffd4cdd8e0f98db0a";
 
 export default node;

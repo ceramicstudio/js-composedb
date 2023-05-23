@@ -1,5 +1,14 @@
 import type { GraphDefinition } from '@composedb/graph-codecs'
-import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn, type Relation } from 'typeorm'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryColumn,
+  type Relation,
+  UpdateDateColumn,
+} from 'typeorm'
 
 import { Model } from './model.js'
 
@@ -7,6 +16,9 @@ import { Model } from './model.js'
 export class Composite {
   @PrimaryColumn()
   id!: string
+
+  @Column({ nullable: true })
+  label?: string
 
   @Column({ nullable: true })
   description?: string
@@ -19,11 +31,17 @@ export class Composite {
   models!: Array<Relation<Model>>
 
   @Column()
-  enable!: boolean
+  isEnabled!: boolean
 
   @Column()
-  enableMutations!: boolean
+  mutationsEnabled!: boolean
 
   @Column()
-  enableSubscriptions!: boolean
+  subscriptionsEnabled!: boolean
+
+  @CreateDateColumn()
+  createdAt?: string
+
+  @UpdateDateColumn()
+  updatedAt?: string
 }

@@ -12,15 +12,10 @@ export const compositesQuery = graphql`
       id
       compositeID
       description
-      enable
-      enableMutations
-      enableSubscriptions
-      models {
-        id
-        streamID
-        name
-        description
-      }
+      isEnabled
+      mutationsEnabled
+      subscriptionsEnabled
+      modelsCount
     }
   }
 `
@@ -29,16 +24,6 @@ export default function CompositesList() {
   const data = useRouteQuery<CompositesListQuery>(compositesQuery)
 
   const rows = data.composites.map((composite) => {
-    const models = composite.models.map((model) => (
-      <li key={model.id}>
-        <Tooltip label={model.streamID}>
-          <Text>
-            {model.name} ({shortID(model.streamID)})
-          </Text>
-        </Tooltip>
-      </li>
-    ))
-
     return (
       <tr key={composite.id}>
         <td>
@@ -47,10 +32,8 @@ export default function CompositesList() {
           </Tooltip>
         </td>
         <td>{composite.description}</td>
-        <td>
-          <ul>{models}</ul>
-        </td>
-        <td>{composite.enable ? 'Yes' : 'No'}</td>
+        <td>{composite.modelsCount}</td>
+        <td>{composite.isEnabled ? 'Yes' : 'No'}</td>
       </tr>
     )
   })

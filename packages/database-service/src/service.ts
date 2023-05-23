@@ -1,3 +1,4 @@
+import type { CompositesQuery, ModelsQuery } from '@composedb/database-codecs'
 import type { DocumentQuery, PageInfo, PaginationQuery } from '@composedb/document-codecs'
 import type { Logger, ServiceLifecycle } from '@composedb/services-rpc'
 import { DataSource, type DataSourceOptions, In, type SelectQueryBuilder } from 'typeorm'
@@ -52,14 +53,36 @@ export class Service implements ServiceLifecycle {
     await ds.destroy()
   }
 
-  async findComposite(id: string): Promise<Composite | null> {
+  async loadComposite(id: string): Promise<Composite | null> {
     const ds = await this.#dataSourcePromise
     return await ds.manager.findOneBy(Composite, { id })
   }
 
-  async findComposites(): Promise<Array<Composite>> {
+  async loadComposites(ids: Array<string>): Promise<Array<Composite>> {
     const ds = await this.#dataSourcePromise
-    return await ds.manager.find(Composite, { relations: { models: true } })
+    return await ds.manager.findBy(Composite, { id: In(ids) })
+  }
+
+  async countComposites(query: CompositesQuery): Promise<number> {
+    const ds = await this.#dataSourcePromise
+    if (query.model != null) {
+      return await ds.manager
+        .createQueryBuilder(Composite, 'composite')
+        .leftJoin('composite.models', 'model', 'model.id = :id', { id: query.model })
+        .getCount()
+    }
+    return await ds.manager.count(Composite)
+  }
+
+  async findComposites(query: CompositesQuery): Promise<Array<Composite>> {
+    const ds = await this.#dataSourcePromise
+    if (query.model != null) {
+      return await ds.manager
+        .createQueryBuilder(Composite, 'composite')
+        .leftJoin('composite.models', 'model', 'model.id = :id', { id: query.model })
+        .getMany()
+    }
+    return await ds.manager.find(Composite)
   }
 
   async saveComposite(entity: Composite): Promise<Composite> {
@@ -69,12 +92,12 @@ export class Service implements ServiceLifecycle {
     return saved
   }
 
-  async findDocument(id: string): Promise<Document | null> {
+  async loadDocument(id: string): Promise<Document | null> {
     const ds = await this.#dataSourcePromise
     return await ds.manager.findOneBy(Document, { id })
   }
 
-  async findDocuments(ids: Array<string>): Promise<Array<Document>> {
+  async loadDocuments(ids: Array<string>): Promise<Array<Document>> {
     const ds = await this.#dataSourcePromise
     return await ds.manager.findBy(Document, { id: In(ids) })
   }
@@ -171,7 +194,7 @@ export class Service implements ServiceLifecycle {
 
   async saveDocument(doc: Omit<Document, 'cursor'>): Promise<Document> {
     const ds = await this.#dataSourcePromise
-    const existing = await this.findDocument(doc.id)
+    const existing = await this.loadDocument(doc.id)
     // Ensure cursor is always set but never updated
     const cursor = existing?.cursor ?? `${Date.now()}${doc.id.slice(-3)}`
     const saved = await ds.manager.save(Document, { ...doc, cursor })
@@ -179,14 +202,36 @@ export class Service implements ServiceLifecycle {
     return saved
   }
 
-  async findModel(id: string): Promise<Model | null> {
+  async loadModel(id: string): Promise<Model | null> {
     const ds = await this.#dataSourcePromise
     return await ds.manager.findOneBy(Model, { id })
   }
 
-  async findModels(): Promise<Array<Model>> {
+  async loadModels(ids: Array<string>): Promise<Array<Model>> {
     const ds = await this.#dataSourcePromise
-    return await ds.manager.find(Model, { relations: { composites: true } })
+    return await ds.manager.findBy(Model, { id: In(ids) })
+  }
+
+  async countModels(query: ModelsQuery): Promise<number> {
+    const ds = await this.#dataSourcePromise
+    if (query.composite != null) {
+      return await ds.manager
+        .createQueryBuilder(Model, 'model')
+        .leftJoin('model.composites', 'composite', 'composite.id = :id', { id: query.composite })
+        .getCount()
+    }
+    return await ds.manager.count(Model)
+  }
+
+  async findModels(query: ModelsQuery): Promise<Array<Model>> {
+    const ds = await this.#dataSourcePromise
+    if (query.composite != null) {
+      return await ds.manager
+        .createQueryBuilder(Model, 'model')
+        .leftJoin('model.composites', 'composite', 'composite.id = :id', { id: query.composite })
+        .getMany()
+    }
+    return await ds.manager.find(Model)
   }
 
   async saveModel(entity: Model): Promise<Model> {

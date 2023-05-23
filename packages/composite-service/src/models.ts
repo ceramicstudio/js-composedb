@@ -6,6 +6,7 @@ import {
   type StreamLog,
   createDecoder,
 } from '@composedb/ceramic-codecs'
+import { fromModelEntity, toModelEntity } from '@composedb/database-codecs'
 import { ModelCodec, type Model } from '@composedb/model-codecs'
 
 import { decodeGenesisCommitData, decodeStream, verifyCommitSignature } from './stream.js'
@@ -67,16 +68,16 @@ export class ModelsManager {
   async create(commit: SignedCommitContainer, options: SaveModelOptions = {}): Promise<Model> {
     const stream = await this.#clients.ceramic.createStream.mutate({ commit })
     const model = await modelFromStream(decodeStream(stream))
-    await this.#clients.database.saveModel.mutate({
-      model,
-      indexDocuments: options.indexDocuments ?? false,
-    })
+    await this.#clients.database.saveModel.mutate(
+      toModelEntity(model, { indexingEnabled: options.indexDocuments })
+    )
     return model
   }
 
   async loadFromDatabase(id: string): Promise<Model | null> {
-    const model = await this.#clients.database.getModel.query({ id })
-    return model ? decodeModel(model) : null
+    const model = await this.#clients.database.loadModel.query({ id })
+    // @ts-ignore type mismatch with decoding
+    return model ? decodeModel(fromModelEntity(model)) : null
   }
 
   async loadFromNetwork(id: string): Promise<Model> {
@@ -91,10 +92,9 @@ export class ModelsManager {
     }
 
     const model = await this.loadFromNetwork(id)
-    await this.#clients.database.saveModel.mutate({
-      model,
-      indexDocuments: options.indexDocuments ?? false,
-    })
+    await this.#clients.database.saveModel.mutate(
+      toModelEntity(model, { indexingEnabled: options.indexDocuments })
+    )
     return model
   }
 }

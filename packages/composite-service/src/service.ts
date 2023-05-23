@@ -85,7 +85,7 @@ export class Service implements ServiceLifecycle {
   }
 
   async getGraphQLSchema(compositeID: string): Promise<GraphQLSchema> {
-    const composite = await this.#clients.database.getComposite.query({ id: compositeID })
+    const composite = await this.#clients.database.loadComposite.query({ id: compositeID })
     if (composite == null) {
       throw new GraphQLError(`Composite not found: ${compositeID}`)
     }
@@ -202,9 +202,9 @@ export class Service implements ServiceLifecycle {
     await this.#clients.database.saveComposite.mutate({
       id,
       graph,
-      enable: options.enable ?? true,
-      enableMutations: options.enableMutations ?? false,
-      enableSubscriptions: options.enableSubscriptions ?? false,
+      isEnabled: options.enable ?? true,
+      mutationsEnabled: options.enableMutations ?? false,
+      subscriptionsEnabled: options.enableSubscriptions ?? false,
     })
 
     return { id, graph }

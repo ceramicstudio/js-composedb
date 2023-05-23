@@ -19,10 +19,11 @@ type Composite implements Node {
   id: ID!
   compositeID: ID!
   description: String
-  enable: Boolean!
-  enableMutations: Boolean!
-  enableSubscriptions: Boolean!
+  isEnabled: Boolean!
+  mutationsEnabled: Boolean!
+  subscriptionsEnabled: Boolean!
   models: [Model!]!
+  modelsCount: Int!
 }
 
 type Model implements Node {
@@ -33,5 +34,7 @@ type Model implements Node {
   name: String!
   description: String
   composites: [Composite!]!
-  indexDocuments: Boolean!
+  compositesCount: Int!
+  indexingEnabled: Boolean!
+  documentsCount: Int!
 }

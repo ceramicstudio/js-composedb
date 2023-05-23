@@ -37,6 +37,7 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
+    "@composedb/database-codecs": "workspace:*",
     "@composedb/services-rpc": "workspace:*",
     "@trpc/client": "^10.27.1",
     "@trpc/server": "^10.27.1",

@@ -1,4 +1,10 @@
 import {
+  CompositeEntityCodec,
+  CompositesQueryCodec,
+  ModelEntityCodec,
+  ModelsQueryCodec,
+} from '@composedb/database-codecs'
+import {
   type Document as EncodedDocument,
   DocumentCodec,
   DocumentQueryCodec,
@@ -6,8 +12,6 @@ import {
   PaginationResultCodec,
   UniqueDocumentCodec,
 } from '@composedb/document-codecs'
-import { GraphDefinitionCodec } from '@composedb/graph-codecs'
-import { META_MODEL_BYTES, ModelCodec } from '@composedb/model-codecs'
 import { ioDecode, ioEncode } from '@composedb/services-rpc'
 import { initTRPC } from '@trpc/server'
 import * as io from 'io-ts'
@@ -18,21 +22,6 @@ import type {} from 'json-schema-typed/draft-2020-12.js'
 import type { Document as DocumentEntity } from './entities/document.js'
 import { documentInserted$ } from './events.js'
 import type { Service } from './service.js'
-
-// TODO: database codecs matching entities types, DB service should be able to return its internal types as well as the converted ones depending on the APIs
-export const StoredCompositeCodec = io.intersection(
-  [
-    io.strict({
-      id: io.string,
-      graph: GraphDefinitionCodec,
-      enable: io.boolean,
-      enableMutations: io.boolean,
-      enableSubscriptions: io.boolean,
-    }),
-    io.partial({ description: io.union([io.string, io.null]) }),
-  ],
-  'StoredComposite'
-)
 
 export type Context = {
   service: Service
@@ -50,21 +39,45 @@ function docEntityToCodec(entity: DocumentEntity): EncodedDocument {
   }
 }
 
+const loadOneInput = ioDecode(io.strict({ id: io.string }, 'database.loadOneInput'))
+const loadManyInput = ioDecode(io.strict({ ids: io.array(io.string) }, 'database.loadManyInput'))
+
+const countOutput = ioEncode(io.number)
+
+const compositesQueryInput = ioDecode(CompositesQueryCodec)
+const compositesOutput = ioEncode(io.array(CompositeEntityCodec, 'database.compositesOutput'))
+
+const modelsQueryInput = ioDecode(ModelsQueryCodec)
+const modelsOutput = ioEncode(io.array(ModelEntityCodec, 'database.modelsOutput'))
+
 export const router = t.router({
-  getComposite: t.procedure
-    .input(ioDecode(io.strict({ id: io.string }, 'database.getCompositeInput')))
-    .output(ioEncode(io.union([StoredCompositeCodec, io.null], 'database.getCompositeOutput')))
-    .query((req) => req.ctx.service.findComposite(req.input.id)),
+  // Entities APIs (internal structures)
 
-  listComposites: t.procedure
-    .output(ioEncode(io.array(StoredCompositeCodec, 'database.listCompositesOutput')))
-    .query((req) => req.ctx.service.findComposites()),
+  loadComposite: t.procedure
+    .input(loadOneInput)
+    .output(ioEncode(io.union([CompositeEntityCodec, io.null], 'database.loadCompositeOutput')))
+    .query((req) => req.ctx.service.loadComposite(req.input.id)),
 
-  saveComposite: t.procedure.input(ioDecode(StoredCompositeCodec)).mutation(async (req) => {
+  loadComposites: t.procedure
+    .input(loadManyInput)
+    .output(compositesOutput)
+    .query((req) => req.ctx.service.loadComposites(req.input.ids)),
+
+  countComposites: t.procedure
+    .input(compositesQueryInput)
+    .output(countOutput)
+    .query((req) => req.ctx.service.countComposites(req.input)),
+
+  findComposites: t.procedure
+    .input(compositesQueryInput)
+    .output(compositesOutput)
+    .query((req) => req.ctx.service.findComposites(req.input)),
+
+  saveComposite: t.procedure.input(ioDecode(CompositeEntityCodec)).mutation(async (req) => {
     // Models need to have been saved to DB before saving the composite
     const models = await Promise.all(
       Object.values(req.input.graph.models).map(async ({ id }) => {
-        const model = await req.ctx.service.findModel(id)
+        const model = await req.ctx.service.loadModel(id)
         if (model == null) {
           throw new Error(`Model not found: ${id}`)
         }
@@ -73,32 +86,60 @@ export const router = t.router({
     )
     await req.ctx.service.saveComposite({
       id: req.input.id,
+      label: req.input.label ?? undefined,
+      description: req.input.description ?? undefined,
       graph: req.input.graph,
       models,
-      enable: req.input.enable,
-      enableMutations: req.input.enableMutations,
-      enableSubscriptions: req.input.enableSubscriptions,
+      isEnabled: req.input.isEnabled,
+      mutationsEnabled: req.input.mutationsEnabled,
+      subscriptionsEnabled: req.input.subscriptionsEnabled,
     })
   }),
 
+  loadModel: t.procedure
+    .input(loadOneInput)
+    .output(ioEncode(io.union([ModelEntityCodec, io.null], 'database.loadModelOutput')))
+    .query((req) => req.ctx.service.loadModel(req.input.id)),
+
+  loadModels: t.procedure
+    .input(loadManyInput)
+    .output(modelsOutput)
+    .query((req) => req.ctx.service.loadModels(req.input.ids)),
+
+  countModels: t.procedure
+    .input(modelsQueryInput)
+    .output(countOutput)
+    .query((req) => req.ctx.service.countModels(req.input)),
+
+  findModels: t.procedure
+    .input(modelsQueryInput)
+    .output(modelsOutput)
+    .query((req) => req.ctx.service.findModels(req.input)),
+
+  saveModel: t.procedure.input(ioDecode(ModelEntityCodec)).mutation(async (req) => {
+    await req.ctx.service.saveModel(req.input)
+  }),
+
+  // Documents APIs
+
   countDocuments: t.procedure
     .input(ioDecode(DocumentQueryCodec))
-    .output(ioEncode(io.number))
+    .output(countOutput)
     .query((req) => req.ctx.service.countDocuments(req.input)),
 
   getDocument: t.procedure
-    .input(ioDecode(io.strict({ id: io.string }, 'database.getDocumentInput')))
+    .input(loadOneInput)
     .output(ioEncode(io.union([DocumentCodec, io.null], 'database.getDocumentOutput')))
     .query(async (req) => {
-      const entity = await req.ctx.service.findDocument(req.input.id)
+      const entity = await req.ctx.service.loadDocument(req.input.id)
       return entity ? docEntityToCodec(entity) : null
     }),
 
   getDocuments: t.procedure
-    .input(ioDecode(io.strict({ ids: io.array(io.string) }, 'database.getDocumentsInput')))
+    .input(loadManyInput)
     .output(ioEncode(io.array(DocumentCodec, 'database.getDocumentsOutput')))
     .query(async (req) => {
-      const results = await req.ctx.service.findDocuments(req.input.ids)
+      const results = await req.ctx.service.loadDocuments(req.input.ids)
       return results.map(docEntityToCodec)
     }),
 
@@ -113,53 +154,14 @@ export const router = t.router({
       }
     }),
 
-  saveDocument: t.procedure
-    .input(ioDecode(io.strict({ document: UniqueDocumentCodec }, 'database.saveDocumentInput')))
-    .mutation(async (req) => {
-      const { model, ...doc } = req.input.document
-      await req.ctx.service.saveDocument({ ...doc, modelId: model })
-    }),
+  saveDocument: t.procedure.input(ioDecode(UniqueDocumentCodec)).mutation(async (req) => {
+    const { model, ...doc } = req.input
+    await req.ctx.service.saveDocument({ ...doc, modelId: model })
+  }),
 
   documentInserted: t.procedure.subscription(() => {
     return documentInserted$.pipe(map(docEntityToCodec))
   }),
-
-  getModel: t.procedure
-    .input(ioDecode(io.strict({ id: io.string }, 'database.getModelInput')))
-    .output(ioEncode(io.union([ModelCodec, io.null], 'database.getModelOutput')))
-    .query(async (req) => {
-      const entity = await req.ctx.service.findModel(req.input.id)
-      return entity
-        ? {
-            id: entity.id,
-            content: entity.content,
-            metadata: { controller: entity.controller, model: META_MODEL_BYTES },
-          }
-        : null
-    }),
-
-  listModels: t.procedure.query(async (req) => {
-    return await req.ctx.service.findModels()
-  }),
-
-  saveModel: t.procedure
-    .input(
-      ioDecode(
-        io.strict({ model: ModelCodec, indexDocuments: io.boolean }, 'database.saveModelInput')
-      )
-    )
-    .mutation(async (req) => {
-      const { model, indexDocuments } = req.input
-      await req.ctx.service.saveModel({
-        id: model.id,
-        controller: model.metadata.controller,
-        version: model.content.version,
-        name: model.content.name,
-        description: model.content.description,
-        content: model.content,
-        indexDocuments,
-      })
-    }),
 })
 
 export type Router = typeof router
