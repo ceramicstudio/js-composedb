@@ -1,4 +1,9 @@
 import {
+  Service as AdminService,
+  type ServiceConfig as AdminConfig,
+  router as adminRouter,
+} from '@composedb/admin-service'
+import {
   Service as CeramicService,
   type ServiceConfig as CeramicConfig,
   router as ceramicRouter,
@@ -22,15 +27,17 @@ import type { AnyRouter } from '@trpc/server'
 
 import { type ServiceClientOf, type TargetRouter, createClient } from './clients.js'
 
-type ServiceID = 'ceramic' | 'composite' | 'database'
+type ServiceID = 'admin' | 'ceramic' | 'composite' | 'database'
 
 const routers: Record<ServiceID, AnyRouter> = {
+  admin: adminRouter,
   ceramic: ceramicRouter,
   composite: compositeRouter,
   database: databaseRouter,
 }
 
 export type ServicesRunnerParams = {
+  admin: AdminConfig
   ceramic?: CeramicConfig
   dataSource: DataSourceOptions
   logger: Logger
@@ -42,12 +49,20 @@ export class ServicesRunner {
   #services: Record<ServiceID, ServiceLifecycle>
 
   constructor(params: ServicesRunnerParams) {
-    const { ceramic, dataSource } = params
+    const { admin, ceramic, dataSource } = params
     const logger = params.logger.getSubLogger({ name: 'services' })
 
     const bus = new ServicesBus()
 
     const services = {
+      admin: new AdminService({
+        bus,
+        clients: {
+          database: createClient(bus, 'admin', 'database'),
+        },
+        dids: admin.dids,
+        logger: logger.getSubLogger({ name: 'admin' }),
+      }),
       ceramic: new CeramicService({
         config: ceramic ?? { pubsubTopic: '/test/local' },
         logger: logger.getSubLogger({ name: 'ceramic' }),

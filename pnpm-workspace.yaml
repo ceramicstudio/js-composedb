@@ -1,4 +1,3 @@
 packages:
-  - admin
   - 'packages/*'
   - website

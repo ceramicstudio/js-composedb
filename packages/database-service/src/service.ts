@@ -57,6 +57,11 @@ export class Service implements ServiceLifecycle {
     return await ds.manager.findOneBy(Composite, { id })
   }
 
+  async findComposites(): Promise<Array<Composite>> {
+    const ds = await this.#dataSourcePromise
+    return await ds.manager.find(Composite, { relations: { models: true } })
+  }
+
   async saveComposite(entity: Composite): Promise<Composite> {
     const ds = await this.#dataSourcePromise
     const saved = await ds.manager.save(Composite, entity)
@@ -177,6 +182,11 @@ export class Service implements ServiceLifecycle {
   async findModel(id: string): Promise<Model | null> {
     const ds = await this.#dataSourcePromise
     return await ds.manager.findOneBy(Model, { id })
+  }
+
+  async findModels(): Promise<Array<Model>> {
+    const ds = await this.#dataSourcePromise
+    return await ds.manager.find(Model, { relations: { composites: true } })
   }
 
   async saveModel(entity: Model): Promise<Model> {

@@ -20,14 +20,18 @@ function logObject(message: string, data: unknown) {
 
 const logger = createLogger({ hideLogPositionForProduction: true, minLevel: 0 })
 const runner = new ServicesRunner({
+  admin: {
+    dids: [],
+  },
   dataSource: {
     type: 'sqlite',
     database: 'data/test.db',
   },
   logger,
 })
+const admin = runner.createClient('server', 'admin')
 const composite = runner.createClient('server', 'composite')
-const caller = router.createCaller({ composite })
+const caller = router.createCaller({ admin, composite })
 
 /**
  * Common for dev and runtime flows

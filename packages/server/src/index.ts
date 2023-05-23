@@ -1,3 +1,9 @@
+export type { Context } from './context.js'
+export { router } from './router.js'
+export type { Router } from './router.js'
+
+// --- current APIs ---
+
 /**
  * ComposeDB server for hybrid execution on the {@linkcode client ComposeDB client}.
  *

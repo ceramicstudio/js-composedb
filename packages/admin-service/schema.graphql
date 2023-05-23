@@ -1,0 +1,37 @@
+type Query {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+  composites: [Composite!]!
+  models: [Model!]!
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+type Composite implements Node {
+  """The ID of an object"""
+  id: ID!
+  compositeID: ID!
+  description: String
+  enable: Boolean!
+  enableMutations: Boolean!
+  enableSubscriptions: Boolean!
+  models: [Model!]!
+}
+
+type Model implements Node {
+  """The ID of an object"""
+  id: ID!
+  streamID: ID!
+  controller: String!
+  name: String!
+  description: String
+  composites: [Composite!]!
+  indexDocuments: Boolean!
+}

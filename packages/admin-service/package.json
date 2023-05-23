@@ -1,5 +1,5 @@
 {
-  "name": "@composedb/ceramic-service",
+  "name": "@composedb/admin-service",
   "version": "0.4.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
@@ -11,7 +11,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/ceramicstudio/js-composedb",
-    "directory": "packages/ceramic-service"
+    "directory": "packages/admin-service"
   },
   "type": "module",
   "main": "dist/index.js",
@@ -30,35 +30,26 @@
     "build:clean": "del dist",
     "build:js": "swc src -d ./dist --config-file ../../.swcrc",
     "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
-    "build": "pnpm build:clean && pnpm build:types && pnpm build:js",
+    "build:schema": "node ./scripts/print-schema.mjs",
+    "build": "pnpm build:clean && pnpm build:types && pnpm build:js && pnpm build:schema",
     "lint": "eslint src --fix",
     "prepare": "pnpm build",
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@composedb/ceramic-codecs": "workspace:*",
     "@composedb/services-rpc": "workspace:*",
-    "@ipld/dag-cbor": "^9.0.0",
-    "@stablelib/sha256": "^1.0.1",
+    "@trpc/client": "^10.27.1",
     "@trpc/server": "^10.27.1",
+    "dataloader": "^2.2.2",
     "fp-ts": "^2.15.0",
-    "get-port": "^6.1.2",
-    "go-ipfs": "^0.18.1",
+    "graphql": "^16.6.0",
+    "graphql-relay": "^0.10.0",
     "io-ts": "^2.2.20",
-    "ipfs-http-client": "^60.0.0",
-    "ipfsd-ctl": "^13.0.0",
-    "merge-options": "^3.0.4",
-    "multiformats": "^11.0.2",
-    "quick-lru": "^6.1.1",
+    "nanoid": "^4.0.2",
     "rxjs": "^7.8.1",
-    "tmp-promise": "^3.0.3",
-    "uint8arrays": "^4.0.3"
+    "rxjs-for-await": "^1.0.0"
   },
   "devDependencies": {
-    "@ceramicnetwork/streamid": "^2.14.0",
-    "@didtools/cacao": "^2.0.0",
-    "@libp2p/interface-pubsub": "^3.0.6",
-    "dids": "^4.0.1",
-    "ipfs-core-types": "^0.14.0"
+    "@composedb/database-service": "workspace:*"
   }
 }

@@ -36,12 +36,13 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
+    "@composedb/admin-service": "workspace:*",
     "@composedb/ceramic-service": "workspace:*",
     "@composedb/composite-service": "workspace:*",
     "@composedb/database-service": "workspace:*",
     "@composedb/services-rpc": "workspace:*"
   },
   "devDependencies": {
-    "@trpc/server": "^10.26.0"
+    "@trpc/server": "^10.27.1"
   }
 }

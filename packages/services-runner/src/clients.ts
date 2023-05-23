@@ -1,9 +1,11 @@
+import type { Router as AdminRouter } from '@composedb/admin-service'
 import type { Router as CeramicRouter } from '@composedb/ceramic-service'
 import type { Router as CompositeRouter } from '@composedb/composite-service'
 import type { Router as DatabaseRouter } from '@composedb/database-service'
 import { type ServicesBus, type ServiceClient, createServiceClient } from '@composedb/services-rpc'
 
 export type Routers = {
+  admin: AdminRouter
   ceramic: CeramicRouter
   composite: CompositeRouter
   database: DatabaseRouter

@@ -19,6 +19,7 @@ import type { Document as DocumentEntity } from './entities/document.js'
 import { documentInserted$ } from './events.js'
 import type { Service } from './service.js'
 
+// TODO: database codecs matching entities types, DB service should be able to return its internal types as well as the converted ones depending on the APIs
 export const StoredCompositeCodec = io.intersection(
   [
     io.strict({
@@ -54,6 +55,10 @@ export const router = t.router({
     .input(ioDecode(io.strict({ id: io.string }, 'database.getCompositeInput')))
     .output(ioEncode(io.union([StoredCompositeCodec, io.null], 'database.getCompositeOutput')))
     .query((req) => req.ctx.service.findComposite(req.input.id)),
+
+  listComposites: t.procedure
+    .output(ioEncode(io.array(StoredCompositeCodec, 'database.listCompositesOutput')))
+    .query((req) => req.ctx.service.findComposites()),
 
   saveComposite: t.procedure.input(ioDecode(StoredCompositeCodec)).mutation(async (req) => {
     // Models need to have been saved to DB before saving the composite
@@ -132,6 +137,10 @@ export const router = t.router({
           }
         : null
     }),
+
+  listModels: t.procedure.query(async (req) => {
+    return await req.ctx.service.findModels()
+  }),
 
   saveModel: t.procedure
     .input(
