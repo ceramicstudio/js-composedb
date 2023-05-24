@@ -1,25 +1,26 @@
-import { applyWSSHandler } from '@trpc/server/adapters/ws'
-import { WebSocketServer } from 'ws'
+import cors from '@fastify/cors'
+import ws from '@fastify/websocket'
+import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify'
+import fastify from 'fastify'
 
-import { createContext, logger } from './context.js'
+import { createContext } from './context.js'
 import { router } from './router.js'
 
-const serverLogger = logger.getSubLogger({ name: 'server' })
-
-const wss = new WebSocketServer({ port: 3001 })
-// @ts-ignore router type mismatc
-const handler = applyWSSHandler({ wss, router, createContext })
-
-wss.on('connection', (ws) => {
-  serverLogger.debug(`New connection (${wss.clients.size} total)`)
-  ws.once('close', () => {
-    serverLogger.debug(`Closed connection (${wss.clients.size} total)`)
-  })
+export const server = fastify({
+  maxParamLength: 5000,
 })
-serverLogger.info('WebSocket server listening on ws://localhost:3001')
 
-process.on('SIGTERM', () => {
-  serverLogger.warn('SIGTERM')
-  handler.broadcastReconnectNotification()
-  wss.close()
+await server.register(cors, { origin: true })
+server.register(ws)
+server.register(fastifyTRPCPlugin, {
+  prefix: '/admin',
+  trpcOptions: { router, createContext },
+  useWSS: true,
 })
+
+try {
+  await server.listen({ port: 3001 })
+} catch (err) {
+  server.log.error(err)
+  process.exit(1)
+}

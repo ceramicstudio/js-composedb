@@ -1,7 +1,7 @@
-import { ScrollArea, Table, Text, Tooltip } from '@mantine/core'
+import { Accordion, Avatar, Group, ScrollArea, Text, Tooltip } from '@mantine/core'
+import { IconArchive, IconArchiveOff } from '@tabler/icons-react'
 import { graphql } from 'react-relay'
 
-import { shortID } from '../utils.js'
 import { useRouteQuery } from '../query.js'
 
 import type { ModelsListQuery } from './__generated__/ModelsListQuery.graphql.js'
@@ -19,39 +19,49 @@ export const modelsQuery = graphql`
   }
 `
 
+type IndexingStatusIconProps = {
+  enabled: boolean
+}
+
+function IndexingStatusIcon({ enabled }: IndexingStatusIconProps) {
+  return enabled ? (
+    <Avatar alt="Indexing documents" color="green">
+      <IconArchive />
+    </Avatar>
+  ) : (
+    <Avatar alt="Not indexing" color="yellow">
+      <IconArchiveOff />
+    </Avatar>
+  )
+}
+
 export default function ModelsList() {
   const data = useRouteQuery<ModelsListQuery>(modelsQuery)
 
-  const rows = data.models.map((model) => {
+  const items = data.models.map((model) => {
     return (
-      <tr key={model.id}>
-        <td>
-          <Tooltip label={model.streamID}>
-            <Text>
-              {model.name} ({shortID(model.streamID)})
-            </Text>
-          </Tooltip>
-        </td>
-        <td>{model.description}</td>
-        <td>{model.compositesCount}</td>
-        <td>{model.indexingEnabled ? 'Yes' : 'No'}</td>
-      </tr>
+      <Accordion.Item key={model.id} value={model.id}>
+        <Accordion.Control>
+          <Group>
+            <IndexingStatusIcon enabled={model.indexingEnabled} />
+            <div>
+              <Text weight="bold">{model.name}</Text>
+              <Text color="dimmed">{model.streamID}</Text>
+            </div>
+          </Group>
+        </Accordion.Control>
+        <Accordion.Panel>
+          <Text>{model.description}</Text>
+          <Text>Composites: {model.compositesCount}</Text>
+          <Text>Indexing: {model.indexingEnabled ? 'Yes' : 'No'}</Text>
+        </Accordion.Panel>
+      </Accordion.Item>
     )
   })
 
   return (
     <ScrollArea>
-      <Table sx={{ minWidth: 800 }} verticalSpacing="xs">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Description</th>
-            <th>Composites</th>
-            <th>Indexing</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </Table>
+      <Accordion>{items}</Accordion>
     </ScrollArea>
   )
 }

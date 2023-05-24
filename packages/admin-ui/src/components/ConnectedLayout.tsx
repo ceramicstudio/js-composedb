@@ -1,5 +1,5 @@
 import { AppShell, Header, Image, Loader, Navbar, Text } from '@mantine/core'
-import { IconHexagon, IconHexagons } from '@tabler/icons-react'
+import { IconHexagonalPrism, IconHexagon, IconHexagons } from '@tabler/icons-react'
 import { useAtomValue } from 'jotai'
 import { Suspense } from 'react'
 import { RelayEnvironmentProvider } from 'react-relay'
@@ -31,8 +31,9 @@ export default function ConnectedLayout() {
         }
         navbar={
           <Navbar width={{ base: 300 }} height={500}>
-            <NavLink icon={<IconHexagons />} label="Composites" to="/composites" />
-            <NavLink icon={<IconHexagon />} label="Models" to="/models" />
+            <NavLink icon={<IconHexagon />} label="Local models" to="/models" />
+            <NavLink icon={<IconHexagons />} label="Local composites" to="/composites" />
+            <NavLink icon={<IconHexagonalPrism />} label="Composite editor" to="/editor" />
           </Navbar>
         }>
         <Suspense fallback={<Loader variant="bars" />}>

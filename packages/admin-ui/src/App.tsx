@@ -1,6 +1,7 @@
 import { MantineProvider, Text } from '@mantine/core'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
+import CompositeEditor from './components/CompositeEditor.js'
 import CompositesList, { compositesQuery } from './components/CompositesList.js'
 import ConnectedLayout from './components/ConnectedLayout.js'
 import ConnectScreen from './components/ConnectScreen.js'
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
         path: '/composites',
         loader: () => loadQuery(compositesQuery, {}),
         Component: CompositesList,
+      },
+      {
+        path: '/editor',
+        Component: CompositeEditor,
       },
       {
         path: '/models',

@@ -3,6 +3,8 @@ import type { Router as CompositeRouter } from '@composedb/composite-service'
 import type { ServiceClient } from '@composedb/services-rpc'
 import { createLogger } from '@composedb/services-rpc'
 import { ServicesRunner } from '@composedb/services-runner'
+import type { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify'
+import { nanoid } from 'nanoid'
 
 export type Context = {
   admin: ServiceClient<AdminRouter>
@@ -22,8 +24,9 @@ export const runner = new ServicesRunner({
   logger,
 })
 
-export function createContext(): Context {
-  const admin = runner.createClient('server', 'admin')
-  const composite = runner.createClient('server', 'composite')
+export function createContext(_options: CreateFastifyContextOptions): Context {
+  const id = nanoid()
+  const admin = runner.createClient(id, 'admin')
+  const composite = runner.createClient(id, 'composite')
   return { admin, composite }
 }
