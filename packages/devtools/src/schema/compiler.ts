@@ -244,6 +244,11 @@ export class SchemaCompiler {
     modelDefinition: ParsedModelDefinition,
     objectDefinition: ObjectDefinition
   ): AbstractModelDefinition {
+    const indices = objectDefinition.indices.map((idx) => {
+      return {
+        fields: idx.fields,
+      }
+    })
     if (modelDefinition.action === 'load') {
       const views: ModelViewsDefinition = {}
       for (const [key, field] of Object.entries(objectDefinition.properties)) {
@@ -260,7 +265,7 @@ export class SchemaCompiler {
           )
         }
       }
-      return { ...modelDefinition, views }
+      return { ...modelDefinition, views, indices }
     }
 
     if (objectDefinition.properties[DOC_ID_FIELD] != null) {
@@ -334,6 +339,7 @@ export class SchemaCompiler {
         relations: modelDefinition.relations,
         views,
       },
+      indices,
     }
   }
 }

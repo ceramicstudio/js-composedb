@@ -1,6 +1,5 @@
-import type { CeramicApi, SignedCommit } from '@ceramicnetwork/common'
+import type { CeramicApi, ModelData, SignedCommit } from '@ceramicnetwork/common'
 import { Model, type ModelViewsDefinition } from '@ceramicnetwork/stream-model'
-import { StreamID } from '@ceramicnetwork/streamid'
 import type {
   CompositeViewsDefinition,
   EncodedCompositeDefinition,
@@ -8,6 +7,7 @@ import type {
   ModelDefinition,
   RuntimeCompositeDefinition,
   StreamCommits,
+  FieldsIndex,
 } from '@composedb/types'
 import { cloneDeep, merge } from 'lodash-es'
 import createObjectHash from 'object-hash'
@@ -16,6 +16,7 @@ import { decodeSignedMap, encodeSignedMap } from './formats/json.js'
 import { createRuntimeDefinition } from './formats/runtime.js'
 import { createAbstractCompositeDefinition } from './schema/compiler.js'
 import type { AbstractModelDefinition } from './schema/types.js'
+import { StreamID } from '@ceramicnetwork/streamid'
 
 const MODEL_GENESIS_OPTS = {
   anchor: true,
@@ -37,7 +38,8 @@ function isSignedCommit(input: Record<string, any>): input is SignedCommit {
 function toStrictDefinition(definition: InternalCompositeDefinition): StrictCompositeDefinition {
   const emptyViews = { account: {}, root: {}, models: {} }
   const views = definition.views ? { ...emptyViews, ...definition.views } : emptyViews
-  return { aliases: {}, commonEmbeds: [], ...definition, views }
+  const indices = definition.indices ? definition.indices : {}
+  return { aliases: {}, commonEmbeds: [], ...definition, views, indices }
 }
 
 function isSupportedVersion(supported: string, check: string): boolean {
@@ -272,6 +274,7 @@ export class Composite {
       commonEmbeds,
     }
     const modelsViews: Record<string, ModelViewsDefinition> = {}
+    const modelsIndices: Record<string, Array<FieldsIndex>> = {}
     const commits: Record<string, any> = {}
 
     // TODO: once interfaces are supported, they need to be loaded or created first
@@ -279,13 +282,16 @@ export class Composite {
       // For each model definition...
       Object.values(models).map(async (abstractModel: AbstractModelDefinition) => {
         // Create or load the model stream
-        let model: Model
+        let model
         if (abstractModel.action === 'create') {
           assertAuthenticatedDID(params.ceramic)
           model = await Model.create(params.ceramic, abstractModel.model)
         } else {
           model = await Model.load(params.ceramic, abstractModel.id)
           modelsViews[abstractModel.id] = abstractModel.views
+          if (abstractModel.indices) {
+            modelsIndices[abstractModel.id] = abstractModel.indices
+          }
         }
         assertSupportedModelController(model)
         const id = model.id.toString()
@@ -300,6 +306,7 @@ export class Composite {
     )
 
     definition.views = { models: modelsViews }
+    definition.indices = modelsIndices
     const composite = new Composite({ commits, definition })
 
     // By default, add models to the index
@@ -551,8 +558,17 @@ export class Composite {
    */
   async startIndexingOn(ceramic: CeramicApi): Promise<void> {
     assertAuthenticatedDID(ceramic)
-    const modelIDs = Object.keys(this.#definition.models).map(StreamID.fromString)
-    await ceramic.admin.startIndexingModels(modelIDs)
+    const definedIndices: Array<ModelData> = Array.from(Object.keys(this.#definition.models)).map(
+      (id) => {
+        const streamID = StreamID.fromString(id)
+        const indices = this.#definition.indices?.[id] ?? []
+        return {
+          streamID,
+          indices,
+        }
+      }
+    )
+    await ceramic.admin.startIndexingModelData(definedIndices)
   }
 
   /**

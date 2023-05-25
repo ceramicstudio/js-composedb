@@ -166,6 +166,7 @@ describe('composite', () => {
             aliases: { fooID: 'Test' },
             commonEmbeds: [],
             views: { account: {}, models: {}, root: {} },
+            indices: {},
           },
         })
       })
@@ -187,6 +188,7 @@ describe('composite', () => {
             aliases: { fooID: 'Test' },
             commonEmbeds: [],
             views: { account: {}, models: {}, root: {} },
+            indices: {},
           },
         })
       })
@@ -208,6 +210,7 @@ describe('composite', () => {
             aliases: { fooID: 'Test' },
             commonEmbeds: [],
             views: { account: {}, models: {}, root: {} },
+            indices: {},
           },
         })
       })
@@ -417,6 +420,7 @@ describe('composite', () => {
               models: {},
               root: {},
             },
+            indices: {},
           },
         })
       })
@@ -568,97 +572,102 @@ describe('composite', () => {
     })
 
     test('calls the admin API to index the models', async () => {
-      const startIndexingModels = jest.fn()
+      const startIndexingModelData = jest.fn()
       const mockCeramic = {
-        admin: { startIndexingModels },
+        admin: { startIndexingModelData },
         did: { authenticated: true },
       } as unknown as CeramicApi
 
       await composite.startIndexingOn(mockCeramic)
-      expect(startIndexingModels).toHaveBeenCalledWith([expect.any(StreamID)])
+      expect(startIndexingModelData).toHaveBeenCalledWith([
+        { streamID: StreamID.fromString(modelID), indices: [] },
+      ])
     })
 
     test('throws an error if there is no DID attached to the Ceramic instance', async () => {
-      const startIndexingModels = jest.fn()
-      const mockCeramic = { admin: { startIndexingModels } } as unknown as CeramicApi
+      const startIndexingModelData = jest.fn()
+      const mockCeramic = {
+        admin: { startIndexingModelData },
+      } as unknown as CeramicApi
 
       await expect(() => composite.startIndexingOn(mockCeramic)).rejects.toThrow(
         'An authenticated DID must be attached to the Ceramic instance'
       )
-      expect(startIndexingModels).not.toHaveBeenCalled()
+      expect(startIndexingModelData).not.toHaveBeenCalled()
     })
 
     test('throws an error if the DID attached to the Ceramic instance is not authenticated', async () => {
-      const startIndexingModels = jest.fn()
+      const startIndexingModelData = jest.fn()
       const mockCeramic = {
-        admin: { startIndexingModels },
+        admin: { startIndexingModelData },
         did: { authenticated: false },
       } as unknown as CeramicApi
 
       await expect(() => composite.startIndexingOn(mockCeramic)).rejects.toThrow(
         'An authenticated DID must be attached to the Ceramic instance'
       )
-      expect(startIndexingModels).not.toHaveBeenCalled()
+      expect(startIndexingModelData).not.toHaveBeenCalled()
     })
-  })
 
-  test('Composite.from() merges composites into a new instance', () => {
-    const first: CompositeParams = {
-      commits: { fooID: [] },
-      definition: {
-        version: '1.0',
-        commonEmbeds: ['First'],
-        models: {
-          fooID: { version: '1.0', name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+    test('Composite.from() merges composites into a new instance', () => {
+      const first: CompositeParams = {
+        commits: { fooID: [] },
+        definition: {
+          version: '1.0',
+          commonEmbeds: ['First'],
+          models: {
+            fooID: { version: '1.0', name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+          },
         },
-      },
-    }
-    const second: CompositeParams = {
-      commits: { barID: [] },
-      definition: {
-        version: '1.0',
-        commonEmbeds: ['First', 'Second'],
-        models: {
-          barID: { version: '1.0', name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
+      }
+      const second: CompositeParams = {
+        commits: { barID: [] },
+        definition: {
+          version: '1.0',
+          commonEmbeds: ['First', 'Second'],
+          models: {
+            barID: { version: '1.0', name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
+          },
         },
-      },
-    }
-    const third: CompositeParams = {
-      commits: { bazID: [] },
-      definition: {
-        version: '1.0',
-        models: {
-          bazID: { version: '1.0', name: 'Baz', accountRelation: { type: 'single' }, schema: {} },
+      }
+      const third: CompositeParams = {
+        commits: { bazID: [] },
+        definition: {
+          version: '1.0',
+          models: {
+            bazID: { version: '1.0', name: 'Baz', accountRelation: { type: 'single' }, schema: {} },
+          },
+          aliases: { bazID: 'Test' },
         },
-        aliases: { bazID: 'Test' },
-      },
-    }
-    const composite = Composite.from([new Composite(first), second, third], {
-      commonEmbeds: 'all',
+      }
+      const composite = Composite.from([new Composite(first), second, third], {
+        commonEmbeds: 'all',
+      })
+      const params = composite.toParams()
+      expect(params).toEqual({
+        commits: { fooID: [], barID: [], bazID: [] },
+        definition: {
+          version: '1.0',
+          models: {
+            fooID: { version: '1.0', name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+            barID: { version: '1.0', name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
+            bazID: { version: '1.0', name: 'Baz', accountRelation: { type: 'single' }, schema: {} },
+          },
+          aliases: { bazID: 'Test' },
+          commonEmbeds: ['First', 'Second'],
+          views: {
+            account: {},
+            models: {},
+            root: {},
+          },
+          indices: {},
+        },
+      })
+      // Source composites should not be altered
+      expect(params).not.toEqual(first)
+      expect(params).not.toEqual(second)
+      expect(params).not.toEqual(third)
     })
-    const params = composite.toParams()
-    expect(params).toEqual({
-      commits: { fooID: [], barID: [], bazID: [] },
-      definition: {
-        version: '1.0',
-        models: {
-          fooID: { version: '1.0', name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
-          barID: { version: '1.0', name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
-          bazID: { version: '1.0', name: 'Baz', accountRelation: { type: 'single' }, schema: {} },
-        },
-        aliases: { bazID: 'Test' },
-        commonEmbeds: ['First', 'Second'],
-        views: {
-          account: {},
-          models: {},
-          root: {},
-        },
-      },
-    })
-    // Source composites should not be altered
-    expect(params).not.toEqual(first)
-    expect(params).not.toEqual(second)
-    expect(params).not.toEqual(third)
   })
 
   describe('Composite.create()', () => {

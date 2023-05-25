@@ -4,9 +4,13 @@ import type {
   ModelRelationsDefinition,
   ModelViewsDefinition,
 } from '@ceramicnetwork/stream-model'
-import type { RuntimeViewField } from '@composedb/types'
+import type { RuntimeViewField, FieldsIndex } from '@composedb/types'
 
 import type { ScalarSchema } from '../types.js'
+
+export type Field = {
+  path: Array<string>
+}
 
 export type FieldCommonDefinition = {
   required: boolean
@@ -51,6 +55,7 @@ export type ObjectDefinition = {
   properties: ObjectFieldsDefinition
   references: Array<string> // Embedded objects and enums
   relations: ModelRelationsDefinition
+  indices: Array<FieldsIndex>
 }
 
 export type ParsedCreateModelDefinition = {
@@ -76,10 +81,15 @@ export type SchemaDefinition = {
   objects: Record<string, ObjectDefinition>
 }
 
-export type AbstractCreateModelDefinition = { action: 'create'; model: ModelDefinition }
+export type AbstractCreateModelDefinition = {
+  action: 'create'
+  model: ModelDefinition
+  indices?: Array<FieldsIndex>
+}
 
 export type AbstractLoadModelDefinition = ParsedLoadModelDefinition & {
   views: ModelViewsDefinition
+  indices?: Array<FieldsIndex>
 }
 
 export type AbstractModelDefinition = AbstractCreateModelDefinition | AbstractLoadModelDefinition

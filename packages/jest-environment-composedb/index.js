@@ -57,9 +57,25 @@ export default class ComposeEnvironment extends NodeEnvironment {
   }
 
   async teardown() {
-    await this.global.ceramic.close()
-    await this.global.ipfs.stop()
-    await this.tmpFolder.cleanup()
-    await super.teardown()
+    try {
+      await this.global.ipfs.stop()
+    } catch (e) {
+      //ignore
+    }
+    try {
+      await this.tmpFolder.cleanup()
+    } catch (e) {
+      //ignore
+    }
+    try {
+      await this.global.ceramic.close()
+    } catch (e) {
+      //ignore
+    }
+    try {
+      await super.teardown()
+    } catch (e) {
+      //ignore
+    }
   }
 }

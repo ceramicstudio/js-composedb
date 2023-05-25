@@ -49,4 +49,12 @@ directive @createModel(
 ) on OBJECT
 
 directive @loadModel(id: StreamID!) on OBJECT
+
+input IndexField {
+  path: [String!]!
+}
+
+directive @createIndex(
+  fields: [IndexField!]!
+) repeatable on OBJECT
 `
