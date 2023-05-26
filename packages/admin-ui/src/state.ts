@@ -1,19 +1,20 @@
+import type { DID } from 'dids'
 import { atom } from 'jotai'
 import type { Environment } from 'relay-runtime'
 
-import { type Client, createClient } from './client.js'
+import type { Client } from './client.js'
 import { createEnvironment } from './relay.js'
 
-export const clientAPIAtom = atom<string | null>('localhost:3001/admin')
+export type AdminState = {
+  client: Client
+  did: DID
+}
 
-export const clientAtom = atom<Client | null>((get) => {
-  const api = get(clientAPIAtom)
-  return api ? createClient(api) : null
-})
+export const adminStateAtom = atom<AdminState | null>(null)
 
 export const relayEnvironmentAtom = atom<Environment | null>((get) => {
-  const client = get(clientAtom)
-  return client ? createEnvironment(client) : null
+  const admin = get(adminStateAtom)
+  return admin ? createEnvironment(admin.client) : null
 })
 
 export const compositeEditorValueAtom = atom<string>('')

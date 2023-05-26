@@ -1,7 +1,7 @@
 import { GraphDefinitionCodec } from '@composedb/graph-codecs'
 import * as io from 'io-ts'
 
-const nullableString = io.union([io.string, io.null])
+import { nullableDate, nullableString } from './nullable.js'
 
 export const CompositeEntityCodec = io.intersection(
   [
@@ -15,8 +15,8 @@ export const CompositeEntityCodec = io.intersection(
     io.partial({
       label: nullableString,
       description: nullableString,
-      createdAt: nullableString,
-      updatedAt: nullableString,
+      createdAt: nullableDate,
+      updatedAt: nullableDate,
     }),
   ],
   'CompositeEntity'

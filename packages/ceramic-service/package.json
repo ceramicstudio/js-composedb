@@ -38,14 +38,14 @@
   "dependencies": {
     "@composedb/ceramic-codecs": "workspace:*",
     "@composedb/services-rpc": "workspace:*",
-    "@ipld/dag-cbor": "^9.0.0",
+    "@ipld/dag-cbor": "^9.0.1",
     "@stablelib/sha256": "^1.0.1",
-    "@trpc/server": "^10.27.1",
-    "fp-ts": "^2.15.0",
+    "@trpc/server": "^10.28.0",
+    "fp-ts": "^2.16.0",
     "get-port": "^6.1.2",
     "go-ipfs": "^0.18.1",
     "io-ts": "^2.2.20",
-    "ipfs-http-client": "^60.0.0",
+    "ipfs-http-client": "^60.0.1",
     "ipfsd-ctl": "^13.0.0",
     "merge-options": "^3.0.4",
     "multiformats": "^11.0.2",
@@ -59,6 +59,6 @@
     "@didtools/cacao": "^2.0.0",
     "@libp2p/interface-pubsub": "^4.0.1",
     "dids": "^4.0.1",
-    "ipfs-core-types": "^0.14.0"
+    "ipfs-core-types": "^0.14.1"
   }
 }

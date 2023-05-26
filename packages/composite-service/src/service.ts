@@ -49,10 +49,7 @@ export const SaveCompositeOptionsCodec = io.partial(
 export type SaveCompositeOptions = io.TypeOf<typeof SaveCompositeOptionsCodec>
 
 export const SavedCompositeCodec = io.strict(
-  {
-    id: io.string,
-    graph: GraphDefinitionCodec,
-  },
+  { id: io.string, graph: GraphDefinitionCodec },
   'SavedComposite'
 )
 export type SavedComposite = io.TypeOf<typeof SavedCompositeCodec>

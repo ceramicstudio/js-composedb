@@ -15,7 +15,7 @@ export const logger = createLogger({ hideLogPositionForProduction: true, minLeve
 
 export const runner = new ServicesRunner({
   admin: {
-    dids: [],
+    dids: ['did:key:z6MkgsZ8QM2xquJMpBfb2762XpRNSjsEHfyFcygyXz5cMAa3'],
   },
   dataSource: {
     type: 'sqlite',

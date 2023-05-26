@@ -43,8 +43,8 @@ export class Model {
   composites?: Array<Relation<Composite>>
 
   @CreateDateColumn()
-  createdAt?: string
+  createdAt?: Date
 
   @UpdateDateColumn()
-  updatedAt?: string
+  updatedAt?: Date
 }

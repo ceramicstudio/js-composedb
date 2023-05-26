@@ -38,7 +38,7 @@
   "dependencies": {
     "@composedb/graph-codecs": "workspace:*",
     "@composedb/model-codecs": "workspace:*",
-    "fp-ts": "^2.15.0",
+    "fp-ts": "^2.16.0",
     "io-ts": "^2.2.20"
   },
   "devDependencies": {

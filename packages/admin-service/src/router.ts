@@ -1,5 +1,6 @@
-import { ioDecode } from '@composedb/services-rpc'
+import { ioDecode, ioEncode } from '@composedb/services-rpc'
 import { initTRPC } from '@trpc/server'
+import * as io from 'io-ts'
 import { from, of } from 'rxjs'
 // Workaround for TS2742 error - https://github.com/microsoft/TypeScript/issues/47663#issuecomment-1270716220
 import type {} from 'json-schema-typed/draft-2020-12.js'
@@ -14,6 +15,11 @@ export type Context = {
 const t = initTRPC.context<Context>().create()
 
 export const router = t.router({
+  authenticate: t.procedure
+    .input(ioDecode(io.string))
+    .output(ioEncode(io.boolean))
+    .query((req) => req.ctx.service.checkAllowedDID(req.input)),
+
   graphql: t.procedure
     .input(ioDecode(GraphQLQueryCodec))
     .query((req) => req.ctx.service.executeGraphQL(req.input)),

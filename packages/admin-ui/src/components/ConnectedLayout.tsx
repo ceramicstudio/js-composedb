@@ -1,15 +1,16 @@
-import { AppShell, Header, Image, Loader, Navbar, Text } from '@mantine/core'
-import { IconHexagonalPrism, IconHexagon, IconHexagons } from '@tabler/icons-react'
-import { useAtomValue } from 'jotai'
+import { ActionIcon, AppShell, Flex, Header, Image, Loader, Navbar, Text } from '@mantine/core'
+import { IconHexagonalPrism, IconHexagon, IconHexagons, IconLogout } from '@tabler/icons-react'
+import { useAtom, useAtomValue } from 'jotai'
 import { Suspense } from 'react'
 import { RelayEnvironmentProvider } from 'react-relay'
 import { Link, Navigate, Outlet } from 'react-router-dom'
 
-import { relayEnvironmentAtom } from '../state.js'
+import { adminStateAtom, relayEnvironmentAtom } from '../state.js'
 
 import NavLink from './NavLink.js'
 
 export default function ConnectedLayout() {
+  const [adminState, setAdminState] = useAtom(adminStateAtom)
   const env = useAtomValue(relayEnvironmentAtom)
 
   return env ? (
@@ -27,6 +28,15 @@ export default function ConnectedLayout() {
                 ComposeDB Admin
               </Text>
             </Link>
+            <Flex justify="flex-end" gap="md" sx={{ flex: 1 }}>
+              <Text color="dimmed">{adminState?.did.id}</Text>
+              <ActionIcon
+                onClick={() => {
+                  setAdminState(null)
+                }}>
+                <IconLogout />
+              </ActionIcon>
+            </Flex>
           </Header>
         }
         navbar={

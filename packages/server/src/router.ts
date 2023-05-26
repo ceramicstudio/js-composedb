@@ -3,7 +3,7 @@ import { SignedCommitContainerCodec } from '@composedb/ceramic-codecs'
 import { CompositeDefinitionCodec, GraphQLQueryCodec } from '@composedb/composite-codecs'
 import type { GraphQLResult, SavedComposite } from '@composedb/composite-service'
 import { ModelCodec } from '@composedb/model-codecs'
-import { ioDecode } from '@composedb/services-rpc'
+import { ioDecode, ioEncode } from '@composedb/services-rpc'
 import {
   type AnyRootConfig,
   type BuildProcedure,
@@ -35,6 +35,7 @@ type Procedures = {
     ProcedureParams<Config>,
     Observable<GraphQLResult>
   >
+  adminAuthenticate: BuildProcedure<'query', ProcedureParams<Config>, boolean>
   adminGraphql: BuildProcedure<'query', ProcedureParams<Config>, GraphQLResult>
   adminGraphqlSubscription: BuildProcedure<
     'subscription',
@@ -79,6 +80,11 @@ const procedures: Procedures = {
     })
     return subject.asObservable()
   }),
+  // @ts-ignore type mismatch
+  adminAuthenticate: t.procedure
+    .input(ioDecode(io.string))
+    .output(ioEncode(io.boolean))
+    .query((req) => req.ctx.admin.authenticate.query(req.input)),
   // @ts-ignore type mismatch
   adminGraphql: t.procedure
     .input(ioDecode(AdminGraphQLQueryCodec))

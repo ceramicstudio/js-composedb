@@ -34,14 +34,20 @@ export type GraphQLQuery = io.TypeOf<typeof GraphQLQueryCodec>
 export type GraphQLResult = ExecutionResult<Record<string, unknown>>
 
 export class Service implements ServiceLifecycle {
+  #allowedDIDs: Array<string>
   #clients: ServiceClients
 
   constructor(params: ServiceParams) {
+    this.#allowedDIDs = params.dids
     this.#clients = params.clients
   }
 
   async stop() {
     // TODO: stop all active subscriptions
+  }
+
+  async checkAllowedDID(did: string): Promise<boolean> {
+    return this.#allowedDIDs.includes(did)
   }
 
   async executeGraphQL(query: GraphQLQuery): Promise<GraphQLResult> {

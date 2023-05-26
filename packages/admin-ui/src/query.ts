@@ -1,7 +1,7 @@
 import { getDefaultStore } from 'jotai'
 import { type PreloadedQuery, loadQuery as relayQuery, usePreloadedQuery } from 'react-relay'
 import type { GraphQLTaggedNode, OperationType, VariablesOf } from 'relay-runtime'
-import { useLoaderData } from 'react-router-dom'
+import { redirect, useLoaderData } from 'react-router-dom'
 
 import { relayEnvironmentAtom } from './state.js'
 
@@ -11,10 +11,7 @@ export function loadQuery<Query extends OperationType>(
 ) {
   const store = getDefaultStore()
   const environment = store.get(relayEnvironmentAtom)
-  if (environment == null) {
-    throw new Error('Missing Relay environment')
-  }
-  return relayQuery(environment, query, variables)
+  return environment ? relayQuery(environment, query, variables) : redirect('/connect')
 }
 
 export function useRouteQuery<Query extends OperationType>(

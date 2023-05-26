@@ -39,10 +39,10 @@
   "dependencies": {
     "@composedb/database-codecs": "workspace:*",
     "@composedb/services-rpc": "workspace:*",
-    "@trpc/client": "^10.27.1",
-    "@trpc/server": "^10.27.1",
+    "@trpc/client": "^10.28.0",
+    "@trpc/server": "^10.28.0",
     "dataloader": "^2.2.2",
-    "fp-ts": "^2.15.0",
+    "fp-ts": "^2.16.0",
     "graphql": "^16.6.0",
     "graphql-relay": "^0.10.0",
     "io-ts": "^2.2.20",

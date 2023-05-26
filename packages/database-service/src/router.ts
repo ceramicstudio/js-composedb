@@ -117,7 +117,8 @@ export const router = t.router({
     .query((req) => req.ctx.service.findModels(req.input)),
 
   saveModel: t.procedure.input(ioDecode(ModelEntityCodec)).mutation(async (req) => {
-    await req.ctx.service.saveModel(req.input)
+    const model = req.input
+    await req.ctx.service.saveModel({ ...model, description: model.description ?? undefined })
   }),
 
   // Documents APIs

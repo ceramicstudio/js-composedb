@@ -3,6 +3,9 @@ import * as io from 'io-ts'
 // Workaround for TS2742 error - https://github.com/microsoft/TypeScript/issues/47663#issuecomment-1270716220
 import type {} from 'json-schema-typed/draft-2020-12.js'
 
+import { isoDate } from './date.js'
+import { nullableString } from './nullable.js'
+
 export const ModelEntityCodec = io.intersection(
   [
     io.strict({
@@ -13,7 +16,7 @@ export const ModelEntityCodec = io.intersection(
       content: ContentDefinitionCodec,
       indexingEnabled: io.boolean,
     }),
-    io.partial({ description: io.string, createdAt: io.string, updatedAt: io.string }),
+    io.partial({ description: nullableString, createdAt: isoDate, updatedAt: isoDate }),
   ],
   'ModelEntity'
 )

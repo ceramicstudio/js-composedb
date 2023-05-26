@@ -40,8 +40,8 @@ export class Composite {
   subscriptionsEnabled!: boolean
 
   @CreateDateColumn()
-  createdAt?: string
+  createdAt?: Date
 
   @UpdateDateColumn()
-  updatedAt?: string
+  updatedAt?: Date
 }
