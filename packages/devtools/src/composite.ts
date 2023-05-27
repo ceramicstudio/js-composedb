@@ -1,5 +1,6 @@
 import type { CeramicApi, ModelData, SignedCommit } from '@ceramicnetwork/common'
 import { Model, type ModelViewsDefinition } from '@ceramicnetwork/stream-model'
+import { Cacao } from '@didtools/cacao'
 import type {
   CompositeViewsDefinition,
   EncodedCompositeDefinition,
@@ -79,14 +80,19 @@ function assertSupportedModelController(model: Model, ceramic: CeramicApi): void
         `${unsupported}, did missing from ceramic context`
       )
     }
-    const cacao = ceramic.context.did.capability();
-    if (cacao.exp == null) {
+    if (!ceramic.context.did.hasCapability()) {
       throw new Error(
-        `${unsupported}, only did:pkh without expiry is supported`
+        `${unsupported}, only did:pkh with CACAO is supported`
       )
     }
-    const hasModelResource = cacao.resources.includes(`ceramic://*?model=${MODEL_STREAM_ID}`)
-    if (cacao.resources.length != 1 || !hasModelResource) {
+    const cacao: Cacao = ceramic.context.did.capability(); 
+    if (cacao.p.exp == null) {
+      throw new Error(
+        `${unsupported}, only did:pkh CACAO without expiry is supported`
+      )
+    }
+    const hasModelResource = cacao.p.resources?.includes(`ceramic://${MODEL_STREAM_ID}`)
+    if (cacao.p.resources?.length != 1 || !hasModelResource) {
       throw new Error(
         `${unsupported}, only cacao with resource ${MODEL_STREAM_ID} is supported`
       )
@@ -143,7 +149,7 @@ async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
         genesis,
         MODEL_GENESIS_OPTS
       )
-      assertSupportedModelController(model, model)
+      assertSupportedModelController(model, ceramic)
       for (const commit of updates) {
         await ceramic.applyCommit(model.id, commit as unknown as SignedCommit)
       }
@@ -321,7 +327,7 @@ export class Composite {
             modelsIndices[abstractModel.id] = abstractModel.indices
           }
         }
-        assertSupportedModelController(model, model)
+        assertSupportedModelController(model, params.ceramic)
         const id = model.id.toString()
         definition.models[id] = model.content
 
@@ -395,7 +401,7 @@ export class Composite {
           Model.load(params.ceramic, id),
           params.ceramic.loadStreamCommits(id),
         ])
-        assertSupportedModelController(model, model)
+        assertSupportedModelController(model, params.ceramic)
         definition.models[id] = model.content
         commits[id] = streamCommits
           .map((c) => c.value as Record<string, any>)
