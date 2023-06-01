@@ -91,7 +91,7 @@ function assertSupportedModelController(model: Model, ceramic: CeramicApi): void
         `${unsupported}, only did:pkh CACAO without expiry is supported`
       )
     }
-    const hasModelResource = cacao.p.resources?.includes(`ceramic://${MODEL_STREAM_ID}`)
+    const hasModelResource = cacao.p.resources?.includes(`ceramic://*?model=${MODEL_STREAM_ID}`)
     if (cacao.p.resources?.length != 1 || !hasModelResource) {
       throw new Error(
         `${unsupported}, only cacao with resource ${MODEL_STREAM_ID} is supported`
