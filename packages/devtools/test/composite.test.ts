@@ -51,8 +51,8 @@ describe('composite', () => {
         definition: {
           version: '1.0',
           models: {
-            fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
-            barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
+            fooID: { version: '1.0', name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+            barID: { version: '1.0', name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
           },
           aliases: { fooID: 'Test', barID: 'Other' },
         },
@@ -69,8 +69,8 @@ describe('composite', () => {
         definition: {
           version: '1.0',
           models: {
-            fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
-            barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
+            fooID: { version: '1.0', name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+            barID: { version: '1.0', name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
           },
         },
       })
@@ -83,8 +83,8 @@ describe('composite', () => {
         definition: {
           version: '1.0',
           models: {
-            fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
-            barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
+            fooID: { version: '1.0', name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+            barID: { version: '1.0', name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
           },
           aliases: { fooID: 'Test', barID: 'Other' },
         },
@@ -130,8 +130,8 @@ describe('composite', () => {
         definition: {
           version: '1.0',
           models: {
-            fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
-            barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
+            fooID: { version: '1.0', name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+            barID: { version: '1.0', name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
           },
           aliases: { fooID: 'Test', barID: 'Other' },
         },
@@ -156,7 +156,12 @@ describe('composite', () => {
           definition: {
             version: '1.0',
             models: {
-              fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+              fooID: {
+                version: '1.0',
+                name: 'Foo',
+                accountRelation: { type: 'single' },
+                schema: {},
+              },
             },
             aliases: { fooID: 'Test' },
             commonEmbeds: [],
@@ -172,7 +177,12 @@ describe('composite', () => {
           definition: {
             version: '1.0',
             models: {
-              fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+              fooID: {
+                version: '1.0',
+                name: 'Foo',
+                accountRelation: { type: 'single' },
+                schema: {},
+              },
             },
             aliases: { fooID: 'Test' },
             commonEmbeds: [],
@@ -188,7 +198,12 @@ describe('composite', () => {
           definition: {
             version: '1.0',
             models: {
-              fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+              fooID: {
+                version: '1.0',
+                name: 'Foo',
+                accountRelation: { type: 'single' },
+                schema: {},
+              },
             },
             aliases: { fooID: 'Test' },
             commonEmbeds: [],
@@ -332,7 +347,12 @@ describe('composite', () => {
           definition: {
             version: '1.0',
             models: {
-              fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+              fooID: {
+                version: '1.0',
+                name: 'Foo',
+                accountRelation: { type: 'single' },
+                schema: {},
+              },
             },
           },
         })
@@ -341,7 +361,12 @@ describe('composite', () => {
           definition: {
             version: '1.0',
             models: {
-              barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
+              barID: {
+                version: '1.0',
+                name: 'Bar',
+                accountRelation: { type: 'single' },
+                schema: {},
+              },
             },
           },
         })
@@ -350,7 +375,12 @@ describe('composite', () => {
           definition: {
             version: '1.0',
             models: {
-              bazID: { name: 'Baz', accountRelation: { type: 'single' }, schema: {} },
+              bazID: {
+                version: '1.0',
+                name: 'Baz',
+                accountRelation: { type: 'single' },
+                schema: {},
+              },
             },
             aliases: { bazID: 'Test' },
           },
@@ -361,9 +391,24 @@ describe('composite', () => {
           definition: {
             version: '1.0',
             models: {
-              fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
-              barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
-              bazID: { name: 'Baz', accountRelation: { type: 'single' }, schema: {} },
+              fooID: {
+                version: '1.0',
+                name: 'Foo',
+                accountRelation: { type: 'single' },
+                schema: {},
+              },
+              barID: {
+                version: '1.0',
+                name: 'Bar',
+                accountRelation: { type: 'single' },
+                schema: {},
+              },
+              bazID: {
+                version: '1.0',
+                name: 'Baz',
+                accountRelation: { type: 'single' },
+                schema: {},
+              },
             },
             aliases: { bazID: 'Test' },
             commonEmbeds: [],
@@ -391,7 +436,12 @@ describe('composite', () => {
           definition: {
             version: '1.5',
             models: {
-              fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+              fooID: {
+                version: '1.0',
+                name: 'Foo',
+                accountRelation: { type: 'single' },
+                schema: {},
+              },
             },
           },
         }
@@ -500,10 +550,7 @@ describe('composite', () => {
     })
   })
 
-  test('startIndexingOn() calls the admin API to index the models', async () => {
-    const startIndexingModels = jest.fn()
-    const mockCeramic = { admin: { startIndexingModels } } as unknown as CeramicApi
-
+  describe('startIndexingOn()', () => {
     const modelID = 'kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e'
     const composite = new Composite({
       commits: { [modelID]: [] },
@@ -511,6 +558,7 @@ describe('composite', () => {
         version: '1.0',
         models: {
           [modelID]: {
+            version: '1.0',
             name: 'Foo',
             accountRelation: { type: 'single' },
             schema: {},
@@ -519,8 +567,39 @@ describe('composite', () => {
       },
     })
 
-    await composite.startIndexingOn(mockCeramic)
-    expect(startIndexingModels).toHaveBeenCalledWith([expect.any(StreamID)])
+    test('calls the admin API to index the models', async () => {
+      const startIndexingModels = jest.fn()
+      const mockCeramic = {
+        admin: { startIndexingModels },
+        did: { authenticated: true },
+      } as unknown as CeramicApi
+
+      await composite.startIndexingOn(mockCeramic)
+      expect(startIndexingModels).toHaveBeenCalledWith([expect.any(StreamID)])
+    })
+
+    test('throws an error if there is no DID attached to the Ceramic instance', async () => {
+      const startIndexingModels = jest.fn()
+      const mockCeramic = { admin: { startIndexingModels } } as unknown as CeramicApi
+
+      await expect(() => composite.startIndexingOn(mockCeramic)).rejects.toThrow(
+        'An authenticated DID must be attached to the Ceramic instance'
+      )
+      expect(startIndexingModels).not.toHaveBeenCalled()
+    })
+
+    test('throws an error if the DID attached to the Ceramic instance is not authenticated', async () => {
+      const startIndexingModels = jest.fn()
+      const mockCeramic = {
+        admin: { startIndexingModels },
+        did: { authenticated: false },
+      } as unknown as CeramicApi
+
+      await expect(() => composite.startIndexingOn(mockCeramic)).rejects.toThrow(
+        'An authenticated DID must be attached to the Ceramic instance'
+      )
+      expect(startIndexingModels).not.toHaveBeenCalled()
+    })
   })
 
   test('Composite.from() merges composites into a new instance', () => {
@@ -530,7 +609,7 @@ describe('composite', () => {
         version: '1.0',
         commonEmbeds: ['First'],
         models: {
-          fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+          fooID: { version: '1.0', name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
         },
       },
     }
@@ -540,7 +619,7 @@ describe('composite', () => {
         version: '1.0',
         commonEmbeds: ['First', 'Second'],
         models: {
-          barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
+          barID: { version: '1.0', name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
         },
       },
     }
@@ -549,7 +628,7 @@ describe('composite', () => {
       definition: {
         version: '1.0',
         models: {
-          bazID: { name: 'Baz', accountRelation: { type: 'single' }, schema: {} },
+          bazID: { version: '1.0', name: 'Baz', accountRelation: { type: 'single' }, schema: {} },
         },
         aliases: { bazID: 'Test' },
       },
@@ -563,9 +642,9 @@ describe('composite', () => {
       definition: {
         version: '1.0',
         models: {
-          fooID: { name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
-          barID: { name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
-          bazID: { name: 'Baz', accountRelation: { type: 'single' }, schema: {} },
+          fooID: { version: '1.0', name: 'Foo', accountRelation: { type: 'single' }, schema: {} },
+          barID: { version: '1.0', name: 'Bar', accountRelation: { type: 'single' }, schema: {} },
+          bazID: { version: '1.0', name: 'Baz', accountRelation: { type: 'single' }, schema: {} },
         },
         aliases: { bazID: 'Test' },
         commonEmbeds: ['First', 'Second'],
@@ -587,15 +666,21 @@ describe('composite', () => {
       const composite = await Composite.create({ ceramic, schema: profilesSchema })
       expect(composite.hash).toBeDefined()
       const compositeParams = composite.toParams()
-      expect(Object.keys(compositeParams.commits).length).toEqual(3)
+      expect(Object.keys(compositeParams.commits)).toHaveLength(3)
       const modelNames = ['GenericProfile', 'SocialProfile', 'PersonProfile']
       Object.values(compositeParams.definition.models).map((modelDefinition: ModelDefinition) => {
         const index = modelNames.indexOf(modelDefinition.name)
         expect(index).toBeGreaterThan(-1)
         modelNames.splice(index, 1)
       })
-      expect(modelNames.length).toEqual(0)
+      expect(modelNames).toHaveLength(0)
     }, 60000)
+
+    test('throws an error when trying to create models without an authenticated DID', async () => {
+      await expect(() => {
+        return Composite.create({ ceramic: {} as unknown as CeramicApi, schema: profilesSchema })
+      }).rejects.toThrow('An authenticated DID must be attached to the Ceramic instance')
+    })
 
     test('fails to create a new composite from invalid schema', async () => {
       await expect(async () => {

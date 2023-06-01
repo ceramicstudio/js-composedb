@@ -22,6 +22,12 @@ const MODEL_GENESIS_OPTS = {
   publish: true,
 }
 
+function assertAuthenticatedDID(ceramic: CeramicApi): void {
+  if (!ceramic.did?.authenticated) {
+    throw new Error(`An authenticated DID must be attached to the Ceramic instance`)
+  }
+}
+
 type StrictCompositeDefinition = Required<InternalCompositeDefinition>
 
 function isSignedCommit(input: Record<string, any>): input is SignedCommit {
@@ -275,6 +281,7 @@ export class Composite {
         // Create or load the model stream
         let model: Model
         if (abstractModel.action === 'create') {
+          assertAuthenticatedDID(params.ceramic)
           model = await Model.create(params.ceramic, abstractModel.model)
         } else {
           model = await Model.load(params.ceramic, abstractModel.id)
@@ -543,6 +550,7 @@ export class Composite {
    * set as admin in the Ceramic node configuration must be attached to the Ceramic instance.
    */
   async startIndexingOn(ceramic: CeramicApi): Promise<void> {
+    assertAuthenticatedDID(ceramic)
     const modelIDs = Object.keys(this.#definition.models).map(StreamID.fromString)
     await ceramic.admin.startIndexingModels(modelIDs)
   }
