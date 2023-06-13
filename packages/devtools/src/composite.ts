@@ -24,7 +24,7 @@ import { StreamID } from '@ceramicnetwork/streamid'
 // a "model" StreamID that can be indexed to query the set of all published Models.
 // The StreamID uses the "UNLOADABLE" StreamType, and has string representation: "kh4q0ozorrgaq2mezktnrmdwleo1d"
 
-const MODEL_STREAM_ID = 'kh4q0ozorrgaq2mezktnrmdwleo1d'
+const MODEL_STREAM_ID = Model.MODEL.toString()
 
 const MODEL_GENESIS_OPTS = {
   anchor: true,
