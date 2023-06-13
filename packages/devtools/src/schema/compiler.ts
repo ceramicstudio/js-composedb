@@ -284,7 +284,7 @@ export class SchemaCompiler {
         required.push(key)
       }
 
-      let value: SchemaWithRefs | void
+      let value: SchemaWithRefs | null = null
       switch (field.type) {
         case 'enum':
           value = this._compileEnum(name, key, field)
