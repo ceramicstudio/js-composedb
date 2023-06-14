@@ -93,7 +93,7 @@ function assertSupportedWriteModelController(model: Model, ceramic: CeramicApi):
       )
     }
     const hasModelResource = cacao.p.resources?.includes(`ceramic://*?model=${MODEL_STREAM_ID}`)
-    if (cacao.p.resources?.length != 1 || !hasModelResource) {
+    if (!hasModelResource) {
       throw new Error(
         `${unsupported}, only cacao with resource ${MODEL_STREAM_ID} is supported`
       )
