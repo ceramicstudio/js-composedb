@@ -39,8 +39,8 @@
   "dependencies": {
     "@composedb/database-codecs": "workspace:*",
     "@composedb/services-rpc": "workspace:*",
-    "@trpc/client": "^10.28.0",
-    "@trpc/server": "^10.28.0",
+    "@trpc/client": "^10.30.0",
+    "@trpc/server": "^10.30.0",
     "dataloader": "^2.2.2",
     "fp-ts": "^2.16.0",
     "graphql": "^16.6.0",
@@ -51,6 +51,8 @@
     "rxjs-for-await": "^1.0.0"
   },
   "devDependencies": {
-    "@composedb/database-service": "workspace:*"
+    "@composedb/database-service": "workspace:*",
+    "json-schema-typed": "^8.0.1",
+    "multiformats": "^11.0.2"
   }
 }

@@ -38,7 +38,7 @@ describe('schema', () => {
       interface GenericProfile {
         name: String @string(maxLength: 150)
       }
-       
+
       type SocialProfile implements GenericProfile @createModel(
         accountRelation: SINGLE,
         description: "A model to store properties that accounts would like to share on social media"
@@ -93,7 +93,7 @@ describe('schema', () => {
                   type: 'string',
                   title: 'GraphQLDID',
                   pattern:
-                    "^did:[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+:[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+$",
+                    "^did:[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+:[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]*:?[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]*:?[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]*$",
                   maxLength: 100,
                 },
               },

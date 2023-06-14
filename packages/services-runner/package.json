@@ -43,6 +43,6 @@
     "@composedb/services-rpc": "workspace:*"
   },
   "devDependencies": {
-    "@trpc/server": "^10.28.0"
+    "@trpc/server": "^10.30.0"
   }
 }
