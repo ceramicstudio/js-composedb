@@ -100,7 +100,7 @@ function assertSupportedWriteModelController(model: Model, ceramic: CeramicApi):
     }
   } else if (!model.metadata.controller.startsWith('did:key:')) {
     throw new Error(
-      `${unsupported}, only did:key is supported`
+      `${unsupported}, only did:key and did:pkh are supported`
     )
   }
 }
