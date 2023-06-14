@@ -96,7 +96,8 @@ This command will start a prompt in your command line allowing you to configure 
  ```
 
 For developers who are completely new to Ceramic, we highly recommend starting the configuration with all default parameters. Go through the prompt
-and press Enter on your keyboard for each step. This will install the Ceramic and ComposeDB dependencies and spin up a local node running `InMemory`.
+and press Enter on your keyboard for each step. This will install the Ceramic and ComposeDB dependencies and spin up a local node running `InMemory`. Moreover,
+this option will set up an example web3 social app for you to interac with and test ComposeDB features or 
 This option will allow to test all of the features of Ceramic and ComposeDB in a very lightweight way without requiring you configure authentication 
 for Ceramic Anchor Service.
 
@@ -112,6 +113,82 @@ CAS is require for `dev`, `testnet-clay` and `mainnet` networks. Since `InMemory
 
 If you are ready to dive into a more advanced configuration, head to [**Wheel reference page→**](./wheel-reference.mdx) to learn more details about each parameter you can configure.
 
+### Interact with the example web3 social app
+One of the easiest ways to get familiar with ComposeDB is through an actual example application
+built using ComposeDB on Ceramic. 
+
+This application is a simple implementation of Web3 social application and comes with the following features:
+
+- Sign-in using DID Key or your Ethereum wallet.
+- Create your user profile
+- Create a post
+- See posts created by other users in the Explore section of the app
+- Follow other users
+
+Developers can use this application to easily test ComposeDB features, see example implementation or even use this application as a basis of their own
+unique project.
+
+#### Setting up
+
+This application is set up by selecting `Include ComposeDB Sample Application` when following the Wheel setup.
+At the very end of the Wheel prompt you will see the output similar to the one below. It means that the Ceramic node is up and running and that the example
+app is accessible following the specified path:
+
+```bash
+Application demo is available at 
+/Users/user/ceramic-getting-started/wheel/ceramic-test-app/ceramic-test-app-app. To run the demo application:
+
+cd /Users/user/ceramic-getting-started/wheel/ceramic-test-app/ceramic-test-app-app
+npm run nextDev
+ ```
+
+The output above also provides the instructions on how to spin up the app. Open a new terminal and run the suggested commands.
+
+Navigate to the example app project directory:
+
+ ```bash
+cd /Users/user/ceramic-getting-started/wheel/ceramic-test-app/ceramic-test-app-app
+ ```
+
+Spin up the app:
+ ```bash
+npm run nextDev
+ ```
+
+ This will launch the example app on a local server. The output of the command above should
+ look similar to the following:
+
+ ```bash
+> demo@0.1.0 nextDev
+> next dev
+
+ready - started server on 0.0.0.0:3000, url: http://localhost:3000
+ ```
+
+Copy the provided url `http://localhost:3000` and open it in your browser. This will launch the example application
+in your browser for you to interact with.
+
+
+#### Interact with the application
+Once your app is up and running you will be greeted with the following user interface:
+
+![Data Model Table](/img/example-application-ui.png)
+
+From now on you can interact with the application:
+1. Authenticate using one of the provided methods:
+   - [Key DID](https://developers.ceramic.network/docs/advanced/standards/accounts/key-did/) - it's a simple authentication method that encodes public key into a DID string
+   - [Ethereum DID PKH](https://developers.ceramic.network/docs/advanced/standards/accounts/pkh-did/) - an authentication metod which uses and Ethereum wallet (e.g. Metamask) to authenticate users
+2. Create your account in the `Profile` section of the app
+3. Create your first post in `Home` section of the app
+4. See currently available posts in the `Explore` section of the app
+
+<iframe width="700" height="500" src="https://www.youtube.com/embed/QsCGK33pBIo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+After you interact with the application you can dive deeper into the underlying application files which you can find in the directory of your app. 
+Familiarise yourself with the actual implementations of specific features, e.g. - check out the `composites` directory to see the implementation 
+of data models used for this application. 
+
+Check out [this tutorial](https://blog.ceramic.network/getting-started-with-composedb-on-ceramic-2) for a more advanced explanations on how you can interact with this example app.
 
 
 

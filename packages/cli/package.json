@@ -69,10 +69,10 @@
     ]
   },
   "dependencies": {
-    "@ceramicnetwork/3id-did-resolver": "^2.18.0",
-    "@ceramicnetwork/http-client": "^2.22.0",
-    "@ceramicnetwork/stream-model": "^1.7.0",
-    "@ceramicnetwork/stream-model-instance": "^1.7.0",
+    "@ceramicnetwork/3id-did-resolver": "^2.19.0",
+    "@ceramicnetwork/http-client": "^2.23.0",
+    "@ceramicnetwork/stream-model": "^1.8.0",
+    "@ceramicnetwork/stream-model-instance": "^1.8.0",
     "@ceramicnetwork/streamid": "^2.14.0",
     "@composedb/client": "workspace:^0.4.4",
     "@composedb/devtools": "workspace:^0.4.4",
@@ -92,21 +92,21 @@
     "listr-update-renderer": "^0.5.0",
     "ora": "^6.3.1",
     "term-size": "^3.0.2",
-    "uint8arrays": "^4.0.3"
+    "uint8arrays": "^4.0.4"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^2.25.0",
+    "@ceramicnetwork/common": "^2.26.0",
     "@composedb/types": "workspace:^0.4.4",
     "@swc-node/register": "^1.6.4",
     "@types/fs-extra": "^11.0.1",
     "@types/jest": "^29.5.2",
     "@types/listr": "^0.14.4",
-    "@types/node": "^20.2.5",
+    "@types/node": "^20.3.1",
     "@types/update-notifier": "^6.0.4",
     "ajv": "^8.12.0",
     "execa": "^7.1.1",
     "jest-dev-server": "^9.0.0",
-    "oclif": "^3.9.0",
+    "oclif": "^3.9.1",
     "strip-ansi": "~7.1.0"
   },
   "jest": {

@@ -41,7 +41,7 @@
     "@composedb/types": "workspace:^0.4.4",
     "caip": "^1.1.0",
     "graphql": "^16.5.0",
-    "graphql-scalars": "^1.22.1",
+    "graphql-scalars": "^1.22.2",
     "multiformats": "^11.0.2"
   }
 }
