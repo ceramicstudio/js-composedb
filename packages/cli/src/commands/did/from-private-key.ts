@@ -40,6 +40,7 @@ export default class DIDFromPrivateKey extends Command<CommandFlags, { didPrivat
       // Logging the DID to stdout, so that it can be piped using standard I/O or redirected to a file
       this.log(did.id)
     } catch (err) {
+      this.warn(`Invalid DID private key.  Did you generate the private key using 'composedb did:generate-private-key'?`)
       this.spinner.fail((err as Error).message)
     }
   }
