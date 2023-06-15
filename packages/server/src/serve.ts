@@ -10,13 +10,15 @@ export const server = fastify({
   maxParamLength: 5000,
 })
 
-await server.register(cors, { origin: true })
-server.register(ws)
-server.register(fastifyTRPCPlugin, {
-  prefix: '/admin',
-  trpcOptions: { router, createContext },
-  useWSS: true,
-})
+await Promise.all([
+  server.register(cors, { origin: true }),
+  server.register(ws),
+  server.register(fastifyTRPCPlugin, {
+    prefix: '/admin',
+    trpcOptions: { router, createContext },
+    useWSS: true,
+  }),
+])
 
 try {
   await server.listen({ port: 3001 })

@@ -1,4 +1,5 @@
-import { Avatar, Box } from '@mantine/core'
+import { Avatar, Box, Button, Drawer, HoverCard, Text, useMantineTheme } from '@mantine/core'
+import { IconZoomIn, IconZoomOut, IconZoomReset } from '@tabler/icons-react'
 import {
   type Simulation,
   type SimulationLinkDatum,
@@ -8,12 +9,9 @@ import {
   forceLink,
   forceSimulation,
 } from 'd3-force'
-import { useAtom } from 'jotai'
 import { nanoid } from 'nanoid'
-import { type RefObject, createRef, useRef, useState } from 'react'
-import Draggable from 'react-draggable'
-
-import { compositeEditorValueAtom } from '../state.js'
+import { type RefObject, createRef, useState } from 'react'
+import { TransformComponent, TransformWrapper, useControls } from 'react-zoom-pan-pinch'
 
 type CardNode = SimulationNodeDatum & {
   id: string
@@ -30,20 +28,6 @@ function createCardNode(): CardNode {
   return { id: nanoid(), ref: createRef<HTMLDivElement>() }
 }
 
-type Position = { x: number; y: number }
-
-function getRelativePosition(
-  container: RefObject<HTMLDivElement>,
-  element: RefObject<HTMLDivElement>,
-  fallback: Position = { x: 0, y: 0 }
-): Position {
-  const containerRect = container.current?.getBoundingClientRect()
-  const elementRect = element.current?.getBoundingClientRect()
-  return containerRect == null || elementRect == null
-    ? fallback
-    : { x: elementRect.x - containerRect.x, y: elementRect.y - containerRect.y }
-}
-
 const node1 = createCardNode()
 const node2 = createCardNode()
 const nodes = {
@@ -51,17 +35,34 @@ const nodes = {
   [node2.id]: node2,
 }
 
-export default function CompositeEditor() {
-  const [value, setValue] = useAtom(compositeEditorValueAtom)
+function EditorControls() {
+  const { centerView, zoomIn, zoomOut } = useControls()
 
-  const containerRef = useRef<HTMLDivElement>(null)
+  return (
+    <Button.Group>
+      <Button variant="default" onClick={() => zoomIn()}>
+        <IconZoomIn />
+      </Button>
+      <Button variant="default" onClick={() => zoomOut()}>
+        <IconZoomOut />
+      </Button>
+      <Button variant="default" onClick={() => centerView(1)}>
+        <IconZoomReset />
+      </Button>
+    </Button.Group>
+  )
+}
+
+export default function CompositeEditor() {
+  const theme = useMantineTheme()
+  const [openDrawerID, setOpenDrawerID] = useState<string | null>(null)
 
   // Note: this is mutated by the simulation code
   const links: Array<CardLink> = [{ source: node1.id, target: node2.id }]
 
-  const [state, setState] = useState<EditorState>({
+  const [state] = useState<EditorState>({
     simulation: forceSimulation<CardNode>(Object.values(nodes))
-      .force('center', forceCenter(300, 300))
+      .force('center', forceCenter(500, 500))
       .force('collide', forceCollide(50))
       .force(
         'links',
@@ -71,31 +72,24 @@ export default function CompositeEditor() {
       .tick(50),
   })
 
-  // console.log('simulation', state.simulation, nodes)
-
   const displayNodes = state.simulation.nodes().map((node) => {
-    console.log('position node', node.id, node.x, node.y)
-
     return (
-      <Draggable
-        key={node.id}
-        nodeRef={node.ref}
-        position={{ x: node.x ?? 300, y: node.y ?? 300 }}
-        onDrag={(e) => {
-          // TODO: update simluation state with fixed node position
-          const position = getRelativePosition(containerRef, node.ref)
-          nodes[node.id].fx = position.x
-          nodes[node.id].fy = position.y
-          setState({ simulation: state.simulation.nodes(Object.values(nodes)) })
-          console.log('drag', position)
-        }}
-        onStop={(e) => {
-          console.log('drag stop', getRelativePosition(containerRef, node.ref))
-        }}>
-        <Avatar ref={node.ref} color="cyan" radius="xl" sx={{ position: 'absolute' }}>
-          {node.id.substring(0, 3)}
-        </Avatar>
-      </Draggable>
+      <HoverCard width={300}>
+        <HoverCard.Target>
+          <Avatar
+            key={node.id}
+            ref={node.ref}
+            color="orange"
+            radius="xl"
+            onClick={() => setOpenDrawerID(node.id)}
+            sx={{ position: 'absolute', left: node.x ?? 500, top: node.y ?? 500 }}>
+            {node.id.substring(0, 3)}
+          </Avatar>
+        </HoverCard.Target>
+        <HoverCard.Dropdown>
+          <Text size="sm">Description of the model/entity</Text>
+        </HoverCard.Dropdown>
+      </HoverCard>
     )
   })
 
@@ -107,20 +101,44 @@ export default function CompositeEditor() {
     const x2 = (target.x ?? 0) + 20
     const y2 = (target.y ?? 0) + 20
     const positions = { x1, y1, x2, y2 }
-    console.log('link', positions)
     return source == null || target == null ? null : (
-      <line key={source.id + target.id + i} stroke="#ff0000" strokeOpacity={0.7} {...positions} />
+      <line
+        key={source.id + target.id + i}
+        stroke={theme.colors.orange[0]}
+        strokeWidth={3}
+        {...positions}
+      />
     )
   })
 
   return (
-    <Box
-      ref={containerRef}
-      sx={{ position: 'relative', width: 600, height: 600, border: '1px solid red' }}>
-      <svg width={600} height={600} viewBox="0 0 600 600">
-        {displayLinks}
-      </svg>
-      <Box sx={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>{displayNodes}</Box>
-    </Box>
+    <TransformWrapper centerOnInit maxScale={2} minScale={0.5}>
+      <Drawer
+        position="right"
+        withOverlay={false}
+        opened={openDrawerID != null}
+        onClose={() => {
+          setOpenDrawerID(null)
+        }}
+        title="Node details"
+        styles={{ content: { marginTop: 60 } }}>
+        <Text>Node details content</Text>
+      </Drawer>
+      <EditorControls />
+      <TransformComponent
+        wrapperStyle={{
+          display: 'flex',
+          flex: 1,
+          height: '100%',
+          maxHeight: 'calc(100vh - 60px)',
+        }}>
+        <svg width="1000" height="1000" viewBox="0 0 1000 1000">
+          {displayLinks}
+        </svg>
+        <Box sx={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
+          {displayNodes}
+        </Box>
+      </TransformComponent>
+    </TransformWrapper>
   )
 }

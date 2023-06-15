@@ -76,6 +76,7 @@ export class ModelsManager {
 
   async loadFromDatabase(id: string): Promise<Model | null> {
     const model = await this.#clients.database.loadModel.query({ id })
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore type mismatch with decoding
     return model ? decodeModel(fromModelEntity(model)) : null
   }

@@ -46,8 +46,8 @@ export class Service implements ServiceLifecycle {
     // TODO: stop all active subscriptions
   }
 
-  async checkAllowedDID(did: string): Promise<boolean> {
-    return this.#allowedDIDs.includes(did)
+  checkAllowedDID(did: string): Promise<boolean> {
+    return Promise.resolve(this.#allowedDIDs.includes(did))
   }
 
   async executeGraphQL(query: GraphQLQuery): Promise<GraphQLResult> {

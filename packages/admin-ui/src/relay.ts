@@ -17,7 +17,7 @@ export function createEnvironment(client: Client): Environment {
   }
 
   const subscribeFn: SubscribeFunction = (request, variables) => {
-    return Observable.create<any>((sink) => {
+    return Observable.create<GraphQLResponse>((sink) => {
       client.adminGraphqlSubscription.subscribe(
         {
           operationName: request.name,

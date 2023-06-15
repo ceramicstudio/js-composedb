@@ -16,7 +16,8 @@ export default function ConnectedLayout() {
   return env ? (
     <RelayEnvironmentProvider environment={env}>
       <AppShell
-        padding="md"
+        padding={0}
+        styles={{ main: { display: 'flex' } }}
         header={
           <Header
             height={60}

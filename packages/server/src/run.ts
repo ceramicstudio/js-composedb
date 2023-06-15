@@ -48,7 +48,7 @@ async function createGenesis(
     await did.authenticate()
   }
 
-  const payload: Record<string, any> = {
+  const payload: Record<string, Record<string, any>> = {
     data,
     header: {
       controllers: [did.hasParent ? did.parent : did.id],

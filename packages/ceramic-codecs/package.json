@@ -39,7 +39,7 @@
     "@ceramicnetwork/streamid": "^2.14.0",
     "fp-ts": "^2.16.0",
     "io-ts": "^2.2.20",
-    "multiformats": "^11.0.2",
+    "multiformats": "^12.0.1",
     "uint8arrays": "^4.0.3"
   }
 }

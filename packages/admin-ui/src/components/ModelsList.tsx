@@ -1,4 +1,4 @@
-import { Accordion, Avatar, Group, ScrollArea, Text, Tooltip } from '@mantine/core'
+import { Accordion, Avatar, Group, ScrollArea, Text } from '@mantine/core'
 import { IconArchive, IconArchiveOff } from '@tabler/icons-react'
 import { graphql } from 'react-relay'
 
@@ -6,6 +6,7 @@ import { useRouteQuery } from '../query.js'
 
 import type { ModelsListQuery } from './__generated__/ModelsListQuery.graphql.js'
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const modelsQuery = graphql`
   query ModelsListQuery {
     models {

@@ -45,24 +45,29 @@ type Procedures = {
 }
 
 const procedures: Procedures = {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore type mismatch
   createModel: t.procedure
     .input(ioDecode(CreateModelInput))
     .mutation((req) => req.ctx.composite.createModel.mutate(req.input)),
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore type mismatch
   loadModel: t.procedure
     .input(ioDecode(io.strict({ id: io.string }, 'server.loadModelInput')))
     .mutation((req) => req.ctx.composite.loadModel.query(req.input)),
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore type mismatch
   saveComposite: t.procedure
     .input(
       ioDecode(io.strict({ composite: CompositeDefinitionCodec }, 'server.saveCompositeInput'))
     )
     .mutation((req) => req.ctx.composite.saveComposite.mutate(req.input)),
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore type mismatch
   graphql: t.procedure
     .input(ioDecode(GraphQLQueryCodec))
     .query((req) => req.ctx.composite.graphql.query(req.input)),
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore type mismatch
   graphqlSubscription: t.procedure.input(ioDecode(GraphQLQueryCodec)).subscription((req) => {
     const subject = new Subject()
@@ -80,15 +85,18 @@ const procedures: Procedures = {
     })
     return subject.asObservable()
   }),
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore type mismatch
   adminAuthenticate: t.procedure
     .input(ioDecode(io.string))
     .output(ioEncode(io.boolean))
     .query((req) => req.ctx.admin.authenticate.query(req.input)),
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore type mismatch
   adminGraphql: t.procedure
     .input(ioDecode(AdminGraphQLQueryCodec))
     .query((req) => req.ctx.admin.graphql.query(req.input)),
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore type mismatch
   adminGraphqlSubscription: t.procedure
     .input(ioDecode(AdminGraphQLQueryCodec))

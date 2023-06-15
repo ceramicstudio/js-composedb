@@ -112,8 +112,8 @@ importers:
         specifier: ^8.0.1
         version: 8.0.1
       multiformats:
-        specifier: ^11.0.2
-        version: 11.0.2
+        specifier: ^12.0.1
+        version: 12.0.1
 
   packages/admin-ui:
     dependencies:
@@ -165,15 +165,15 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      react-draggable:
-        specifier: ^4.4.5
-        version: 4.4.5(react-dom@18.2.0)(react@18.2.0)
       react-relay:
         specifier: ^15.0.0
         version: 15.0.0(react@18.2.0)
       react-router-dom:
-        specifier: ^6.12.1
-        version: 6.12.1(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^6.13.0
+        version: 6.13.0(react-dom@18.2.0)(react@18.2.0)
+      react-zoom-pan-pinch:
+        specifier: ^3.0.8
+        version: 3.0.8(react-dom@18.2.0)(react@18.2.0)
       relay-runtime:
         specifier: ^15.0.0
         version: 15.0.0
@@ -215,8 +215,8 @@ importers:
         specifier: ^4.6.0
         version: 4.6.0(eslint@8.42.0)
       eslint-plugin-react-refresh:
-        specifier: ^0.3.4
-        version: 0.3.4(eslint@8.42.0)
+        specifier: ^0.4.1
+        version: 0.4.1(eslint@8.42.0)
       relay-compiler:
         specifier: ^15.0.0
         version: 15.0.0
@@ -242,8 +242,8 @@ importers:
         specifier: ^2.2.20
         version: 2.2.20(fp-ts@2.16.0)
       multiformats:
-        specifier: ^11.0.2
-        version: 11.0.2
+        specifier: ^12.0.1
+        version: 12.0.1
       uint8arrays:
         specifier: ^4.0.3
         version: 4.0.4
@@ -257,8 +257,8 @@ importers:
         specifier: workspace:*
         version: link:../services-rpc
       '@ipld/dag-cbor':
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^9.0.2
+        version: 9.0.2
       '@stablelib/sha256':
         specifier: ^1.0.1
         version: 1.0.1
@@ -287,8 +287,8 @@ importers:
         specifier: ^3.0.4
         version: 3.0.4
       multiformats:
-        specifier: ^11.0.2
-        version: 11.0.2
+        specifier: ^12.0.1
+        version: 12.0.1
       quick-lru:
         specifier: ^6.1.1
         version: 6.1.1
@@ -519,8 +519,8 @@ importers:
         specifier: ^8.0.1
         version: 8.0.1
       multiformats:
-        specifier: ^11.0.2
-        version: 11.0.2
+        specifier: ^12.0.1
+        version: 12.0.1
 
   packages/composite-service:
     dependencies:
@@ -564,8 +564,8 @@ importers:
         specifier: ^0.2.2
         version: 0.2.2
       '@ipld/dag-cbor':
-        specifier: ^9.0.1
-        version: 9.0.1
+        specifier: ^9.0.2
+        version: 9.0.2
       '@trpc/client':
         specifier: ^10.30.0
         version: 10.30.0(@trpc/server@10.30.0)
@@ -640,8 +640,8 @@ importers:
         specifier: ^8.0.1
         version: 8.0.1
       multiformats:
-        specifier: ^11.0.2
-        version: 11.0.2
+        specifier: ^12.0.1
+        version: 12.0.1
 
   packages/constants: {}
 
@@ -743,14 +743,14 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       multiformats:
-        specifier: ^11.0.2
-        version: 11.0.2
+        specifier: ^12.0.1
+        version: 12.0.1
       object-hash:
         specifier: ^3.0.0
         version: 3.0.0
       type-fest:
-        specifier: ^3.11.1
-        version: 3.11.1
+        specifier: ^3.12.0
+        version: 3.12.0
       uint8arrays:
         specifier: ^4.0.4
         version: 4.0.4
@@ -860,8 +860,8 @@ importers:
         specifier: ^8.0.1
         version: 8.0.1
       multiformats:
-        specifier: ^11.0.2
-        version: 11.0.2
+        specifier: ^12.0.1
+        version: 12.0.1
 
   packages/graphql-scalars:
     dependencies:
@@ -881,8 +881,8 @@ importers:
         specifier: ^1.22.2
         version: 1.22.2(graphql@16.6.0)
       multiformats:
-        specifier: ^11.0.2
-        version: 11.0.2
+        specifier: ^12.0.1
+        version: 12.0.1
 
   packages/jest-environment-composedb:
     dependencies:
@@ -1000,8 +1000,8 @@ importers:
         specifier: workspace:^0.4.2
         version: link:../jest-environment-composedb
       multiformats:
-        specifier: ^11.0.2
-        version: 11.0.2
+        specifier: ^12.0.1
+        version: 12.0.1
 
   packages/server:
     dependencies:
@@ -1109,8 +1109,8 @@ importers:
         specifier: ^8.5.4
         version: 8.5.5
       multiformats:
-        specifier: ^11.0.2
-        version: 11.0.2
+        specifier: ^12.0.1
+        version: 12.0.1
 
   packages/services-rpc:
     dependencies:
@@ -1491,7 +1491,7 @@ packages:
       '@babel/traverse': 7.22.5
       '@babel/types': 7.22.5
       convert-source-map: 1.9.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.0
@@ -2861,7 +2861,7 @@ packages:
       '@babel/helper-split-export-declaration': 7.22.5
       '@babel/parser': 7.22.5
       '@babel/types': 7.22.5
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -3547,7 +3547,7 @@ packages:
     resolution: {integrity: sha512-FpJA/oLA/kahxIUBTLO1MLLiv6BHdUVoyXg80l6umCQytUytnnGvwmmQZa6GucQZkW0jN0FA953H8ELbNrBD0A==}
     engines: {node: '>=14.14'}
     dependencies:
-      '@ipld/dag-cbor': 9.0.1
+      '@ipld/dag-cbor': 9.0.2
       apg-js: 4.1.3
       caip: 1.1.0
       multiformats: 11.0.2
@@ -4712,7 +4712,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       espree: 9.5.2
       globals: 13.20.0
       ignore: 5.2.4
@@ -5465,7 +5465,7 @@ packages:
     engines: {node: '>=10.10.0'}
     dependencies:
       '@humanwhocodes/object-schema': 1.2.1
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -5498,6 +5498,14 @@ packages:
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dependencies:
       cborg: 1.10.2
+      multiformats: 11.0.2
+    dev: false
+
+  /@ipld/dag-cbor@9.0.2:
+    resolution: {integrity: sha512-qME88+wkpjte1FApQAYrBRyfDjx8yL3yXj7HT1/UepMBY7ZqjnZ3LBsqaFAFBMGktmR5npb3Nk2sJan/KcxsNQ==}
+    engines: {node: '>=16.0.0', npm: '>=7.0.0'}
+    dependencies:
+      cborg: 2.0.1
       multiformats: 11.0.2
 
   /@ipld/dag-json@10.1.0:
@@ -6228,7 +6236,7 @@ packages:
     dependencies:
       '@libp2p/interface-peer-id': 2.0.2
       '@multiformats/multiaddr': 12.1.3
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       interface-datastore: 8.2.3
       multiformats: 11.0.2
     transitivePeerDependencies:
@@ -8913,7 +8921,7 @@ packages:
       '@typescript-eslint/scope-manager': 5.59.11
       '@typescript-eslint/type-utils': 5.59.11(eslint@8.42.0)(typescript@5.1.3)
       '@typescript-eslint/utils': 5.59.11(eslint@8.42.0)(typescript@5.1.3)
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       eslint: 8.42.0
       grapheme-splitter: 1.0.4
       ignore: 5.2.4
@@ -8938,7 +8946,7 @@ packages:
       '@typescript-eslint/scope-manager': 5.59.11
       '@typescript-eslint/types': 5.59.11
       '@typescript-eslint/typescript-estree': 5.59.11(typescript@5.1.3)
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       eslint: 8.42.0
       typescript: 5.1.3
     transitivePeerDependencies:
@@ -8973,7 +8981,7 @@ packages:
     dependencies:
       '@typescript-eslint/typescript-estree': 5.59.11(typescript@5.1.3)
       '@typescript-eslint/utils': 5.59.11(eslint@8.42.0)(typescript@5.1.3)
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       eslint: 8.42.0
       tsutils: 3.21.0(typescript@5.1.3)
       typescript: 5.1.3
@@ -9023,7 +9031,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.59.11
       '@typescript-eslint/visitor-keys': 5.59.11
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       globby: 11.1.0
       is-glob: 4.0.3
       semver: 7.5.1
@@ -9783,7 +9791,7 @@ packages:
     resolution: {integrity: sha512-TAlMYvOuwGyLK3PfBb5WKBXZmXz2fVCgv23d6zZFdle/q3gPjmxBaeuC0pY0Dzs5PWMSgfqqEZkrye19GlDTgw==}
     dependencies:
       archy: 1.0.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       fastq: 1.15.0
     transitivePeerDependencies:
       - supports-color
@@ -10748,6 +10756,10 @@ packages:
 
   /cborg@1.10.2:
     resolution: {integrity: sha512-b3tFPA9pUr2zCUiCfRd2+wok2/LBSNUMKOuRRok+WlvvAgEt/PlbgPTsZUcwCOs53IJvLgTp0eotwtosE6njug==}
+    hasBin: true
+
+  /cborg@2.0.1:
+    resolution: {integrity: sha512-ySuIj3L6VwlQf0iU82IGGH/Dm1NfNKcGUttRxtVqLKrRJoo2ZeFeLoQj8Y1tASyh5qOfWQn9MN64VsAqVyWNSQ==}
     hasBin: true
 
   /ccount@1.1.0:
@@ -11737,7 +11749,7 @@ packages:
   /dag-jose@4.0.0:
     resolution: {integrity: sha512-tw595L3UYoOUT9dSJPbBEG/qpRpw24kRZxa5SLRnlnr+g5L7O8oEs1d3W5TiVA1oJZbthVsf0Vi3zFN66qcEBA==}
     dependencies:
-      '@ipld/dag-cbor': 9.0.1
+      '@ipld/dag-cbor': 9.0.2
       multiformats: 11.0.2
     dev: false
 
@@ -11840,6 +11852,17 @@ packages:
     dependencies:
       ms: 2.0.0
     dev: false
+
+  /debug@4.3.4:
+    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.2
 
   /debug@4.3.4(supports-color@8.1.1):
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -12138,7 +12161,7 @@ packages:
     resolution: {integrity: sha512-Lm/eXB7yAQLJ5WxlBGwYfBY7utduXPZykcSmcG6K7ozM0wrZFvxZavhT6PqI0kd/5CUTfev/RrEFQqyU4CGPew==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       native-fetch: 4.0.2(undici@5.22.1)
       receptacle: 1.3.2
       undici: 5.22.1
@@ -12695,8 +12718,8 @@ packages:
       eslint: 8.42.0
     dev: true
 
-  /eslint-plugin-react-refresh@0.3.4(eslint@8.42.0):
-    resolution: {integrity: sha512-E0ViBglxSQAERBp6eTj5fPgtCRtDonnbCFiVQBhf4Dto2blJRxg1dFUMdMh7N6ljTI4UwPhHwYDQ3Dyo4m6bwA==}
+  /eslint-plugin-react-refresh@0.4.1(eslint@8.42.0):
+    resolution: {integrity: sha512-QgrvtRJkmV+m4w953LS146+6RwEe5waouubFVNLBfOjXJf6MLczjymO8fOcKj9jMS8aKkTCMJqiPu2WEeFI99A==}
     peerDependencies:
       eslint: '>=7'
     dependencies:
@@ -12760,7 +12783,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.0
@@ -14979,7 +15002,7 @@ packages:
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     deprecated: js-IPFS has been deprecated in favour of Helia - please see https://github.com/ipfs/js-ipfs/issues/4336 for details
     dependencies:
-      '@ipld/dag-cbor': 9.0.1
+      '@ipld/dag-cbor': 9.0.2
       '@ipld/dag-json': 10.1.0
       '@ipld/dag-pb': 4.0.3
       '@libp2p/logger': 2.1.1
@@ -17779,6 +17802,10 @@ packages:
     resolution: {integrity: sha512-b5mYMkOkARIuVZCpvijFj9a6m5wMVLC7cf/jIPd5D/ARDOfLC5+IFkbgDXQgcU2goIsTD/O9NY4DI/Mt4OGvlg==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
 
+  /multiformats@12.0.1:
+    resolution: {integrity: sha512-s01wijBJoDUqESWSzePY0lvTw7J3PVO9x2Cc6ASI5AMZM2Gnhh7BC17+nlFhHKU7dDzaCaRfb+NiqNzOsgPUoQ==}
+    engines: {node: '>=16.0.0', npm: '>=7.0.0'}
+
   /multiformats@9.9.0:
     resolution: {integrity: sha512-HoMUjhH9T8DDBNT+6xzkrd9ga/XiBI4xLr58LJACwK6G3HTOPeMz4nB4KJs33L2BelrIJa7P0VuNaVF3hMYfjg==}
 
@@ -20025,18 +20052,6 @@ packages:
       scheduler: 0.23.0
     dev: false
 
-  /react-draggable@4.4.5(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-OMHzJdyJbYTZo4uQE393fHcqqPYsEtkjfMgvCHr6rejT+Ezn4OZbNyGH50vv+SunC1RMvwOTSWkEODQLzw1M9g==}
-    peerDependencies:
-      react: '>= 16.3.0'
-      react-dom: '>= 16.3.0'
-    dependencies:
-      clsx: 1.2.1
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
   /react-error-overlay@6.0.11:
     resolution: {integrity: sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==}
     dev: false
@@ -20179,8 +20194,8 @@ packages:
       tiny-warning: 1.0.3
     dev: false
 
-  /react-router-dom@6.12.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-POIZN9UDKWwEDga054LvYr2KnK8V+0HR4Ny4Bwv8V7/FZCPxJgsCjYxXGxqxzHs7VBxMKZfgvtKhafuJkJSPGA==}
+  /react-router-dom@6.13.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-6Nqoqd7fgwxxVGdbiMHTpDHCYPq62d7Wk1Of7B82vH7ZPwwsRaIa22zRZKPPg413R5REVNiyuQPKDG1bubcOFA==}
     engines: {node: '>=14'}
     peerDependencies:
       react: '>=16.8'
@@ -20189,7 +20204,7 @@ packages:
       '@remix-run/router': 1.6.3
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      react-router: 6.12.1(react@18.2.0)
+      react-router: 6.13.0(react@18.2.0)
     dev: false
 
   /react-router@5.3.4(react@17.0.2):
@@ -20209,8 +20224,8 @@ packages:
       tiny-warning: 1.0.3
     dev: false
 
-  /react-router@6.12.1(react@18.2.0):
-    resolution: {integrity: sha512-evd/GrKJOeOypD0JB9e1r7pQh2gWCsTbUfq059Wm1AFT/K2MNZuDo19lFtAgIhlBrp0MmpgpqtvZC7LPAs7vSw==}
+  /react-router@6.13.0(react@18.2.0):
+    resolution: {integrity: sha512-Si6KnfEnJw7gUQkNa70dlpI1bul46FuSxX5t5WwlUBxE25DAz2BjVkwaK8Y2s242bQrZPXCpmwLPtIO5pv4tXg==}
     engines: {node: '>=14'}
     peerDependencies:
       react: '>=16.8'
@@ -20274,6 +20289,17 @@ packages:
       dom-helpers: 5.2.1
       loose-envify: 1.4.0
       prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /react-zoom-pan-pinch@3.0.8(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-z6O5SV5X+XBo/LLO59PgzNE2WT+tp8lw1w3M0y138jCXViwHWKK1MqorICbmSVSOOD5Fa2o6pcg1ppJj9vzqJA==}
+    engines: {node: '>=8', npm: '>=5'}
+    peerDependencies:
+      react: '*'
+      react-dom: '*'
+    dependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -22468,8 +22494,8 @@ packages:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
 
-  /type-fest@3.11.1:
-    resolution: {integrity: sha512-aCuRNRERRVh33lgQaJRlUxZqzfhzwTrsE98Mc3o3VXqmiaQdHacgUtJ0esp+7MvZ92qhtzKPeusaX6vIEcoreA==}
+  /type-fest@3.12.0:
+    resolution: {integrity: sha512-qj9wWsnFvVEMUDbESiilKeXeHL7FwwiFcogfhfyjmvT968RXSvnl23f1JOClTHYItsi7o501C/7qVllscUP3oA==}
     engines: {node: '>=14.16'}
     dev: false
 

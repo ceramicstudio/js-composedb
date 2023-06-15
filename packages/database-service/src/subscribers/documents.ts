@@ -9,7 +9,7 @@ export class DocumentSubscriber implements EntitySubscriberInterface<Document> {
     return Document
   }
 
-  afterInsert(event: InsertEvent<any>) {
+  afterInsert(event: InsertEvent<Document>) {
     events.next({ type: 'document-inserted', document: event.entity })
   }
 }

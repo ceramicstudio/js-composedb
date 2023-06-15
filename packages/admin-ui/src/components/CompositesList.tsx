@@ -6,6 +6,7 @@ import { useRouteQuery } from '../query.js'
 
 import type { CompositesListQuery } from './__generated__/CompositesListQuery.graphql'
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const compositesQuery = graphql`
   query CompositesListQuery {
     composites {
