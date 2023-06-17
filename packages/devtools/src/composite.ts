@@ -1,4 +1,4 @@
-import type { CeramicApi, ModelData, SignedCommit } from '@ceramicnetwork/common'
+import type { CeramicApi, ModelData, SignedCommitContainer } from '@ceramicnetwork/common'
 import { StreamUtils } from '@ceramicnetwork/common'
 import { Model, type ModelViewsDefinition } from '@ceramicnetwork/stream-model'
 import { Cacao } from '@didtools/cacao'
@@ -39,7 +39,7 @@ function assertAuthenticatedDID(ceramic: CeramicApi): void {
 
 type StrictCompositeDefinition = Required<InternalCompositeDefinition>
 
-function isSignedCommit(input: Record<string, any>): input is SignedCommit {
+function isSignedCommitContainer(input: Record<string, any>): input is SignedCommitContainer {
   return Object.keys(input).includes('jws') && Object.keys(input).includes('linkedBlock')
 }
 
@@ -105,10 +105,10 @@ function assertSupportedWriteModelController(model: Model, ceramic: CeramicApi):
   }
 }
 
-async function assertSupportedReadModelController(model: Model, signedCommit: SignedCommit): Promise<void> {
+async function assertSupportedReadModelController(model: Model, signedCommitContainer: SignedCommitContainer): Promise<void> {
   const unsupported = `Unsupported model controller ${model.metadata.controller}`
-  if (model.metadata.controller.startsWith('did:pkh:')){
-    const cacao = await extractCapability(signedCommit)
+  if (model.metadata.controller.startsWith('did:pkh:') && signedCommitContainer.cacaoBlock != null){
+    const cacao = await Cacao.fromBlockBytes(signedCommitContainer.cacaoBlock)
     if (cacao == null) {
       throw new Error(
         `${unsupported}, only did:pkh with CACAO is supported`
@@ -132,37 +132,11 @@ function assertValidCacao(cacao: Cacao, controller: string): void {
     )
   }
   const hasModelResource = cacao.p.resources?.includes(`ceramic://*?model=${MODEL_STREAM_ID}`)
-  if (cacao.p.resources?.length != 1 || !hasModelResource) {
+  if (!hasModelResource) {
     throw new Error(
       `only cacao with resource ${MODEL_STREAM_ID} is supported`
     )
   }
-}
-
-
-async function extractCapability(commit: any): Promise<Cacao | undefined> {
-  if (!commit.signatures || commit.signatures.length === 0) return
-
-  const capCID = StreamUtils.getCacaoCidFromCommit(commit)
-
-  if (!capCID) return
-
-  try {
-    const cacao = await getCacaoFromCid(capCID.toString())
-    return cacao as Cacao
-  } catch (error) {
-    throw new Error(
-      `Error while loading capability from IPFS with CID ${capCID.toString()}: ${error}`
-    )
-  }
-}
-
-async function getCacaoFromCid(cacaoCID: string): Promise<Cacao> {
-  const ipfsGateway = 'https://ipfs.io/ipfs/'
-  const cacaoUrl = ipfsGateway + cacaoCID
-  const res = await fetch(cacaoUrl)
-  const cacaoData = await res.json()
-  return cacaoData as Cacao
 }
 
 /** @internal */
@@ -211,9 +185,9 @@ async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
         MODEL_GENESIS_OPTS
       )
       for (const commit of updates) {
-        const signedCommit = commit as unknown as SignedCommit
-        assertSupportedReadModelController(model, signedCommit)
-        await ceramic.applyCommit(model.id, signedCommit)
+        const signedCommitContainer = commit as unknown as SignedCommitContainer
+        assertSupportedReadModelController(model, signedCommitContainer)
+        await ceramic.applyCommit(model.id, signedCommitContainer)
       }
       return model
     })
@@ -397,7 +371,7 @@ export class Composite {
         const streamCommits = await params.ceramic.loadStreamCommits(id)
         commits[id] = streamCommits
           .map((c) => c.value as Record<string, any>)
-          .filter(isSignedCommit)
+          .filter(isSignedCommitContainer)
       })
     )
 
@@ -466,9 +440,9 @@ export class Composite {
         definition.models[id] = model.content
         commits[id] = streamCommits
           .map((c) => c.value as Record<string, any>)
-          .filter(isSignedCommit)
+          .filter(isSignedCommitContainer)
         for (const commit of commits[id]) {
-          assertSupportedReadModelController(model, commit as any as SignedCommit)
+          assertSupportedReadModelController(model, commit as unknown as SignedCommitContainer)
         }
       })
     )
