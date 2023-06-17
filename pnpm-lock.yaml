@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 importers:
 
@@ -251,6 +251,9 @@ importers:
       '@composedb/graphql-scalars':
         specifier: workspace:^0.4.4
         version: link:../graphql-scalars
+      '@didtools/cacao':
+        specifier: ^2.0.0
+        version: 2.0.0
       '@graphql-tools/schema':
         specifier: ^10.0.0
         version: 10.0.0(graphql@16.7.1)
@@ -11884,6 +11887,7 @@ packages:
 
   /grapheme-splitter@1.0.4:
     resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
+    dev: true
 
   /graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
@@ -12847,7 +12851,6 @@ packages:
       - bufferutil
       - encoding
       - supports-color
-      - uint8arraylist
       - utf-8-validate
     dev: false
 
@@ -13033,7 +13036,6 @@ packages:
       uint8arrays: 4.0.4
     transitivePeerDependencies:
       - supports-color
-      - uint8arraylist
     dev: false
 
   /is-alphabetical@1.0.4:
@@ -16074,7 +16076,6 @@ packages:
       - bluebird
       - encoding
       - mem-fs
-      - mem-fs-editor
       - supports-color
       - typescript
     dev: true
@@ -20817,9 +20818,6 @@ packages:
     resolution: {integrity: sha512-P4DTQxqCxNTBD7gph+P+dIckBdx0xyHmvOYgO3vsc9/Sl67KJ6QInz5Qv6tlXET3CFFJ/YxPIdl9rKb0XwTRLg==}
     engines: {node: '>=12.10.0'}
     hasBin: true
-    peerDependencies:
-      mem-fs: ^1.2.0 || ^2.0.0
-      mem-fs-editor: ^8.1.2 || ^9.0.0
     dependencies:
       '@npmcli/arborist': 4.3.1
       are-we-there-yet: 2.0.0

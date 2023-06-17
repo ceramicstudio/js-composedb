@@ -41,7 +41,7 @@ describe('composites', () => {
       )
     }, 60000)
 
-    test('composite creation fails without the did-key param', async () => {
+    test('composite creation fails without authenticated DID must be attached', async () => {
       const create = await execa('bin/run.js', [
         'composite:create',
         'test/mocks/composite.profile.post.schema',
