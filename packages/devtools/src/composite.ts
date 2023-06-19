@@ -87,7 +87,7 @@ function assertSupportedWriteModelController(model: Model, ceramic: CeramicApi):
       )
     }
     const cacao: Cacao = ceramic.context.did.capability(); 
-    if (cacao.p.exp == null) {
+    if (cacao.p.exp !== null) {
       throw new Error(
         `${unsupported}, only did:pkh CACAO without expiry is supported`
       )
