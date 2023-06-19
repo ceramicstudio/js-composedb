@@ -134,7 +134,7 @@ function assertValidCacao(cacao: Cacao, controller: string): void {
   const hasModelResource = cacao.p.resources?.includes(`ceramic://*?model=${MODEL_STREAM_ID}`)
   if (!hasModelResource) {
     throw new Error(
-      `only cacao with resource ${MODEL_STREAM_ID} is supported`
+      `only cacao with resource "ceramic://*?model=${MODEL_STREAM_ID}" is supported`
     )
   }
 }
