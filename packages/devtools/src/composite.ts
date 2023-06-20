@@ -184,6 +184,8 @@ async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
         genesis,
         MODEL_GENESIS_OPTS
       )
+
+      assertSupportedReadModelController(model, genesis as unknown as SignedCommitContainer)
       for (const commit of updates) {
         const signedCommitContainer = commit as unknown as SignedCommitContainer
         assertSupportedReadModelController(model, signedCommitContainer)
