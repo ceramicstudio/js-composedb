@@ -126,7 +126,7 @@ function assertValidCacao(cacao: Cacao, controller: string): void {
   if (cacao.p.iss != controller) {
     throw new Error(`Cacao issuer ${cacao.p.iss} does not match controller ${controller}`)
   }
-  if (cacao.p.exp == null) {
+  if (cacao.p.exp !== null) {
     throw new Error(
       `only did:pkh CACAO without expiry is supported`
     )
