@@ -1,4 +1,4 @@
-import type { CeramicApi, ModelData, SignedCommitContainer } from '@ceramicnetwork/common'
+import type { CeramicApi, CeramicCommit, ModelData, SignedCommitContainer } from '@ceramicnetwork/common'
 import { StreamUtils } from '@ceramicnetwork/common'
 import { Model, type ModelViewsDefinition } from '@ceramicnetwork/stream-model'
 import { Cacao } from '@didtools/cacao'
@@ -178,18 +178,21 @@ async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
 ): Promise<Record<keyof Models, ModelDefinition>> {
   const definitions = await Promise.all(
     Object.values(modelsCommits).map(async (commits): Promise<Model> => {
-      const [genesis, ...updates] = commits as Array<StreamCommits>
+      const modelCommitsValues = commits as Array<StreamCommits>
+      const [genesis, ...updates] = modelCommitsValues
       const model = await ceramic.createStreamFromGenesis<Model>(
         Model.STREAM_TYPE_ID,
         genesis,
         MODEL_GENESIS_OPTS
       )
-
-      assertSupportedReadModelController(model, genesis as unknown as SignedCommitContainer)
+      
+      modelCommitsValues
+        .filter(isSignedCommitContainer)
+        .forEach((commit:StreamCommits) => {
+          assertSupportedReadModelController(model, commit as unknown as SignedCommitContainer)
+        })
       for (const commit of updates) {
-        const signedCommitContainer = commit as unknown as SignedCommitContainer
-        assertSupportedReadModelController(model, signedCommitContainer)
-        await ceramic.applyCommit(model.id, signedCommitContainer)
+        await ceramic.applyCommit(model.id, commit as unknown as CeramicCommit)
       }
       return model
     })
