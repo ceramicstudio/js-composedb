@@ -8,6 +8,7 @@ import type {
   RuntimeObjectField,
   RuntimeObjectFields,
   RuntimeReference,
+  RuntimeReferenceType,
   RuntimeRelation,
   RuntimeScalar,
   RuntimeViewField,
@@ -46,9 +47,19 @@ import type { Context } from './context.js'
 import type { UpdateDocOptions } from './loader.js'
 import { assertValidQueryFilters, createRelationQueryFilters } from './query.js'
 
-const NON_SCALAR_FIELD_TYPES = ['meta', 'reference', 'list', 'view']
+const NON_SCALAR_FIELD_TYPES: Array<RuntimeObjectField['type']> = [
+  'meta',
+  'reference',
+  'list',
+  'view',
+]
 function isScalarField(field: RuntimeObjectField): field is RuntimeScalar {
   return !NON_SCALAR_FIELD_TYPES.includes(field.type)
+}
+
+const STRING_REFERENCE_TYPES: Array<RuntimeReferenceType> = ['enum', 'node']
+function isStringReferenceField(field: RuntimeObjectField): field is RuntimeReference {
+  return field.type === 'reference' && STRING_REFERENCE_TYPES.includes(field.refType)
 }
 
 type EmbeddedObject = { __type: string; [key: string]: unknown }
@@ -666,7 +677,7 @@ class SchemaBuilder {
       fields: () => {
         const config: GraphQLInputFieldConfigMap = {}
         for (const [key, field] of Object.entries(fields)) {
-          if (field.type === 'reference' || isScalarField(field)) {
+          if (isStringReferenceField(field) || isScalarField(field)) {
             config[key] = { type: SortOrder }
           }
         }

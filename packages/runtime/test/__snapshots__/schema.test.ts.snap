@@ -1115,7 +1115,6 @@ input StringValueFilterInput {
 
 input GenericProfileSortingInput {
   name: SortOrder
-  image: SortOrder
 }
 
 enum SortOrder {
@@ -1157,7 +1156,6 @@ input SocialProfileObjectFilterInput {
 input SocialProfileSortingInput {
   description: SortOrder
   emoji: SortOrder
-  background: SortOrder
   url: SortOrder
 }
 
