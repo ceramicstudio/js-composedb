@@ -1,9 +1,11 @@
+import type { QueryFilters, Sorting } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { CeramicCommitID, getScalar } from '@composedb/graphql-scalars'
 import type {
   RuntimeCompositeDefinition,
   RuntimeList,
   RuntimeModel,
+  RuntimeObjectField,
   RuntimeObjectFields,
   RuntimeReference,
   RuntimeRelation,
@@ -16,6 +18,7 @@ import {
   type GraphQLEnumValueConfigMap,
   type GraphQLFieldConfig,
   type GraphQLFieldConfigMap,
+  GraphQLFloat,
   type GraphQLInputFieldConfigMap,
   GraphQLID,
   GraphQLInputObjectType,
@@ -25,7 +28,9 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   type GraphQLOutputType,
+  type GraphQLScalarType,
   GraphQLSchema,
+  GraphQLString,
   assertValidSchema,
 } from 'graphql'
 import {
@@ -39,6 +44,12 @@ import {
 
 import type { Context } from './context.js'
 import type { UpdateDocOptions } from './loader.js'
+import { assertValidQueryFilters, createRelationQueryFilters } from './query.js'
+
+const NON_SCALAR_FIELD_TYPES = ['meta', 'reference', 'list', 'view']
+function isScalarField(field: RuntimeObjectField): field is RuntimeScalar {
+  return !NON_SCALAR_FIELD_TYPES.includes(field.type)
+}
 
 type EmbeddedObject = { __type: string; [key: string]: unknown }
 
@@ -60,7 +71,14 @@ type BuildObjectParams = {
 type BuildDocumentObjectParams = BuildObjectParams & { model: RuntimeModel }
 
 type ConnectionAccountArgument = { account?: string }
-type ConnectionArgumentsWithAccount = ConnectionArguments & ConnectionAccountArgument
+type ConnectionFiltersArgument = { filters?: QueryFilters }
+type ConnectionSortingArgument = { sorting?: Sorting }
+
+type ConnectionQueryArguments = ConnectionArguments &
+  ConnectionFiltersArgument &
+  ConnectionSortingArgument
+type ConnectionRelationArguments = ConnectionQueryArguments & ConnectionAccountArgument
+type ConnectionRelationCountArguments = ConnectionAccountArgument & ConnectionFiltersArgument
 
 const connectionArgsWithAccount = {
   ...connectionArgs,
@@ -85,6 +103,63 @@ const UpdateOptionsInput = new GraphQLInputObjectType({
   },
 })
 
+const SortOrder = new GraphQLEnumType({
+  name: 'SortOrder',
+  values: {
+    ASC: { value: 'ASC' },
+    DESC: { value: 'DESC' },
+  },
+})
+
+function createEnumValueFilterInput(type: GraphQLEnumType): GraphQLInputObjectType {
+  return new GraphQLInputObjectType({
+    name: `${type.name}ValueFilterInput`,
+    fields: {
+      isNull: { type: GraphQLBoolean },
+      equalTo: { type },
+      notEqualTo: { type },
+      in: { type: new GraphQLList(new GraphQLNonNull(type)) },
+      notIn: { type: new GraphQLList(new GraphQLNonNull(type)) },
+    },
+  })
+}
+
+function createScalarValueFilterInput(type: GraphQLScalarType): GraphQLInputObjectType {
+  return new GraphQLInputObjectType({
+    name: `${type.name}ValueFilterInput`,
+    fields: {
+      isNull: { type: GraphQLBoolean },
+      equalTo: { type },
+      notEqualTo: { type },
+      in: { type: new GraphQLList(new GraphQLNonNull(type)) },
+      notIn: { type: new GraphQLList(new GraphQLNonNull(type)) },
+      lessThan: { type },
+      lessThanOrEqualTo: { type },
+      greaterThan: { type },
+      greaterThanOrEqualTo: { type },
+    },
+  })
+}
+
+const valueFilterInputs = {
+  BooleanValueFilter: new GraphQLInputObjectType({
+    name: 'BooleanValueFilterInput',
+    fields: {
+      isNull: { type: GraphQLBoolean },
+      equalTo: { type: GraphQLBoolean },
+    },
+  }),
+  FloatValueFilter: createScalarValueFilterInput(GraphQLFloat),
+  IntValueFilter: createScalarValueFilterInput(GraphQLInt),
+  StringValueFilter: createScalarValueFilterInput(GraphQLString),
+} as const
+const valueFilterInputsTypes: Record<string, string> = {
+  boolean: 'BooleanValueFilter',
+  float: 'FloatValueFilter',
+  int: 'IntValueFilter',
+  string: 'StringValueFilter',
+}
+
 /**
  * GraphQL schema creation parameters.
  */
@@ -106,8 +181,8 @@ class SchemaBuilder {
   // Schema options
   #isReadonly: boolean
   // Internal records
-  #types: Record<string, GraphQLEnumType | GraphQLObjectType> = {}
-  #inputObjects: Record<string, GraphQLInputObjectType> = {}
+  #types: Record<string, GraphQLEnumType | GraphQLObjectType> = { SortOrder }
+  #inputObjects: Record<string, GraphQLInputObjectType> = { ...valueFilterInputs }
   #mutations: Record<string, GraphQLFieldConfig<any, Context>> = {}
   // Internal mapping of model IDs to object names
   #modelAliases: Record<string, string>
@@ -273,6 +348,10 @@ class SchemaBuilder {
         return config
       },
     })
+
+    // TODO: should only build filters for indexed fields
+    this._buildFiltersType(name, fields)
+    this._buildSortingType(name, fields)
 
     if (!this.#isReadonly) {
       this._buildInputObjectType(name, fields)
@@ -454,19 +533,28 @@ class SchemaBuilder {
       case 'queryConnection':
         return {
           type: new GraphQLNonNull(this.#types[`${modelAlias}Connection`]),
-          args: connectionArgsWithAccount,
+          args: {
+            ...connectionArgsWithAccount,
+            filters: { type: this.#inputObjects[`${modelAlias}Filters`] },
+            sorting: { type: this.#inputObjects[`${modelAlias}Sorting`] },
+          },
           resolve: async (
             doc,
-            args: ConnectionArgumentsWithAccount,
+            args: ConnectionRelationArguments,
             ctx
           ): Promise<Connection<unknown> | null> => {
             const account =
               args.account === 'documentAccount' ? doc.metadata.controller : args.account
+            const queryFilters = createRelationQueryFilters(
+              relation.property,
+              doc.id.toString(),
+              args.filters
+            )
             return await ctx.queryConnection({
               ...args,
               account,
               model: relation.model,
-              filter: { [relation.property]: doc.id.toString() },
+              queryFilters,
             })
           },
         }
@@ -478,15 +566,17 @@ class SchemaBuilder {
               type: GraphQLID,
               description: 'Counts only documents created by the provided account',
             },
+            filters: { type: this.#inputObjects[`${modelAlias}Filters`] },
           },
-          resolve: async (doc, args: ConnectionAccountArgument, ctx): Promise<number> => {
+          resolve: async (doc, args: ConnectionRelationCountArguments, ctx): Promise<number> => {
             const account =
               args.account === 'documentAccount' ? doc.metadata.controller : args.account
-            return await ctx.queryCount({
-              account,
-              model: relation.model,
-              filter: { [relation.property]: doc.id.toString() },
-            })
+            const queryFilters = createRelationQueryFilters(
+              relation.property,
+              doc.id.toString(),
+              args.filters
+            )
+            return await ctx.queryCount({ account, model: relation.model, queryFilters })
           },
         }
       default:
@@ -527,6 +617,62 @@ class SchemaBuilder {
   _buildScalarFieldType(definitions: SharedDefinitions, field: RuntimeScalar): GraphQLOutputType {
     const type = field.type === 'did' ? definitions.accountObject : getScalar(field.type)
     return field.required ? new GraphQLNonNull(type) : type
+  }
+
+  _buildFiltersType(objectName: string, fields: RuntimeObjectFields) {
+    const objectInputName = `${objectName}ObjectFilter`
+    const inputName = `${objectName}Filters`
+
+    this.#inputObjects[objectInputName] = new GraphQLInputObjectType({
+      name: `${objectInputName}Input`,
+      fields: () => {
+        const config: GraphQLInputFieldConfigMap = {}
+        for (const [key, field] of Object.entries(fields)) {
+          let type: GraphQLInputObjectType | undefined
+          if (field.type === 'reference') {
+            if (field.refType === 'enum') {
+              const enumType = this.#types[field.refName] as GraphQLEnumType
+              type = createEnumValueFilterInput(enumType)
+              this.#inputObjects[type.name] = type
+            } else if (field.refType === 'node') {
+              type = this.#inputObjects.StringValueFilter
+            }
+          } else if (isScalarField(field)) {
+            type = this.#inputObjects[valueFilterInputsTypes[field.type] ?? 'StringValueFilter']
+          }
+          if (type != null) {
+            config[key] = { type }
+          }
+        }
+        return config
+      },
+    })
+
+    this.#inputObjects[inputName] = new GraphQLInputObjectType({
+      name: `${inputName}Input`,
+      fields: () => ({
+        where: { type: this.#inputObjects[objectInputName] },
+        and: { type: new GraphQLList(new GraphQLNonNull(this.#inputObjects[inputName])) },
+        or: { type: new GraphQLList(new GraphQLNonNull(this.#inputObjects[inputName])) },
+        not: { type: this.#inputObjects[inputName] },
+      }),
+    })
+  }
+
+  _buildSortingType(objectName: string, fields: RuntimeObjectFields) {
+    const name = `${objectName}Sorting`
+    this.#inputObjects[name] = new GraphQLInputObjectType({
+      name: `${name}Input`,
+      fields: () => {
+        const config: GraphQLInputFieldConfigMap = {}
+        for (const [key, field] of Object.entries(fields)) {
+          if (field.type === 'reference' || isScalarField(field)) {
+            config[key] = { type: SortOrder }
+          }
+        }
+        return config
+      },
+    })
   }
 
   _buildInputObjectType(name: string, fields: RuntimeObjectFields) {
@@ -658,9 +804,20 @@ class SchemaBuilder {
       const rest = alias.slice(1)
       queryFields[`${first}${rest}Index`] = {
         type: this.#types[`${alias}Connection`],
-        args: connectionArgs,
-        resolve: async (_, args: ConnectionArguments, ctx): Promise<Connection<any> | null> => {
-          return await ctx.queryConnection({ ...args, model: model.id })
+        args: {
+          ...connectionArgs,
+          filters: { type: this.#inputObjects[`${alias}Filters`] },
+          sorting: { type: this.#inputObjects[`${alias}Sorting`] },
+        },
+        resolve: async (
+          _,
+          { filters, ...args }: ConnectionQueryArguments,
+          ctx
+        ): Promise<Connection<any> | null> => {
+          if (filters != null) {
+            assertValidQueryFilters(filters)
+          }
+          return await ctx.queryConnection({ ...args, queryFilters: filters, model: model.id })
         },
       }
     }

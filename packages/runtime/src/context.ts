@@ -3,7 +3,7 @@ import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instanc
 import type { CommitID, StreamID } from '@ceramicnetwork/streamid'
 import type { Connection } from 'graphql-relay'
 
-import { type ConnectionQuery, queryConnection, querySingle, toBaseQuery } from './query.js'
+import { type ConnectionQuery, queryConnection, querySingle } from './query.js'
 import { type DocumentCache, DocumentLoader, type UpdateDocOptions } from './loader.js'
 
 export type ContextParams = {
@@ -140,7 +140,7 @@ export function createContext(params: ContextParams): Context {
       return await queryConnection(ceramic, query)
     },
     queryCount: async (query: BaseQuery): Promise<number> => {
-      return await ceramic.index.count(toBaseQuery(query))
+      return await ceramic.index.count(query)
     },
     querySingle: async (query: BaseQuery): Promise<ModelInstanceDocument | null> => {
       return await querySingle(ceramic, query)

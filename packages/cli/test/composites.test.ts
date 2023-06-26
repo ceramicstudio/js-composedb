@@ -47,7 +47,11 @@ describe('composites', () => {
         'test/mocks/composite.profile.post.schema',
       ])
 
-      expect(create.stderr.toString().includes('No controller specified')).toBe(true)
+      expect(
+        create.stderr
+          .toString()
+          .includes('An authenticated DID must be attached to the Ceramic instance')
+      ).toBe(true)
     }, 60000)
 
     test('composite creation succeeds', async () => {

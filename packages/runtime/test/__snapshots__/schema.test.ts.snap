@@ -22,6 +22,8 @@ exports[`schema extra scalars 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
+    filters: ExtraScalarsFiltersInput
+    sorting: ExtraScalarsSortingInput
   ): ExtraScalarsConnection
 }
 
@@ -170,6 +172,84 @@ A field whose value is a UTC Offset: https://en.wikipedia.org/wiki/List_of_tz_da
 """
 scalar UtcOffset
 
+input ExtraScalarsFiltersInput {
+  where: ExtraScalarsObjectFilterInput
+  and: [ExtraScalarsFiltersInput!]
+  or: [ExtraScalarsFiltersInput!]
+  not: ExtraScalarsFiltersInput
+}
+
+input ExtraScalarsObjectFilterInput {
+  accountID: StringValueFilterInput
+  chainID: StringValueFilterInput
+  cid: StringValueFilterInput
+  commitID: StringValueFilterInput
+  countryCode: StringValueFilterInput
+  date: StringValueFilterInput
+  dateTime: StringValueFilterInput
+  did: StringValueFilterInput
+  latitude: FloatValueFilterInput
+  localDate: StringValueFilterInput
+  locale: StringValueFilterInput
+  localTime: StringValueFilterInput
+  longitude: FloatValueFilterInput
+  streamID: StringValueFilterInput
+  time: StringValueFilterInput
+  timeZone: StringValueFilterInput
+  uri: StringValueFilterInput
+  utcOffset: StringValueFilterInput
+}
+
+input StringValueFilterInput {
+  isNull: Boolean
+  equalTo: String
+  notEqualTo: String
+  in: [String!]
+  notIn: [String!]
+  lessThan: String
+  lessThanOrEqualTo: String
+  greaterThan: String
+  greaterThanOrEqualTo: String
+}
+
+input FloatValueFilterInput {
+  isNull: Boolean
+  equalTo: Float
+  notEqualTo: Float
+  in: [Float!]
+  notIn: [Float!]
+  lessThan: Float
+  lessThanOrEqualTo: Float
+  greaterThan: Float
+  greaterThanOrEqualTo: Float
+}
+
+input ExtraScalarsSortingInput {
+  accountID: SortOrder
+  chainID: SortOrder
+  cid: SortOrder
+  commitID: SortOrder
+  countryCode: SortOrder
+  date: SortOrder
+  dateTime: SortOrder
+  did: SortOrder
+  latitude: SortOrder
+  localDate: SortOrder
+  locale: SortOrder
+  localTime: SortOrder
+  longitude: SortOrder
+  streamID: SortOrder
+  time: SortOrder
+  timeZone: SortOrder
+  uri: SortOrder
+  utcOffset: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
 type Mutation {
   createExtraScalars(input: CreateExtraScalarsInput!): CreateExtraScalarsPayload
   updateExtraScalars(input: UpdateExtraScalarsInput!): UpdateExtraScalarsPayload
@@ -293,6 +373,8 @@ exports[`schema note 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
+    filters: NoteFiltersInput
+    sorting: NoteSortingInput
   ): NoteConnection
 }
 
@@ -379,6 +461,50 @@ enum NoteStatus {
 
 """A Ceramic Commit ID"""
 scalar CeramicCommitID @specifiedBy(url: "https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#commitid")
+
+input NoteFiltersInput {
+  where: NoteObjectFilterInput
+  and: [NoteFiltersInput!]
+  or: [NoteFiltersInput!]
+  not: NoteFiltersInput
+}
+
+input NoteObjectFilterInput {
+  status: NoteStatusValueFilterInput
+  title: StringValueFilterInput
+  text: StringValueFilterInput
+}
+
+input NoteStatusValueFilterInput {
+  isNull: Boolean
+  equalTo: NoteStatus
+  notEqualTo: NoteStatus
+  in: [NoteStatus!]
+  notIn: [NoteStatus!]
+}
+
+input StringValueFilterInput {
+  isNull: Boolean
+  equalTo: String
+  notEqualTo: String
+  in: [String!]
+  notIn: [String!]
+  lessThan: String
+  lessThanOrEqualTo: String
+  greaterThan: String
+  greaterThanOrEqualTo: String
+}
+
+input NoteSortingInput {
+  status: SortOrder
+  title: SortOrder
+  text: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
 
 type Mutation {
   createNote(input: CreateNoteInput!): CreateNotePayload
@@ -468,6 +594,8 @@ exports[`schema post and comments 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
+    filters: CommentFiltersInput
+    sorting: CommentSortingInput
   ): CommentConnection
   postIndex(
     """Returns the items in the list that come after the specified cursor."""
@@ -481,6 +609,8 @@ exports[`schema post and comments 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
+    filters: PostFiltersInput
+    sorting: PostSortingInput
   ): PostConnection
 }
 
@@ -592,6 +722,7 @@ type Post implements Node {
   commentsCount(
     """Counts only documents created by the provided account"""
     account: ID
+    filters: CommentFiltersInput
   ): Int!
   comments(
     """Returns the items in the list that come after the specified cursor."""
@@ -608,6 +739,8 @@ type Post implements Node {
 
     """Returns only documents created by the provided account"""
     account: ID
+    filters: CommentFiltersInput
+    sorting: CommentSortingInput
   ): CommentConnection!
 }
 
@@ -615,6 +748,40 @@ type Post implements Node {
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the \`date-time\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
 scalar DateTime
+
+input CommentFiltersInput {
+  where: CommentObjectFilterInput
+  and: [CommentFiltersInput!]
+  or: [CommentFiltersInput!]
+  not: CommentFiltersInput
+}
+
+input CommentObjectFilterInput {
+  postID: StringValueFilterInput
+  text: StringValueFilterInput
+}
+
+input StringValueFilterInput {
+  isNull: Boolean
+  equalTo: String
+  notEqualTo: String
+  in: [String!]
+  notIn: [String!]
+  lessThan: String
+  lessThanOrEqualTo: String
+  greaterThan: String
+  greaterThanOrEqualTo: String
+}
+
+input CommentSortingInput {
+  postID: SortOrder
+  text: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
 
 """A connection to a list of items."""
 type PostConnection {
@@ -632,6 +799,25 @@ type PostEdge {
 
   """A cursor for use in pagination"""
   cursor: String!
+}
+
+input PostFiltersInput {
+  where: PostObjectFilterInput
+  and: [PostFiltersInput!]
+  or: [PostFiltersInput!]
+  not: PostFiltersInput
+}
+
+input PostObjectFilterInput {
+  date: StringValueFilterInput
+  title: StringValueFilterInput
+  text: StringValueFilterInput
+}
+
+input PostSortingInput {
+  date: SortOrder
+  title: SortOrder
+  text: SortOrder
 }
 
 type Mutation {
@@ -772,6 +958,8 @@ exports[`schema profile 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
+    filters: GenericProfileFiltersInput
+    sorting: GenericProfileSortingInput
   ): GenericProfileConnection
   socialProfileIndex(
     """Returns the items in the list that come after the specified cursor."""
@@ -785,6 +973,8 @@ exports[`schema profile 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
+    filters: SocialProfileFiltersInput
+    sorting: SocialProfileSortingInput
   ): SocialProfileConnection
   personProfileIndex(
     """Returns the items in the list that come after the specified cursor."""
@@ -798,6 +988,8 @@ exports[`schema profile 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
+    filters: PersonProfileFiltersInput
+    sorting: PersonProfileSortingInput
   ): PersonProfileConnection
 }
 
@@ -898,6 +1090,39 @@ type GenericProfileEdge {
   cursor: String!
 }
 
+input GenericProfileFiltersInput {
+  where: GenericProfileObjectFilterInput
+  and: [GenericProfileFiltersInput!]
+  or: [GenericProfileFiltersInput!]
+  not: GenericProfileFiltersInput
+}
+
+input GenericProfileObjectFilterInput {
+  name: StringValueFilterInput
+}
+
+input StringValueFilterInput {
+  isNull: Boolean
+  equalTo: String
+  notEqualTo: String
+  in: [String!]
+  notIn: [String!]
+  lessThan: String
+  lessThanOrEqualTo: String
+  greaterThan: String
+  greaterThanOrEqualTo: String
+}
+
+input GenericProfileSortingInput {
+  name: SortOrder
+  image: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
 """A connection to a list of items."""
 type SocialProfileConnection {
   """Information to aid in pagination."""
@@ -916,6 +1141,26 @@ type SocialProfileEdge {
   cursor: String!
 }
 
+input SocialProfileFiltersInput {
+  where: SocialProfileObjectFilterInput
+  and: [SocialProfileFiltersInput!]
+  or: [SocialProfileFiltersInput!]
+  not: SocialProfileFiltersInput
+}
+
+input SocialProfileObjectFilterInput {
+  description: StringValueFilterInput
+  emoji: StringValueFilterInput
+  url: StringValueFilterInput
+}
+
+input SocialProfileSortingInput {
+  description: SortOrder
+  emoji: SortOrder
+  background: SortOrder
+  url: SortOrder
+}
+
 """A connection to a list of items."""
 type PersonProfileConnection {
   """Information to aid in pagination."""
@@ -932,6 +1177,27 @@ type PersonProfileEdge {
 
   """A cursor for use in pagination"""
   cursor: String!
+}
+
+input PersonProfileFiltersInput {
+  where: PersonProfileObjectFilterInput
+  and: [PersonProfileFiltersInput!]
+  or: [PersonProfileFiltersInput!]
+  not: PersonProfileFiltersInput
+}
+
+input PersonProfileObjectFilterInput {
+  birthDate: StringValueFilterInput
+  gender: StringValueFilterInput
+  homeLocation: StringValueFilterInput
+  residenceCountry: StringValueFilterInput
+}
+
+input PersonProfileSortingInput {
+  birthDate: SortOrder
+  gender: SortOrder
+  homeLocation: SortOrder
+  residenceCountry: SortOrder
 }
 
 type Mutation {

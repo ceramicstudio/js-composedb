@@ -192,7 +192,9 @@ export abstract class Command<
       await did.authenticate()
       return did
     } catch (err) {
-      this.warn(`Invalid DID private key.  Did you generate the private key using 'composedb did:generate-private-key'?`)
+      this.warn(
+        `Invalid DID private key.  Did you generate the private key using 'composedb did:generate-private-key'?`
+      )
       throw err
     }
   }
