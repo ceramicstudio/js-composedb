@@ -167,12 +167,12 @@ const sidebars = {
       type: 'category',
       collapsed: false,
       label: 'Schema Definition',
-      link: { type: 'doc', id: 'api/sdl/scalars' },
       items: [
         { type: 'doc', id: 'api/sdl/scalars', label: 'Scalars' },
         { type: 'doc', id: 'api/sdl/directives', label: 'Directives' },
       ],
     },
+    { type: 'doc', id: 'api/runtime/schema', label: 'Runtime Schema' },
   ],
 }
 

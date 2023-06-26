@@ -59,6 +59,20 @@ type MyModel @loadModel(id: "<existing model stream ID>") {
 }
 ```
 
+## Indexing
+
+:::caution
+
+The indexing directive can only be set on types **defined as model**,
+identified using the [`@createModel`](#createmodel) or
+[`@loadModel`](#loadmodel) directive.
+
+:::
+
+### `@createIndices`
+
+TODO
+
 ## Type validation
 
 The following directives provide validation information on primitive scalars and
