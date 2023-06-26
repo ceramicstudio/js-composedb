@@ -50,7 +50,7 @@
     "@composedb/devtools": "workspace:^0.4.4",
     "@composedb/types": "workspace:^0.4.4",
     "@types/fs-extra": "^11.0.1",
-    "dids": "^4.0.0"
+    "dids": "^4.0.3"
   },
   "jest": {
     "extensionsToTreatAsEsm": [

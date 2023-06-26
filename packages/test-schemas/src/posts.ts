@@ -1,5 +1,5 @@
 export const postSchema = `
-type Post @createModel(accountRelation: LIST, description: "Simple post") {
+type Post @createModel(accountRelation: LIST, description: "Simple post") @createIndex(fields: [{path:["title"]}]) {
   author: DID! @documentAccount
   version: CommitID! @documentVersion
   date: DateTime
@@ -14,7 +14,7 @@ type ${postModelName} @loadModel(id: "${postModelID}") {
   id: ID!
 }
 
-type Comment @createModel(accountRelation: LIST, description: "Comment on a Post") {
+type Comment @createModel(accountRelation: LIST, description: "Comment on a Post") @createIndex(fields: [{path:["text"]}]) {
   author: DID! @documentAccount
   version: CommitID! @documentVersion 
   postID: StreamID! @documentReference(model: "${postModelName}")

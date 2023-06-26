@@ -5,7 +5,10 @@ enum NoteStatus {
   ARCHIVE
 }
 
-type Note @createModel(accountRelation: LIST, description: "Simple text note") {
+type Note 
+  @createModel(accountRelation: LIST, description: "Simple text note")
+  @createIndex(fields:[{path:"title"}]) 
+{
   author: DID! @documentAccount
   version: CommitID! @documentVersion 
   status: NoteStatus

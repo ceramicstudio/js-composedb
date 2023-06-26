@@ -24,10 +24,10 @@
   },
   "dependencies": {
     "@ceramicnetwork/core": "2.37.0-rc.0",
-    "dids": "^4.0.0",
+    "dids": "^4.0.3",
     "ipfs-core": "^0.18.1",
-    "jest-environment-node": "^29.5.0",
-    "key-did-provider-ed25519": "^3.0.0",
+    "jest-environment-node": "^29.6.1",
+    "key-did-provider-ed25519": "^3.0.1",
     "key-did-resolver": "^3.0.0",
     "tmp-promise": "^3.0.3",
     "uint8arrays": "^4.0.4"

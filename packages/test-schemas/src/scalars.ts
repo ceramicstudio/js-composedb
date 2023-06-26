@@ -1,5 +1,8 @@
 export const extraScalarsSchema = `
-type ExtraScalars @createModel(accountRelation: LIST, description: "Kitchen sink of added scalar types") {
+type ExtraScalars 
+  @createModel(accountRelation: LIST, description: "Kitchen sink of added scalar types") 
+  @createIndex(fields: [{path: ["dateTime"]},{path: ["streamID"]}])
+{
   accountID: AccountID
   chainID: ChainID
   cid: CID

@@ -286,6 +286,9 @@ export class Composite {
         if (abstractModel.action === 'create') {
           assertAuthenticatedDID(params.ceramic)
           model = await Model.create(params.ceramic, abstractModel.model)
+          if (abstractModel.indices) {
+            modelsIndices[abstractModel.model.name] = abstractModel.indices
+          }
         } else {
           model = await Model.load(params.ceramic, abstractModel.id)
           modelsViews[abstractModel.id] = abstractModel.views
