@@ -23,6 +23,9 @@ export class Composite {
   @Column({ nullable: true })
   description?: string
 
+  @Column({ type: 'simple-array' })
+  commonEmbeds!: Array<string>
+
   @Column({ type: 'simple-json' })
   graph!: GraphDefinition
 

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2727fa1175c304816a577828c2a056f0>>
+ * @generated SignedSource<<8bf34954a55560ebd298075ed59b9a8d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,21 +9,20 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Query } from 'relay-runtime';
-export type CompositesScreenQuery$variables = {};
-export type CompositesScreenQuery$data = {
-  readonly composites: ReadonlyArray<{
-    readonly compositeID: string;
+export type ModelsScreenQuery$variables = {};
+export type ModelsScreenQuery$data = {
+  readonly models: ReadonlyArray<{
+    readonly compositesCount: number;
     readonly description: string | null;
     readonly id: string;
-    readonly isEnabled: boolean;
-    readonly modelsCount: number;
-    readonly mutationsEnabled: boolean;
-    readonly subscriptionsEnabled: boolean;
+    readonly indexingEnabled: boolean;
+    readonly name: string;
+    readonly streamID: string;
   }>;
 };
-export type CompositesScreenQuery = {
-  response: CompositesScreenQuery$data;
-  variables: CompositesScreenQuery$variables;
+export type ModelsScreenQuery = {
+  response: ModelsScreenQuery$data;
+  variables: ModelsScreenQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){
@@ -31,9 +30,9 @@ var v0 = [
   {
     "alias": null,
     "args": null,
-    "concreteType": "Composite",
+    "concreteType": "Model",
     "kind": "LinkedField",
-    "name": "composites",
+    "name": "models",
     "plural": true,
     "selections": [
       {
@@ -47,7 +46,14 @@ var v0 = [
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "compositeID",
+        "name": "streamID",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "name",
         "storageKey": null
       },
       {
@@ -61,28 +67,14 @@ var v0 = [
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "isEnabled",
+        "name": "indexingEnabled",
         "storageKey": null
       },
       {
         "alias": null,
         "args": null,
         "kind": "ScalarField",
-        "name": "mutationsEnabled",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "subscriptionsEnabled",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "modelsCount",
+        "name": "compositesCount",
         "storageKey": null
       }
     ],
@@ -94,7 +86,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "CompositesScreenQuery",
+    "name": "ModelsScreenQuery",
     "selections": (v0/*: any*/),
     "type": "Query",
     "abstractKey": null
@@ -103,20 +95,20 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "CompositesScreenQuery",
+    "name": "ModelsScreenQuery",
     "selections": (v0/*: any*/)
   },
   "params": {
-    "cacheID": "de9b1b2712c301830f6b22c6134f0cc9",
+    "cacheID": "795dc0b72c253f6a62c158826158e07e",
     "id": null,
     "metadata": {},
-    "name": "CompositesScreenQuery",
+    "name": "ModelsScreenQuery",
     "operationKind": "query",
-    "text": "query CompositesScreenQuery {\n  composites {\n    id\n    compositeID\n    description\n    isEnabled\n    mutationsEnabled\n    subscriptionsEnabled\n    modelsCount\n  }\n}\n"
+    "text": "query ModelsScreenQuery {\n  models {\n    id\n    streamID\n    name\n    description\n    indexingEnabled\n    compositesCount\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "ba0d4211cfbac343399f691922d236d0";
+(node as any).hash = "ef9f50c9ac763c34a3cd8c69be3e6f3c";
 
 export default node;

@@ -13,6 +13,9 @@ import { nanoid } from 'nanoid'
 import { type RefObject, createRef, useState } from 'react'
 import { TransformComponent, TransformWrapper, useControls } from 'react-zoom-pan-pinch'
 
+// TODO: composite state including Simulation instance that can be used as a React hook with changes tracked by UI
+// Should accept a composite structure from the DB in constructor, track diffs and provide methods to save the composite back to DB (GraphQL mutation input)
+
 type CardNode = SimulationNodeDatum & {
   id: string
   ref: RefObject<HTMLDivElement>
@@ -39,7 +42,7 @@ function EditorControls() {
   const { centerView, zoomIn, zoomOut } = useControls()
 
   return (
-    <Button.Group>
+    <Button.Group sx={{ position: 'absolute', top: 70, right: 10 }}>
       <Button variant="default" onClick={() => zoomIn()}>
         <IconZoomIn />
       </Button>
@@ -113,18 +116,6 @@ export default function CompositeEditor() {
 
   return (
     <TransformWrapper centerOnInit maxScale={2} minScale={0.5}>
-      <Drawer
-        position="right"
-        withOverlay={false}
-        opened={openDrawerID != null}
-        onClose={() => {
-          setOpenDrawerID(null)
-        }}
-        title="Node details"
-        styles={{ content: { marginTop: 60 } }}>
-        <Text>Node details content</Text>
-      </Drawer>
-      <EditorControls />
       <TransformComponent
         wrapperStyle={{
           display: 'flex',
@@ -139,6 +130,18 @@ export default function CompositeEditor() {
           {displayNodes}
         </Box>
       </TransformComponent>
+      <EditorControls />
+      <Drawer
+        position="right"
+        withOverlay={false}
+        opened={openDrawerID != null}
+        onClose={() => {
+          setOpenDrawerID(null)
+        }}
+        title="Node details"
+        styles={{ content: { marginTop: 60 } }}>
+        <Text>Node details content</Text>
+      </Drawer>
     </TransformWrapper>
   )
 }

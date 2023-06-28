@@ -7,6 +7,7 @@ export const CompositeEntityCodec = io.intersection(
   [
     io.strict({
       id: io.string,
+      commonEmbeds: io.array(io.string),
       graph: GraphDefinitionCodec,
       isEnabled: io.boolean,
       mutationsEnabled: io.boolean,

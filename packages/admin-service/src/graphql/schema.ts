@@ -12,11 +12,12 @@ import {
   type GraphQLType,
 } from 'graphql'
 import {
-  // fromGlobalId,
+  fromGlobalId,
   globalIdField,
   // mutationWithClientMutationId,
   nodeDefinitions,
 } from 'graphql-relay'
+import { GraphQLJSONObject } from 'graphql-scalars'
 
 import type { DatabaseClient } from '../types.js'
 
@@ -29,12 +30,25 @@ function toList<Type extends GraphQLType>(type: Type) {
 }
 
 const { nodeField, nodeInterface } = nodeDefinitions(
-  async (_id: string, _ctx: Context) => {
-    // return id.startsWith('did:') ? id : await ctx.loader.load(id)
+  async (globalId: string, ctx: Context) => {
+    const { type, id } = fromGlobalId(globalId)
+    switch (type) {
+      case 'Composite':
+        return await ctx.db.loadComposite.query({ id })
+      case 'Model':
+        return await ctx.db.loadModel.query({ id })
+      default:
+        throw new Error(`Unsupported node type: ${type}`)
+    }
   },
-  (_doc: unknown) => {
+  (doc: Record<string, unknown>) => {
+    if (doc.graph != null) {
+      return 'Composite'
+    }
+    if (doc.controller != null) {
+      return 'Model'
+    }
     return undefined
-    // return typeof didOrDoc === 'string' ? 'CeramicAccount' : this.#modelAliases[didOrDoc.model]
   }
 )
 
@@ -46,6 +60,9 @@ const CompositeObject: GraphQLObjectType<{}, Context> = new GraphQLObjectType({
     compositeID: {
       type: new GraphQLNonNull(GraphQLID),
       resolve: (src) => src.id,
+    },
+    label: {
+      type: GraphQLString,
     },
     description: {
       type: GraphQLString,
@@ -71,6 +88,9 @@ const CompositeObject: GraphQLObjectType<{}, Context> = new GraphQLObjectType({
         return await ctx.db.countModels.query({ composite: src.id })
       },
     },
+    commonEmbeds: {
+      type: toList(GraphQLString),
+    },
   }),
 })
 
@@ -91,6 +111,9 @@ const ModelObject: GraphQLObjectType<{}, Context> = new GraphQLObjectType({
     },
     description: {
       type: GraphQLString,
+    },
+    content: {
+      type: new GraphQLNonNull(GraphQLJSONObject),
     },
     composites: {
       type: toList(CompositeObject),

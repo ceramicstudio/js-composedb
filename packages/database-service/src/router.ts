@@ -90,6 +90,7 @@ export const router = t.router({
       description: req.input.description ?? undefined,
       graph: req.input.graph,
       models,
+      commonEmbeds: req.input.commonEmbeds,
       isEnabled: req.input.isEnabled,
       mutationsEnabled: req.input.mutationsEnabled,
       subscriptionsEnabled: req.input.subscriptionsEnabled,

@@ -4,11 +4,11 @@ import { graphql } from 'react-relay'
 
 import { useRouteQuery } from '../query.js'
 
-import type { ModelsListQuery } from './__generated__/ModelsListQuery.graphql.js'
+import type { ModelsScreenQuery } from './__generated__/ModelsScreenQuery.graphql.js'
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const modelsQuery = graphql`
-  query ModelsListQuery {
+  query ModelsScreenQuery {
     models {
       id
       streamID
@@ -36,8 +36,8 @@ function IndexingStatusIcon({ enabled }: IndexingStatusIconProps) {
   )
 }
 
-export default function ModelsList() {
-  const data = useRouteQuery<ModelsListQuery>(modelsQuery)
+export default function ModelsScreen() {
+  const data = useRouteQuery<ModelsScreenQuery>(modelsQuery)
 
   const items = data.models.map((model) => {
     return (

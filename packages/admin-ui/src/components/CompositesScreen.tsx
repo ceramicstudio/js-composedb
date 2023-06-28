@@ -1,14 +1,15 @@
-import { ScrollArea, Table, Text, Tooltip } from '@mantine/core'
+import { ScrollArea, Table, Tooltip } from '@mantine/core'
 import { graphql } from 'react-relay'
+import { Link } from 'react-router-dom'
 
 import { shortID } from '../utils.js'
 import { useRouteQuery } from '../query.js'
 
-import type { CompositesListQuery } from './__generated__/CompositesListQuery.graphql'
+import type { CompositesScreenQuery } from './__generated__/CompositesScreenQuery.graphql.js'
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const compositesQuery = graphql`
-  query CompositesListQuery {
+  query CompositesScreenQuery {
     composites {
       id
       compositeID
@@ -21,15 +22,17 @@ export const compositesQuery = graphql`
   }
 `
 
-export default function CompositesList() {
-  const data = useRouteQuery<CompositesListQuery>(compositesQuery)
+export default function CompositesScreen() {
+  const data = useRouteQuery<CompositesScreenQuery>(compositesQuery)
 
   const rows = data.composites.map((composite) => {
     return (
       <tr key={composite.id}>
         <td>
           <Tooltip label={composite.compositeID}>
-            <Text>{shortID(composite.compositeID, 30)}</Text>
+            <Link to={`/composites/${composite.id}/edit`}>
+              {shortID(composite.compositeID, 30)}
+            </Link>
           </Tooltip>
         </td>
         <td>{composite.description}</td>

@@ -5,7 +5,7 @@ import { createDecoder } from './utils.js'
 
 export const cidCodec = new io.Type<CID, string, unknown>(
   'cid',
-  (input): input is CID => input instanceof CID,
+  (input): input is CID => CID.asCID(input) != null,
   (input, context) => {
     try {
       const cid = CID.asCID(input)

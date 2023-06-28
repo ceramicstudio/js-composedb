@@ -45,7 +45,7 @@
     "@ceramicnetwork/streamid": "2.14.0",
     "@composedb/graphql-scalars": "workspace:^0.4.4",
     "dataloader": "^2.2.2",
-    "graphql": "^16.6.0",
+    "graphql": "^16.7.1",
     "graphql-relay": "^0.10.0"
   },
   "devDependencies": {
@@ -54,7 +54,7 @@
     "@composedb/test-schemas": "workspace:^0.4.0",
     "@composedb/types": "workspace:^0.4.4",
     "caip": "^1.1.0",
-    "dids": "^4.0.0",
+    "dids": "^4.0.3",
     "jest-environment-composedb": "workspace:^0.4.2",
     "multiformats": "^12.0.1"
   },

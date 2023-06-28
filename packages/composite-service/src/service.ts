@@ -198,6 +198,7 @@ export class Service implements ServiceLifecycle {
     const graph = createGraphDefinition(definition)
     await this.#clients.database.saveComposite.mutate({
       id,
+      commonEmbeds: composite.commonEmbeds,
       graph,
       isEnabled: options.enable ?? true,
       mutationsEnabled: options.enableMutations ?? false,
