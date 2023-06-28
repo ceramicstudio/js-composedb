@@ -38,6 +38,13 @@ You can then output the json to find the model id, or pass it through jq to loca
 
     cat education_module.json | jq.models[keys_unsorted[0]]
 
+:::caution Private key required
+
+Running this command requires a DID private key to be provided, 
+using the `DID_PRIVATE_KEY` environment variable or the `--did-private-key` flag.
+
+:::
+
 ### Creating Composites
 
 Let’s say you have a model written in a `my-schema.graphql` file. To convert this schema into a composite, run the following:
