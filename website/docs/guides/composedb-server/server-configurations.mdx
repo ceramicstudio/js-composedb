@@ -1,0 +1,211 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Server Configurations
+Manage the configurations for your ComposeDB server.
+
+## Default configurations
+When you start the daemon using the `ceramic daemon` command, if a configuration file is not present in the expected path `$HOME/.ceramic/daemon.config.json`, the command will create a new `daemon.config.json` file with the following defaults:
+
+```json
+{
+    "anchor": {
+        "ethereum-rpc-url": "https://eg_infura_endpoint" // Replace with an Ethereum RPC endpoint to avoid rate limiting
+    },
+    "http-api": {
+        "cors-allowed-origins": [
+            ".*"
+        ]
+    },
+    "ipfs": {
+        "mode": "remote",
+        "host": "http://ipfs_ip_address:5001"
+    },
+    "logger": {
+        "log-level": 2, // 0 is most verbose
+        "log-to-files": true
+    },
+    "network": {
+        "name": "mainnet", // Connect to mainnet, testnet-clay, or dev-unstable
+    },
+    "node": {},
+    "state-store": { 
+        "mode": "fs", // volume storage option shared here, can be replaced by S3 mode & bucket
+				"local-directory": "/path_for_ceramic_statestore", // Defaults to $HOME/.ceramic/statestore
+    }
+}
+```
+
+### Key configurations
+These are the configurations you should pay close attention to, described below on this page:
+
+- Networks & Environments
+- SQL Database
+- History Sync
+- IPFS Process
+
+### Changing configurations
+ComposeDB configurations can be set in two places: using the config file and using the CLI. Although we recommend making changes using the config file, for completeness this guide demonstrates both.
+
+**Using the `daemon.config.json` file (recommended)**
+
+The config file is a JSON file used to set durable, long-lived node configurations. After making changes to the config file, be sure to save your changes then restart the daemon for them to take effect.
+
+This is the preferred method for setting configs, especially for stable production usage.
+
+**Using the CLI**
+
+The CLI can be used to set temporary, short-lived node configurations. To do this, pass designated CLI flags to the daemon at startup. This method is only recommended in a scripted test environment or when starting the daemon in a singleton way for test purposes.
+
+:::tip
+
+When using the CLI, always execute the same flags each time the node restarts or else you will reset to default settings.
+
+:::
+
+## Network
+Networks are collections of nodes that communicate, store data, and share data. When running a ComposeDB server, you need to decide which network it will connect to.
+
+### Available networks
+
+Each network has its own string designation. Find more information about the networks [here](https://developers.ceramic.network/learn/networks/).
+
+| Name | Description | Default Value |
+| --- | --- | --- |
+| mainnet | Primary public production network |  |
+| testnet-clay | Primary public test network | ✅ |
+| dev-unstable | Core protocol debugging network, very experimental |  |
+| local | Local instance for development |  |
+
+:::info
+
+Networks are completely isolated, distinct development environments. Models and data that exist on one network *do not* exist on other networks, and are not portable.
+
+:::
+
+### Setting the network
+The system will default to `testnet-clay` if a network is not set.
+
+<Tabs
+  defaultValue="config"
+  groupId="config-or-cli"
+  values={[
+    {label: 'Config File', value: 'config'},
+    {label: 'CLI', value: 'cli'},
+  ]}>
+  <TabItem value="config">
+
+```json
+"network": {
+    "name": "testnet-clay"
+  }
+```
+
+  </TabItem>
+  <TabItem value="cli">
+
+```bash
+# Connect to testnet-clay network on startup
+
+ceramic daemon --network "testnet-clay"
+```
+
+  </TabItem>
+</Tabs>
+
+### Changing networks
+To switch from one network to another, such as from `testnet-clay` to `mainnet`:
+
+<Tabs
+  defaultValue="config"
+  groupId="config-or-cli"
+  values={[
+    {label: 'Config File', value: 'config'},
+    {label: 'CLI', value: 'cli'},
+  ]}>
+  <TabItem value="config">
+
+```json
+"network": {
+		"name": "mainnet"
+	}
+```
+
+  </TabItem>
+  <TabItem value="cli">
+
+```bash
+ceramic daemon --network "mainnet"
+```
+
+
+  </TabItem>
+</Tabs>
+
+:::info
+
+Be mindful that models and data are not portable across networks.
+
+:::
+
+
+## SQL Database
+One of the most important configurations that you must set up is your database. This database will be used to store an index of data for all models used by your app.
+
+### Available SQL databases
+
+| Name | Description | Default Value |
+| --- | --- | --- |
+| Postgres | recommended for everything besides early prototyping |  |
+| SQLite | Default option; can only be run locally, recommended for early prototyping | ✅ |
+
+:::caution
+
+Only Postgres is currently supported for production usage.
+
+:::
+
+## History Sync
+By default, Ceramic nodes will only index documents they observe using pubsub messages. In order to index documents created before the node was deployed or configured to index some models, **History Sync** needs to be enabled on the Ceramic node, in the `daemon.config.json` file:
+
+```json
+{
+	...
+	"indexing": {
+    ...
+		"enable-historical-sync": true
+	}
+}
+```
+
+## IPFS Process
+### Available Configurations
+
+| Name | Description | Default value? |
+| --- | --- | --- |
+| bundled | IPFS running in same compute process as Ceramic; recommended for early prototyping | ✅ |
+| remote | IPFS running in separate compute process; recommended for production and everything besides early prototyping |  |
+
+### Persistent Storage
+To run a Ceramic node in production, it is critical to persist the [Ceramic state store](https://developers.ceramic.network/run/nodes/nodes/#ceramic-state-store) and the [IPFS datastore](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#datastorespec). The form of storage you choose should also be configured for disaster recovery with data redundancy, and some form of snapshotting and/or backups.
+
+**Loss of this data can result in permanent loss of Ceramic streams and will cause your node to be in a corrupt state.**
+
+The Ceramic state store and IPFS datastore are stored on your machine's filesystem by default. The Ceramic state store defaults to `$HOME/.ceramic/statestore`. The IPFS datastore defaults to `ipfs/blocks` located wherever you run IPFS.
+
+The fastest way to ensure data persistence is by mounting a persistent volume to your instances and configuring the Ceramic and IPFS nodes to write to the mount location. The mounted volume should be configured such that the data persists if the instance shuts down.
+
+You can also use AWS S3 for data storage which is supported for both Ceramic and IPFS. Examples of the configuration are shared on the Ceramic docs [here](https://developers.ceramic.network/run/nodes/nodes/#example-aws-s3-policies).
+
+### IPFS Datastore
+
+The IPFS datastore stores the raw IPFS blocks that make up Ceramic streams. To prevent data corruption, use environment variables written to your profile file, or otherwise injected into your environment on start so that the datastore location does not change between reboots.
+
+Note: Switching between data storage locations is an advanced feature and should be avoided. Depending on the sharding implementation you may need to do a data migration first. See [t](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#datastorespec)he [datastore spec](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#datastorespec) for more information.
+
+### Ceramic State Store
+
+The Ceramic State Store holds state for pinned streams and the acts as a cache for the Ceramic streams that your node creates or loads. To ensure that the data you create with your Ceramic node does not get lost you must pin streams you care about and you must ensure that the state store does not get deleted.
+
+## Next Steps
+- [Access Mainnet](../../guides/composedb-server/access-mainnet.mdx)
