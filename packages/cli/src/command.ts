@@ -186,9 +186,14 @@ export abstract class Command<
   }
 
   async getAuthenticatedDID(seed: string): Promise<DID> {
-    const did = this.getDID()
-    did.setProvider(this.getProvider(seed))
-    await did.authenticate()
-    return did
+    try {
+      const did = this.getDID()
+      did.setProvider(this.getProvider(seed))
+      await did.authenticate()
+      return did
+    } catch (err) {
+      this.warn(`Invalid DID private key.  Did you generate the private key using 'composedb did:generate-private-key'?`)
+      throw err
+    }
   }
 }
