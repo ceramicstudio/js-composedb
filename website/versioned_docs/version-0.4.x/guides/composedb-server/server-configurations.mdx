@@ -156,7 +156,7 @@ One of the most important configurations that you must set up is your database. 
 
 | Name | Description | Default Value |
 | --- | --- | --- |
-| Postgres | recommended for everything besides early prototyping |  |
+| Postgres | Required for mainnet; recommended for everything besides early prototyping |  |
 | SQLite | Default option; can only be run locally, recommended for early prototyping | ✅ |
 
 :::caution
@@ -166,7 +166,7 @@ Only Postgres is currently supported for production usage.
 :::
 
 ## History Sync
-By default, Ceramic nodes will only index documents they observe using pubsub messages. In order to index documents created before the node was deployed or configured to index some models, **History Sync** needs to be enabled on the Ceramic node, in the `daemon.config.json` file:
+By default, Ceramic nodes will only index documents they observe using pubsub messages. In order to index documents created before the node was deployed or to index any changes missed during a node's downtime, **History Sync** needs to be enabled. First, ensure you are using Postgres with ComposeDB - HistorySync does not currently support SQLite. Next, enable HistorySync on your Ceramic node through the `daemon.config.json` file:
 
 ```json
 {
