@@ -146,6 +146,23 @@ ceramic daemon --network "mainnet"
 
 Be mindful that models and data are not portable across networks.
 
+If you seek to switch networks locally you need to either drop or move your default DB. To prevent data loss the preferred way is to simply move/rename the database.
+
+1. Stop your node/ceramic daemon
+2. Depending on your default database configuration excute the folowing commands
+
+**SQLite**: ```mv ~/.ceramic/indexing.sqlite ~/.ceramic/indexing.sqlite.NETWORK```
+
+**Postgres**:
+- ```psql postgres```
+- ```ALTER DATABASE ceramic RENAME TO ceramic_NETWORK; \q```
+
+3. Restart your ceramic daemon wth the newly desired network config and compose DB will setup the new default environment automatically
+
+To switch back between networks simply follow the above steps again and return the desired backup to the default values:
+**SQLITE**: ```~./ceramic/indexing.sqlite
+**Postgres**: Default DB Name: ```ceramic```
+
 :::
 
 
