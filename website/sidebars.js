@@ -13,7 +13,7 @@ const sidebars = {
         {
           type: 'category',
           collapsed: true,
-          label: 'Set up your environment',
+          label: '1. Set up your environment',
           link: {
             type: 'doc',
             id: 'set-up-your-environment',
@@ -26,9 +26,9 @@ const sidebars = {
             },
           ],
         },
-        { type: 'doc', id: 'create-your-composite', label: 'Create your composite' },
-        { type: 'doc', id: 'interact-with-data', label: 'Interact with data' },
-        { type: 'doc', id: 'next-steps', label: 'Next Steps' },
+        { type: 'doc', id: 'create-your-composite', label: '2. Create your composite' },
+        { type: 'doc', id: 'interact-with-data', label: '3. Interact with data' },
+        { type: 'doc', id: 'next-steps', label: '4. Next Steps' },
       ],
     },
     { type: 'doc', id: 'core-concepts', label: 'Core Concepts' },
