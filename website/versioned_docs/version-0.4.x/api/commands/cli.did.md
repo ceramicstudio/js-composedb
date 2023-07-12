@@ -6,7 +6,7 @@ custom_edit_url: null
 
 The group of [CLI](../modules/cli.md) `did:*` commands enables interactions with DIDs and private keys
 
-DIDs are identifiers for [Ceramic Accounts](../../graph-structure.mdx#accounts)
+DIDs are identifiers for [Ceramic Accounts](../../core-concepts.mdx#accounts)
 
 ## Command List
 
