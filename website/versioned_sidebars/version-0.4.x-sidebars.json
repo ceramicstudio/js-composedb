@@ -17,7 +17,7 @@
         {
           "type": "category",
           "collapsed": true,
-          "label": "Set up your environment",
+          "label": "1. Set up your environment",
           "link": {
             "type": "doc",
             "id": "set-up-your-environment"
@@ -33,17 +33,17 @@
         {
           "type": "doc",
           "id": "create-your-composite",
-          "label": "Create your composite"
+          "label": "2. Create your composite"
         },
         {
           "type": "doc",
           "id": "interact-with-data",
-          "label": "Interact with data"
+          "label": "3. Interact with data"
         },
         {
           "type": "doc",
           "id": "next-steps",
-          "label": "Next Steps"
+          "label": "4. Next Steps"
         }
       ]
     },

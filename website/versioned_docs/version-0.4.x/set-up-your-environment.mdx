@@ -5,198 +5,10 @@ import TabItem from '@theme/TabItem'
 
 The first step to build with ComposeDB is setting up your development environment. This guide will show you how to install and configure relevant packages and tools.
 
-## Installation using Wheel
+## Installation
+---
 
-The easiest and recommended way to configure your local development environment is by using [Wheel](https://github.com/ceramicstudio/wheel.git) - a CLI starter tool for Ceramic that makes it easy to install necessary dependencies
- and run a Ceramic node enabled with ComposeDB.
-
-
-### Install the dependencies
-
-In order to use Wheel, you’ll have to install a few necessary dependencies: 
-
-- Node.js
-- jq
-- PostgreSQL (optional dependent on the network, see below)
-
-:::caution
-
-**Important:** PostgreSQL is only required for a production configuration on the Mainnet. If you are new to ComposeDB on Ceramic and would like to quickly test it out, you can skip the
- PostgreSQL installation and come back to it once you are ready to scale your project.
-
-:::
-
-#### Node.js
-
-If you don’t already have them installed, you will need to install at least:
-
-- [NodeJS v16](https://nodejs.org/en/)
-- npm v8 (installed automatically with NodeJS v16)
-
-Use this command to make sure you have the correct versions installed.
-
-
-```bash
-node -v
-npm -v
-```
-
-#### jq
-
-You will likely need to install jq on your machine as well. The installation method will
-highly depend on your operating system. Install it using one of the methods defined in 
-the [official tutorial here](https://stedolan.github.io/jq/download/).
-
-
-#### PostgreSQL
-
-Once you are ready take your project to the next level and use more advanced configurations, 
-you will need Postgres installed on your machine to store indexed data. **Postgres is required
- for running your applications on the Mainnet and is optional for other networks.**
-
-To install Postgres, follow [instructions provided on official Postgres documentation](https://www.postgresql.org/download/). 
-Once installed, open Postgres in your command line:
-
-```bash
-psql postgres
-```
-
-Configure your database using the following commands:
-```bash
-CREATE DATABASE ceramic;
-
-CREATE ROLE ceramic WITH PASSWORD 'password' LOGIN;
-
-GRANT ALL PRIVILEGES ON DATABASE "ceramic" to ceramic;
-```
-
-### Configure the development environment
-
-We will use Wheel to install all of the dependencies needed to run Ceramic and ComposeDB as well as configure the working environment
-for your project. To download Wheel, open your terminal and run the command below:
-
-
-```bash
-curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/ceramicstudio/wheel/main/wheel.sh | bash
-```
-
-Once Wheel is downloaded you are good to start configuring your project working directory. To kick it off, run the command below:
-
-```bash
-./wheel
-```
-
-This command will start a prompt in your command line allowing you to configure your entire working environment - from what Ceramic dependencies
- you’d like to install to how your Ceramic node should be configured. 
-
- You can run the following command to learn more about available Wheel commands and options:
-
- ```bash
- ./wheel --help
- ```
-
-For developers who are completely new to Ceramic, we highly recommend starting the configuration with all default parameters. Go through the prompt
-and press Enter on your keyboard for each step. This will install the Ceramic and ComposeDB dependencies and spin up a local node running `InMemory`. Moreover,
-this option will set up an example web3 social app for you to interac with and test ComposeDB features or 
-This option will allow to test all of the features of Ceramic and ComposeDB in a very lightweight way without requiring you configure authentication 
-for Ceramic Anchor Service.
-
-
-
-:::caution
-
-**Important:** [Ceramic Anchor Service (CAS)](https://composedb.js.org/docs/0.4.x/guides/composedb-server/access-mainnet) is used to anchor Ceramic streams on a blockchain.
-CAS is require for `dev`, `testnet-clay` and `mainnet` networks. Since `InMemory` option doesn’t use CAS, data generated for your project will not be persisted. 
-
-:::
-
-
-If you are ready to dive into a more advanced configuration, head to [**Wheel reference page→**](./wheel-reference.mdx) to learn more details about each parameter you can configure.
-
-### Interact with the example web3 social app
-One of the easiest ways to get familiar with ComposeDB is through an actual example application
-built using ComposeDB on Ceramic. 
-
-This application is a simple implementation of Web3 social application and comes with the following features:
-
-- Sign-in using DID Key or your Ethereum wallet.
-- Create your user profile
-- Create a post
-- See posts created by other users in the Explore section of the app
-- Follow other users
-
-Developers can use this application to easily test ComposeDB features, see example implementation or even use this application as a basis of their own
-unique project.
-
-#### Setting up
-
-This application is set up by selecting `Include ComposeDB Sample Application` when following the Wheel setup.
-At the very end of the Wheel prompt you will see the output similar to the one below. It means that the Ceramic node is up and running and that the example
-app is accessible following the specified path:
-
-```bash
-Application demo is available at 
-/Users/user/ceramic-getting-started/wheel/ceramic-test-app/ceramic-test-app-app. To run the demo application:
-
-cd /Users/user/ceramic-getting-started/wheel/ceramic-test-app/ceramic-test-app-app
-npm run nextDev
- ```
-
-The output above also provides the instructions on how to spin up the app. Open a new terminal and run the suggested commands.
-
-Navigate to the example app project directory:
-
- ```bash
-cd /Users/user/ceramic-getting-started/wheel/ceramic-test-app/ceramic-test-app-app
- ```
-
-Spin up the app:
- ```bash
-npm run nextDev
- ```
-
- This will launch the example app on a local server. The output of the command above should
- look similar to the following:
-
- ```bash
-> demo@0.1.0 nextDev
-> next dev
-
-ready - started server on 0.0.0.0:3000, url: http://localhost:3000
- ```
-
-Copy the provided url `http://localhost:3000` and open it in your browser. This will launch the example application
-in your browser for you to interact with.
-
-
-#### Interact with the application
-Once your app is up and running you will be greeted with the following user interface:
-
-![Data Model Table](/img/example-application-ui.png)
-
-From now on you can interact with the application:
-1. Authenticate using one of the provided methods:
-   - [Key DID](https://developers.ceramic.network/docs/advanced/standards/accounts/key-did/) - it's a simple authentication method that encodes public key into a DID string
-   - [Ethereum DID PKH](https://developers.ceramic.network/docs/advanced/standards/accounts/pkh-did/) - an authentication metod which uses and Ethereum wallet (e.g. Metamask) to authenticate users
-2. Create your account in the `Profile` section of the app
-3. Create your first post in `Home` section of the app
-4. See currently available posts in the `Explore` section of the app
-
-<iframe width="700" height="500" src="https://www.youtube.com/embed/QsCGK33pBIo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-After you interact with the application you can dive deeper into the underlying application files which you can find in the directory of your app. 
-Familiarise yourself with the actual implementations of specific features, e.g. - check out the `composites` directory to see the implementation 
-of data models used for this application. 
-
-Check out [this tutorial](https://blog.ceramic.network/getting-started-with-composedb-on-ceramic-2) for a more advanced explanations on how you can interact with this example app.
-
-
-
-## Installation using JavaScript package managers
-Another way to install the dependencies and configure Ceramic is using JavaScript package managers. This option requires more manual steps. The guide below covers this
-process step-by-step.
-
-### Install the dependencies
+### Create your project directory
 
 Start with creating the project directory. Here you’ll store all your app’s local files:
 
@@ -205,7 +17,7 @@ mkdir my-project #creates a new directory
 cd my-project #targets the created directory
 ```
 
-#### Node.js
+### Node.js
 
 If you don’t already have them installed, you will need to install Node.js v16 and a package manager. We primarily use `pnpm`, but `npm` and `yarn` are supported as well.
 
@@ -219,7 +31,7 @@ node -v
 pnpm -v
 ```
 
-#### Ceramic
+### Ceramic
 
 ComposeDB runs on Ceramic, so you will need to run a Ceramic node. To get started, we recommend running a local Ceramic node. If you're interested in running the production node, you can follow the [tutorial here](https://blog.ceramic.network/configuring-a-ceramic-node-using-aws/).
 
@@ -264,7 +76,7 @@ yarn global add @ceramicnetwork/cli
   </TabItem>
 </Tabs>
 
-#### ComposeDB
+### ComposeDB
 
 Next install the ComposeDB CLI, which enables you to interact with ComposeDB data from your terminal. Install ComposeDB CLI using the following command:
 
@@ -279,14 +91,14 @@ Next install the ComposeDB CLI, which enables you to interact with ComposeDB dat
   <TabItem value="npm">
 
 ```bash
-npm install --location=global @composedb/cli
+npm install --location=global @composedb/cli@^0.4.0
 ```
 
   </TabItem>
   <TabItem value="pnpm">
 
 ```bash
-pnpm add -g @composedb/cli
+pnpm add -g @composedb/cli@^0.4.0
 ```
 
   </TabItem>
@@ -299,7 +111,7 @@ Global packages are only supported for yarn 2.x and older. For yarn 3.x and newe
 :::
 
 ```bash
-yarn global add @composedb/cli
+yarn global add @composedb/cli@^0.4.0
 ```
 
   </TabItem>
@@ -323,29 +135,30 @@ To install the development packages, run:
   <TabItem value="npm">
 
 ```bash
-npm install -D @composedb/devtools @composedb/devtools-node
+npm install -D @composedb/devtools@^0.4.0 @composedb/devtools-node@^0.4.0
 ```
 
   </TabItem>
   <TabItem value="pnpm">
 
 ```bash
-pnpm add -D @composedb/devtools @composedb/devtools-node
+pnpm add -D @composedb/devtools@^0.4.0 @composedb/devtools-node@^0.4.0
 ```
 
   </TabItem>
   <TabItem value="yarn">
 
 ```bash
-yarn add -D @composedb/devtools @composedb/devtools-node
+yarn add -D @composedb/devtools@^0.4.0 @composedb/devtools-node@^0.4.0
 ```
 
   </TabItem>
 </Tabs>
 
-### Setup
+## Setup
+---
 
-#### Run a Ceramic node
+### Run a Ceramic node
 
 You can check that everything was installed correctly by spinning up a Ceramic node. Running the command below will start the Ceramic node in local mode and connect to Clay testnet.
 Indexing is a key component of ComposeDB, which syncs data across nodes. Enable indexing by toggling:
@@ -393,9 +206,10 @@ After you start a node, a node configuration file is created. Later in this guid
 
 :::
 
-### Developer Account
+## Developer Account
+---
 
-#### Generate your private key
+### Generate your private key
 
 You will need a private key for authorizing ComposeDB CLI commands in the later stages of development. You can generate it using the command below. Save it for later use:
 
@@ -409,7 +223,7 @@ composedb did:generate-private-key
 
 :::
 
-#### Generate your account
+### Generate your account
 
 Indexing is one of the key features of ComposeDB. In order to notify the Ceramic node which models have to be indexed, the ComposeDB tools have to interact with the restricted Admin API. Calling the API requires an authenticated Decentralized Identifier (DID) to be provided in the node configuration file. Create a DID by running the following command, using the private key generated previously:
 
@@ -419,7 +233,7 @@ composedb did:from-private-key your-private-key
 
 ⚠️ Copy this authenticated DID key and store it in a secure place, just like with your private key above. This DID key will have to be provided in your Ceramic node’s configuration file which will ensure that only authorized users can make changes to your application, e.g. deploy models on your Ceramic node.
 
-#### Using your account
+### Using your account
 
 Provide the authenticated DID by opening the node configuration file which defaults to `~/.ceramic/daemon.config.json` and specifying it in the `admin-dids` section of the file as shown below:
 
@@ -439,7 +253,8 @@ Provide the authenticated DID by opening the node configuration file which defau
 
 Save this file. By this point you should have your development environment and all configurations in place to get started working on your application.
 
-### Confirmation
+## Confirmation
+---
 
 As a final test, spin up the Ceramic local node:
 
@@ -453,9 +268,12 @@ Once again, you should see your local Ceramic node up and running as follows:
 IMPORTANT: Ceramic API running on 0.0.0.0:7007'
 ```
 
-## Next steps
+## Next Steps
+---
 
 After setting up your environment, the next step is to [**Create your composite →**](./create-your-composite.mdx)
 
-<!-- ## Related Guides
-Ready to upgrade from a local node to production? Learn how to deploy your app: [Server configuration](https://www.notion.so/Server-configuration-226c2bf34a6d43e9b7e8331b823735ed) -->
+## Related Guides
+---
+
+Ready to upgrade from a local node to production? Learn how to deploy your app: [Server configuration](./guides/composedb-server/running-in-the-cloud.mdx).

@@ -2,15 +2,18 @@
 Define queryable relationships between models and other models or accounts.
 
 ## Types of Relations
+---
 
 There are a few primary forms of relations currently supported by ComposeDB:
 
-- [Account to model](#account-to-model)
-- [Model to account](#model-to-account)
-- [Model to model](#model-to-model)
-- [Account to account](#account-to-account)
+- [Account to model relations](#account-to-model)
+- [Model to account relations](#model-to-account)
+- [Model to model relations](#model-to-model)
+- [Account to account relations](#account-to-account)
 
 ## Account to Model
+---
+
 Account to model relations enable linking and querying data to the account that created it. By default the `@createmodel` directive (used when creating a new model) requires that every model must specify a relation to its author’s account. This was covered in [Writing Models](../../guides/data-modeling/writing-models.mdx).
 
 ### Example: Simple Profile
@@ -34,6 +37,8 @@ Where:
 - `SINGLE` limits to one profile per account
 
 ## Model to Account
+---
+
 Model to account relations enable you to link data to and query data from an account other than the data’s author. When using this type of relation, you need to define a model field that stores an account (e.g. a [DID](../../guides/composedb-client/user-sessions.mdx)), then add the `@accountReference` directive to make it queryable.
 
 ### Example: Direct message (DM)
@@ -60,6 +65,8 @@ Where:
 - `recipient` references the recipient’s account by storing its `DID!`, using `@accountReference`
 
 ## Model to Model
+---
+
 Model to model relations enable you to link data to and query data from another piece of data. These relations can be uni-directional (e.g. query a post from a comment) or bi-directional (e.g. query a post from a comment and query all comments from a post).
 
 ### Example: Post with comments
@@ -112,10 +119,13 @@ Where:
 - `comments` defines the relationships from a post to a collection of comments, using  `@relationFrom`; requires specifying the model relation (`Comment`) and the specific property that stores the relation (`postID`)
 
 ### Example: Container with Items
-Please see [Relations: Container of Items](relations-container-of-items.mdx)
+Please see [Relations: Container of Items](../data-modeling/relations-container-of-items.mdx) & [Relations: Combine Items](../data-modeling/relations-combine-items.mdx).
 
 ## Account to Account
+---
+
 :::caution
+
 Account to account relations are on the roadmap, but not yet supported.
 
 :::
@@ -123,6 +133,5 @@ Account to account relations are on the roadmap, but not yet supported.
 Account to account relations enable you to define a relationship between an account and a different account, and query both ways based on that relationship. This is useful for creating structures such as social graphs where the relationship represents a follow.
 
 ## Next Steps
-Now that you understand the fundamentals of creating models with different types of relations, learn how to create composites using them. 
-
-Head to [**Composites**](../data-modeling/composites.mdx) next to learn more [**→**](../data-modeling/composites.mdx)
+---
+Now that you understand the fundamentals of creating models with different types of relations, let's create a [**composite**](../data-modeling/composites.mdx) so we can use it in our app.
