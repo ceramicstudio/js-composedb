@@ -53,6 +53,8 @@ type CeramicAccount implements Node {
 
     """Returns the last n items from the list."""
     last: Int
+    filters: ExtraScalarsFiltersInput
+    sorting: ExtraScalarsSortingInput
   ): ExtraScalarsConnection
 }
 
@@ -404,6 +406,8 @@ type CeramicAccount implements Node {
 
     """Returns the last n items from the list."""
     last: Int
+    filters: NoteFiltersInput
+    sorting: NoteSortingInput
   ): NoteConnection
 }
 
@@ -640,6 +644,8 @@ type CeramicAccount implements Node {
 
     """Returns the last n items from the list."""
     last: Int
+    filters: CommentFiltersInput
+    sorting: CommentSortingInput
   ): CommentConnection
   postList(
     """Returns the items in the list that come after the specified cursor."""
@@ -653,6 +659,8 @@ type CeramicAccount implements Node {
 
     """Returns the last n items from the list."""
     last: Int
+    filters: PostFiltersInput
+    sorting: PostSortingInput
   ): PostConnection
 }
 

@@ -262,10 +262,14 @@ class SchemaBuilder {
           } else if (reference.type === 'connection') {
             config[alias] = {
               type: this.#types[`${reference.name}Connection`],
-              args: connectionArgs,
+              args: {
+                ...connectionArgs,
+                filters: { type: this.#inputObjects[`${reference.name}Filters`] },
+                sorting: { type: this.#inputObjects[`${reference.name}Sorting`] },
+              },
               resolve: async (
                 account,
-                args: ConnectionArguments,
+                args: ConnectionQueryArguments,
                 ctx
               ): Promise<Connection<ModelInstanceDocument | null>> => {
                 return await ctx.queryConnection({ ...args, account, model: model.id })
