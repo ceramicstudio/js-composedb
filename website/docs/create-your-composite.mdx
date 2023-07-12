@@ -1,6 +1,6 @@
 # Create your composite
 
-The second step in getting started with ComposeDB on Ceramic is creating your composite to serve as your database schema. In this guide, we will create your first composite.
+Create your composite to serve as your graph database schema. In this guide, we will create your first composite.
 
 :::tip
 
@@ -9,13 +9,16 @@ Before continuing, you must have [set up your environment](./set-up-your-environ
 :::
 
 ## Overview
+---
 
 A composite is your database schema for ComposeDB, which includes a collection of data models. Once created, your composite instructs your node which models to index and also allows your client to perform queries and mutations on these models.
 
 ## Data Model Catalog
+---
 
 The [Model Catalog](./guides/data-modeling/model-catalog.mdx) contains all models created by other ComposeDB developers. By creating or reusing models within the model catalog in your composite, you can instantly share and sync data with other applications. This brings native app data composability to Web3 -- no more API integrations.
 
+### List all models
 To list all models in the model catalog, run the following command:
 
 ```bash
@@ -28,19 +31,20 @@ Here, the flag `--table` will display the output in an organized table view and 
 composedb model:list --network=testnet-clay --table
 ```
 
-**Response:** Below see a small snippet of the the output table. Each model has the following properties:
+![Data Model Table](../static/img/data-model-table.png)
+
+Notice each model has the following properties:
 
 - `Name` - model name
 - `Unique ID` - unique identifier (stream ID) for the model
 - `Description` - description of the model’s functionality
 
-![Data Model Table](/img/data-model-table.png)
+## Creating the composite
+---
 
-## Creation
+In this section we will show how to create a composite by downloading models from the model catalog.
 
-In this section we will demonstrate how to create a composite by downloading models from the model catalog.
-
-### Single model
+### Using a single model
 
 You can fetch any existing model from the catalog by referencing the model’s unique ID. For example, for your basic social media app, use the existing model `SimpleProfile`. To fetch the model, to your working directory, take note of the model stream ID in the table above and run the following command:
 
@@ -50,7 +54,7 @@ composedb composite:from-model kjzl6hvfrbw6c5ajfmes842lu09vjxu5956e3xq0xk12gp2jc
 
 After running the command above, your will have the `SimpleProfile` model stored locally in a file called `my-first-composite-single.json`.
 
-### Multiple models
+### Using multiple models
 
 If your application needs multiple models, for example the `SimpleProfile` and `Post` models, you can. To fetch them, take note of the model stream IDs and provide them in a ComposeDB CLI command as follows:
 
@@ -60,9 +64,9 @@ composedb composite:from-model kjzl6hvfrbw6c5ajfmes842lu09vjxu5956e3xq0xk12gp2jc
 
 The output of this command will be a composite file named `my-first-composite.json`.
 
-## Usage
-
-### Deployment
+## Using the composite
+---
+### Deploying the composite
 
 You will have to deploy the composite with fetched models to your local Ceramic node so that they can be used when building and running your applications. This can be achieved by using ComposeDB CLI and referencing the composite file of fetched models in your local environment as shown below. Note that you have to provide your did private key to deploy the model:
 
@@ -84,7 +88,7 @@ IMPORTANT: Creating Compose DB Indexing table for model: kjzl6hvfrbw6c99mdfpjx1z
 
 This means that the composite was deployed and the models were indexed on your local node successfully! 🎉
 
-### Compilation
+### Compiling the composite
 
 The last step left is compiling the composite. This is necessary to interact with the data in the next step of this guide:
 
@@ -95,15 +99,15 @@ composedb composite:compile my-first-composite.json runtime-composite.json
 The output of this command will be a json file called `runtime-composite.json`
 
 ## Next Steps
-
-Now that you have created your composite, you are ready to use it: **[Interact with data](./interact-with-data.mdx) →**
+---
+Now that you have created your composite, you are ready to use it: **[Interact with data →](./interact-with-data.mdx)**
 
 ## Related Guides
 
-- [Intro to Data Modeling](./guides/data-modeling/data-modeling.mdx)
+- [Intro to Modeling](./guides/data-modeling/data-modeling.mdx)
 
 - [Model Catalog](./guides/data-modeling/model-catalog.mdx)
 
-- [Writing New Models](./guides/data-modeling/writing-models.mdx)
+- [Writing Models](./guides/data-modeling/writing-models.mdx)
 
-- [Create, Deploy & Use Composites](./guides/data-modeling/composites.mdx)
+- [Composites](./guides/data-modeling/composites.mdx)
