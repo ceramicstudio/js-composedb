@@ -1,12 +1,53 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
 # Mutations
-Create or update data on the network.
 
-## Enabling mutations
-To perform mutations, the Ceramic instance used by the ComposeDB client needs to be authenticated. This can be done by calling the [`setDID` method](../../api/classes/client.ComposeClient.md#setdid) within the `ComposeClient` instance using an authenticated `DID`:
+Create or update data on ComposeDB.
 
+## Prerequisites
+
+- An authenticated user
+- A deployed composite
+- A compiled composite
+
+:::tip
+The ComposeDB Client automatically generates a GraphQL Schema from your compiled composite.
+:::
+
+## Enable mutations
+
+Mutations require an authenticated user. After you have an authenticated user, enable mutations by setting their authenticated account on the ComposeDB client:
+
+
+<Tabs
+  defaultValue="with-sessions"
+  groupId="with-or-without-sessions"
+  values={[
+    {label: 'With Sessions', value: 'with-sessions'},
+    {label: 'Without Sessions', value: 'without-sessions'},
+  ]}>
+  <TabItem value="with-sessions">
+
+```jsx
+// Assign the authorized did from your session to your client
+
+compose.setDID(session.did)
 ```
+
+  </TabItem>
+  <TabItem value="without-sessions">
+
+```jsx
+// Call setDID method on ComposeClient instance
+// Using authenticated did instance
+
 compose.setDID(did)
 ```
+
+  </TabItem>
+</Tabs>
+
 
 ## Create data
 Let’s say your app uses a `Post` model:
