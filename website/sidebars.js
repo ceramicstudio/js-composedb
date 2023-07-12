@@ -62,8 +62,22 @@ const sidebars = {
               label: 'Introduction to Modeling',
             },
             { type: 'doc', id: 'guides/data-modeling/schemas', label: 'Schemas' },
-            { type: 'doc', id: 'guides/data-modeling/relations', label: 'Relations' },
-          ],
+            { type: 'category',
+              collapsed: true,
+              label: 'Relations',
+              link: { type: 'doc', id: 'guides/data-modeling/relations' },
+              items: [
+                      {
+                        type: 'doc',
+                        id: 'guides/data-modeling/relations-container-of-items',
+                        label: 'Container of Items',
+                      },
+                      {
+                        type: 'doc',
+                        id: 'guides/data-modeling/relations-combine-items',
+                        label: 'Combine Items',
+                      }
+                     ],
         },
         { type: 'doc', id: 'guides/data-modeling/composites', label: 'Composites' },
       ],
