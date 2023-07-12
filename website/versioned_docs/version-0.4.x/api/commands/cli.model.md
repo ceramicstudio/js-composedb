@@ -4,7 +4,7 @@ title: "CLI: model:* commands"
 custom_edit_url: null
 ---
 
-The group of [CLI](../modules/cli.md) `model:*` commands enables discovery of [Models](../../data-modeling-concepts.mdx#models), as well as their creation and interactions with them.
+The group of [CLI](../modules/cli.md) `model:*` commands enables discovery of [Models](../../core-concepts.mdx#models), as well as their creation and interactions with them.
 
 ## Command List
 
@@ -50,7 +50,7 @@ OPTIONS
 
 ### `composedb model:controller`
 
-Load the model stream with a given ID and display its controller DID (identifier for the [Ceramic Account](../../graph-structure.mdx#accounts) that owns the model)
+Load the model stream with a given ID and display its controller DID (identifier for the [Ceramic Account](../../core-concepts.mdx#accounts) that owns the model)
 
 ```
 USAGE

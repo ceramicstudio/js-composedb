@@ -48,30 +48,10 @@
       ]
     },
     {
-      "type": "category",
-      "collapsed": true,
+      "type": "doc",
       "label": "Core Concepts",
-      "link": {
-        "type": "doc",
-        "id": "core-concepts"
-      },
-      "items": [
-        {
-          "type": "doc",
-          "id": "graph-structure",
-          "label": "Graph"
-        },
-        {
-          "type": "doc",
-          "id": "data-modeling-concepts",
-          "label": "Models"
-        },
-        {
-          "type": "doc",
-          "id": "database",
-          "label": "Database"
-        }
-      ]
+      "id": "core-concepts",
+      "label": "Core Concepts"
     },
     {
       "type": "doc",
