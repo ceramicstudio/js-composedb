@@ -2,6 +2,7 @@
 Learn the basics of creating a new data model.
 
 ## Setup
+---
 Create a new `.graphql` file in your project directory to store your model(s). 
 
 For example, let’s create a file called `my-schema.graphql`. Inside, we’re going to create a model to store a very simple user profile:
@@ -13,6 +14,7 @@ type SimpleProfile @createModel(accountRelation: SINGLE, description: "Very basi
 ```
 
 ## Metadata
+---
 Let’s look into the metadata properties of your new model:
 
 ```graphql
@@ -26,9 +28,14 @@ Where:
 - `accountRelation` defines the allowable number of instances per account, where `SINGLE` limits one instance per account, and `LIST` allows unlimited instances per account
 - `description` is a string that describes the model
 
+:::tip
+
 Model names and descriptions are used in the [Model Catalog](./model-catalog.mdx). Aim for short and descriptive to improve discovery and reuse.
 
+:::
+
 ## Schema
+---
 Model schemas are written using the GraphQL Schema Definition Language (SDL). Let’s look at the schema of our new model. It’s a shape that only defines a single field (key) and scalar (value):
 
 ```graphql
@@ -43,11 +50,17 @@ Where:
 - `String!` is a scalar that defines `displayName` is a required (`!`) string
 - `@string` is a directive that sets validation rules for the scalar, in our case min and max length
 
-This is a very basic schema, but your schemas can contain more than one field and include various relations - see [Schemas](./schemas.mdx).
+:::tip
+
+This is a very basic schema. Your schemas can contain more than one field and include various relations. See [Schemas](./schemas.mdx) next.
+
+:::
 
 ## Next Steps
+---
 To use your new model in your application, you will need to create a [**Composite →**](./composites.mdx)
 
 ## Related Guides
+---
 - Dive deeper into GraphQL [**Schemas**](./schemas.mdx)
 - Learn how to add [**Relations**](./relations.mdx) to your models
