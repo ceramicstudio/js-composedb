@@ -2,44 +2,25 @@ import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
 
 # Composites
-
 Guides for creating, deploying, and using composites.
 
 ## Overview
+---
+In order to start using a model in your app, you’ll have to include it in a composite. Composites are collections of one or more models and represent the complete GraphQL schema for your app. For basic usage, follow these steps:
 
-In order to start using a new model in your application, first you’ll have to include it within a composite. Composites are collections of one or more models and represent the complete GraphQL schema for your application.
+1. Create a composite containing one or more models
+2. Deploy the composite to your ComposeDB server
+3. Compile the composite for usage by your ComposeDB client
 
 ## Prerequisites
-
+---
 - If you want to manage your composites from the CLI, you will need to have it installed
 - If you want to manage your composites from JavaScript, you will need to install the [`@composedb/devtools`](../../api/modules/devtools.md) library
 - One or more `.graphql` files containing your models
 
 ## Basic Usage
-
-For basic composite usage, you will need one or more models. If you don't have a model deployed, then see [Creating Models](#creating_models). To use your composite, follow these steps:
-
-1. Create a composite
-2. Deploy the composite to your node
-3. Compile the composite for usage
-
-:::tip
-
-For advanced usage such as merging, extracting or inspecting composites, see [Advanced](#advanced) below.
-
-:::
-
-### Creating Models
-Let's say you have a model as in [Schemas](schemas.mdx). You will first save that model to a graphql file, `education_module.graphql`. You can then create your model with
-
-    composedb composite:create education_module.graphql --output=education_module.json --ceramic-url=http://localhost:7007
-
-You can then output the json to find the model id, or pass it through jq to locate
-
-    cat education_module.json | jq.models[keys_unsorted[0]]
-
-### Creating Composites
-
+---
+### Creating composites
 Let’s say you have a model written in a `my-schema.graphql` file. To convert this schema into a composite, run the following:
 
 <Tabs
@@ -93,11 +74,10 @@ await writeEncodedComposite(composite, './my-composite.json')
   </TabItem>
 </Tabs>
 
-This will create a file called `my-composite.json` which contains the composite in JSON.
+This will create a file called `my-composite.json` which contains the composite in JSON. 
 
 ### Deploying composites
-
-After creating the composite, deploy it to your local node:
+After creating the composite, deploy it to your local node: 
 
 <Tabs
   defaultValue="cli"
@@ -149,24 +129,21 @@ await composite.startIndexingOn(ceramic)
   </TabItem>
 </Tabs>
 
+:::tip
 This will also automatically add all models contained in the composite to the [Model Catalog](./model-catalog.mdx).
+:::
+
 
 ### Compiling composites
 
-After deploying your composite, compile it so you can start perform [Data Interactions](../../guides/data-interactions/data-interactions.mdx) using the [ComposeDB Client](../../guides/composedb-client/composedb-client.mdx)
+After deploying your composite, compile it so you can start perform [data interactions](../../guides/data-interactions/data-interactions.mdx) using the ComposeDB client.
 
 ```bash
 composedb composite:compile my-first-composite.json runtime-composite.json
 ```
 
-To compile your composite for import and use with the [JavasScript Client](../../guides/composedb-client/javascript-client.mdx), just specify an output file ending in .js
-
-```bash
-composedb composite:compile my-first-composite.json runtime-composite.js
-```
-
 ## Advanced
-
+---
 ### Merging composites
 
 If you have more than one composite, you need to merge them into a single composite for use in your app. This may apply when:
@@ -175,7 +152,7 @@ If you have more than one composite, you need to merge them into a single compos
 - You want to use a model from the catalog and one or more models you created
 - You create multiple models and store their schemas in different GraphQL files
 
-Let’s say you have two composites where `simple-profile-composite.json` contains the model for a profile model and `post-composite.json` contains the model for a post. To merge, reference both composite JSON files and specify an output file path for the merged composite.
+Let’s say you have two composites where `simple-profile-composite.json` contains the model for a profile model and `post-composite.json` contains the model for a post. To merge, reference both composite JSON files and specify an output file path for the merged composite. 
 
 <Tabs
   defaultValue="cli"
@@ -200,9 +177,10 @@ import { readEncodedComposite, writeEncodedComposite } from '@composedb/devtools
 
 const ceramic = new CeramicClient('http://localhost:7007')
 
-const loadSources = ['simple-profile-composite.json', 'post-composite.json'].map(
-  async (path) => await readEncodedComposite(ceramic, path)
-)
+const loadSources = [
+  'simple-profile-composite.json',
+  'post-composite.json',
+].map(async (path) => await readEncodedComposite(ceramic, path))
 const sourceComposites = await Promise.all(loadSources)
 const mergedComposite = Composite.from(sourceComposites)
 
@@ -210,7 +188,7 @@ await writeEncodedComposite(mergedComposite, 'merged-composite.json')
 ```
 
 :::caution
-**_Note:_** To run the code above, you need a Ceramic JS HTTP client library installed on your machine to connect your app to a Ceramic node. Ceramic JS HTTP client can be installed by running the following command:
+***Note:*** To run the code above, you need a Ceramic JS HTTP client library installed on your machine to connect your app to a Ceramic node. Ceramic JS HTTP client can be installed by running the following command:
 
 `pnpm install @ceramicnetwork/http-client`
 
@@ -219,11 +197,10 @@ await writeEncodedComposite(mergedComposite, 'merged-composite.json')
   </TabItem>
 </Tabs>
 
-The output of either example is a new file named `merged-composite.json` which contains the models of both merged composites. From here you need to [deploy](#deploying-composites) the composite to your node, then [compile](#compiling-composites) the composite to start using it.
+The output of either example is a new file named `merged-composite.json` which contains the models of both merged composites. From here you need to [deploy](#deploying-composites) the composite to your node, then [compile](#compiling-composites) the composite to start using it. 
 
 ### Extracting composites
-
-In cases where your composite contain models not needed by your application, or in other cases where you generally want to separate models in your composite, you can extract models into a separate composite.
+In cases where your composite contain models not needed by your application, or in other cases where you generally want to separate models in your composite, you can extract models into a separate composite. 
 
 As an example, let’s reuse the `merged-composite.json` file from the previous section and assume you want to extract the profile model into a separate composite. To do this, load the `merged-composite.json` file and specify which model(s) you’d like to extract into a new composite file.
 
@@ -237,7 +214,7 @@ As an example, let’s reuse the `merged-composite.json` file from the previous 
   <TabItem value="cli">
 
 ```bash
-composedb composite:extract-model merged-composite.json kjzl6hvfrbw6c5ajfmes842lu09vjxu5956e3xq0xk12gp2jcf9s90cagt2god9 --output=new-composite.json
+composedb composite:extract-model merged-composite.json kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc --output=new-composite.json
 ```
 
   </TabItem>
@@ -251,36 +228,31 @@ import { readEncodedComposite, writeEncodedComposite } from '@composedb/devtools
 const ceramic = new CeramicClient('http://localhost:7007')
 const sourceComposite = await readEncodedComposite(ceramic, 'merged-composite.json')
 
-const mergedComposite = sourceComposite.copy([
-  'kjzl6hvfrbw6c5ajfmes842lu09vjxu5956e3xq0xk12gp2jcf9s90cagt2god9',
-])
+const mergedComposite = sourceComposite.copy(['kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc'])
 await writeEncodedComposite(mergedComposite, 'new-composite.json')
 ```
-
   </TabItem>
 </Tabs>
 
-This will create a file called `new-composite.json` with your profile model in it. From here you need to deploy the composite to your node, then [compile](#compiling-composites) the composite to start using it.
+This will create a file called `new-composite.json` with your profile model in it. From here you need to deploy the composite to your node, then [compile](#compiling-composites) the composite to start using it. 
 
 ### Inspecting composites
-
 If you want to check what models are included in a specific composite, follow the steps below:
 
 1. Compile the composite:
-   `composedb composite:compile my-first-composite.json runtime-composite.json`
+`composedb composite:compile my-first-composite.json runtime-composite.json`
 
 2. View the GraphQL schema of the composite:
-   [`composedb graphql:schema runtime-composite.json --output=schema.graphql`](../../api/commands/cli.graphql.md#composedb-graphqlschema)
+[`composedb graphql:schema runtime-composite.json --output=schema.graphql`](../../api/commands/cli.graphql.md#composedb-graphqlschema)
 
 ### Aliasing composites
-
-In general, models are referenced using their unique model streamIDs which are not memorable. Models can be more easily referenced by aliasing them to your preferred names.
+In general, models are referenced using their unique model streamIDs which are not memorable. Models can be more easily referenced by aliasing them to your preferred names. 
 
 To manually set aliases for your models, add the following section to your composite JSON file. In this case we will use the aliases `SimpleProfile` and `Post`.
 
 ```jsx
 "aliases":{
-      "kjzl6hvfrbw6c5ajfmes842lu09vjxu5956e3xq0xk12gp2jcf9s90cagt2god9":"SimpleProfile",
+      "kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc":"SimpleProfile",
       "kjzl6hvfrbw6c99mdfpjx1z3fue7sesgua6gsl1vu97229lq56344zu9bawnf96":"Post"
    }
 ```
@@ -296,8 +268,8 @@ const ceramic = new CeramicClient('http://localhost:7007')
 const sourceComposite = await readEncodedComposite(ceramic, 'merged-composite.json')
 
 const newComposite = sourceComposite.setAliases({
-  kjzl6hvfrbw6c5ajfmes842lu09vjxu5956e3xq0xk12gp2jcf9s90cagt2god9: 'SimpleProfile',
-  kjzl6hvfrbw6c99mdfpjx1z3fue7sesgua6gsl1vu97229lq56344zu9bawnf96: 'Post',
+  'kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc': 'SimpleProfile',
+  'kjzl6hvfrbw6c99mdfpjx1z3fue7sesgua6gsl1vu97229lq56344zu9bawnf96': 'Post',
 })
 await writeEncodedComposite(newComposite, 'new-composite.json')
 ```
@@ -306,19 +278,18 @@ This script will create a file named `new-composite.json` including model aliase
 
 ```jsx
 "aliases":{
-      "kjzl6hvfrbw6c5ajfmes842lu09vjxu5956e3xq0xk12gp2jcf9s90cagt2god9":"SimpleProfile",
+      "kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc":"SimpleProfile",
       "kjzl6hvfrbw6c99mdfpjx1z3fue7sesgua6gsl1vu97229lq56344zu9bawnf96":"Post"
    }
 ```
 
-From here you need to [deploy](#deploying-composites) the composite to your node, then [compile](#compiling-composites) the composite to start using it. When interacting with the models inside your app, you can refer to them using their human-readable aliases rather than their streamIDs.
+From here you need to [deploy](#deploying-composites) the composite to your node, then [compile](#compiling-composites) the composite to start using it. When interacting with the models inside your app, you can refer to them using their human-readable aliases rather than their streamIDs. 
 
 ## Next Steps
-
-- [ComposeDB Client Setup](../../guides/composedb-client/composedb-client.mdx) to set up your server and configure your app
-- [Data Interactions](../../guides/data-interactions/data-interactions.mdx) to interact with data using your composite
+---
+Set up your [**ComposeDB Client**](../../guides/composedb-client/composedb-client.mdx)
 
 ## Related Guides
-
+---
 - [Model Catalog](../../guides/data-modeling/model-catalog.mdx)
 - [Writing Models](../../guides/data-modeling/writing-models.mdx)

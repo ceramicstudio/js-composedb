@@ -1,14 +1,3 @@
-/**
- * Creating a sidebar enables you to:
- - create an ordered group of docs
- - render a sidebar for each doc of that group
- - provide next/previous navigation
-
- The sidebars can be generated from the filesystem, or explicitly defined here.
-
- Create as many sidebars as you want.
- */
-
 // @ts-check
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
@@ -21,23 +10,28 @@ const sidebars = {
       label: 'Getting Started',
       link: { type: 'doc', id: 'getting-started' },
       items: [
-        { type: 'doc', id: 'set-up-your-environment', label: 'Set up your environment' },
-        { type: 'doc', id: 'create-your-composite', label: 'Create your composite' },
-        { type: 'doc', id: 'interact-with-data', label: 'Interact with data' },
-        { type: 'doc', id: 'next-steps', label: 'Next Steps' },
+        {
+          type: 'category',
+          collapsed: true,
+          label: '1. Set up your environment',
+          link: {
+            type: 'doc',
+            id: 'set-up-your-environment',
+          },
+          items: [
+            {
+              type: 'doc',
+              id: 'wheel-reference',
+              label: 'Wheel Reference',
+            },
+          ],
+        },
+        { type: 'doc', id: 'create-your-composite', label: '2. Create your composite' },
+        { type: 'doc', id: 'interact-with-data', label: '3. Interact with data' },
+        { type: 'doc', id: 'next-steps', label: '4. Next Steps' },
       ],
     },
-    {
-      type: 'category',
-      collapsed: true,
-      label: 'Core Concepts',
-      link: { type: 'doc', id: 'core-concepts' },
-      items: [
-        { type: 'doc', id: 'graph-structure', label: 'Graph' },
-        { type: 'doc', id: 'data-modeling-concepts', label: 'Models' },
-        { type: 'doc', id: 'database', label: 'Database' },
-      ],
-    },
+    { type: 'doc', id: 'core-concepts', label: 'Core Concepts' },
     { type: 'doc', id: 'community', label: 'Community' },
   ],
   guides: [
@@ -116,6 +110,42 @@ const sidebars = {
     {
       type: 'category',
       collapsed: false,
+      label: 'ComposeDB Server',
+      link: {
+        type: 'doc',
+        id: 'guides/composedb-server/composedb-server',
+      },
+      items: [
+        {
+          type: 'doc',
+          id: 'guides/composedb-server/running-locally',
+          label: 'Running Locally',
+        },
+        {
+          type: 'doc',
+          id: 'guides/composedb-server/running-in-the-cloud',
+          label: 'Running in the Cloud',
+        },
+        {
+          type: 'doc',
+          id: 'guides/composedb-server/server-configurations',
+          label: 'Server Configurations',
+        },
+        {
+          type: 'doc',
+          id: 'guides/composedb-server/access-mainnet',
+          label: 'Access Mainnet',
+        },
+        {
+          type: 'doc',
+          id: 'guides/composedb-server/data-storage',
+          label: 'Data Storage',
+        },
+      ],
+    },
+    {
+      type: 'category',
+      collapsed: false,
       label: 'Data Interactions',
       link: { type: 'doc', id: 'guides/data-interactions/data-interactions' },
       items: [
@@ -167,12 +197,12 @@ const sidebars = {
       type: 'category',
       collapsed: false,
       label: 'Schema Definition',
-      link: { type: 'doc', id: 'api/sdl/scalars' },
       items: [
         { type: 'doc', id: 'api/sdl/scalars', label: 'Scalars' },
         { type: 'doc', id: 'api/sdl/directives', label: 'Directives' },
       ],
     },
+    { type: 'doc', id: 'api/runtime/schema', label: 'Runtime Schema' },
   ],
 }
 

@@ -1,13 +1,16 @@
 import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
+import DocCardList from '@theme/DocCardList';
 
 # JavaScript Client
-Interact with ComposeDB using JavaScript, TypeScript, or React. 
+APIs to interact with ComposeDB from JavaScript, TypeScript, or React. 
 
-## Overview
-The client exposes the primary APIs to interact with ComposeDB from your application using a compiled composite.
+## Prerequisites
+---
+- A [compiled composite](../../guides/data-modeling/composites.mdx#compiling-composites)
 
 ## Installation
+---
 Install the ComposeDB client package:
 
 <Tabs
@@ -40,7 +43,6 @@ yarn add @composedb/client
 
   </TabItem>
 </Tabs>
-
 
 If you’re using TypeScript, you may also need to install ComposeDB Types:
 
@@ -77,6 +79,7 @@ yarn add -D @composedb/types
 
 
 ## Configuration
+---
 Create a client instance by passing your server URL and your compiled composite:
 
 ```jsx
@@ -99,7 +102,7 @@ const compose = new ComposeClient({ ceramic: 'http://localhost:7007', definition
 More details: [`ComposeClient`](../../api/classes/client.ComposeClient.md)
 
 ## Queries
-
+---
 ### Executing Queries
 
 Execute GraphQL [Queries](../../guides/data-interactions/queries.mdx) using the schema that is auto-generated from your compiled composite:
@@ -120,11 +123,14 @@ await compose.executeQuery(`
 More details: [`executeQuery`](../../api/classes/client.ComposeClient.md#executequery)
 
 ## Mutations
-
+---
 ### Enabling Mutations
 
-**Before enabling mutations you must [Authenticate Users](./../composedb-client/authenticate-users.mdx).** After you have an authenticated user, enable [Mutations](../../guides/data-interactions/mutations.mdx) by setting their authenticated account on the ComposeDB client:
+:::tip
+Before enabling mutations you must [authenticate the user](./../composedb-client/authenticate-users.mdx).
+:::
 
+After you have an authenticated user, enable [mutations](../../guides/data-interactions/mutations.mdx) by setting their authenticated account on the ComposeDB client:
 
 <Tabs
   defaultValue="with-sessions"
@@ -155,10 +161,14 @@ compose.setDID(did)
 </Tabs>
 
 ### Executing mutations
-In your client, you can execute GraphQL mutations using the schema that is auto-generated from your compiled composite. You can follow examples in the [Data Interactions](../../guides/data-interactions/data-interactions.mdx) guides to learn more about performing [Queries](../../guides/data-interactions/queries.mdx) and [Mutations](../../guides/data-interactions/mutations.mdx).
+In your client, you can execute GraphQL mutations using the schema that is auto-generated from your compiled composite. Follow examples in the [mutations](../../guides/data-interactions/mutations.mdx) guide.
 
 ## Next Steps
-- Learn how to [**Authenticate Users →**](./../composedb-client/authenticate-users.mdx)
+---
+Learn how to [**Authenticate Users →**](./../composedb-client/authenticate-users.mdx)
 
 ## Related Guides
-- ComposeDB’s JavaScript client optionally works with popular GraphQL clients like [**Apollo**](./../composedb-client/using-apollo.mdx) or [**Relay**](./../composedb-client/using-relay.mdx).
+---
+ComposeDB’s JavaScript client optionally works with popular GraphQL clients:
+
+<DocCardList />

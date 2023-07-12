@@ -1,0 +1,606 @@
+# Runtime Schema
+
+ComposeDB automatically generates the runtime GraphQL schema used by applications to interact with their composites.
+
+## Objects
+
+### Document objects
+
+Documents are uniquely identifiable objects in the graph using [GraphQL's Global Object Identification](https://graphql.org/learn/global-object-identification/) specification with the `Node` interface. All document objects contain an `id: ID!` field representing their unique stream ID.
+
+The other fields present in document objects are generated based on the [model's definition](../../guides/data-modeling/writing-models.mdx) and possibly added [views](../sdl/directives.mdx#views).
+
+For example, using the following [Schema definition](../../guides/data-modeling/schemas.mdx):
+
+```graphql
+enum PostStatus {
+  ARCHIVED
+  DRAFT
+  PUBLISHED
+}
+
+type Post @createModel(accountRelation: LIST, description: "A simple post") {
+  author: DID! @documentAccount
+  status: PostStatus!
+  publicationDate: DateTime
+  title: String! @string(minLength: 5, maxLength: 100)
+  text: String! @string(minLength: 5, maxLength: 10000)
+}
+```
+
+This runtime schema will be generated:
+
+```graphql
+# ℹ️ Some types are omitted in this example for brevity
+
+type CeramicAccount implements Node {
+  # Default fields always present on the CeramicAccount object
+  id: ID!
+  isViewer: Boolean!
+  # Added connection to Post documents controlled by the account
+  postList: PostConnection
+}
+
+enum PostStatus {
+  ARCHIVED
+  DRAFT
+  PUBLISHED
+}
+
+type Post implements Node {
+  # The ID field representing the document stream ID is always added to document objects
+  id: ID!
+  # DID scalar field converted to CeramicAccount object
+  author: CeramicAccount!
+  # Other fields defined in the schema
+  status: PostStatus!
+  publicationDate: DateTime
+  title: String!
+  text: String!
+}
+
+type PostConnection {
+  edges: [PostEdge]
+  pageInfo: PageInfo
+}
+
+type PostEdge {
+  cursor: String
+  node: Post
+}
+```
+
+### Embedded objects
+
+Embedded objects can only be accessed from the document storing them.
+
+Example [Schema definition](../../guides/data-modeling/schemas.mdx):
+
+```graphql
+type ImageSource {
+  src: URI!
+  alt: String! @string(minLength: 5, maxLength: 100)
+  width: Int
+  height: Int
+}
+
+type ImageMetadata {
+  original: ImageSource!
+  alternatives: [ImageSource!]!
+}
+
+type Profile @createModel(accountRelation: SINGLE, description: "A basic profile") {
+  displayName: String! @string(minLength: 5, maxLength: 100)
+  avatar: ImageMetadata
+}
+
+type Post @createModel(accountRelation: LIST, description: "A simple post") {
+  title: String! @string(minLength: 5, maxLength: 100)
+  cover: ImageMetadata
+}
+```
+
+This runtime schema will be generated:
+
+```graphql
+# ℹ️ Some types are omitted in this example for brevity
+
+type PostImageMetadata {
+  original: PostImageSource!
+  alternatives: [PostImageSource!]!
+}
+
+type PostImageSource {
+  src: URI!
+  alt: String!
+  width: Int
+  height: Int
+}
+
+type Post implements Node {
+  id: ID!
+  title: String!
+  cover: PostImageMetadata
+}
+
+type ProfileImageMetadata {
+  original: ProfileImageSource!
+  alternatives: [ProfileImageSource!]!
+}
+
+type ProfileImageSource {
+  src: URI!
+  alt: String!
+  width: Int
+  height: Int
+}
+
+type Profile implements Node {
+  id: ID!
+  displayName: String!
+  avatar: ProfileImageMetadata
+}
+```
+
+In the runtime schema above, the `ImageMetadata` and `ImageSources` objects from the schema definition are generated as `PostImageMetadata`, `PostImageSources`, `ProfileImageMetadata` and `ProfileImageSources` to avoid naming conflicts between embedded objects.
+
+Using the [`setCommomEmbeds()` method of the `Composite` class](../classes/devtools.Composite.md#setcommonembeds), it is possible to specify that embedded objects can be safely shared by multiple documents, generating the following runtime schema:
+
+```graphql
+# ℹ️ Some types are omitted in this example for brevity
+
+type ImageMetadata {
+  original: ImageSource!
+  alternatives: [ImageSource!]!
+}
+
+type ImageSource {
+  src: URI!
+  alt: String!
+  width: Int
+  height: Int
+}
+
+type Post implements Node {
+  id: ID!
+  title: String!
+  cover: ImageMetadata
+}
+
+type Profile implements Node {
+  id: ID!
+  displayName: String!
+  avatar: ImageMetadata
+}
+```
+
+### `CeramicAccount` object
+
+The `CeramicAccount` object is generated to represent any DID and its associated documents in the network.
+
+Similar to [Document objects](#document-objects), all `CeramicAccount` objects are uniquely identifiable objects in the graph using [GraphQL's Global Object Identification](https://graphql.org/learn/global-object-identification/) specification with the `Node` interface, with their `id: ID!` field representing their unique DID string.
+
+In addition to the `id: ID!` field, the `isViewer: Boolean!` field representing whether the account is the viewer associated to the ComposeDB client are always present, while other fields are generated based on the models present in the composite.
+
+Example [Schema definition](../../guides/data-modeling/schemas.mdx):
+
+```graphql
+type Profile @createModel(accountRelation: SINGLE, description: "A basic profile") {
+  displayName: String! @string(minLength: 5, maxLength: 100)
+}
+
+type Post @createModel(accountRelation: LIST, description: "A simple post") {
+  text: String! @string(minLength: 5, maxLength: 100)
+}
+```
+
+This runtime schema will be generated:
+
+```graphql
+# ℹ️ Some types are omitted in this example for brevity
+
+type CeramicAccount implements Node {
+  # The following fields are always present
+  id: ID!
+  isViewer: Boolean!
+  # The Post relation is a connection because the Post account relation is LIST
+  postList: PostConnection
+  # The Post relation is a single object because the Profile account relation is SINGLE
+  profile: Profile
+}
+
+type Post implements Node {
+  id: ID!
+  text: String!
+}
+
+type PostConnection {
+  edges: [PostEdge]
+  pageInfo: PageInfo
+}
+
+type PostEdge {
+  cursor: String
+  node: Post
+}
+
+type Profile implements Node {
+  id: ID!
+  displayName: String!
+}
+```
+
+### `Query` object
+
+The `Query` object represents the root object to perform GraphQL queries, it always contains the following two fields:
+
+- `node(id: ID!): Node`: allowing to access any [Document object](#document-objects) or [DID account](#ceramicaccount-object) using the [GraphQL's `Node` interface](https://graphql.org/learn/global-object-identification/#node-interface).
+- `viewer: CeramicAccount`: allowing to access the [`CeramicAccount` object](#ceramicaccount-object) for the DID associated to the ComposeDB client, if set.
+
+In addition to these fields, the ComposeDB runtime will generate connections for all models defined in the composite.
+
+Example [Schema definition](../../guides/data-modeling/schemas.mdx):
+
+```graphql
+type Profile @createModel(accountRelation: SINGLE, description: "A basic profile") {
+  displayName: String! @string(minLength: 5, maxLength: 100)
+}
+
+type Post @createModel(accountRelation: LIST, description: "A simple post") {
+  text: String! @string(minLength: 5, maxLength: 100)
+}
+```
+
+This runtime schema will be generated:
+
+```graphql
+# ℹ️ Some types are omitted in this example for brevity
+
+type Query {
+  node(id: ID!): Node
+  viewer: CeramicAccount
+  # ℹ️ Connection arguments are omitted in this example for brevity
+  postIndex: PostConnection
+  profileIndex: ProfileConnection
+}
+
+type CeramicAccount implements Node {
+  id: ID!
+  isViewer: Boolean!
+  postList: PostConnection
+  profile: Profile
+}
+
+type Post implements Node {
+  id: ID!
+  text: String!
+}
+
+type PostConnection {
+  edges: [PostEdge]
+  pageInfo: PageInfo
+}
+
+type PostEdge {
+  cursor: String
+  node: Post
+}
+
+type Profile implements Node {
+  id: ID!
+  displayName: String!
+}
+
+type ProfileConnection {
+  edges: [ProfileEdge]
+  pageInfo: PageInfo
+}
+
+type ProfileEdge {
+  cursor: String
+  node: Profile
+}
+```
+
+## Connections
+
+ComposeDB implements [Relay's Connection specification](https://relay.dev/graphql/connections.htm) to represent one-to-many relationships between nodes ([Document objects](#document-objects) and [DID accounts](#ceramicaccount-object)) in the graph.
+
+Connection objects are generated for all models in the composite, supporting the [Connection arguments](https://relay.dev/graphql/connections.htm#sec-Arguments) and possibly additional arguments for [filtering](#filtering) and [sorting](#sorting) the associated documents.
+
+## Inputs
+
+GraphQL differentiates objects handled in queries from objects used to perform mutations and arguments, using [input types](https://graphql.org/learn/schema/#input-types).
+
+ComposeDB generates input types based on models present in the composite as described below.
+
+### Filtering
+
+Filtering inputs can be used as arguments to [Connection](#connections) queries in order to filter the documents returned by the query based on the value of fields present in the document.
+
+Filters support two types of conditions: [value conditions](#value-conditions) that apply to a single field in a document and [logical conditions](#logical-conditions) that combine multiple conditions to create more complex filters.
+
+For example, using the following [Schema definition](../../guides/data-modeling/schemas.mdx):
+
+```graphql
+enum PostStatus {
+  ARCHIVED
+  DRAFT
+  PUBLISHED
+}
+
+type Post @createModel(accountRelation: LIST, description: "A simple post") {
+  author: DID! @documentAccount
+  status: PostStatus!
+  publicationDate: DateTime
+  title: String! @string(minLength: 5, maxLength: 100)
+  text: String! @string(minLength: 5, maxLength: 10000)
+}
+```
+
+This runtime schema will be generated:
+
+```graphql
+# ℹ️ Some types are omitted in this example for brevity
+
+enum PostStatus {
+  ARCHIVED
+  DRAFT
+  PUBLISHED
+}
+
+type Post implements Node {
+  id: ID!
+  author: CeramicAccount!
+  status: PostStatus!
+  publicationDate: DateTime
+  title: String!
+  text: String!
+}
+
+type PostConnection {
+  edges: [PostEdge]
+  pageInfo: PageInfo
+}
+
+type PostEdge {
+  cursor: String
+  node: Post
+}
+
+# High-level filter conditions for Post documents
+input PostFiltersInput {
+  where: PostObjectFilterInput
+  and: [PostFiltersInput!]
+  or: [PostFiltersInput!]
+  not: PostFiltersInput
+}
+
+# Filter conditions for fields in Post documents
+input PostObjectFilterInput {
+  status: PostStatusValueFilterInput
+  publicationDate: StringValueFilterInput
+  title: StringValueFilterInput
+  text: StringValueFilterInput
+}
+
+# Generated value filter for the PostStatus enum
+input PostStatusValueFilterInput {
+  isNull: Boolean
+  equalTo: PostStatus
+  notEqualTo: PostStatus
+  in: [PostStatus!]
+  notIn: [PostStatus!]
+}
+
+# Generic string value filter
+input StringValueFilterInput {
+  isNull: Boolean
+  equalTo: String
+  notEqualTo: String
+  in: [String!]
+  notIn: [String!]
+  lessThan: String
+  lessThanOrEqualTo: String
+  greaterThan: String
+  greaterThanOrEqualTo: String
+}
+
+type Query {
+  node(id: ID!): Node
+  viewer: CeramicAccount
+  # ℹ️ Other connection arguments are omitted in this example for brevity
+  postIndex(filters: PostFiltersInput): PostConnection
+}
+```
+
+#### Value conditions
+
+Value conditions apply to the value of a single field in a document. They are generated based on the value type (such as `Boolean`, `String`, `Float`...), with different value types supporting different conditions.
+
+The following table describes all the available conditions and the matching SQL statement, where `(value)` is used as a placeholder for a single value and `...values` for a list of values:
+
+| GraphQL input                   | Generated SQL         |
+| ------------------------------- | --------------------- |
+| isNull: `Boolean`               | IS NULL / IS NOT NULL |
+| equalTo: `(value)`              | = `(value)`           |
+| notEqualTo: `(value)`           | != `(value)`          |
+| in: `[...values]`               | IN (`...values`)      |
+| notIn: `[...values]`            | NOT IN (`...values`)  |
+| lessThan: `(value)`             | < `(value)`           |
+| lessThanOrEqualTo: `(value)`    | <= `(value)`          |
+| greaterThan: `(value)`          | > `(value)`           |
+| greaterThanOrEqualTo: `(value)` | >= `(value)`          |
+
+Even though the generated GraphQL input types support multiple condition fields, **ComposeDB does not support ambiguous conditions**.
+
+In most cases, only a single condition can be present in the input. The exception is when using the `lessThan`, `lessThanOrEqualTo`, `greaterThan` and `greaterThanOrEqualTo` where two matching boundaries can be set together, as in the examples below:
+
+```json
+// ❌ Invalid input with two conditions making the filter ambiguous
+{ "isNull": true, "equalTo": "test" }
+```
+
+```json
+// ✅ Valid input with a single condition
+{ "isNull": true }
+```
+
+```json
+// ✅ Valid input with a single condition
+{ "equalTo": "test" }
+```
+
+```json
+// ✅ Valid input with range conditions
+{ "greaterThan": 5, "lessThanOrEqualTo": 10 }
+```
+
+```json
+// ❌ Invalid input with ambiguous conditions
+{ "greaterThan": 5, "greaterThanOrEqualTo": 10 }
+```
+
+#### Logical conditions
+
+Beyond using the `where` keyword to match object fields with [value conditions](#value-conditions), the `and`, `or` and `not` keywords can be used to create more complex conditions, for example:
+
+```json
+// ✅ Valid input with conditions on multiple fields
+{
+  "where": {
+    "status": { "notEqualTo": "DRAFT" },
+    "publicationDate": { "greaterThanOrEqualTo": "2023-07-01", "lessThan": "2023-08-01" }
+  }
+}
+```
+
+```json
+// ✅ Valid input with nested logical filters
+{
+  "or": [
+    {
+      "where": {
+        "status": { "equalTo": "PUBLISHED" }
+      }
+    },
+    {
+      "not": {
+        "where": {
+          "publicationDate": { "greaterThanOrEqualTo": "2023-07-01" }
+        }
+      }
+    }
+  ]
+}
+```
+
+Only one key/value pair can be provided per object, filters such as the following are not supported:
+
+```json
+// ❌ Invalid input with multiple keys, see previous example for correct syntax
+{
+  "not": {
+    "where": {
+      "publicationDate": { "greaterThanOrEqualTo": "2023-07-01" }
+    }
+  },
+  "or": [
+    {
+      "where": {
+        "status": { "equalTo": "PUBLISHED" }
+      }
+    }
+  ]
+}
+```
+
+### Sorting
+
+Similar to [filtering inputs](#filtering), sorting inputs can be used as arguments to [Connection](#connections) queries in order to order the documents returned by the query based on the value of fields present in the document.
+
+For example, using the following [Schema definition](../../guides/data-modeling/schemas.mdx):
+
+```graphql
+enum PostStatus {
+  ARCHIVED
+  DRAFT
+  PUBLISHED
+}
+
+type Post @createModel(accountRelation: LIST, description: "A simple post") {
+  author: DID! @documentAccount
+  status: PostStatus!
+  publicationDate: DateTime
+  title: String! @string(minLength: 5, maxLength: 100)
+  text: String! @string(minLength: 5, maxLength: 10000)
+}
+```
+
+This runtime schema will be generated:
+
+```graphql
+# ℹ️ Some types are omitted in this example for brevity
+
+enum PostStatus {
+  ARCHIVED
+  DRAFT
+  PUBLISHED
+}
+
+type Post implements Node {
+  id: ID!
+  author: CeramicAccount!
+  status: PostStatus!
+  publicationDate: DateTime
+  title: String!
+  text: String!
+}
+
+type PostConnection {
+  edges: [PostEdge]
+  pageInfo: PageInfo
+}
+
+type PostEdge {
+  cursor: String
+  node: Post
+}
+
+input PostSortingInput {
+  status: SortOrder
+  publicationDate: SortOrder
+  title: SortOrder
+  text: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+type Query {
+  node(id: ID!): Node
+  viewer: CeramicAccount
+  # ℹ️ Other connection arguments are omitted in this example for brevity
+  postIndex(sorting: PostSortingInput): PostConnection
+}
+```
+
+Multiple fields can be set in the `sorting` input, for example:
+
+```json
+// ✅ Valid input with multiple fields
+{ "publicationDate": "DESC", "title": "ASC" }
+```
+
+### Document creation
+
+- Content object containing all the required fields
+- Create object containing the `content` and `clientMutationId` fields
+
+### Document update
+
+- Partial content object with all fields optional
+- UpdateOptions object to set `replace` and/or `version` values
+- Update object with `id`, `content`, `options` and `clientMutationId`
