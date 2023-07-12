@@ -65,6 +65,8 @@ Where:
 - `recipient` references the recipient’s account by storing its `DID!`, using `@accountReference`
 
 ## Model to Model
+---
+
 Model to model relations enable you to link data to and query data from another piece of data. These relations can be uni-directional (e.g. query a post from a comment) or bi-directional (e.g. query a post from a comment and query all comments from a post).
 
 ### Example: Post with comments
@@ -117,10 +119,13 @@ Where:
 - `comments` defines the relationships from a post to a collection of comments, using  `@relationFrom`; requires specifying the model relation (`Comment`) and the specific property that stores the relation (`postID`)
 
 ### Example: Container with Items
-Please see [Relations: Container of Items](relations-container-of-items.mdx)
+Please see [Relations: Container of Items](../data-modeling/relations-container-of-items.mdx) & [Relations: Combine Items](../data-modeling/relations-combine-items.mdx).
 
 ## Account to Account
+---
+
 :::caution
+
 Account to account relations are on the roadmap, but not yet supported.
 
 :::
