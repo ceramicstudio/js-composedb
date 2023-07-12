@@ -5,13 +5,15 @@ import TabItem from '@theme/TabItem'
 
 Create authenticated sessions for users with great UX.
 
-## Things to Know
+## About Sessions
+---
 
 - Sessions provide a familiar, web2-like authentication experience for Ceramic apps where a user signs-in once for a timebound session and then interacts without needing to manually approve every transaction
 - A durable root Ceramic account (did:pkh) is generated based on the user’s blockchain wallet
 - The root account generates a temporary Ceramic account (did:key) for each app with tightly-scoped permissions that only lives for a period of time in the user’s browser
 
 ## Installation
+---
 
 First, install the did-sessions library:
 
@@ -92,6 +94,7 @@ yarn add @didtools/pkh-solana
 </Tabs>
 
 ## Authorization
+---
 
 ### Ethereum Wallets
 
@@ -140,6 +143,7 @@ Additional chain support is continually being added. You can find the link to ea
   :::
 
 ## Scopes
+---
 
 In the last line of the above examples, you see a `resources` array. This is effectively a scope of permission that the user is assigning. In ComposeDB, these resources are the models you’ve included in your composite.
 
@@ -155,8 +159,13 @@ The `compose.resources` is an array of URI-formatted streamIDs of models, for ex
 ```
 
 ## Additional Usage
+---
 
-Once you authorize and create a session, you can serialize and store session for later. Sessions by default are valid for 7 days.
+Once you authorize and create a session, you can serialize and store session for later. 
+
+:::tip
+
+Sessions by default are valid for 7 days.
 
 ```jsx
 // Create session as above, store for later
@@ -248,12 +257,14 @@ if (session.isExpired) {
 ```
 
 ## Modal
+---
 
 When authenticating, the user is prompted with a human-readable wallet modal that explains what they’re giving permissions for. To accomplish this integration, the DID Session library supports Sign-In With X, a chain agnostic authorization standard. Sign-In With Ethereum is shown below:
 
 ![Wallet Modal](/img/wallet-modal.png)
 
 ## Next Steps
+---
 
 With authenticated users, now you can move to:
 
