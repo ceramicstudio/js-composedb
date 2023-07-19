@@ -33,7 +33,7 @@ describe('client', () => {
     expect(res.data?.createGenericProfile.document.id).toBeDefined()
   }, 30000)
 
-  test.skip('create and query post with comments', async () => {
+  test('create and query post with comments', async () => {
     const postComposite = await Composite.create({ ceramic, schema: postSchema })
     const postModelID = postComposite.modelIDs[0]
 

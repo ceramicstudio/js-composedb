@@ -8,9 +8,7 @@ import type { RuntimeViewField, FieldsIndex } from '@composedb/types'
 
 import type { ScalarSchema } from '../types.js'
 
-export type Field = {
-  path: Array<string>
-}
+export { type Field } from '@ceramicnetwork/common'
 
 export type FieldCommonDefinition = {
   required: boolean
