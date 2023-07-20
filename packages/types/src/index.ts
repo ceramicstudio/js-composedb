@@ -9,8 +9,10 @@ import type {
   ModelDefinition,
   ModelViewsDefinition,
 } from '@ceramicnetwork/stream-model'
+import type { FieldsIndex } from '@ceramicnetwork/common'
 import type { DagJWSResult, JWSSignature } from 'dids'
 
+export type { FieldsIndex } from '@ceramicnetwork/common'
 export type { Model, ModelDefinition } from '@ceramicnetwork/stream-model'
 export type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 export type { JSONSchema } from 'json-schema-typed/draft-2020-12'
@@ -63,6 +65,10 @@ export type CompositeDefinitionType<T> = {
    * Optional composite-level views.
    */
   views?: CompositeViewsDefinition
+  /**
+   * Optional composite-level indices
+   */
+  indices?: Record<string, Array<FieldsIndex>>
   /**
    * Optional common embeds (enums and objects) shared by models in the composite.
    */

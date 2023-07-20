@@ -3,13 +3,13 @@ import type {
   ModelRelationDefinition,
   ModelRelationsDefinition,
 } from '@ceramicnetwork/stream-model'
-import type { JSONSchema } from '@composedb/types'
+import type { FieldsIndex, JSONSchema } from '@composedb/types'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import {
   type DirectiveAnnotation,
   getDirectives,
-  mapSchema,
   MapperKind,
+  mapSchema,
 } from '@graphql-tools/utils'
 import {
   type GraphQLEnumType,
@@ -32,6 +32,7 @@ import type { ScalarSchema } from '../types.js'
 import { getScalarSchema } from './scalars.js'
 import { typeDefinitions } from './typeDefinitions.js'
 import type {
+  Field,
   ItemDefinition,
   ListFieldDefinition,
   ObjectDefinition,
@@ -95,11 +96,16 @@ export class SchemaParser {
         // return type
       },
       [MapperKind.OBJECT_TYPE]: (type: GraphQLObjectType) => {
+        const directives = getDirectives(this.#schema, type)
+        const indices = this._parseIndices(directives)
         const object = this._parseObject(type)
+        object.indices = indices
         this.#def.objects[type.name] = object
-        const model = this._parseModelDirective(type, object)
+        const model = this._parseModelDirective(type, directives, object)
         if (model != null) {
           this.#def.models[type.name] = model
+        } else if (indices.length > 0) {
+          throw new Error('Indices added to type that is not a model')
         }
         return type
       },
@@ -140,6 +146,17 @@ export class SchemaParser {
     return this.#def
   }
 
+  _parseIndices(directives: Array<DirectiveAnnotation>): Array<FieldsIndex> {
+    return directives.flatMap((d) => {
+      if (d.name === 'createIndex' && d.args) {
+        const fields = d.args.fields as Array<Field>
+        return [{ fields }]
+      } else {
+        return []
+      }
+    })
+  }
+
   _getRelatedModelID(key: string, modelName: string): string {
     const relatedModel = this.#def.models[modelName]
     if (relatedModel == null) {
@@ -157,9 +174,9 @@ export class SchemaParser {
 
   _parseModelDirective(
     type: GraphQLInterfaceType | GraphQLObjectType,
+    directives: Array<DirectiveAnnotation>,
     object: ObjectDefinition
   ): ParsedModelDefinition | void {
-    const directives = getDirectives(this.#schema, type)
     const createModel = directives.find((d) => d.name === 'createModel')
     const loadModel = directives.find((d) => d.name === 'loadModel')
 
@@ -239,6 +256,7 @@ export class SchemaParser {
       properties: definition,
       references: Array.from(new Set(references)),
       relations,
+      indices: [],
     }
   }
 

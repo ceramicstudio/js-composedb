@@ -744,4 +744,66 @@ describe('schema', () => {
       },
     })
   })
+
+  it('Index directive is properly supported and added to ICD', () => {
+    const def = createAbstractCompositeDefinition(`
+      type ModelWithIDProp @createModel(
+        accountRelation: SINGLE,
+        description: "Test model with GraphQL ID property",
+      )
+      @createIndex(
+        fields: [{
+          path: ["idValue"]
+        }],
+      )
+      @createIndex(
+        fields: [{
+          path: ["idValue"]
+        },{
+          path: ["requiredValue"]
+        }]
+      ) {
+        idValue: ID @string(maxLength: 30)
+        requiredIdValue: ID! @string(maxLength: 50)
+      }
+      `)
+    expect(def).toMatchObject({
+      models: {
+        ModelWithIDProp: {
+          action: 'create',
+          indices: [
+            {
+              fields: [{ path: ['idValue'] }],
+            },
+            {
+              fields: [{ path: ['idValue'] }, { path: ['requiredValue'] }],
+            },
+          ],
+          model: {
+            name: 'ModelWithIDProp',
+            accountRelation: { type: 'single' },
+            description: 'Test model with GraphQL ID property',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: {
+                idValue: {
+                  type: 'string',
+                  title: 'GraphQLID',
+                  maxLength: 30,
+                },
+                requiredIdValue: {
+                  type: 'string',
+                  title: 'GraphQLID',
+                  maxLength: 50,
+                },
+              },
+              additionalProperties: false,
+              required: ['requiredIdValue'],
+            },
+          },
+        },
+      },
+    })
+  })
 })

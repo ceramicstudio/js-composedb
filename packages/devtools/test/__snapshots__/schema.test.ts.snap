@@ -9,6 +9,17 @@ exports[`schema createAbstractCompositeDefinition creates an InternalCompositeDe
   "models": {
     "GenericProfile": {
       "action": "create",
+      "indices": [
+        {
+          "fields": [
+            {
+              "path": [
+                "name",
+              ],
+            },
+          ],
+        },
+      ],
       "model": {
         "accountRelation": {
           "type": "single",
@@ -91,6 +102,17 @@ exports[`schema createAbstractCompositeDefinition creates an InternalCompositeDe
     },
     "PersonProfile": {
       "action": "create",
+      "indices": [
+        {
+          "fields": [
+            {
+              "path": [
+                "residenceCountry",
+              ],
+            },
+          ],
+        },
+      ],
       "model": {
         "accountRelation": {
           "type": "single",
@@ -154,6 +176,17 @@ exports[`schema createAbstractCompositeDefinition creates an InternalCompositeDe
     },
     "SocialProfile": {
       "action": "create",
+      "indices": [
+        {
+          "fields": [
+            {
+              "path": [
+                "url",
+              ],
+            },
+          ],
+        },
+      ],
       "model": {
         "accountRelation": {
           "type": "single",

@@ -47,7 +47,8 @@ describe('composites', () => {
         'test/mocks/composite.profile.post.schema',
       ])
 
-      expect(create.stderr.toString().includes('No controller specified')).toBe(true)
+      const res = create.stderr.toString()
+      expect(res.includes('An authenticated DID')).toBe(true)
     }, 60000)
 
     test('composite creation succeeds', async () => {
@@ -56,9 +57,10 @@ describe('composites', () => {
         'test/mocks/composite.profile.post.schema',
         `--did-private-key=${seed}`,
       ])
-      expect(create.stdout.toString().includes('"version":"1.0"')).toBe(true)
-      expect(create.stdout.toString().includes('"aliases":')).toBe(true)
-      expect(create.stdout.toString().includes('"views":')).toBe(true)
+      const output = create.stdout.toString()
+      expect(output.includes('"version":"1.0"')).toBe(true)
+      expect(output.includes('"aliases":')).toBe(true)
+      expect(output.includes('"views":')).toBe(true)
     }, 60000)
   })
 
