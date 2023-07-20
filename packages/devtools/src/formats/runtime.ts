@@ -9,6 +9,7 @@ import type {
   RuntimeObjectFields,
   RuntimeScalar,
   RuntimeReference,
+  RuntimeScalarCommon,
 } from '@composedb/types'
 import { camelCase, pascalCase } from 'change-case'
 import { JsonReference } from 'json-ptr'
@@ -16,6 +17,7 @@ import { JsonReference } from 'json-ptr'
 import { type ScalarTitle, SCALAR_RUNTIME_TYPES } from '../schema/scalars.js'
 import type { AnySchema, ScalarSchema } from '../types.js'
 import { viewDefinitionToRuntime } from '../utils.js'
+import { FieldsIndex } from '@ceramicnetwork/common'
 
 type EnumSchema = JSONSchema.String & { title: string; enum: Array<string> }
 
@@ -249,6 +251,35 @@ export class RuntimeModelBuilder {
   }
 }
 
+function applyIndexingToObjects(
+  modelName: string,
+  idx: FieldsIndex,
+  objects: Record<string, RuntimeObjectFields>
+) {
+  const modelFields = objects[modelName] ?? []
+  let currentObjectFields = modelFields
+  for (const field of idx.fields) {
+    currentObjectFields = modelFields
+    for (const path of field.path) {
+      const obj = currentObjectFields[path]
+      if (obj) {
+        if (obj.type === 'reference') {
+          const refObj = obj as RuntimeReference
+          refObj.indexed = true
+          currentObjectFields = objects[path] ?? {}
+        } else if ('required' in obj) {
+          const commonObj = obj as RuntimeScalarCommon
+          commonObj.indexed = true
+        } else {
+          throw new Error(`${field.path.join('.')} is not indexable`)
+        }
+      } else {
+        throw new Error(`Could not resolve ${field.path.join('.')} as a valid path`)
+      }
+    }
+  }
+}
+
 /** @internal */
 export function createRuntimeDefinition(
   definition: InternalCompositeDefinition
@@ -277,6 +308,9 @@ export function createRuntimeDefinition(
     // Inject extracted types to runtime definition
     Object.assign(runtime.objects, builtModel.objects)
     Object.assign(runtime.enums, builtModel.enums)
+    for (const idx of definition.indices?.[modelName] ?? []) {
+      applyIndexingToObjects(modelName, idx, runtime.objects)
+    }
     // Attach entry-point to account store based on relation type
     if (modelDefinition.accountRelation != null) {
       const key = camelCase(modelName)
@@ -294,6 +328,5 @@ export function createRuntimeDefinition(
   }
 
   // TODO: handle definition.views for models relations, accountData and root view
-
   return runtime
 }

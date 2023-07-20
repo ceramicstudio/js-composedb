@@ -87,6 +87,7 @@ export type EncodedCompositeDefinition = CompositeDefinitionType<EncodedStreamCo
 /** Common runtime scalar properties. */
 export type RuntimeScalarCommon = {
   required: boolean
+  indexed?: boolean
 }
 /** Runtime scalar representation for a boolean. */
 export type RuntimeBooleanScalar = RuntimeScalarCommon & {

@@ -47,9 +47,9 @@
     "@composedb/runtime": "workspace:^0.4.2",
     "@graphql-tools/batch-execute": "^9.0.0",
     "@graphql-tools/stitch": "^9.0.0",
-    "@graphql-tools/utils": "^10.0.1",
+    "@graphql-tools/utils": "^10.0.3",
     "dataloader": "^2.2.2",
-    "graphql": "^16.5.0",
+    "graphql": "^16.7.1",
     "graphql-relay": "^0.10.0"
   },
   "devDependencies": {
@@ -57,7 +57,7 @@
     "@composedb/devtools": "workspace:^0.4.4",
     "@composedb/test-schemas": "workspace:^0.4.0",
     "@composedb/types": "workspace:^0.4.4",
-    "dids": "^4.0.0",
+    "dids": "^4.0.3",
     "jest-environment-composedb": "workspace:^0.4.2"
   },
   "jest": {

@@ -11,11 +11,15 @@ export function mockDefinition(
 ): InternalCompositeDefinition {
   const models: Record<string, ModelDefinition> = {}
   const modelsViews: Record<string, ModelViewsDefinition> = {}
+  const modelsIndices: Record<string, any> = {}
 
   for (const abstractModel of Object.values(definition.models)) {
     if (abstractModel.action === 'create') {
       const definition = abstractModel.model
       models[`${definition.name}ID`] = definition
+      if (abstractModel.indices) {
+        modelsIndices[abstractModel.model.name] = abstractModel.indices
+      }
     } else {
       const definition = providedModels[abstractModel.id]
       if (definition == null) {
@@ -23,6 +27,9 @@ export function mockDefinition(
       }
       models[abstractModel.id] = definition
       modelsViews[abstractModel.id] = abstractModel.views
+      if (abstractModel.indices) {
+        modelsIndices[abstractModel.id] = abstractModel.indices
+      }
     }
   }
 
@@ -31,6 +38,7 @@ export function mockDefinition(
     commonEmbeds: definition.commonEmbeds,
     models,
     views: { models: modelsViews },
+    indices: modelsIndices,
   }
 }
 

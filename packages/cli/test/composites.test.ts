@@ -47,8 +47,11 @@ describe('composites', () => {
         'test/mocks/composite.profile.post.schema',
       ])
 
-      const res = create.stderr.toString()
-      expect(res.includes('An authenticated DID')).toBe(true)
+      expect(
+        create.stderr
+          .toString()
+          .includes('An authenticated DID must be attached to the Ceramic instance')
+      ).toBe(true)
     }, 60000)
 
     test('composite creation succeeds', async () => {

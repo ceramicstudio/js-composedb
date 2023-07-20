@@ -3,6 +3,24 @@
 exports[`scalars support extra scalars 1`] = `
 {
   "commonEmbeds": [],
+  "indices": {
+    "ExtraScalars": [
+      {
+        "fields": [
+          {
+            "path": [
+              "dateTime",
+            ],
+          },
+          {
+            "path": [
+              "streamID",
+            ],
+          },
+        ],
+      },
+    ],
+  },
   "models": {
     "ExtraScalarsID": {
       "accountRelation": {
@@ -232,6 +250,7 @@ exports[`scalars support extra scalars 2`] = `
         "type": "date",
       },
       "dateTime": {
+        "indexed": true,
         "required": false,
         "type": "datetime",
       },
@@ -260,6 +279,7 @@ exports[`scalars support extra scalars 2`] = `
         "type": "float",
       },
       "streamID": {
+        "indexed": true,
         "required": false,
         "type": "streamid",
       },

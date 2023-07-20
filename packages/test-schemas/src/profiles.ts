@@ -6,7 +6,7 @@ ${ImageSourcesType}
 type GenericProfile @createModel(
   accountRelation: SINGLE,
   description: "A model to store common profile-related properties"
-) @createIndex(fields: [{path: ["name"]}]) {
+) @createIndex(fields: [{path:["name"]}]) {
   name: String @string(maxLength: 150)
   image: ImageSources
 }
@@ -14,7 +14,7 @@ type GenericProfile @createModel(
 type SocialProfile @createModel(
   accountRelation: SINGLE,
   description: "A model to store properties that accounts would like to share on social media"
-) @createIndex(fields: [{path: ["url"]}]) {
+) @createIndex(fields: [{path:["url"]}]) {
   description: String @string(maxLength: 420)
   emoji: String @string(maxLength: 2)
   background: ImageSources
@@ -24,7 +24,7 @@ type SocialProfile @createModel(
 type PersonProfile @createModel(
   accountRelation: SINGLE,
   description: "A model to store accounts' personal data"
-) @createIndex(fields: [{path: ["residenceCountry"]}]) {
+) @createIndex(fields: [{path:["residenceCountry"]}]) {
   birthDate: Date
   gender: String @string(maxLength: 42)
   homeLocation: String @string(maxLength: 140)

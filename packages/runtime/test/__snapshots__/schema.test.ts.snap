@@ -22,6 +22,8 @@ exports[`schema extra scalars 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
+    filters: ExtraScalarsFiltersInput
+    sorting: ExtraScalarsSortingInput
   ): ExtraScalarsConnection
 }
 
@@ -51,6 +53,8 @@ type CeramicAccount implements Node {
 
     """Returns the last n items from the list."""
     last: Int
+    filters: ExtraScalarsFiltersInput
+    sorting: ExtraScalarsSortingInput
   ): ExtraScalarsConnection
 }
 
@@ -169,6 +173,40 @@ scalar URI @specifiedBy(url: "https://www.ietf.org/rfc/rfc3986.txt")
 A field whose value is a UTC Offset: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 """
 scalar UtcOffset
+
+input ExtraScalarsFiltersInput {
+  where: ExtraScalarsObjectFilterInput
+  and: [ExtraScalarsFiltersInput!]
+  or: [ExtraScalarsFiltersInput!]
+  not: ExtraScalarsFiltersInput
+}
+
+input ExtraScalarsObjectFilterInput {
+  dateTime: StringValueFilterInput
+  streamID: StringValueFilterInput
+}
+
+input StringValueFilterInput {
+  isNull: Boolean
+  equalTo: String
+  notEqualTo: String
+  in: [String!]
+  notIn: [String!]
+  lessThan: String
+  lessThanOrEqualTo: String
+  greaterThan: String
+  greaterThanOrEqualTo: String
+}
+
+input ExtraScalarsSortingInput {
+  dateTime: SortOrder
+  streamID: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
 
 type Mutation {
   createExtraScalars(input: CreateExtraScalarsInput!): CreateExtraScalarsPayload
@@ -293,6 +331,8 @@ exports[`schema note 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
+    filters: NoteFiltersInput
+    sorting: NoteSortingInput
   ): NoteConnection
 }
 
@@ -322,6 +362,8 @@ type CeramicAccount implements Node {
 
     """Returns the last n items from the list."""
     last: Int
+    filters: NoteFiltersInput
+    sorting: NoteSortingInput
   ): NoteConnection
 }
 
@@ -379,6 +421,38 @@ enum NoteStatus {
 
 """A Ceramic Commit ID"""
 scalar CeramicCommitID @specifiedBy(url: "https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#commitid")
+
+input NoteFiltersInput {
+  where: NoteObjectFilterInput
+  and: [NoteFiltersInput!]
+  or: [NoteFiltersInput!]
+  not: NoteFiltersInput
+}
+
+input NoteObjectFilterInput {
+  title: StringValueFilterInput
+}
+
+input StringValueFilterInput {
+  isNull: Boolean
+  equalTo: String
+  notEqualTo: String
+  in: [String!]
+  notIn: [String!]
+  lessThan: String
+  lessThanOrEqualTo: String
+  greaterThan: String
+  greaterThanOrEqualTo: String
+}
+
+input NoteSortingInput {
+  title: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
 
 type Mutation {
   createNote(input: CreateNoteInput!): CreateNotePayload
@@ -772,6 +846,8 @@ exports[`schema profile 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
+    filters: GenericProfileFiltersInput
+    sorting: GenericProfileSortingInput
   ): GenericProfileConnection
   socialProfileIndex(
     """Returns the items in the list that come after the specified cursor."""
@@ -785,6 +861,8 @@ exports[`schema profile 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
+    filters: SocialProfileFiltersInput
+    sorting: SocialProfileSortingInput
   ): SocialProfileConnection
   personProfileIndex(
     """Returns the items in the list that come after the specified cursor."""
@@ -798,6 +876,8 @@ exports[`schema profile 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
+    filters: PersonProfileFiltersInput
+    sorting: PersonProfileSortingInput
   ): PersonProfileConnection
 }
 
@@ -898,6 +978,38 @@ type GenericProfileEdge {
   cursor: String!
 }
 
+input GenericProfileFiltersInput {
+  where: GenericProfileObjectFilterInput
+  and: [GenericProfileFiltersInput!]
+  or: [GenericProfileFiltersInput!]
+  not: GenericProfileFiltersInput
+}
+
+input GenericProfileObjectFilterInput {
+  name: StringValueFilterInput
+}
+
+input StringValueFilterInput {
+  isNull: Boolean
+  equalTo: String
+  notEqualTo: String
+  in: [String!]
+  notIn: [String!]
+  lessThan: String
+  lessThanOrEqualTo: String
+  greaterThan: String
+  greaterThanOrEqualTo: String
+}
+
+input GenericProfileSortingInput {
+  name: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
 """A connection to a list of items."""
 type SocialProfileConnection {
   """Information to aid in pagination."""
@@ -916,6 +1028,21 @@ type SocialProfileEdge {
   cursor: String!
 }
 
+input SocialProfileFiltersInput {
+  where: SocialProfileObjectFilterInput
+  and: [SocialProfileFiltersInput!]
+  or: [SocialProfileFiltersInput!]
+  not: SocialProfileFiltersInput
+}
+
+input SocialProfileObjectFilterInput {
+  url: StringValueFilterInput
+}
+
+input SocialProfileSortingInput {
+  url: SortOrder
+}
+
 """A connection to a list of items."""
 type PersonProfileConnection {
   """Information to aid in pagination."""
@@ -932,6 +1059,21 @@ type PersonProfileEdge {
 
   """A cursor for use in pagination"""
   cursor: String!
+}
+
+input PersonProfileFiltersInput {
+  where: PersonProfileObjectFilterInput
+  and: [PersonProfileFiltersInput!]
+  or: [PersonProfileFiltersInput!]
+  not: PersonProfileFiltersInput
+}
+
+input PersonProfileObjectFilterInput {
+  residenceCountry: StringValueFilterInput
+}
+
+input PersonProfileSortingInput {
+  residenceCountry: SortOrder
 }
 
 type Mutation {

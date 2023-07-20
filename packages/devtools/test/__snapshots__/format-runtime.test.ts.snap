@@ -40,6 +40,7 @@ exports[`Runtime format Note model definition with views 1`] = `
         "type": "string",
       },
       "title": {
+        "indexed": true,
         "required": true,
         "type": "string",
       },
@@ -84,6 +85,7 @@ exports[`Runtime format Post with comments relations 1`] = `
         "type": "string",
       },
       "title": {
+        "indexed": true,
         "required": true,
         "type": "string",
       },
@@ -143,6 +145,7 @@ exports[`Runtime format Post with comments relations 2`] = `
         "type": "streamid",
       },
       "text": {
+        "indexed": true,
         "required": true,
         "type": "string",
       },
@@ -322,6 +325,7 @@ exports[`Runtime format Profile - multiples models with common local references 
         "type": "reference",
       },
       "name": {
+        "indexed": true,
         "required": false,
         "type": "string",
       },
@@ -396,6 +400,7 @@ exports[`Runtime format Profile - multiples models with common local references 
         "type": "list",
       },
       "residenceCountry": {
+        "indexed": true,
         "required": false,
         "type": "countrycode",
       },
@@ -416,6 +421,7 @@ exports[`Runtime format Profile - multiples models with common local references 
         "type": "string",
       },
       "url": {
+        "indexed": true,
         "required": false,
         "type": "string",
       },
@@ -470,6 +476,7 @@ exports[`Runtime format Profile definition with added model view 1`] = `
         "type": "reference",
       },
       "name": {
+        "indexed": true,
         "required": false,
         "type": "string",
       },
@@ -548,6 +555,7 @@ exports[`Runtime format Profile definition with added model view 1`] = `
         "type": "list",
       },
       "residenceCountry": {
+        "indexed": true,
         "required": false,
         "type": "countrycode",
       },
@@ -568,6 +576,7 @@ exports[`Runtime format Profile definition with added model view 1`] = `
         "type": "string",
       },
       "url": {
+        "indexed": true,
         "required": false,
         "type": "string",
       },
