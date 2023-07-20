@@ -251,7 +251,7 @@ export class RuntimeModelBuilder {
   }
 }
 
-function applyIndexing(
+function applyIndexingToObjects(
   modelName: string,
   idx: FieldsIndex,
   objects: Record<string, RuntimeObjectFields>
@@ -309,7 +309,7 @@ export function createRuntimeDefinition(
     Object.assign(runtime.objects, builtModel.objects)
     Object.assign(runtime.enums, builtModel.enums)
     for (const idx of definition.indices?.[modelName] ?? []) {
-      applyIndexing(modelName, idx, runtime.objects)
+      applyIndexingToObjects(modelName, idx, runtime.objects)
     }
     // Attach entry-point to account store based on relation type
     if (modelDefinition.accountRelation != null) {
