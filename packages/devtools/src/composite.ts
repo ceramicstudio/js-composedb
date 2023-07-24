@@ -1,5 +1,4 @@
 import type { CeramicApi, CeramicCommit, ModelData, SignedCommitContainer } from '@ceramicnetwork/common'
-import { StreamUtils } from '@ceramicnetwork/common'
 import { Model, type ModelViewsDefinition } from '@ceramicnetwork/stream-model'
 import { Cacao } from '@didtools/cacao'
 import type {

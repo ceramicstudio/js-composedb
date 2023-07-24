@@ -1,5 +1,9 @@
 lockfileVersion: '6.1'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -253,7 +257,7 @@ importers:
         version: link:../graphql-scalars
       '@didtools/cacao':
         specifier: ^2.0.0
-        version: 2.0.0
+        version: 2.1.0
       '@graphql-tools/schema':
         specifier: ^10.0.0
         version: 10.0.0(graphql@16.7.1)
@@ -16076,6 +16080,7 @@ packages:
       - bluebird
       - encoding
       - mem-fs
+      - mem-fs-editor
       - supports-color
       - typescript
     dev: true
@@ -20818,6 +20823,9 @@ packages:
     resolution: {integrity: sha512-P4DTQxqCxNTBD7gph+P+dIckBdx0xyHmvOYgO3vsc9/Sl67KJ6QInz5Qv6tlXET3CFFJ/YxPIdl9rKb0XwTRLg==}
     engines: {node: '>=12.10.0'}
     hasBin: true
+    peerDependencies:
+      mem-fs: ^1.2.0 || ^2.0.0
+      mem-fs-editor: ^8.1.2 || ^9.0.0
     dependencies:
       '@npmcli/arborist': 4.3.1
       are-we-there-yet: 2.0.0
