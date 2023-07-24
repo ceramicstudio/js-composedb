@@ -1,6 +1,6 @@
 {
   "name": "@composedb/server",
-  "version": "0.4.2",
+  "version": "0.5.0-rc.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
@@ -40,15 +40,15 @@
   },
   "dependencies": {
     "@ceramicnetwork/http-client": "2.27.0-rc.0",
-    "@composedb/constants": "workspace:^0.4.0",
-    "@composedb/runtime": "workspace:^0.4.2",
+    "@composedb/constants": "workspace:^0.5.0-rc.0",
+    "@composedb/runtime": "workspace:^0.5.0-rc.0",
     "get-port": "^7.0.0",
     "graphql": "^16.7.1",
     "graphql-yoga": "^4.0.3"
   },
   "devDependencies": {
     "@ceramicnetwork/common": "2.30.0-rc.0",
-    "@composedb/types": "workspace:^0.4.4",
+    "@composedb/types": "workspace:^0.5.0-rc.0",
     "@types/node": "^20.4.1"
   },
   "jest": {

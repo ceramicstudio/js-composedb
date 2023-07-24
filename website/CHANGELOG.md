@@ -1,5 +1,11 @@
 # website
 
+## 0.5.0-rc.0
+
+### Minor Changes
+
+- Add support for query filters and ordering on indexed fields
+
 ## 0.4.2
 
 ### Patch Changes

@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -80,16 +84,16 @@ importers:
         specifier: 2.17.0-rc.0
         version: 2.17.0-rc.0
       '@composedb/client':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../client
       '@composedb/devtools':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../devtools
       '@composedb/devtools-node':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../devtools-node
       '@composedb/runtime':
-        specifier: workspace:^0.4.2
+        specifier: workspace:^0.5.0-rc.0
         version: link:../runtime
       '@oclif/core':
         specifier: ^2.9.0
@@ -141,7 +145,7 @@ importers:
         specifier: 2.30.0-rc.0
         version: 2.30.0-rc.0
       '@composedb/types':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../types
       '@swc-node/register':
         specifier: ^1.6.6
@@ -189,13 +193,13 @@ importers:
         specifier: 1.12.0-rc.0
         version: 1.12.0-rc.0
       '@composedb/constants':
-        specifier: workspace:^0.4.0
+        specifier: workspace:^0.5.0-rc.0
         version: link:../constants
       '@composedb/graphql-scalars':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../graphql-scalars
       '@composedb/runtime':
-        specifier: workspace:^0.4.2
+        specifier: workspace:^0.5.0-rc.0
         version: link:../runtime
       '@graphql-tools/batch-execute':
         specifier: ^9.0.0
@@ -220,19 +224,19 @@ importers:
         specifier: 2.30.0-rc.0
         version: 2.30.0-rc.0
       '@composedb/devtools':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../devtools
       '@composedb/test-schemas':
-        specifier: workspace:^0.4.0
+        specifier: workspace:^0.5.0-rc.0
         version: link:../test-schemas
       '@composedb/types':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../types
       dids:
         specifier: ^4.0.3
         version: 4.0.3
       jest-environment-composedb:
-        specifier: workspace:^0.4.2
+        specifier: workspace:^0.5.0-rc.0
         version: link:../jest-environment-composedb
 
   packages/constants: {}
@@ -249,7 +253,7 @@ importers:
         specifier: 2.17.0-rc.0
         version: 2.17.0-rc.0
       '@composedb/graphql-scalars':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../graphql-scalars
       '@graphql-tools/schema':
         specifier: ^10.0.0
@@ -280,10 +284,10 @@ importers:
         version: 4.0.4
     devDependencies:
       '@composedb/test-schemas':
-        specifier: workspace:^0.4.0
+        specifier: workspace:^0.5.0-rc.0
         version: link:../test-schemas
       '@composedb/types':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../types
       '@types/jest':
         specifier: ^29.5.3
@@ -313,7 +317,7 @@ importers:
         specifier: ^9.0.0
         version: 9.0.0(graphql@16.7.1)
       jest-environment-composedb:
-        specifier: workspace:^0.4.2
+        specifier: workspace:^0.5.0-rc.0
         version: link:../jest-environment-composedb
 
   packages/devtools-node:
@@ -322,23 +326,23 @@ importers:
         specifier: 2.27.0-rc.0
         version: 2.27.0-rc.0
       '@composedb/client':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../client
       '@composedb/runtime':
-        specifier: workspace:^0.4.2
+        specifier: workspace:^0.5.0-rc.0
         version: link:../runtime
       '@composedb/server':
-        specifier: workspace:^0.4.2
+        specifier: workspace:^0.5.0-rc.0
         version: link:../server
       fs-extra:
         specifier: ^11.1.1
         version: 11.1.1
     devDependencies:
       '@composedb/devtools':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../devtools
       '@composedb/types':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../types
       '@types/fs-extra':
         specifier: ^11.0.1
@@ -353,7 +357,7 @@ importers:
         specifier: 2.17.0-rc.0
         version: 2.17.0-rc.0
       '@composedb/types':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../types
       caip:
         specifier: ^1.1.0
@@ -410,7 +414,7 @@ importers:
         specifier: 2.17.0-rc.0
         version: 2.17.0-rc.0
       '@composedb/graphql-scalars':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../graphql-scalars
       dataloader:
         specifier: ^2.2.2
@@ -426,13 +430,13 @@ importers:
         specifier: 2.30.0-rc.0
         version: 2.30.0-rc.0
       '@composedb/devtools':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../devtools
       '@composedb/test-schemas':
-        specifier: workspace:^0.4.0
+        specifier: workspace:^0.5.0-rc.0
         version: link:../test-schemas
       '@composedb/types':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../types
       caip:
         specifier: ^1.1.0
@@ -441,7 +445,7 @@ importers:
         specifier: ^4.0.3
         version: 4.0.3
       jest-environment-composedb:
-        specifier: workspace:^0.4.2
+        specifier: workspace:^0.5.0-rc.0
         version: link:../jest-environment-composedb
       multiformats:
         specifier: ^12.0.1
@@ -453,10 +457,10 @@ importers:
         specifier: 2.27.0-rc.0
         version: 2.27.0-rc.0
       '@composedb/constants':
-        specifier: workspace:^0.4.0
+        specifier: workspace:^0.5.0-rc.0
         version: link:../constants
       '@composedb/runtime':
-        specifier: workspace:^0.4.2
+        specifier: workspace:^0.5.0-rc.0
         version: link:../runtime
       get-port:
         specifier: ^7.0.0
@@ -472,7 +476,7 @@ importers:
         specifier: 2.30.0-rc.0
         version: 2.30.0-rc.0
       '@composedb/types':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../types
       '@types/node':
         specifier: ^20.4.1
@@ -529,7 +533,7 @@ importers:
         version: 17.0.2(react@17.0.2)
     devDependencies:
       '@composedb/cli':
-        specifier: workspace:^0.4.4
+        specifier: workspace:^0.5.0-rc.0
         version: link:../packages/cli
       '@docusaurus/module-type-aliases':
         specifier: ^2.4.1
