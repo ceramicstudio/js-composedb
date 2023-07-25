@@ -35,7 +35,7 @@ export default class CompositeCompile extends Command<Flags> {
         outputPaths = allArgs.splice(1)
       } else if (this.stdin !== undefined && allArgs.length < 1) {
         this.spinner.fail(
-          'When the composite is passed as JSON in stdin, at least one output path needs to be given as param'
+          'When the composite is passed as JSON in stdin, at least one output path needs to be given as param',
         )
         return
       } else {

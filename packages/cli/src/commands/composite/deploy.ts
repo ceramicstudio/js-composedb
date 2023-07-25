@@ -28,7 +28,7 @@ export default class CompositeDeploy extends Command<
         composite = await readEncodedComposite(this.ceramic, this.args.compositePath, true)
       } else {
         this.spinner.fail(
-          'You need to pass the composite definition either in stdin or as the compositePath param'
+          'You need to pass the composite definition either in stdin or as the compositePath param',
         )
         return
       }

@@ -39,7 +39,7 @@ export default class GraphQLSchema extends Command<
       const definitionPath = this.stdin || this.args.runtimeDefinitionPath
       if (definitionPath === undefined) {
         this.spinner.fail(
-          'You need to pass a composite runtime definition path either as an argument or via stdin'
+          'You need to pass a composite runtime definition path either as an argument or via stdin',
         )
         return
       }

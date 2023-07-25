@@ -24,13 +24,13 @@ describe('documents', () => {
   describe('document:create', () => {
     test('model instance document creation fails without the content param', async () => {
       await expect(execa('bin/run.js', ['document:create'])).rejects.toThrow(
-        /Content of the created model instance document/
+        /Content of the created model instance document/,
       )
     }, 60000)
 
     test('model instance document creation fails without the model param', async () => {
       await expect(execa('bin/run.js', ['document:create'])).rejects.toThrow(
-        /StreamID of the model whose instance is being created/
+        /StreamID of the model whose instance is being created/,
       )
     }, 60000)
 
@@ -43,8 +43,8 @@ describe('documents', () => {
       const lines = create.stderr.toString().split('\n')
       expect(
         lines[1].includes(
-          'DID is not authenticated, make sure to provide a private key using the "did-private-key" flag'
-        )
+          'DID is not authenticated, make sure to provide a private key using the "did-private-key" flag',
+        ),
       ).toBe(true)
     }, 60000)
 
@@ -56,7 +56,7 @@ describe('documents', () => {
         `--did-private-key=${modelAccountSeed}`,
       ])
       expect(
-        create.stderr.toString().includes('Creating the model instance document... Done!')
+        create.stderr.toString().includes('Creating the model instance document... Done!'),
       ).toBe(true)
     }, 60000)
   })
@@ -76,13 +76,13 @@ describe('documents', () => {
 
     test('model instance document replace fails without the streamID', async () => {
       await expect(execa('bin/run.js', ['document:replace'])).rejects.toThrow(
-        /streamId {2}ID of the stream/
+        /streamId {2}ID of the stream/,
       )
     }, 60000)
 
     test('model instance document replace fails without the content param', async () => {
       await expect(execa('bin/run.js', ['document:replace'])).rejects.toThrow(
-        /New content of the model instance document/
+        /New content of the model instance document/,
       )
     }, 60000)
 
@@ -105,7 +105,7 @@ describe('documents', () => {
       expect(
         replace.stderr
           .toString()
-          .includes('Replacing content in the model instance document... Done!')
+          .includes('Replacing content in the model instance document... Done!'),
       ).toBe(true)
     }, 60000)
   })
@@ -113,7 +113,7 @@ describe('documents', () => {
   describe('document:content', () => {
     test('model instance document content display fails without the streamID', async () => {
       await expect(execa('bin/run.js', ['document:content'])).rejects.toThrow(
-        /streamId {2}ID of the stream/
+        /streamId {2}ID of the stream/,
       )
     }, 60000)
 

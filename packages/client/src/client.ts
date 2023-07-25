@@ -118,7 +118,7 @@ export class ComposeClient {
    */
   async execute<Data = Record<string, unknown>>(
     document: DocumentNode,
-    variableValues?: Record<string, unknown>
+    variableValues?: Record<string, unknown>,
   ): Promise<ExecutionResult<Data>> {
     return await this.#runtime.execute<Data>(document, variableValues)
   }
@@ -128,7 +128,7 @@ export class ComposeClient {
    */
   async executeQuery<Data = Record<string, unknown>>(
     source: string | Source,
-    variableValues?: Record<string, unknown>
+    variableValues?: Record<string, unknown>,
   ): Promise<ExecutionResult<Data>> {
     return await this.#runtime.executeQuery<Data>(source, variableValues)
   }

@@ -52,13 +52,16 @@ export const SCALAR_RUNTIME_TYPES: Record<ScalarTitle, CustomRuntimeScalarType> 
   InterPlanetaryCID: 'cid',
 }
 
-const SCALAR_SCHEMA_TITLES = Object.entries(SCALAR_RUNTIME_TYPES).reduce((acc, [title, type]) => {
-  acc[type] = title
-  return acc
-}, {} as Record<string, string>) as Record<CustomRuntimeScalarType, ScalarTitle>
+const SCALAR_SCHEMA_TITLES = Object.entries(SCALAR_RUNTIME_TYPES).reduce(
+  (acc, [title, type]) => {
+    acc[type] = title
+    return acc
+  },
+  {} as Record<string, string>,
+) as Record<CustomRuntimeScalarType, ScalarTitle>
 
 export function getGraphQLScalarSchema<T extends ScalarSchema = ScalarSchema>(
-  type: CustomRuntimeScalarType
+  type: CustomRuntimeScalarType,
 ): T & { title: ScalarTitle } {
   // The GraphQL Scalars library provides the JSON schema matching the scalars it exposes
   const schema = graphQLScalars[type]?.extensions.jsonSchema as T | undefined
@@ -114,12 +117,15 @@ export function getScalarSchema(scalar: GraphQLScalarType | string): ScalarSchem
   return { ...schema }
 }
 
-const scalarsByTitle = Object.values(scalars).reduce((acc, schema) => {
-  if (schema.title != null) {
-    acc[schema.title] = schema
-  }
-  return acc
-}, {} as Record<string, ScalarSchema>)
+const scalarsByTitle = Object.values(scalars).reduce(
+  (acc, schema) => {
+    if (schema.title != null) {
+      acc[schema.title] = schema
+    }
+    return acc
+  },
+  {} as Record<string, ScalarSchema>,
+)
 
 export function isCommonScalar(schema: ScalarSchema): boolean {
   if (schema.title == null) {

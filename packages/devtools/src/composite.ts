@@ -56,7 +56,7 @@ function assertSupportedVersion(supported: string, check: string): void {
 
 function assertModelsHaveCommits(
   models: Record<string, ModelDefinition>,
-  commits: Record<string, StreamCommits>
+  commits: Record<string, StreamCommits>,
 ): void {
   for (const id of Object.keys(models)) {
     if (commits[id] == null) {
@@ -68,7 +68,7 @@ function assertModelsHaveCommits(
 function assertSupportedModelController(model: Model): void {
   if (!model.metadata.controller.startsWith('did:key:')) {
     throw new Error(
-      `Unsupported model controller ${model.metadata.controller}, only did:key is supported`
+      `Unsupported model controller ${model.metadata.controller}, only did:key is supported`,
     )
   }
 }
@@ -77,7 +77,7 @@ function assertSupportedModelController(model: Model): void {
 export function setDefinitionAliases(
   definition: StrictCompositeDefinition,
   aliases: Record<string, string>,
-  replace = false
+  replace = false,
 ): StrictCompositeDefinition {
   const existing = replace ? {} : definition.aliases
   definition.aliases = { ...existing, ...aliases }
@@ -88,7 +88,7 @@ export function setDefinitionAliases(
 export function setDefinitionCommonEmbeds(
   definition: StrictCompositeDefinition,
   names: Iterable<string>,
-  replace = false
+  replace = false,
 ): StrictCompositeDefinition {
   const existing = replace ? [] : definition.commonEmbeds
   definition.commonEmbeds = Array.from(new Set([...existing, ...names]))
@@ -99,7 +99,7 @@ export function setDefinitionCommonEmbeds(
 export function setDefinitionViews(
   definition: StrictCompositeDefinition,
   views: CompositeViewsDefinition,
-  replace = false
+  replace = false,
 ): StrictCompositeDefinition {
   const existing = replace ? {} : definition.views
   definition.views = merge(existing, views)
@@ -108,7 +108,7 @@ export function setDefinitionViews(
 
 async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
   ceramic: CeramicApi,
-  modelsCommits: Models & {} // eslint-disable-line @typescript-eslint/ban-types
+  modelsCommits: Models & {}, // eslint-disable-line @typescript-eslint/ban-types
 ): Promise<Record<keyof Models, ModelDefinition>> {
   const definitions = await Promise.all(
     Object.values(modelsCommits).map(async (commits): Promise<Model> => {
@@ -116,27 +116,30 @@ async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
       const model = await ceramic.createStreamFromGenesis<Model>(
         Model.STREAM_TYPE_ID,
         genesis,
-        MODEL_GENESIS_OPTS
+        MODEL_GENESIS_OPTS,
       )
       assertSupportedModelController(model)
       for (const commit of updates) {
         await ceramic.applyCommit(model.id, commit as unknown as SignedCommit)
       }
       return model
-    })
+    }),
   )
-  return Object.keys(modelsCommits).reduce((acc, id, index) => {
-    const model = definitions[index]
-    if (model == null) {
-      throw new Error(`Missing Model for ID ${id}`)
-    }
-    const modelID = model.id.toString()
-    if (modelID !== id) {
-      throw new Error(`Unexpected Model stream ID: expected ${id}, got ${modelID}`)
-    }
-    acc[modelID as keyof Models] = model.content
-    return acc
-  }, {} as Record<keyof Models, ModelDefinition>)
+  return Object.keys(modelsCommits).reduce(
+    (acc, id, index) => {
+      const model = definitions[index]
+      if (model == null) {
+        throw new Error(`Missing Model for ID ${id}`)
+      }
+      const modelID = model.id.toString()
+      if (modelID !== id) {
+        throw new Error(`Unexpected Model stream ID: expected ${id}, got ${modelID}`)
+      }
+      acc[modelID as keyof Models] = model.content
+      return acc
+    },
+    {} as Record<keyof Models, ModelDefinition>,
+  )
 }
 
 /**
@@ -305,7 +308,7 @@ export class Composite {
         commits[id] = streamCommits
           .map((c) => c.value as Record<string, any>)
           .filter(isSignedCommit)
-      })
+      }),
     )
 
     definition.views = { models: modelsViews }
@@ -375,7 +378,7 @@ export class Composite {
         commits[id] = streamCommits
           .map((c) => c.value as Record<string, any>)
           .filter(isSignedCommit)
-      })
+      }),
     )
     const composite = new Composite({ commits, definition })
 
@@ -426,14 +429,20 @@ export class Composite {
     const { commits, definition } = this.toParams()
     const def = toStrictDefinition(definition)
 
-    const nameIDs = Object.entries(def.models).reduce((acc, [id, model]) => {
-      acc[model.name] = id
-      return acc
-    }, {} as Record<string, string>)
-    const aliasIDs = Object.entries(def.aliases).reduce((acc, [id, alias]) => {
-      acc[alias] = id
-      return acc
-    }, {} as Record<string, string>)
+    const nameIDs = Object.entries(def.models).reduce(
+      (acc, [id, model]) => {
+        acc[model.name] = id
+        return acc
+      },
+      {} as Record<string, string>,
+    )
+    const aliasIDs = Object.entries(def.aliases).reduce(
+      (acc, [id, alias]) => {
+        acc[alias] = id
+        return acc
+      },
+      {} as Record<string, string>,
+    )
 
     const nextCommits: Record<string, StreamCommits> = {}
     const nextModels: Record<string, ModelDefinition> = {}
@@ -540,7 +549,7 @@ export class Composite {
     const definition = setDefinitionCommonEmbeds(
       toStrictDefinition(params.definition),
       names,
-      replace
+      replace,
     )
     return new Composite({ ...params, definition })
   }
@@ -569,7 +578,7 @@ export class Composite {
           streamID,
           indices,
         }
-      }
+      },
     )
     await ceramic.admin.startIndexingModelData(definedIndices)
   }

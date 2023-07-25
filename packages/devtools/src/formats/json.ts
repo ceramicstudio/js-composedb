@@ -27,14 +27,14 @@ export function encodeDagJWSResult({ jws, linkedBlock }: DagJWSResult): EncodedD
 
 /** @internal */
 export function decodeSignedMap<K extends string>(
-  data: Record<K, Array<EncodedDagJWSResult>>
+  data: Record<K, Array<EncodedDagJWSResult>>,
 ): Record<K, Array<DagJWSResult>> {
   return applyMap(data, (records) => records.map(decodeDagJWSResult))
 }
 
 /** @internal */
 export function encodeSignedMap<K extends string>(
-  data: Record<K, Array<DagJWSResult>>
+  data: Record<K, Array<DagJWSResult>>,
 ): Record<K, Array<EncodedDagJWSResult>> {
   return applyMap(data, (records) => records.map(encodeDagJWSResult))
 }

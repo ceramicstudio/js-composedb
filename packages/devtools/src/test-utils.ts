@@ -7,7 +7,7 @@ import type { AbstractCompositeDefinition } from './schema/types.js'
 /** @internal */
 export function mockDefinition(
   definition: AbstractCompositeDefinition,
-  providedModels: Record<string, ModelDefinition> = {}
+  providedModels: Record<string, ModelDefinition> = {},
 ): InternalCompositeDefinition {
   const models: Record<string, ModelDefinition> = {}
   const modelsViews: Record<string, ModelViewsDefinition> = {}
@@ -45,7 +45,7 @@ export function mockDefinition(
 /** @internal */
 export function mockDefinitionFromSchema(
   schema: string,
-  providedModels?: Record<string, ModelDefinition>
+  providedModels?: Record<string, ModelDefinition>,
 ): InternalCompositeDefinition {
   return mockDefinition(createAbstractCompositeDefinition(schema), providedModels)
 }

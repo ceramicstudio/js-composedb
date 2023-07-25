@@ -46,7 +46,7 @@ describe('loader', () => {
       expect(multiQuery).toHaveBeenCalledTimes(1)
       expect(multiQuery).toHaveBeenCalledWith(
         [{ streamId: testID1 }, { streamId: testID2 }],
-        multiqueryTimeout
+        multiqueryTimeout,
       )
     })
 
@@ -54,7 +54,7 @@ describe('loader', () => {
       const multiQuery = jest.fn(() => ({ [testID1]: {} }))
       const loader = new DocumentLoader({ ceramic: { multiQuery } as unknown as CeramicApi })
       await expect(Promise.all([loader.load(testID1), loader.load(testID2)])).rejects.toThrow(
-        `Failed to load document: ${testID2}`
+        `Failed to load document: ${testID2}`,
       )
     })
 
@@ -81,7 +81,7 @@ describe('loader', () => {
       expect(multiQuery).toHaveBeenCalledTimes(2)
       expect(multiQuery).toHaveBeenLastCalledWith(
         [{ streamId: testID1 }, { streamId: testID2 }],
-        multiqueryTimeout
+        multiqueryTimeout,
       )
     })
 
@@ -119,7 +119,7 @@ describe('loader', () => {
       expect(multiQuery).toHaveBeenCalledTimes(2)
       expect(multiQuery).toHaveBeenLastCalledWith(
         [{ streamId: testID1 }, { streamId: testID2 }],
-        multiqueryTimeout
+        multiqueryTimeout,
       )
       expect(cache.has(testID1)).toBe(true)
       expect(cache.has(testID2)).toBe(true)
@@ -133,7 +133,7 @@ describe('loader', () => {
 
         expect(loader.cache(stream)).toBe(false)
         await expect(loader.load(testStreamID)).rejects.toThrow(
-          `Failed to load document: ${testID1}`
+          `Failed to load document: ${testID1}`,
         )
       })
 
@@ -180,7 +180,7 @@ describe('loader', () => {
         ceramic,
         content,
         { controller: undefined, model: testStreamID },
-        {}
+        {},
       )
 
       await expect(loader.load(testStreamID)).resolves.toEqual({ id: testStreamID, content })
@@ -215,7 +215,7 @@ describe('loader', () => {
         const cacheSet = jest.fn(
           (key: string, value: Promise<ModelInstanceDocument<Record<string, any>>>) => {
             return cacheMap.set(key, value)
-          }
+          },
         )
         const cache: DocumentCache = {
           clear: () => cacheMap.clear(),
@@ -254,7 +254,7 @@ describe('loader', () => {
 
         const loader = new DocumentLoader({ ceramic: { multiQuery } as unknown as CeramicApi })
         await expect(loader.update(testID1, { test: true }, { version: 'test' })).rejects.toThrow(
-          'Stream version mismatch'
+          'Stream version mismatch',
         )
         expect(replace).not.toHaveBeenCalled()
       })

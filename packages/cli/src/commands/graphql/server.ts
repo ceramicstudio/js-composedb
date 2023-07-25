@@ -41,7 +41,7 @@ export default class GraphQLServer extends Command<
       const definitionPath = this.stdin || this.args.runtimeDefinitionPath
       if (definitionPath === undefined) {
         this.spinner.fail(
-          'You need to pass a composite runtime definition path either as an argument or via stdin'
+          'You need to pass a composite runtime definition path either as an argument or via stdin',
         )
         return
       }
@@ -63,7 +63,7 @@ export default class GraphQLServer extends Command<
           },
           () => {
             this.spinner.fail('Failed to stop server')
-          }
+          },
         )
       }
       process.on('SIGTERM', handleProcessKillGracefully)

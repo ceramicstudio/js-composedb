@@ -10,7 +10,7 @@ describe('models', () => {
   describe('model:create', () => {
     test('model creation fails without the content param', async () => {
       await expect(execa('bin/run.js', ['model:create'])).rejects.toThrow(
-        /Model content \(JSON encoded as string\)/
+        /Model content \(JSON encoded as string\)/,
       )
     }, 60000)
 
@@ -20,8 +20,8 @@ describe('models', () => {
         create.stderr
           .toString()
           .includes(
-            'DID is not authenticated, make sure to provide a private key using the "did-private-key" flag'
-          )
+            'DID is not authenticated, make sure to provide a private key using the "did-private-key" flag',
+          ),
       ).toBe(true)
     }, 60000)
 
@@ -38,7 +38,7 @@ describe('models', () => {
   describe('model:content', () => {
     test('model content display fails without the streamID', async () => {
       await expect(execa('bin/run.js', ['model:content'])).rejects.toThrow(
-        /streamId {2}ID of the stream/
+        /streamId {2}ID of the stream/,
       )
     }, 60000)
 
@@ -67,7 +67,7 @@ describe('models', () => {
   describe('model:controller', () => {
     test('model controller display fails without the streamID', async () => {
       await expect(execa('bin/run.js', ['model:controller'])).rejects.toThrow(
-        /streamId {2}ID of the stream/
+        /streamId {2}ID of the stream/,
       )
     }, 60000)
 
@@ -86,7 +86,7 @@ describe('models', () => {
 
       expect(controller.stderr.toString().includes('Loading the model... Done!')).toBe(true)
       expect(controller.stdout.toString().trim()).toEqual(
-        'did:key:z6MkpRhEWywReoFtQMQGqSmTu5mp9vQVok86Qha2sn6e32Db'
+        'did:key:z6MkpRhEWywReoFtQMQGqSmTu5mp9vQVok86Qha2sn6e32Db',
       )
     }, 60000)
   })

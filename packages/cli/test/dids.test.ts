@@ -18,8 +18,8 @@ describe('dids', () => {
         create.stderr
           .toString()
           .includes(
-            'You need to pass the private key parameter as a positional arg, as a flag value, via stdin or as the DID_PRIVATE_KEY environmental variable'
-          )
+            'You need to pass the private key parameter as a positional arg, as a flag value, via stdin or as the DID_PRIVATE_KEY environmental variable',
+          ),
       ).toBe(true)
     }, 60000)
 
@@ -34,8 +34,8 @@ describe('dids', () => {
         create.stderr
           .toString()
           .includes(
-            "Don't pass the private key parameter in more than one way out of: arg, flag, stdin, DID_PRIVATE_KEY environmental variable"
-          )
+            "Don't pass the private key parameter in more than one way out of: arg, flag, stdin, DID_PRIVATE_KEY environmental variable",
+          ),
       ).toBe(true)
     }, 60000)
 

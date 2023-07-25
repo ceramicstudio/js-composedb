@@ -20,7 +20,7 @@ export default class CreateModel extends Command<CommandFlags, { content: string
         JSON.parse(this.args.content) as ModelDefinition,
         {
           controller: this.authenticatedDID.id,
-        }
+        },
       )
       this.spinner.succeed('Creating the model... Done!')
       // Logging the stream id to stdout, so that it can be piped using standard I/O or redirected to a file

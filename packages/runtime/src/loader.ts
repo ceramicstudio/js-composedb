@@ -84,7 +84,7 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
       }
       const results = await params.ceramic.multiQuery(
         keys.map(idToString).map((streamId) => ({ streamId })),
-        params.multiqueryTimeout
+        params.multiqueryTimeout,
       )
       return keys.map((key) => {
         const id = idToString(key)
@@ -118,7 +118,7 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
   async create<T extends Record<string, any> = Record<string, any>>(
     model: string | StreamID,
     content: T,
-    { controller, ...options }: CreateOptions = {}
+    { controller, ...options }: CreateOptions = {},
   ): Promise<ModelInstanceDocument<T>> {
     const metadata: ModelInstanceDocumentMetadataArgs = {
       controller,
@@ -133,7 +133,7 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
    * Load a ModelInstanceDocument from the cache (if enabled) or remotely.
    */
   async load<T extends Record<string, any> = Record<string, any>>(
-    id: DocID
+    id: DocID,
   ): Promise<ModelInstanceDocument<T>> {
     return (await super.load(id)) as ModelInstanceDocument<T>
   }
@@ -144,7 +144,7 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
   async single<T extends Record<string, any> = Record<string, any>>(
     controller: string,
     model: string | StreamID,
-    options?: CreateOpts
+    options?: CreateOpts,
   ): Promise<ModelInstanceDocument<T>> {
     const metadata: ModelInstanceDocumentMetadataArgs = {
       controller,
@@ -161,7 +161,7 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
   async update<T extends Record<string, any> = Record<string, any>>(
     streamID: string | StreamID,
     content: T,
-    { replace, version, ...options }: UpdateOptions = {}
+    { replace, version, ...options }: UpdateOptions = {},
   ): Promise<ModelInstanceDocument<T>> {
     const id = idToString(streamID)
     this.clear(id)

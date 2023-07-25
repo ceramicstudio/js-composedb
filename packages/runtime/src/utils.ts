@@ -39,7 +39,7 @@ export function getSchema(params: GetSchemaParams): GraphQLSchema {
  */
 export function printGraphQLSchema(
   definition: RuntimeCompositeDefinition,
-  readonly = false
+  readonly = false,
 ): string {
   return printSchema(createGraphQLSchema({ definition, readonly }))
 }
