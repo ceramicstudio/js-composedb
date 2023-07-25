@@ -1,5 +1,17 @@
 # @composedb/server
 
+## 0.5.0-rc.0
+
+### Minor Changes
+
+- Add support for query filters and ordering on indexed fields
+
+### Patch Changes
+
+- Updated dependencies
+  - @composedb/constants@0.5.0-rc.0
+  - @composedb/runtime@0.5.0-rc.0
+
 ## 0.4.2
 
 ### Patch Changes

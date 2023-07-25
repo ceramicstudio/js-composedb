@@ -1,5 +1,16 @@
 # @composedb/devtools
 
+## 0.5.0-rc.0
+
+### Minor Changes
+
+- Add support for query filters and ordering on indexed fields
+
+### Patch Changes
+
+- Updated dependencies
+  - @composedb/graphql-scalars@0.5.0-rc.0
+
 ## 0.4.4
 
 ### Patch Changes

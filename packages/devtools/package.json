@@ -1,6 +1,6 @@
 {
   "name": "@composedb/devtools",
-  "version": "0.4.4",
+  "version": "0.5.0-rc.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://composedb.js.org",
@@ -43,7 +43,7 @@
     "@ceramicnetwork/stream-model": "1.12.0-rc.0",
     "@ceramicnetwork/streamid": "2.17.0-rc.0",
     "@didtools/cacao": "^2.0.0",
-    "@composedb/graphql-scalars": "workspace:^0.4.4",
+    "@composedb/graphql-scalars": "workspace:^0.5.0-rc.0",
     "@graphql-tools/schema": "^10.0.0",
     "@graphql-tools/utils": "^10.0.3",
     "change-case": "^4.1.2",
@@ -55,8 +55,8 @@
     "uint8arrays": "^4.0.4"
   },
   "devDependencies": {
-    "@composedb/test-schemas": "workspace:^0.4.0",
-    "@composedb/types": "workspace:^0.4.4",
+    "@composedb/test-schemas": "workspace:^0.5.0-rc.0",
+    "@composedb/types": "workspace:^0.5.0-rc.0",
     "@types/jest": "^29.5.3",
     "@types/lodash-es": "^4.17.7",
     "@types/node": "^20.4.1",
@@ -66,7 +66,7 @@
     "fs-extra": "^11.1.1",
     "graphql": "^16.7.1",
     "graphql-tools": "^9.0.0",
-    "jest-environment-composedb": "workspace:^0.4.2"
+    "jest-environment-composedb": "workspace:^0.5.0-rc.0"
   },
   "jest": {
     "extensionsToTreatAsEsm": [

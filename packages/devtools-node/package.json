@@ -1,6 +1,6 @@
 {
   "name": "@composedb/devtools-node",
-  "version": "0.4.4",
+  "version": "0.5.0-rc.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://composedb.js.org",
@@ -38,17 +38,17 @@
   },
   "dependencies": {
     "@ceramicnetwork/http-client": "2.27.0-rc.0",
-    "@composedb/client": "workspace:^0.4.4",
-    "@composedb/runtime": "workspace:^0.4.2",
-    "@composedb/server": "workspace:^0.4.2",
+    "@composedb/client": "workspace:^0.5.0-rc.0",
+    "@composedb/runtime": "workspace:^0.5.0-rc.0",
+    "@composedb/server": "workspace:^0.5.0-rc.0",
     "fs-extra": "^11.1.1"
   },
   "peerDependencies": {
-    "@composedb/devtools": "workspace:^0.4.4"
+    "@composedb/devtools": "workspace:^0.5.0-rc.0"
   },
   "devDependencies": {
-    "@composedb/devtools": "workspace:^0.4.4",
-    "@composedb/types": "workspace:^0.4.4",
+    "@composedb/devtools": "workspace:^0.5.0-rc.0",
+    "@composedb/types": "workspace:^0.5.0-rc.0",
     "@types/fs-extra": "^11.0.1",
     "dids": "^4.0.3"
   },

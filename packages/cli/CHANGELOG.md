@@ -1,5 +1,19 @@
 # @composedb/cli
 
+## 0.5.0-rc.0
+
+### Minor Changes
+
+- Add support for query filters and ordering on indexed fields
+
+### Patch Changes
+
+- Updated dependencies
+  - @composedb/client@0.5.0-rc.0
+  - @composedb/devtools@0.5.0-rc.0
+  - @composedb/devtools-node@0.5.0-rc.0
+  - @composedb/runtime@0.5.0-rc.0
+
 ## 0.4.4
 
 ### Patch Changes
