@@ -73,7 +73,7 @@ describe('schema', () => {
         didValue: DID
         requiredDidValue: DID!
       }
-      `)
+      `),
     ).toMatchObject({
       models: {
         ModelWithDIDProp: {
@@ -117,7 +117,7 @@ describe('schema', () => {
       }
       `)
     }).toThrow(
-      'Unsupported @documentAccount directive on field nonDIDValue of object ModelWithInvalidDocumentAccountProp, @documentAccount can only be set on a DID scalar'
+      'Unsupported @documentAccount directive on field nonDIDValue of object ModelWithInvalidDocumentAccountProp, @documentAccount can only be set on a DID scalar',
     )
   })
 
@@ -149,7 +149,7 @@ describe('schema', () => {
         commitIDValue: CommitID
         requiredCommitIDValue: CommitID!
       }
-      `)
+      `),
     ).toMatchObject({
       models: {
         ModelWithCommitIDProp: {
@@ -191,7 +191,7 @@ describe('schema', () => {
       }
       `)
     }).toThrow(
-      'Unsupported @documentVersion directive on field nonCommitIDValue of object ModelWithInvalidDocumentVersionProp, @documentVersion can only be set on a CommitID scalar'
+      'Unsupported @documentVersion directive on field nonCommitIDValue of object ModelWithInvalidDocumentVersionProp, @documentVersion can only be set on a CommitID scalar',
     )
   })
 
@@ -221,7 +221,7 @@ describe('schema', () => {
         booleanValue: Boolean
         requiredBooleanValue: Boolean!
       }
-      `)
+      `),
     ).toMatchObject({
       models: {
         ModelWithBooleanProp: {
@@ -260,7 +260,7 @@ describe('schema', () => {
         intValue: Int
         requiredIntValue: Int!
       }
-      `)
+      `),
     ).toMatchObject({
       models: {
         ModelWithIntProp: {
@@ -299,7 +299,7 @@ describe('schema', () => {
         floatValue: Float
         requiredFloatValue: Float!
       }
-      `)
+      `),
     ).toMatchObject({
       models: {
         ModelWithFloatProp: {
@@ -338,7 +338,7 @@ describe('schema', () => {
         stringValue: String @string(maxLength: 3)
         requiredStringValue: String! @string(maxLength: 3)
       }
-      `)
+      `),
     ).toMatchObject({
       models: {
         ModelWithStringProp: {
@@ -378,7 +378,7 @@ describe('schema', () => {
       }
       `)
     }).toThrow(
-      'Missing @string directive on string field stringValue of object ModelWithStringPropWithoutLengthDirective'
+      'Missing @string directive on string field stringValue of object ModelWithStringPropWithoutLengthDirective',
     )
   })
 
@@ -393,7 +393,7 @@ describe('schema', () => {
       }
       `)
     }).toThrow(
-      'Missing @string directive on string field stringArrayValue of object ModelWithStringArrayPropWithoutLengthDirective'
+      'Missing @string directive on string field stringArrayValue of object ModelWithStringArrayPropWithoutLengthDirective',
     )
   })
 
@@ -407,7 +407,7 @@ describe('schema', () => {
         idValue: ID @string(maxLength: 30)
         requiredIdValue: ID! @string(maxLength: 50)
       }
-      `)
+      `),
     ).toMatchObject({
       models: {
         ModelWithIDProp: {
@@ -450,7 +450,7 @@ describe('schema', () => {
         arrayValue: [Int] @list(maxLength: 3)
         requiredArrayValue: [Int]! @list(maxLength: 5)
       }
-      `)
+      `),
     ).toMatchObject({
       models: {
         ModelWithArrayProp: {
@@ -496,7 +496,7 @@ describe('schema', () => {
       ) {
         stringValue: String @string(minLength: 1, maxLength: 140)
       }
-      `)
+      `),
     ).toMatchObject({
       models: {
         ModelWithStringProp: {
@@ -534,7 +534,7 @@ describe('schema', () => {
       }
       `)
     }).toThrow(
-      'Unexpected @int directive with type String on field intValue of object ModelWithStringProp'
+      'Unexpected @int directive with type String on field intValue of object ModelWithStringProp',
     )
   })
 
@@ -549,7 +549,7 @@ describe('schema', () => {
       }
       `)
     }).toThrow(
-      'Unexpected @float directive with type Int on field intValue of object ModelWithIntProp'
+      'Unexpected @float directive with type Int on field intValue of object ModelWithIntProp',
     )
   })
 
@@ -588,7 +588,7 @@ describe('schema', () => {
       ) {
         arrayValue: [String] @string(maxLength: 5) @list(minLength: 10, maxLength: 15)
       }
-      `)
+      `),
     ).toMatchObject({
       models: {
         ModelWithArrayProp: {
@@ -628,7 +628,7 @@ describe('schema', () => {
       ) {
         arrayValue: [String] @string(minLength: 4, maxLength: 440) @list(maxLength: 5)
       }
-      `)
+      `),
     ).toMatchObject({
       models: {
         ModelWithArrayProp: {
@@ -669,7 +669,7 @@ describe('schema', () => {
       }
       `)
     }).toThrow(
-      'Missing @list directive on list field arrayValue of object ModelWithArrayPropWithoutArrayLengthDirective'
+      'Missing @list directive on list field arrayValue of object ModelWithArrayPropWithoutArrayLengthDirective',
     )
   })
 
@@ -682,7 +682,7 @@ describe('schema', () => {
       ) {
         intValue: Int @int(min: 5, max: 10)
       }
-      `)
+      `),
     ).toMatchObject({
       models: {
         ModelWithIntProp: {
@@ -718,7 +718,7 @@ describe('schema', () => {
       ) {
         floatValue: Float @float(min: 5.0, max: 10.0)
       }
-      `)
+      `),
     ).toMatchObject({
       models: {
         ModelWithFloatProp: {

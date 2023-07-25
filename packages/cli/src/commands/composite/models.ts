@@ -48,7 +48,7 @@ export default class CompositeModels extends Command<
         composite = await readEncodedComposite(this.ceramic, this.args.compositePath)
       } else {
         this.spinner.fail(
-          'You need to pass a path to encoded composite either via an arg or through stdin'
+          'You need to pass a path to encoded composite either via an arg or through stdin',
         )
         return
       }

@@ -57,7 +57,7 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
         return 'https://ceramic-private-qa.3boxlabs.com/'
       default:
         throw new Error(
-          `Unrecognized Ceramic network ${network}. Valid values are 'mainnet', 'testnet-clay', and 'dev-unstable'`
+          `Unrecognized Ceramic network ${network}. Valid values are 'mainnet', 'testnet-clay', and 'dev-unstable'`,
         )
     }
   }
@@ -83,7 +83,7 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
       })
       this.lastLoadedPageInfo = page.pageInfo
       this.fetchedFields = this.fetchedFields.concat(
-        this.getFieldsFromEdges(ceramicIndexer, page.edges)
+        this.getFieldsFromEdges(ceramicIndexer, page.edges),
       )
       this.displayPartialDefinitions(this.fetchedFields)
 
@@ -91,7 +91,7 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
         this.spinner.stop()
         await this.anykeyWithFriendlyExit(
           'Press ctrl+c or q to quit. Press any other key to continue loading models.',
-          'Stopped loading models due to user input'
+          'Stopped loading models due to user input',
         )
         this.spinner.start('Loading models...')
         const nextPage: Page<StreamState | null> = await ceramicIndexer.index.query({
@@ -101,7 +101,7 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
         })
         this.lastLoadedPageInfo = nextPage.pageInfo
         this.fetchedFields = this.fetchedFields.concat(
-          this.getFieldsFromEdges(ceramicIndexer, nextPage.edges)
+          this.getFieldsFromEdges(ceramicIndexer, nextPage.edges),
         )
         this.displayPartialDefinitions(this.fetchedFields)
       }
@@ -124,7 +124,7 @@ export default class ModelList extends BaseCommand<ModelListFlags> {
 
   getFieldsFromEdges(
     ceramicIndexer: CeramicClient,
-    edges: Array<Edge<StreamState | null>>
+    edges: Array<Edge<StreamState | null>>,
   ): Array<PartialModelDefinition> {
     return edges
       .map((edge) => {

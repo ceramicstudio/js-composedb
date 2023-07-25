@@ -84,7 +84,7 @@ const readPipe: () => Promise<string | undefined> = () => {
 
 export abstract class BaseCommand<
   Flags extends StringRecord = StringRecord,
-  Args extends StringRecord = StringRecord
+  Args extends StringRecord = StringRecord,
 > extends CoreCommand {
   args!: Args
   flags!: Flags
@@ -109,7 +109,7 @@ export abstract class BaseCommand<
 
 export abstract class Command<
   Flags extends CommandFlags = CommandFlags,
-  Args extends StringRecord = StringRecord
+  Args extends StringRecord = StringRecord,
 > extends BaseCommand {
   static flags = {
     'ceramic-url': Flags.string({
@@ -157,7 +157,7 @@ export abstract class Command<
   get authenticatedDID(): DID {
     if (this.#authenticatedDID == null) {
       throw new Error(
-        'DID is not authenticated, make sure to provide a private key using the "did-private-key" flag'
+        'DID is not authenticated, make sure to provide a private key using the "did-private-key" flag',
       )
     }
     return this.#authenticatedDID
@@ -193,7 +193,7 @@ export abstract class Command<
       return did
     } catch (err) {
       this.warn(
-        `Invalid DID private key.  Did you generate the private key using 'composedb did:generate-private-key'?`
+        `Invalid DID private key.  Did you generate the private key using 'composedb did:generate-private-key'?`,
       )
       throw err
     }

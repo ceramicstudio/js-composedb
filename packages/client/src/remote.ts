@@ -40,7 +40,7 @@ export function createHybridSchema(params: HybridSchemaParams): GraphQLSchema {
     executor = createRemoteExecutor(serverURL, getViewerID)
   } else {
     throw new Error(
-      'Invalid parameters to create hybrid schema: missing `remoteExecutor` or `getViewerID` and `serverURL` parameters'
+      'Invalid parameters to create hybrid schema: missing `remoteExecutor` or `getViewerID` and `serverURL` parameters',
     )
   }
   const remoteSchemaConfig = {

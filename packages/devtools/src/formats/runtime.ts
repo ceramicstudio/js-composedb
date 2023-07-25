@@ -158,7 +158,7 @@ export class RuntimeModelBuilder {
 
   _buildListReference(
     reference: string,
-    params: ExtractSchemaParams = {}
+    params: ExtractSchemaParams = {},
   ): RuntimeScalar | RuntimeReference<'enum' | 'object'> {
     const schema = this._getReferenceSchema(reference)
     switch (schema.type) {
@@ -177,7 +177,7 @@ export class RuntimeModelBuilder {
 
   _buildObjectReferenceField(
     schema: JSONSchema.Object,
-    params: ExtractSchemaParams = {}
+    params: ExtractSchemaParams = {},
   ): RuntimeReference<'object'> {
     const ownName = this._getName(schema, params, true)
     if (this.#objects[ownName] == null) {
@@ -193,7 +193,7 @@ export class RuntimeModelBuilder {
 
   _buildEnumReferenceField(
     schema: EnumSchema,
-    params: ExtractSchemaParams = {}
+    params: ExtractSchemaParams = {},
   ): RuntimeReference<'enum'> {
     const ownName = this._getName(schema, params, true)
     if (this.#enums[ownName] == null) {
@@ -254,7 +254,7 @@ export class RuntimeModelBuilder {
 function applyIndexingToObjects(
   modelName: string,
   idx: FieldsIndex,
-  objects: Record<string, RuntimeObjectFields>
+  objects: Record<string, RuntimeObjectFields>,
 ) {
   const modelFields = objects[modelName] ?? []
   let currentObjectFields = modelFields
@@ -282,7 +282,7 @@ function applyIndexingToObjects(
 
 /** @internal */
 export function createRuntimeDefinition(
-  definition: InternalCompositeDefinition
+  definition: InternalCompositeDefinition,
 ): RuntimeCompositeDefinition {
   const runtime: RuntimeCompositeDefinition = {
     models: {},

@@ -49,7 +49,7 @@ export default class CompositeFromModel extends Command<Flags> {
         const output = this.flags.output
         await writeEncodedComposite(composite, output)
         this.spinner.succeed(
-          `Creating a composite from models... Composite was created and its encoded representation was saved in ${output}`
+          `Creating a composite from models... Composite was created and its encoded representation was saved in ${output}`,
         )
       } else {
         this.spinner.succeed('Creating a composite from models... Done!')

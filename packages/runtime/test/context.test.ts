@@ -90,7 +90,7 @@ describe('context', () => {
 
       const content = {}
       await expect(context.createSingle('testID', content)).rejects.toThrow(
-        'Document can only be created with an authenticated account'
+        'Document can only be created with an authenticated account',
       )
       expect(single).not.toHaveBeenCalled()
       expect(replace).not.toHaveBeenCalled()

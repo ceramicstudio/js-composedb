@@ -1,5 +1,4 @@
 import { execa } from 'execa'
-import { Readable } from 'stream'
 
 describe('graphql', () => {
   describe('graphql:schema', () => {
@@ -9,8 +8,8 @@ describe('graphql', () => {
         schema.stderr
           .toString()
           .includes(
-            'You need to pass a composite runtime definition path either as an argument or via stdin'
-          )
+            'You need to pass a composite runtime definition path either as an argument or via stdin',
+          ),
       ).toBe(true)
     }, 60000)
 
@@ -39,8 +38,8 @@ describe('graphql', () => {
         schema.stderr
           .toString()
           .includes(
-            'You need to pass a composite runtime definition path either as an argument or via stdin'
-          )
+            'You need to pass a composite runtime definition path either as an argument or via stdin',
+          ),
       ).toBe(true)
     }, 60000)
 
@@ -51,13 +50,13 @@ describe('graphql', () => {
         '--port=62433',
       ])
       let numChecks = 0
-      serverProcess.stderr?.on('data', (data: Readable) => {
+      serverProcess.stderr?.on('data', (data: Buffer) => {
         if (numChecks === 0) {
           // eslint-disable-next-line jest/no-conditional-expect
           expect(
             data
               .toString()
-              .includes('GraphQL server is listening on http://localhost:62433/graphql')
+              .includes('GraphQL server is listening on http://localhost:62433/graphql'),
           ).toBe(true)
           numChecks++
         }
@@ -67,7 +66,7 @@ describe('graphql', () => {
           setTimeout(() => {
             serverProcess.kill()
             resolve(true)
-          }, 40000)
+          }, 40000),
         ),
         serverProcess,
       ])
@@ -82,13 +81,13 @@ describe('graphql', () => {
         '--readonly',
       ])
       let numChecks = 0
-      serverProcess.stderr?.on('data', (data: Readable) => {
+      serverProcess.stderr?.on('data', (data: Buffer) => {
         if (numChecks === 0) {
           // eslint-disable-next-line jest/no-conditional-expect
           expect(
             data
               .toString()
-              .includes('GraphQL server is listening on http://localhost:62610/graphql')
+              .includes('GraphQL server is listening on http://localhost:62610/graphql'),
           ).toBe(true)
           numChecks++
         }
@@ -98,7 +97,7 @@ describe('graphql', () => {
           setTimeout(() => {
             serverProcess.kill()
             resolve(true)
-          }, 40000)
+          }, 40000),
         ),
         serverProcess,
       ])

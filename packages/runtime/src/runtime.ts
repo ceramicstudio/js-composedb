@@ -64,7 +64,7 @@ export class ComposeRuntime {
    */
   async execute<Data = Record<string, unknown>>(
     document: DocumentNode,
-    variableValues?: Record<string, unknown>
+    variableValues?: Record<string, unknown>,
   ): Promise<ExecutionResult<Data>> {
     const errors = validate(this.#schema, document)
     return errors.length > 0
@@ -82,7 +82,7 @@ export class ComposeRuntime {
    */
   async executeQuery<Data = Record<string, unknown>>(
     source: string | Source,
-    variableValues?: Record<string, unknown>
+    variableValues?: Record<string, unknown>,
   ): Promise<ExecutionResult<Data>> {
     let document: DocumentNode
     try {

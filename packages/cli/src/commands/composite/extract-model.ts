@@ -43,7 +43,7 @@ export default class CompositeExtractModel extends Command<Flags> {
         modelsToExtract = allArgs.splice(1)
       } else if (this.stdin !== undefined && allArgs.length < 1) {
         this.spinner.fail(
-          'When the composite is passed as JSON in stdin, at least one model to extract needs to be passed as param'
+          'When the composite is passed as JSON in stdin, at least one model to extract needs to be passed as param',
         )
         return
       } else {
@@ -56,7 +56,7 @@ export default class CompositeExtractModel extends Command<Flags> {
         const output = this.flags.output
         await writeEncodedComposite(newComposite, output)
         this.spinner.succeed(
-          ` Creating a composite with specified models... Composite was created and its encoded representation was saved in ${output}`
+          ` Creating a composite with specified models... Composite was created and its encoded representation was saved in ${output}`,
         )
       } else {
         this.spinner.succeed('Creating a composite with specified models... Done!')

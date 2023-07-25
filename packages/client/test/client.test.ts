@@ -28,7 +28,7 @@ describe('client', () => {
         }
       }
       `,
-      { input: { content: { name: 'Alice' } } }
+      { input: { content: { name: 'Alice' } } },
     )
     expect(res.data?.createGenericProfile.document.id).toBeDefined()
   }, 30000)
@@ -65,7 +65,7 @@ describe('client', () => {
     })
     const postRes = await client.executeQuery<{ createPost: { document: { id: string } } }>(
       createPostMutation,
-      { input: { content: { title: 'A second post', text: 'Second post content' } } }
+      { input: { content: { title: 'A second post', text: 'Second post content' } } },
     )
     const postID = postRes.data?.createPost.document.id
 
@@ -110,7 +110,7 @@ describe('client', () => {
           }
         }
       }
-      `
+      `,
     )
     expect(res).toMatchSnapshot()
   }, 60000)

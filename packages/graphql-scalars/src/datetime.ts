@@ -115,7 +115,7 @@ export const GraphQLDateTime = new GraphQLScalarType({
         throw new TypeError(`DateTime string must be formatted to UTC time ${String(dateString)}.`)
     } else
       throw new TypeError(
-        `DateTime cannot represent an invalid date-time-string ${String(dateString)}.`
+        `DateTime cannot represent an invalid date-time-string ${String(dateString)}.`,
       )
   },
   parseValue: (value) => {
@@ -163,7 +163,7 @@ export const GraphQLTime = new GraphQLScalarType({
       throw new TypeError(
         'Time cannot be serialized from a non string, ' +
           'or non Date type ' +
-          JSON.stringify(value)
+          JSON.stringify(value),
       )
     }
   },

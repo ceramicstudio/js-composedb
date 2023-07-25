@@ -43,7 +43,7 @@ export default class CompositeMerge extends Command<Flags> {
     try {
       this.spinner.start('Merging composites...')
       const composites = await Promise.all(
-        compositePaths.map(async (path) => await readEncodedComposite(this.ceramic, path))
+        compositePaths.map(async (path) => await readEncodedComposite(this.ceramic, path)),
       )
 
       const commonEmbedsFlag = this.flags['common-embeds'] as string | undefined
@@ -61,7 +61,7 @@ export default class CompositeMerge extends Command<Flags> {
         const output = this.flags.output
         await writeEncodedComposite(mergedComposite, output)
         this.spinner.succeed(
-          `Composite was created and its encoded representation was saved in ${output}`
+          `Composite was created and its encoded representation was saved in ${output}`,
         )
       } else {
         this.spinner.succeed('Merging composites... Done!')

@@ -129,7 +129,7 @@ export class SchemaCompiler {
           break
         case 'view':
           throw new Error(
-            `Unsupported view on field ${key} of object ${name}. Views can only be set on models.`
+            `Unsupported view on field ${key} of object ${name}. Views can only be set on models.`,
           )
       }
 
@@ -153,7 +153,7 @@ export class SchemaCompiler {
   _compileList(
     objectName: string,
     fieldName: string,
-    definition: ListFieldDefinition
+    definition: ListFieldDefinition,
   ): SchemaWithRefs {
     const list: JSONSchema.Array = { type: 'array', maxItems: definition.maxLength }
     if (definition.minLength != null) {
@@ -184,18 +184,18 @@ export class SchemaCompiler {
   _compileObjectReference(
     objectName: string,
     fieldName: string,
-    definition: ObjectReferenceFieldDefinition
+    definition: ObjectReferenceFieldDefinition,
   ): SchemaWithRefs {
     if (this.#src.models[definition.name] != null) {
       throw new Error(
-        `Unsupported reference to model ${definition.name} in field ${fieldName} of object ${objectName}. References can only be made to embedded objects.`
+        `Unsupported reference to model ${definition.name} in field ${fieldName} of object ${objectName}. References can only be made to embedded objects.`,
       )
     }
 
     const target = this.#src.objects[definition.name]
     if (target == null) {
       throw new Error(
-        `Missing object ${definition.name} referenced in field ${fieldName} of object ${objectName}`
+        `Missing object ${definition.name} referenced in field ${fieldName} of object ${objectName}`,
       )
     }
 
@@ -208,12 +208,12 @@ export class SchemaCompiler {
   _compileEnum(
     objectName: string,
     fieldName: string,
-    definition: EnumFieldDefinition
+    definition: EnumFieldDefinition,
   ): SchemaWithRefs {
     const values = this.#src.enums[definition.name]
     if (values == null) {
       throw new Error(
-        `Missing enum ${definition.name} referenced in field ${fieldName} of object ${objectName}`
+        `Missing enum ${definition.name} referenced in field ${fieldName} of object ${objectName}`,
       )
     }
     if (this.#refs[definition.name] == null) {
@@ -242,7 +242,7 @@ export class SchemaCompiler {
   _compileModel(
     name: string,
     modelDefinition: ParsedModelDefinition,
-    objectDefinition: ObjectDefinition
+    objectDefinition: ObjectDefinition,
   ): AbstractModelDefinition {
     const indices = objectDefinition.indices.map((idx) => {
       return {
@@ -261,7 +261,7 @@ export class SchemaCompiler {
           views[key] = viewRuntimeToModel(field)
         } else {
           throw new Error(
-            `Unsupported property ${key} on model ${name}, only views can be added to loaded models`
+            `Unsupported property ${key} on model ${name}, only views can be added to loaded models`,
           )
         }
       }
@@ -270,7 +270,7 @@ export class SchemaCompiler {
 
     if (objectDefinition.properties[DOC_ID_FIELD] != null) {
       throw new Error(
-        `Unsupported ${DOC_ID_FIELD} field on model ${name}, the ${DOC_ID_FIELD} field is reserved by ComposeDB`
+        `Unsupported ${DOC_ID_FIELD} field on model ${name}, the ${DOC_ID_FIELD} field is reserved by ComposeDB`,
       )
     }
 

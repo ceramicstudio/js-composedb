@@ -19,12 +19,12 @@ export default class DIDFromPrivateKey extends Command<CommandFlags, { didPrivat
     const possibleSeedInputs = [this.stdin, this.args.didPrivateKey, this.flags['did-private-key']]
     if (possibleSeedInputs.every((input) => input === undefined)) {
       this.spinner.fail(
-        `You need to pass the private key parameter as a positional arg, as a flag value, via stdin or as the DID_PRIVATE_KEY environmental variable`
+        `You need to pass the private key parameter as a positional arg, as a flag value, via stdin or as the DID_PRIVATE_KEY environmental variable`,
       )
       return
     } else if (possibleSeedInputs.filter((input) => input !== undefined).length > 1) {
       this.spinner.fail(
-        `Don't pass the private key parameter in more than one way out of: arg, flag, stdin, DID_PRIVATE_KEY environmental variable`
+        `Don't pass the private key parameter in more than one way out of: arg, flag, stdin, DID_PRIVATE_KEY environmental variable`,
       )
       return
     }
@@ -41,7 +41,7 @@ export default class DIDFromPrivateKey extends Command<CommandFlags, { didPrivat
       this.log(did.id)
     } catch (err) {
       this.warn(
-        `Invalid DID private key.  Did you generate the private key using 'composedb did:generate-private-key'?`
+        `Invalid DID private key.  Did you generate the private key using 'composedb did:generate-private-key'?`,
       )
       this.spinner.fail((err as Error).message)
     }

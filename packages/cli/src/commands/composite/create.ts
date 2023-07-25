@@ -33,7 +33,7 @@ export default class CreateComposite extends Command<Flags, { schemaFilePath: st
         const output = this.flags.output
         await writeEncodedComposite(composite, output)
         this.spinner.succeed(
-          `Creating the composite... Done! The encoded representation was saved in ${output}`
+          `Creating the composite... Done! The encoded representation was saved in ${output}`,
         )
       } else {
         this.spinner.succeed('Creating the composite... Done!')

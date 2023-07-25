@@ -38,7 +38,7 @@ export function toPaginationQuery(source: ConnectionQuery): PaginationQuery {
 
 export function toRelayConnection(
   ceramic: CeramicApi,
-  page: Page<StreamState | null>
+  page: Page<StreamState | null>,
 ): Connection<ModelInstanceDocument | null> {
   return {
     edges: (page.edges ?? []).map(({ cursor, node }) => {
@@ -57,7 +57,7 @@ export function toRelayConnection(
 
 export async function queryConnection(
   ceramic: CeramicApi,
-  query: ConnectionQuery
+  query: ConnectionQuery,
 ): Promise<Connection<ModelInstanceDocument | null>> {
   const indexQuery = toPaginationQuery(query)
   const page = await ceramic.index.query(indexQuery)
@@ -66,7 +66,7 @@ export async function queryConnection(
 
 export async function querySingle(
   ceramic: CeramicApi,
-  query: BaseQuery
+  query: BaseQuery,
 ): Promise<ModelInstanceDocument | null> {
   const indexQuery = { ...query, last: 1 }
   const result = await ceramic.index.query(indexQuery)
@@ -84,7 +84,7 @@ export function areValidRangeValueConditions(a: string, b: string): boolean {
 }
 
 export function assertValidAnyValueFilter(
-  filter: Record<string, unknown>
+  filter: Record<string, unknown>,
 ): asserts filter is AnyValueFilter {
   if (filter == null) {
     throw new Error('No value filter provided')
@@ -126,7 +126,7 @@ export function assertValidAnyValueFilter(
 }
 
 export function assertValidObjectFilter(
-  filter: Record<string, Record<string, unknown>>
+  filter: Record<string, Record<string, unknown>>,
 ): asserts filter is ObjectFilter {
   if (filter == null) {
     throw new Error('No object filter provided')
@@ -140,7 +140,7 @@ export function assertValidObjectFilter(
 }
 
 export function assertValidQueryFilters(
-  filters: Record<string, unknown>
+  filters: Record<string, unknown>,
 ): asserts filters is QueryFilters {
   if (filters == null) {
     throw new Error('No query filters provided')
@@ -173,7 +173,7 @@ export function assertValidQueryFilters(
       return
     default:
       throw new Error(
-        `Invalid query filter type: expecting "where", "and", "or" or "not" key but got "${key}"`
+        `Invalid query filter type: expecting "where", "and", "or" or "not" key but got "${key}"`,
       )
   }
 }
@@ -181,7 +181,7 @@ export function assertValidQueryFilters(
 export function createRelationQueryFilters(
   relationKey: string,
   targetID: string,
-  customFilters?: QueryFilters
+  customFilters?: QueryFilters,
 ): QueryFilters {
   const filters: QueryFilters = {
     where: { [relationKey]: { equalTo: targetID } },

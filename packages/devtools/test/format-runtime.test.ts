@@ -55,13 +55,13 @@ describe('Runtime format', () => {
 
     const commentDefinition = mockDefinitionFromSchema(
       createCommentSchemaWithPost('PostID'),
-      postDefinition.models
+      postDefinition.models,
     )
     expect(createRuntimeDefinition(commentDefinition)).toMatchSnapshot()
 
     const postWithCommentsDefinition = mockDefinitionFromSchema(
       loadPostSchemaWithComments('PostID', 'CommentID'),
-      commentDefinition.models
+      commentDefinition.models,
     )
     expect(createRuntimeDefinition(postWithCommentsDefinition)).toMatchSnapshot()
   })

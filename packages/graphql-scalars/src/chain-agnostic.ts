@@ -18,7 +18,7 @@ export const ChainAgnosticAccountID = new GraphQLScalarType({
   parseLiteral(ast) {
     if (ast.kind !== Kind.STRING) {
       throw new GraphQLError(
-        `Can only validate strings as ChainAgnosticAccountID but got a: ${ast.kind}`
+        `Can only validate strings as ChainAgnosticAccountID but got a: ${ast.kind}`,
       )
     }
     return validateAccountID(ast.value)
@@ -34,7 +34,7 @@ export const ChainAgnosticChainID = new GraphQLScalarType({
   parseLiteral(ast) {
     if (ast.kind !== Kind.STRING) {
       throw new GraphQLError(
-        `Can only validate strings as ChainAgnosticAccountID but got a: ${ast.kind}`
+        `Can only validate strings as ChainAgnosticAccountID but got a: ${ast.kind}`,
       )
     }
     return validateChainID(ast.value)
