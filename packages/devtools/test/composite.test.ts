@@ -702,8 +702,11 @@ describe('composite', () => {
     test('creates a new composite from valid JSON', async () => {
       const composite = await Composite.create({ ceramic, schema: profilesSchema })
       expect(composite.hash).toBeDefined()
-      
-      const fromJSONComposite = await Composite.fromJSON({ ceramic, definition: composite.toJSON() })
+
+      const fromJSONComposite = await Composite.fromJSON({
+        ceramic,
+        definition: composite.toJSON(),
+      })
       const fromJSONCompositeParams = fromJSONComposite.toParams()
       expect(Object.keys(fromJSONCompositeParams.commits).length).toEqual(3)
     })
@@ -713,8 +716,11 @@ describe('composite', () => {
     test('creates a new composite from valid models', async () => {
       const composite = await Composite.create({ ceramic, schema: profilesSchema })
       expect(composite.hash).toBeDefined()
-      
-      const fromModelsComposite = await Composite.fromModels({ ceramic, models: composite.modelIDs })
+
+      const fromModelsComposite = await Composite.fromModels({
+        ceramic,
+        models: composite.modelIDs,
+      })
       const fromModelsCompositeParams = fromModelsComposite.toParams()
       expect(Object.keys(fromModelsCompositeParams.commits).length).toEqual(3)
     })

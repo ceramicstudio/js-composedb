@@ -1,4 +1,10 @@
-import type { CeramicApi, CeramicCommit, ModelData, SignedCommitContainer } from '@ceramicnetwork/common'
+import type {
+  CeramicApi,
+  CeramicCommit,
+  ModelData,
+  SignedCommitContainer,
+  Context,
+} from '@ceramicnetwork/common'
 import { Model, type ModelViewsDefinition } from '@ceramicnetwork/stream-model'
 import { Cacao } from '@didtools/cacao'
 import type {
@@ -74,50 +80,46 @@ function assertModelsHaveCommits(
 
 function assertSupportedWriteModelController(model: Model, ceramic: CeramicApi): void {
   const unsupported = `Unsupported model controller ${model.metadata.controller}`
-  if (model.metadata.controller.startsWith('did:pkh:')){
-    if (ceramic.context.did == null) {
-      throw new Error(
-        `${unsupported}, did missing from ceramic context`
-      )
+  if (model.metadata.controller.startsWith('did:pkh:')) {
+    if (ceramic.context == null) {
+      throw new Error(`${unsupported}, missing ceramic context`)
     }
-    if (!ceramic.context.did.hasCapability()) {
-      throw new Error(
-        `${unsupported}, only did:pkh with CACAO is supported`
-      )
+    const context = ceramic.context as Context
+    if (context.did == null) {
+      throw new Error(`${unsupported}, did missing from ceramic context`)
     }
-    const cacao: Cacao = ceramic.context.did.capability(); 
+    if (!context.did.hasCapability) {
+      throw new Error(`${unsupported}, only did:pkh with CACAO is supported`)
+    }
+    const cacao: Cacao = context.did.capability
     if (cacao.p.exp != null) {
-      throw new Error(
-        `${unsupported}, only did:pkh CACAO without expiry is supported`
-      )
+      throw new Error(`${unsupported}, only did:pkh CACAO without expiry is supported`)
     }
     const hasModelResource = cacao.p.resources?.includes(`ceramic://*?model=${MODEL_STREAM_ID}`)
     if (!hasModelResource) {
-      throw new Error(
-        `${unsupported}, only cacao with resource ${MODEL_STREAM_ID} is supported`
-      )
+      throw new Error(`${unsupported}, only cacao with resource ${MODEL_STREAM_ID} is supported`)
     }
   } else if (!model.metadata.controller.startsWith('did:key:')) {
-    throw new Error(
-      `${unsupported}, only did:key and did:pkh are supported`
-    )
+    throw new Error(`${unsupported}, only did:key and did:pkh are supported`)
   }
 }
 
-async function assertSupportedReadModelController(model: Model, signedCommitContainer: SignedCommitContainer): Promise<void> {
+async function assertSupportedReadModelController(
+  model: Model,
+  signedCommitContainer: SignedCommitContainer
+): Promise<void> {
   const unsupported = `Unsupported model controller ${model.metadata.controller}`
-  if (model.metadata.controller.startsWith('did:pkh:') && signedCommitContainer.cacaoBlock != null){
+  if (
+    model.metadata.controller.startsWith('did:pkh:') &&
+    signedCommitContainer.cacaoBlock != null
+  ) {
     const cacao = await Cacao.fromBlockBytes(signedCommitContainer.cacaoBlock)
     if (cacao == null) {
-      throw new Error(
-        `${unsupported}, only did:pkh with CACAO is supported`
-      )
+      throw new Error(`${unsupported}, only did:pkh with CACAO is supported`)
     }
     assertValidCacao(cacao, model.metadata.controller)
   } else if (!model.metadata.controller.startsWith('did:key:')) {
-    throw new Error(
-      `${unsupported}, only did:key is supported`
-    )
+    throw new Error(`${unsupported}, only did:key is supported`)
   }
 }
 
@@ -126,15 +128,11 @@ function assertValidCacao(cacao: Cacao, controller: string): void {
     throw new Error(`Cacao issuer ${cacao.p.iss} does not match controller ${controller}`)
   }
   if (cacao.p.exp != null) {
-    throw new Error(
-      `only did:pkh CACAO without expiry is supported`
-    )
+    throw new Error(`only did:pkh CACAO without expiry is supported`)
   }
   const hasModelResource = cacao.p.resources?.includes(`ceramic://*?model=${MODEL_STREAM_ID}`)
   if (!hasModelResource) {
-    throw new Error(
-      `only cacao with resource "ceramic://*?model=${MODEL_STREAM_ID}" is supported`
-    )
+    throw new Error(`only cacao with resource "ceramic://*?model=${MODEL_STREAM_ID}" is supported`)
   }
 }
 
@@ -184,12 +182,10 @@ async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
         genesis,
         MODEL_GENESIS_OPTS
       )
-      
-      modelCommitsValues
-        .filter(isSignedCommitContainer)
-        .forEach((commit:StreamCommits) => {
-          assertSupportedReadModelController(model, commit as unknown as SignedCommitContainer)
-        })
+
+      modelCommitsValues.filter(isSignedCommitContainer).map(async (commit: StreamCommits) => {
+        await assertSupportedReadModelController(model, commit as unknown as SignedCommitContainer)
+      })
       for (const commit of updates) {
         await ceramic.applyCommit(model.id, commit as unknown as CeramicCommit)
       }
@@ -446,7 +442,10 @@ export class Composite {
           .map((c) => c.value as Record<string, any>)
           .filter(isSignedCommitContainer)
         for (const commit of commits[id]) {
-          assertSupportedReadModelController(model, commit as unknown as SignedCommitContainer)
+          await assertSupportedReadModelController(
+            model,
+            commit as unknown as SignedCommitContainer
+          )
         }
       })
     )
