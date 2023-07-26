@@ -106,7 +106,7 @@ function assertSupportedWriteModelController(model: Model, ceramic: CeramicApi):
 
 async function assertSupportedReadModelController(
   model: Model,
-  signedCommitContainer: SignedCommitContainer
+  signedCommitContainer: SignedCommitContainer,
 ): Promise<void> {
   const unsupported = `Unsupported model controller ${model.metadata.controller}`
   if (
@@ -447,10 +447,10 @@ export class Composite {
         for (const commit of commits[id]) {
           await assertSupportedReadModelController(
             model,
-            commit as unknown as SignedCommitContainer
+            commit as unknown as SignedCommitContainer,
           )
         }
-      })
+      }),
     )
     const composite = new Composite({ commits, definition })
 
