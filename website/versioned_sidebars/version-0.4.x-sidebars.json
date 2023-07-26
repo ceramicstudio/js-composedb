@@ -55,6 +55,11 @@
     },
     {
       "type": "doc",
+      "id": "ceramic-roadmap",
+      "label": "Roadmap"
+    },
+    {
+      "type": "doc",
       "id": "community",
       "label": "Community"
     }
