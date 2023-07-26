@@ -60,7 +60,7 @@ export type HandlerParams<ServerContext extends Record<string, any> = Record<str
  * Create a {@link https://the-guild.dev/graphql/yoga-server/docs Yoga server} handling GraphQL requests.
  */
 export function createHandler<ServerContext extends Record<string, any> = Record<string, any>>(
-  params: HandlerParams<ServerContext>
+  params: HandlerParams<ServerContext>,
 ): YogaServerInstance<ServerContext, Context> {
   const { cache, ceramic, definition, options, schema } = params
   const client = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
@@ -90,7 +90,7 @@ export type GraphQLParams<ServerContext extends Record<string, any> = Record<str
  * Start a local GraphQL server.
  */
 export async function startGraphQLServer<
-  ServerContext extends Record<string, any> = Record<string, any>
+  ServerContext extends Record<string, any> = Record<string, any>,
 >(params: GraphQLParams<ServerContext>): Promise<GraphQLServer> {
   const handler = createHandler<ServerContext>(params)
   // eslint-disable-next-line @typescript-eslint/no-misused-promises

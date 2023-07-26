@@ -48,21 +48,21 @@ export type Context = {
    */
   loadDoc: <Content extends Record<string, any>>(
     id: string | CommitID | StreamID,
-    fresh?: boolean
+    fresh?: boolean,
   ) => Promise<ModelInstanceDocument<Content>>
   /**
    * Create a new document with the given model and content.
    */
   createDoc: <Content extends Record<string, any>>(
     model: string,
-    content: Content
+    content: Content,
   ) => Promise<ModelInstanceDocument<Content>>
   /**
    * Create a new single document with the given model and content.
    */
   createSingle: <Content extends Record<string, any>>(
     model: string,
-    content: Content
+    content: Content,
   ) => Promise<ModelInstanceDocument<Content>>
   /**
    * Update an existing document.
@@ -70,7 +70,7 @@ export type Context = {
   updateDoc: <Content extends Record<string, any>>(
     id: string | StreamID,
     content: Content,
-    options?: UpdateDocOptions
+    options?: UpdateDocOptions,
   ) => Promise<ModelInstanceDocument<Content>>
   /**
    * Query the index for a connection of documents.
@@ -102,7 +102,7 @@ export function createContext(params: ContextParams): Context {
     isAuthenticated: (): boolean => ceramic.did?.authenticated ?? false,
     loadDoc: async <Content extends Record<string, any> = Record<string, any>>(
       id: string | CommitID | StreamID,
-      fresh = false
+      fresh = false,
     ): Promise<ModelInstanceDocument<Content>> => {
       if (fresh) {
         loader.clear(id)
@@ -111,13 +111,13 @@ export function createContext(params: ContextParams): Context {
     },
     createDoc: async <Content extends Record<string, any> = Record<string, any>>(
       model: string,
-      content: Content
+      content: Content,
     ): Promise<ModelInstanceDocument<Content>> => {
       return await loader.create(model, content)
     },
     createSingle: async <Content extends Record<string, any> = Record<string, any>>(
       model: string,
-      content: Content
+      content: Content,
     ): Promise<ModelInstanceDocument<Content>> => {
       const controller = getViewerID()
       if (controller == null) {
@@ -130,12 +130,12 @@ export function createContext(params: ContextParams): Context {
     updateDoc: async <Content extends Record<string, any> = Record<string, any>>(
       id: string | StreamID,
       content: Content,
-      options?: UpdateDocOptions
+      options?: UpdateDocOptions,
     ): Promise<ModelInstanceDocument<Content>> => {
       return await loader.update(id, content, options)
     },
     queryConnection: async (
-      query: ConnectionQuery
+      query: ConnectionQuery,
     ): Promise<Connection<ModelInstanceDocument | null>> => {
       return await queryConnection(ceramic, query)
     },

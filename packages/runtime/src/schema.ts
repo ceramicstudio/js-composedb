@@ -204,10 +204,13 @@ class SchemaBuilder {
   constructor(params: CreateSchemaParams) {
     this.#def = params.definition
     this.#isReadonly = !!params.readonly
-    this.#modelAliases = Object.entries(this.#def.models).reduce((aliases, [alias, model]) => {
-      aliases[model.id] = alias
-      return aliases
-    }, {} as Record<string, string>)
+    this.#modelAliases = Object.entries(this.#def.models).reduce(
+      (aliases, [alias, model]) => {
+        aliases[model.id] = alias
+        return aliases
+      },
+      {} as Record<string, string>,
+    )
   }
 
   build(): GraphQLSchema {
@@ -229,7 +232,7 @@ class SchemaBuilder {
         return typeof didOrDoc === 'string'
           ? 'CeramicAccount'
           : this.#modelAliases[didOrDoc.metadata.model?.toString()]
-      }
+      },
     )
 
     const accountObject = new GraphQLObjectType<string, Context>({
@@ -278,7 +281,7 @@ class SchemaBuilder {
               resolve: async (
                 account,
                 args: ConnectionQueryArguments,
-                ctx
+                ctx,
               ): Promise<Connection<ModelInstanceDocument | null>> => {
                 return await ctx.queryConnection({ ...args, account, model: model.id })
               },
@@ -436,7 +439,7 @@ class SchemaBuilder {
 
   _buildDocumentObjectReferenceField(
     key: string,
-    field: RuntimeReference
+    field: RuntimeReference,
   ): GraphQLFieldConfig<ModelInstanceDocument, Context> {
     const name = field.refType === 'connection' ? field.refName + 'Connection' : field.refName
     const ref = this.#types[name]
@@ -473,7 +476,7 @@ class SchemaBuilder {
 
   _buildEmbeddedObjectReferenceField(
     key: string,
-    field: RuntimeReference
+    field: RuntimeReference,
   ): GraphQLFieldConfig<EmbeddedObject, Context> {
     const ref = this.#types[field.refName]
     if (ref == null) {
@@ -492,7 +495,7 @@ class SchemaBuilder {
 
   _buildObjectListFieldType(
     definitions: SharedDefinitions,
-    field: RuntimeList
+    field: RuntimeList,
   ): GraphQLList<GraphQLOutputType> | GraphQLNonNull<GraphQLList<GraphQLOutputType>> {
     let itemType
     if (field.item.type === 'reference') {
@@ -517,12 +520,12 @@ class SchemaBuilder {
   _buildDocumentObjectRelation(
     key: string,
     relation: RuntimeRelation,
-    objectFields: RuntimeObjectFields
+    objectFields: RuntimeObjectFields,
   ): GraphQLFieldConfig<ModelInstanceDocument, Context> {
     const modelAlias = this.#modelAliases[relation.model]
     if (modelAlias == null) {
       throw new Error(
-        `Model alias not found for relation with ID ${relation.model} on field ${key}`
+        `Model alias not found for relation with ID ${relation.model} on field ${key}`,
       )
     }
 
@@ -531,7 +534,7 @@ class SchemaBuilder {
         const ref = objectFields[relation.property]
         if (ref == null) {
           throw new Error(
-            `Missing reference field ${relation.property} for relation defined on field ${key}`
+            `Missing reference field ${relation.property} for relation defined on field ${key}`,
           )
         }
         return {
@@ -548,7 +551,7 @@ class SchemaBuilder {
             const loadedModel = loaded.metadata.model.toString()
             if (relation.model != null && loadedModel !== relation.model) {
               console.warn(
-                `Ignoring unexpected model ${loadedModel} for document ${id}, expected model ${relation.model}`
+                `Ignoring unexpected model ${loadedModel} for document ${id}, expected model ${relation.model}`,
               )
               return null
             }
@@ -572,14 +575,14 @@ class SchemaBuilder {
           resolve: async (
             doc,
             args: ConnectionRelationArguments,
-            ctx
+            ctx,
           ): Promise<Connection<unknown> | null> => {
             const account =
               args.account === 'documentAccount' ? doc.metadata.controller : args.account
             const queryFilters = createRelationQueryFilters(
               relation.property,
               doc.id.toString(),
-              args.filters
+              args.filters,
             )
             return await ctx.queryConnection({
               ...args,
@@ -610,7 +613,7 @@ class SchemaBuilder {
             const queryFilters = createRelationQueryFilters(
               relation.property,
               doc.id.toString(),
-              args.filters
+              args.filters,
             )
             return await ctx.queryCount({ account, model: relation.model, queryFilters })
           },
@@ -626,7 +629,7 @@ class SchemaBuilder {
     key: string,
     definitions: SharedDefinitions,
     field: RuntimeViewField,
-    objectFields: RuntimeObjectFields
+    objectFields: RuntimeObjectFields,
   ): GraphQLFieldConfig<ModelInstanceDocument, Context> {
     switch (field.viewType) {
       case 'documentAccount':
@@ -756,7 +759,7 @@ class SchemaBuilder {
               itemType = this.#inputObjects[inputPrefix + field.item.refName]
               if (itemType == null) {
                 throw new Error(
-                  `Missing referenced input type: ${inputPrefix + field.item.refName}`
+                  `Missing referenced input type: ${inputPrefix + field.item.refName}`,
                 )
               }
             } else {
@@ -791,7 +794,7 @@ class SchemaBuilder {
   _buildNodeMutations(
     queryFields: GraphQLFieldConfigMap<unknown, Context>,
     name: string,
-    model: RuntimeModel
+    model: RuntimeModel,
   ) {
     this.#mutations[`create${name}`] = mutationWithClientMutationId({
       name: `Create${name}`,
@@ -827,7 +830,7 @@ class SchemaBuilder {
       }),
       mutateAndGetPayload: async (
         input: { id: string; content: Record<string, unknown>; options?: UpdateDocOptions },
-        ctx: Context
+        ctx: Context,
       ) => {
         if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
           throw new Error('Ceramic instance is not authenticated')
@@ -859,7 +862,7 @@ class SchemaBuilder {
         resolve: async (
           _,
           { filters, ...args }: ConnectionQueryArguments,
-          ctx
+          ctx,
         ): Promise<Connection<any> | null> => {
           if (filters != null) {
             assertValidQueryFilters(filters)

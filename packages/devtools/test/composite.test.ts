@@ -25,7 +25,7 @@ describe('composite', () => {
     describe('constructor()', () => {
       test('throws if the version is not compatible', () => {
         expect(
-          () => new Composite({ commits: {}, definition: { version: '2.0', models: {} } })
+          () => new Composite({ commits: {}, definition: { version: '2.0', models: {} } }),
         ).toThrow('Unsupported Composite version 2.0, expected version 1.0')
       })
 
@@ -94,7 +94,7 @@ describe('composite', () => {
       test('with CompositeParams', () => {
         expect(source.equals(params)).toBe(true)
         expect(source.equals({ commits: {}, definition: { version: '1.0', models: {} } })).toBe(
-          false
+          false,
         )
       })
 
@@ -429,7 +429,7 @@ describe('composite', () => {
         const composite = new Composite({ commits: {}, definition: { version: '1.0', models: {} } })
         const other = { commits: {}, definition: { version: '2.0', models: {} } }
         expect(() => composite.merge(other)).toThrow(
-          'Unsupported Composite version 2.0, expected version 1.0'
+          'Unsupported Composite version 2.0, expected version 1.0',
         )
       })
 
@@ -465,7 +465,7 @@ describe('composite', () => {
               definition: { version: '1.0', models: {}, aliases: { barID: 'Test', bazID: 'Baz' } },
             },
           ],
-          { aliases: { bazID: 'Test' } }
+          { aliases: { bazID: 'Test' } },
         )
         expect(composite.toParams().definition.aliases).toEqual({
           fooID: 'Foo',
@@ -499,7 +499,7 @@ describe('composite', () => {
               definition: { version: '1.0', models: {}, commonEmbeds: ['Bar', 'Baz'] },
             },
           ],
-          { commonEmbeds: 'all' }
+          { commonEmbeds: 'all' },
         )
         expect(composite.toParams().definition.commonEmbeds).toEqual(['Foo', 'Bar', 'Baz'])
       })
@@ -517,7 +517,7 @@ describe('composite', () => {
               definition: { version: '1.0', models: {}, commonEmbeds: ['Bar', 'Baz'] },
             },
           ],
-          { commonEmbeds: ['Some', 'Other'] }
+          { commonEmbeds: ['Some', 'Other'] },
         )
         expect(composite.toParams().definition.commonEmbeds).toEqual(['Some', 'Other'])
       })
@@ -543,7 +543,7 @@ describe('composite', () => {
               },
             },
           ],
-          { views: { account: {}, models: {}, root: { foo: 'test' } } }
+          { views: { account: {}, models: {}, root: { foo: 'test' } } },
         )
         expect(composite.toParams().definition.views).toEqual({
           account: { foo: {}, bar: {} },
@@ -591,7 +591,7 @@ describe('composite', () => {
       } as unknown as CeramicApi
 
       await expect(() => composite.startIndexingOn(mockCeramic)).rejects.toThrow(
-        'An authenticated DID must be attached to the Ceramic instance'
+        'An authenticated DID must be attached to the Ceramic instance',
       )
       expect(startIndexingModelData).not.toHaveBeenCalled()
     })
@@ -604,7 +604,7 @@ describe('composite', () => {
       } as unknown as CeramicApi
 
       await expect(() => composite.startIndexingOn(mockCeramic)).rejects.toThrow(
-        'An authenticated DID must be attached to the Ceramic instance'
+        'An authenticated DID must be attached to the Ceramic instance',
       )
       expect(startIndexingModelData).not.toHaveBeenCalled()
     })

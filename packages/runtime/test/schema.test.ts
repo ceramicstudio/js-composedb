@@ -14,7 +14,7 @@ import { printGraphQLSchema } from '../src'
 
 function createSchemaDefinition(
   schema: string,
-  providedModels?: Record<string, ModelDefinition>
+  providedModels?: Record<string, ModelDefinition>,
 ): RuntimeCompositeDefinition {
   return createRuntimeDefinition(mockDefinitionFromSchema(schema, providedModels))
 }
@@ -36,14 +36,14 @@ describe('schema', () => {
     const postDefinition = mockDefinitionFromSchema(postSchema)
     const commentDefinition = mockDefinitionFromSchema(
       createCommentSchemaWithPost('PostID'),
-      postDefinition.models
+      postDefinition.models,
     )
     const postWithCommentsDefinition = mockDefinitionFromSchema(
       loadPostSchemaWithComments('PostID', 'CommentID'),
-      commentDefinition.models
+      commentDefinition.models,
     )
     expect(
-      printGraphQLSchema(createRuntimeDefinition(postWithCommentsDefinition))
+      printGraphQLSchema(createRuntimeDefinition(postWithCommentsDefinition)),
     ).toMatchSnapshot()
   })
 })

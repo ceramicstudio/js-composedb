@@ -36,7 +36,7 @@ export async function createComposite(ceramic: CeramicClient, path: PathInput): 
 export async function readEncodedComposite(
   ceramic: CeramicClient | string,
   path: PathInput,
-  index?: boolean
+  index?: boolean,
 ): Promise<Composite> {
   const client = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
   const file = getFilePath(path)
@@ -49,7 +49,7 @@ export async function readEncodedComposite(
  */
 export async function writeEncodedComposite(
   composite: Composite,
-  path: PathInput
+  path: PathInput,
 ): Promise<string> {
   const file = getFilePath(path)
   await ensureDir(getDirPath(file))
@@ -63,7 +63,7 @@ export async function writeEncodedComposite(
 export async function writeGraphQLSchema(
   definition: RuntimeCompositeDefinition,
   path: PathInput,
-  readonly?: boolean
+  readonly?: boolean,
 ): Promise<string> {
   const file = getFilePath(path)
   await ensureDir(getDirPath(file))
@@ -77,7 +77,7 @@ export async function writeGraphQLSchema(
  */
 export async function writeRuntimeDefinition(
   definition: RuntimeCompositeDefinition,
-  path: PathInput
+  path: PathInput,
 ): Promise<string> {
   const file = getFilePath(path)
   await ensureDir(getDirPath(file))
@@ -87,14 +87,14 @@ export async function writeRuntimeDefinition(
     await writeFile(
       file,
       `// This is an auto-generated file, do not edit manually
-export const definition = ${JSON.stringify(definition)}`
+export const definition = ${JSON.stringify(definition)}`,
     )
   } else if (file.endsWith('.ts')) {
     await writeFile(
       file,
       `// This is an auto-generated file, do not edit manually
 import type { RuntimeCompositeDefinition } from '@composedb/types'
-export const definition: RuntimeCompositeDefinition = ${JSON.stringify(definition)}`
+export const definition: RuntimeCompositeDefinition = ${JSON.stringify(definition)}`,
     )
   } else {
     throw new Error('Unsupported file type: only .json, .js and .ts extensions are supported')
@@ -110,7 +110,7 @@ export async function writeEncodedCompositeRuntime(
   ceramic: CeramicClient | string,
   definitionPath: PathInput,
   runtimePath: PathInput,
-  schemaPath?: PathInput
+  schemaPath?: PathInput,
 ): Promise<void> {
   const definition = await readEncodedComposite(ceramic, definitionPath)
   const runtime = definition.toRuntime()
@@ -126,11 +126,11 @@ export async function writeEncodedCompositeRuntime(
 export async function mergeEncodedComposites(
   ceramic: CeramicClient | string,
   source: PathInput | Array<PathInput>,
-  destination: PathInput
+  destination: PathInput,
 ): Promise<string> {
   const sources = Array.isArray(source) ? source : [source]
   const composites = await Promise.all(
-    sources.map(async (path) => await readEncodedComposite(ceramic, path))
+    sources.map(async (path) => await readEncodedComposite(ceramic, path)),
   )
   const file = getFilePath(destination)
   await writeEncodedComposite(Composite.from(composites), file)

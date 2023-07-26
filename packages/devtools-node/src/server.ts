@@ -76,7 +76,7 @@ export async function serveGraphQL(params: ServeGraphQLParams): Promise<GraphQLS
  * Create a local GraphQL server to interact with an encoded composite definition.
  */
 export async function serveEncodedDefinition(
-  params: ServeDefinitionParams
+  params: ServeDefinitionParams,
 ): Promise<GraphQLServer> {
   const { path, ...rest } = params
   const composite = await readEncodedComposite(params.ceramicURL, path)

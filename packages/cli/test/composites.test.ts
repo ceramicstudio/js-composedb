@@ -24,10 +24,10 @@ describe('composites', () => {
   beforeAll(async () => {
     const [undeployed, profiles] = await Promise.all([
       fs.readJSON(
-        fileURLToPath(new URL('mocks/encoded.composite.undeployed.json', import.meta.url))
+        fileURLToPath(new URL('mocks/encoded.composite.undeployed.json', import.meta.url)),
       ) as Promise<Record<string, unknown>>,
       fs.readJSON(
-        fileURLToPath(new URL('mocks/encoded.composite.profiles.json', import.meta.url))
+        fileURLToPath(new URL('mocks/encoded.composite.profiles.json', import.meta.url)),
       ) as Promise<Record<string, unknown>>,
     ])
     undeployedComposite = undeployed
@@ -37,7 +37,7 @@ describe('composites', () => {
   describe('composite:create', () => {
     test('composite creation fails without the schemaFilePath param', async () => {
       await expect(execa('bin/run.js', ['composite:create'])).rejects.toThrow(
-        RegExp('graphQL SDL definition of the Composite encoded as a')
+        RegExp('graphQL SDL definition of the Composite encoded as a'),
       )
     }, 60000)
 
@@ -50,7 +50,7 @@ describe('composites', () => {
       expect(
         create.stderr
           .toString()
-          .includes('An authenticated DID must be attached to the Ceramic instance')
+          .includes('An authenticated DID must be attached to the Ceramic instance'),
       ).toBe(true)
     }, 60000)
 
@@ -70,7 +70,7 @@ describe('composites', () => {
   describe('composite:deploy', () => {
     const checkIfModelExist = async (
       ceramic: CeramicClient,
-      modelStreamID: string
+      modelStreamID: string,
     ): Promise<boolean> => {
       // There's no API to check whether a model exists. What happens when a node is queried about
       // a model that doesn't exist is that you just get an IPFS timout
@@ -81,7 +81,7 @@ describe('composites', () => {
         new Promise((resolve) =>
           setTimeout(() => {
             resolve(false)
-          }, 20000)
+          }, 20000),
         ),
         Model.load(ceramic, modelStreamID).then((model) => {
           wasModelLoaded = true
@@ -97,14 +97,14 @@ describe('composites', () => {
         deploy.stderr
           .toString()
           .includes(
-            `You need to pass the composite definition either in stdin or as the compositePath param`
-          )
+            `You need to pass the composite definition either in stdin or as the compositePath param`,
+          ),
       ).toBe(true)
     }, 60000)
 
     test('composite deployment succeeds', async () => {
       const nonExistentModelStreamID = Object.keys(
-        (undeployedComposite as EncodedCompositeDefinition).models
+        (undeployedComposite as EncodedCompositeDefinition).models,
       )[0]
       const ceramic = new CeramicClient()
       // The following check fails in CI as the same tests are running in parallel in different environments
@@ -171,8 +171,8 @@ describe('composites', () => {
         models.stderr
           .toString()
           .includes(
-            'You need to pass a path to encoded composite either via an arg or through stdin'
-          )
+            'You need to pass a path to encoded composite either via an arg or through stdin',
+          ),
       ).toBe(true)
     }, 60000)
 
@@ -225,7 +225,7 @@ describe('composites', () => {
       expect(
         extractModelWithNoParams.stderr
           .toString()
-          .includes('Missing composite path and at least one model to extract')
+          .includes('Missing composite path and at least one model to extract'),
       ).toBe(true)
 
       const extractModelWithJustCompositePath = await execa('bin/run.js', [
@@ -235,7 +235,7 @@ describe('composites', () => {
       expect(
         extractModelWithJustCompositePath.stderr
           .toString()
-          .includes('Missing composite path and at least one model to extract')
+          .includes('Missing composite path and at least one model to extract'),
       ).toBe(true)
     }, 60000)
 
@@ -251,7 +251,7 @@ describe('composites', () => {
         streamIDs[1],
       ])
       const newEncodedComposite = JSON.parse(
-        extractModel.stdout.toString()
+        extractModel.stdout.toString(),
       ) as EncodedCompositeDefinition
       expect(Object.keys(newEncodedComposite.models).length).toEqual(2)
       expect(Object.keys(newEncodedComposite.models).includes(streamIDs[0])).toBeTruthy()
@@ -269,7 +269,7 @@ describe('composites', () => {
       const modelNames = Object.values(composite.toParams().definition.models).map(
         (modelDefinition) => {
           return modelDefinition.name
-        }
+        },
       )
       const extractModel = await execa('bin/run.js', [
         'composite:extract-model',
@@ -278,7 +278,7 @@ describe('composites', () => {
         modelNames[1],
       ])
       const newEncodedComposite = JSON.parse(
-        extractModel.stdout.toString()
+        extractModel.stdout.toString(),
       ) as EncodedCompositeDefinition
       const newComposite = await Composite.fromJSON({
         ceramic: ceramicClient,
@@ -288,7 +288,7 @@ describe('composites', () => {
       const newModelNames = Object.values(newComposite.toParams().definition.models).map(
         (modelDefinition) => {
           return modelDefinition.name
-        }
+        },
       )
       expect(newModelNames.length).toEqual(2)
       expect(newModelNames.includes(modelNames[0])).toBeTruthy()
@@ -300,7 +300,7 @@ describe('composites', () => {
     test('composite compilation fails without the composite path and at least one output path param', async () => {
       const compileWithNoParams = await execa('bin/run.js', ['composite:compile'])
       expect(
-        compileWithNoParams.stderr.toString().includes('Missing composite path and at output path')
+        compileWithNoParams.stderr.toString().includes('Missing composite path and at output path'),
       ).toBe(true)
 
       const compileWithJustCompositePath = await execa('bin/run.js', [
@@ -310,7 +310,7 @@ describe('composites', () => {
       expect(
         compileWithJustCompositePath.stderr
           .toString()
-          .includes('Missing composite path and at output path')
+          .includes('Missing composite path and at output path'),
       ).toBe(true)
     }, 60000)
 
@@ -325,7 +325,7 @@ describe('composites', () => {
         `${dirpath}/${filename}.ts`,
       ])
       expect(
-        compileWithJustCompositePath.stderr.toString().includes('Compiling the composite... Done!')
+        compileWithJustCompositePath.stderr.toString().includes('Compiling the composite... Done!'),
       ).toBe(true)
 
       const [jsonRepresentation, jsRepresentation, tsRepresentation] = await Promise.all([

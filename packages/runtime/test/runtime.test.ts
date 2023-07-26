@@ -36,7 +36,7 @@ describe('runtime', () => {
         }
       }
       `,
-      { input: { content: { name: 'Alice' } } }
+      { input: { content: { name: 'Alice' } } },
     )
     expect(res.data?.createGenericProfile.document.id).toBeDefined()
   }, 30000)
@@ -75,7 +75,7 @@ describe('runtime', () => {
     })
     const postRes = await runtime.executeQuery<{ createPost: { document: { id: string } } }>(
       createPostMutation,
-      { input: { content: { title: 'A second post', text: 'Second post content' } } }
+      { input: { content: { title: 'A second post', text: 'Second post content' } } },
     )
     const postID = postRes.data?.createPost.document.id
 
@@ -120,7 +120,7 @@ describe('runtime', () => {
           }
         }
       }
-      `
+      `,
     )
     expect(res).toMatchSnapshot()
   }, 60000)
@@ -164,7 +164,7 @@ describe('runtime', () => {
             chainID: new ChainId('eip155:1'),
             cid: CID.parse('bagcqcerakszw2vsovxznyp5gfnpdj4cqm2xiv76yd24wkjewhhykovorwo6a'),
             commitID: CommitID.fromString(
-              'k1dpgaqe3i64kjqcp801r3sn7ysi5i0k7nxvs7j351s7kewfzr3l7mdxnj7szwo4kr9mn2qki5nnj0cv836ythy1t1gya9s25cn1nexst3jxi5o3h6qprfyju'
+              'k1dpgaqe3i64kjqcp801r3sn7ysi5i0k7nxvs7j351s7kewfzr3l7mdxnj7szwo4kr9mn2qki5nnj0cv836ythy1t1gya9s25cn1nexst3jxi5o3h6qprfyju',
             ),
             countryCode: 'US',
             date: '2023-01-31',
@@ -176,7 +176,7 @@ describe('runtime', () => {
             localTime: '14:25:06.123',
             longitude: 53.471,
             streamID: StreamID.fromString(
-              'kjzl6cwe1jw147dvq16zluojmraqvwdmbh61dx9e0c59i344lcrsgqfohexp60s'
+              'kjzl6cwe1jw147dvq16zluojmraqvwdmbh61dx9e0c59i344lcrsgqfohexp60s',
             ),
             time: '14:10:20+01:00',
             // TimeZone seem to fail in CI
@@ -185,7 +185,7 @@ describe('runtime', () => {
             utcOffset: '+01:15',
           },
         },
-      }
+      },
     )
     expect(res.data?.createExtraScalars.document).toMatchSnapshot()
   }, 20000)
@@ -213,7 +213,7 @@ describe('runtime', () => {
             text: 'Test node contents',
           },
         },
-      }
+      },
     )
     expect(res.data?.createNote.document).toMatchSnapshot()
   }, 20000)

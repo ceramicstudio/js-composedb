@@ -28,7 +28,7 @@ export function loadPostSchemaWithComments(
   id: string,
   commentModelID: string,
   commentModelProperty = 'postID',
-  commentModelName = 'Comment'
+  commentModelName = 'Comment',
 ): string {
   return `
 type ${commentModelName} @loadModel(id: "${commentModelID}") {

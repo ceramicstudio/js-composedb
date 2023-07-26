@@ -39,7 +39,7 @@ export default class DocumentContent extends Command<DocumentContentFlags, { str
         const output = this.flags.output
         await write(output, mid.content)
         this.spinner.succeed(
-          `Loading the model instance document... Done! The content was saved in ${output}`
+          `Loading the model instance document... Done! The content was saved in ${output}`,
         )
       } else {
         this.spinner.succeed(`Loading the model instance document... Done!`)
