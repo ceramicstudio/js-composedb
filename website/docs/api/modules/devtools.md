@@ -40,13 +40,14 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `action` | ``"create"`` |
+| `indices?` | `FieldsIndex`[] |
 | `model` | `ModelDefinition` |
 
 ___
 
 ### AbstractLoadModelDefinition
 
-Ƭ **AbstractLoadModelDefinition**: [`ParsedLoadModelDefinition`](devtools.md#parsedloadmodeldefinition) & { `views`: `ModelViewsDefinition`  }
+Ƭ **AbstractLoadModelDefinition**: [`ParsedLoadModelDefinition`](devtools.md#parsedloadmodeldefinition) & { `indices?`: `FieldsIndex`[] ; `views`: `ModelViewsDefinition`  }
 
 ___
 
@@ -179,6 +180,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
+| `indices` | `FieldsIndex`[] |
 | `properties` | [`ObjectFieldsDefinition`](devtools.md#objectfieldsdefinition) |
 | `references` | `string`[] |
 | `relations` | `ModelRelationsDefinition` |
