@@ -69,9 +69,36 @@ identified using the [`@createModel`](#createmodel) or
 
 :::
 
-### `@createIndices`
+### `@createIndex`
 
-TODO
+The `@createIndex` directive ensures content fields in a model are indexed in the underlying database and can be used for filtering and ordering.
+
+Example:
+
+```graphql
+type Post
+  @createModel(accountRelation: LIST, description: "A simple text post")
+  @createIndex(fields: [{ path: ["title"] }]) {
+  author: DID! @documentAccount
+  title: String! @string(minLength: 10, maxLength: 100)
+  publishedAt: DateTime
+  text: String! @string(maxLength: 500)
+}
+```
+
+The `@createIndex` directive can be used multiple times:
+
+```graphql
+type Post
+  @createModel(accountRelation: LIST, description: "A simple text post")
+  @createIndex(fields: [{ path: ["title"] }])
+  @createIndex(fields: [{ path: ["publishedAt"] }]) {
+  author: DID! @documentAccount
+  title: String! @string(minLength: 10, maxLength: 100)
+  publishedAt: DateTime
+  text: String! @string(maxLength: 500)
+}
+```
 
 ## Type validation
 
