@@ -698,9 +698,33 @@ describe('composite', () => {
     })
   })
 
-  test.todo('Composite.fromJSON()')
+  describe('Composite.fromJSON()', () => {
+    test('creates a new composite from valid JSON', async () => {
+      const composite = await Composite.create({ ceramic, schema: profilesSchema })
+      expect(composite.hash).toBeDefined()
 
-  test.todo('Composite.fromModels()')
+      const fromJSONComposite = await Composite.fromJSON({
+        ceramic,
+        definition: composite.toJSON(),
+      })
+      const fromJSONCompositeParams = fromJSONComposite.toParams()
+      expect(Object.keys(fromJSONCompositeParams.commits).length).toEqual(3)
+    })
+  })
+
+  describe('Composite.fromModels()', () => {
+    test('creates a new composite from valid models', async () => {
+      const composite = await Composite.create({ ceramic, schema: profilesSchema })
+      expect(composite.hash).toBeDefined()
+
+      const fromModelsComposite = await Composite.fromModels({
+        ceramic,
+        models: composite.modelIDs,
+      })
+      const fromModelsCompositeParams = fromModelsComposite.toParams()
+      expect(Object.keys(fromModelsCompositeParams.commits).length).toEqual(3)
+    })
+  })
 
   test('Relations support', async () => {
     const postComposite = await Composite.create({ ceramic, schema: postSchema })
