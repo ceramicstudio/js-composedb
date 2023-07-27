@@ -3,6 +3,7 @@
 exports[`composite Composite instance toJSON() returns a JSON-encoded composite 1`] = `
 {
   "aliases": {},
+  "indices": {},
   "models": {},
   "version": "1.0",
   "views": {
