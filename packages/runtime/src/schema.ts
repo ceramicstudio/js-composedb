@@ -280,10 +280,18 @@ class SchemaBuilder {
               args,
               resolve: async (
                 account,
-                args: ConnectionQueryArguments,
+                { filters, ...args }: ConnectionQueryArguments,
                 ctx,
               ): Promise<Connection<ModelInstanceDocument | null>> => {
-                return await ctx.queryConnection({ ...args, account, model: model.id })
+                if (filters != null) {
+                  assertValidQueryFilters(filters)
+                }
+                return await ctx.queryConnection({
+                  ...args,
+                  queryFilters: filters,
+                  account,
+                  model: model.id,
+                })
               },
             }
           } else {

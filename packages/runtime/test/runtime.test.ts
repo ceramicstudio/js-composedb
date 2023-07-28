@@ -126,6 +126,47 @@ describe('runtime', () => {
     expect(res).toMatchSnapshot()
   }, 60000)
 
+  test('create and query post with filters', async () => {
+    const composite = await Composite.create({ ceramic, schema: postSchema })
+    const definition = composite.toRuntime()
+    const runtime = new ComposeRuntime({ ceramic, definition })
+
+    const createPostMutation = `
+      mutation CreatePost($input: CreatePostInput!) {
+        createPost(input: $input) {
+          document {
+            id
+          }
+        }
+      }
+    `
+    await runtime.executeQuery(createPostMutation, {
+      input: { content: { title: 'A first post', text: 'First post content', ranking: 5 } },
+    })
+    await runtime.executeQuery(createPostMutation, {
+      input: { content: { title: 'A second post', text: 'Second post content', ranking: 4 } },
+    })
+
+    const res = await runtime.executeQuery(
+      `
+      query {
+        viewer {
+          postList(filters: { where: { ranking : { greaterThan: 4 } } }, first: 5) {
+            edges {
+              node {
+                title
+                text
+                ranking
+              }
+            }
+          }
+        }
+      }
+      `,
+    )
+    expect(res).toMatchSnapshot()
+  }, 60000)
+
   test('can create a document using extra scalars', async () => {
     const composite = await Composite.create({ ceramic, schema: extraScalarsSchema })
     const runtime = new ComposeRuntime({ ceramic, definition: composite.toRuntime() })

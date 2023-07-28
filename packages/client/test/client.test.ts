@@ -136,9 +136,6 @@ describe('client', () => {
     await client.executeQuery(createPostMutation, {
       input: { content: { title: 'A second post', text: 'Second post content', ranking: 4 } },
     })
-    await client.executeQuery(createPostMutation, {
-      input: { content: { title: 'A third post', text: 'Third post content', ranking: 3 } },
-    })
 
     const res = await client.executeQuery(
       `

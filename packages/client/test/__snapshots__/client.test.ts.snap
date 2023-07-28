@@ -57,30 +57,9 @@ exports[`client create and query post with filters 1`] = `
         "edges": [
           {
             "node": {
-              "ranking": 1,
-              "text": "First post content",
-              "title": "A first post",
-            },
-          },
-          {
-            "node": {
-              "ranking": 2,
-              "text": "Second post content",
-              "title": "A second post",
-            },
-          },
-          {
-            "node": {
               "ranking": 5,
               "text": "First post content",
               "title": "A first post",
-            },
-          },
-          {
-            "node": {
-              "ranking": 4,
-              "text": "Second post content",
-              "title": "A second post",
             },
           },
         ],
