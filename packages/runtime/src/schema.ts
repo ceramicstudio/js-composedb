@@ -170,7 +170,7 @@ const valueFilterInputs = {
 const valueFilterInputsTypes: Record<string, string> = {
   boolean: 'BooleanValueFilter',
   float: 'FloatValueFilter',
-  int: 'IntValueFilter',
+  integer: 'IntValueFilter',
   string: 'StringValueFilter',
 }
 

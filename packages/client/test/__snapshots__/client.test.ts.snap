@@ -1,5 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`client create and query post 1`] = `
+{
+  "data": {
+    "viewer": {
+      "postList": {
+        "edges": [
+          {
+            "node": {
+              "ranking": 5,
+              "text": "First post content",
+              "title": "A first post",
+            },
+          },
+          {
+            "node": {
+              "ranking": 4,
+              "text": "Second post content",
+              "title": "A second post",
+            },
+          },
+        ],
+      },
+    },
+  },
+}
+`;
+
 exports[`client create and query post with comments 1`] = `
 {
   "data": {
