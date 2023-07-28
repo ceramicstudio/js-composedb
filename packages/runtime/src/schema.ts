@@ -170,7 +170,7 @@ const valueFilterInputs = {
 const valueFilterInputsTypes: Record<string, string> = {
   boolean: 'BooleanValueFilter',
   float: 'FloatValueFilter',
-  int: 'IntValueFilter',
+  integer: 'IntValueFilter',
   string: 'StringValueFilter',
 }
 
@@ -280,10 +280,18 @@ class SchemaBuilder {
               args,
               resolve: async (
                 account,
-                args: ConnectionQueryArguments,
+                { filters, ...args }: ConnectionQueryArguments,
                 ctx,
               ): Promise<Connection<ModelInstanceDocument | null>> => {
-                return await ctx.queryConnection({ ...args, account, model: model.id })
+                if (filters != null) {
+                  assertValidQueryFilters(filters)
+                }
+                return await ctx.queryConnection({
+                  ...args,
+                  queryFilters: filters,
+                  account,
+                  model: model.id,
+                })
               },
             }
           } else {

@@ -61,13 +61,14 @@ describe('client', () => {
       }
     `
     await client.executeQuery(createPostMutation, {
-      input: { content: { title: 'A first post', text: 'First post content' } },
+      input: { content: { title: 'A first post', text: 'First post content', ranking: 1 } },
     })
     const postRes = await client.executeQuery<{ createPost: { document: { id: string } } }>(
       createPostMutation,
-      { input: { content: { title: 'A second post', text: 'Second post content' } } },
+      { input: { content: { title: 'A second post', text: 'Second post content', ranking: 2 } } },
     )
     const postID = postRes.data?.createPost.document.id
+    expect(postID).toBeDefined()
 
     const createCommentMutation = `
       mutation CreateComment($input: CreateCommentInput!) {
@@ -105,6 +106,47 @@ describe('client', () => {
                     }
                   }
                 }
+              }
+            }
+          }
+        }
+      }
+      `,
+    )
+    expect(res).toMatchSnapshot()
+  }, 60000)
+
+  test('create and query post with filters', async () => {
+    const composite = await Composite.create({ ceramic, schema: postSchema })
+    const definition = composite.toRuntime()
+    const client = new ComposeClient({ ceramic, definition })
+
+    const createPostMutation = `
+      mutation CreatePost($input: CreatePostInput!) {
+        createPost(input: $input) {
+          document {
+            id
+          }
+        }
+      }
+    `
+    await client.executeQuery(createPostMutation, {
+      input: { content: { title: 'A first post', text: 'First post content', ranking: 5 } },
+    })
+    await client.executeQuery(createPostMutation, {
+      input: { content: { title: 'A second post', text: 'Second post content', ranking: 4 } },
+    })
+
+    const res = await client.executeQuery(
+      `
+      query {
+        viewer {
+          postList(filters: { where: { ranking : { greaterThan: 4 } } }, first: 5) {
+            edges {
+              node {
+                title
+                text
+                ranking
               }
             }
           }

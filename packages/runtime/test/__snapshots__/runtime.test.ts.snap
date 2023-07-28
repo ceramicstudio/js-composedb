@@ -167,6 +167,7 @@ type Post implements Node {
   date: DateTime
   text: String!
   title: String!
+  ranking: Int!
 
   """Account controlling the document"""
   author: CeramicAccount!
@@ -308,6 +309,7 @@ input PostInput {
   date: DateTime
   text: String!
   title: String!
+  ranking: Int!
 }
 
 type UpdatePostPayload {
@@ -334,6 +336,7 @@ input PartialPostInput {
   date: DateTime
   text: String
   title: String
+  ranking: Int
 }"
 `;
 
@@ -377,6 +380,26 @@ exports[`runtime create and query post with comments 2`] = `
               "commentsCount": 3,
               "text": "Second post content",
               "title": "A second post",
+            },
+          },
+        ],
+      },
+    },
+  },
+}
+`;
+
+exports[`runtime create and query post with filters 1`] = `
+{
+  "data": {
+    "viewer": {
+      "postList": {
+        "edges": [
+          {
+            "node": {
+              "ranking": 5,
+              "text": "First post content",
+              "title": "A first post",
             },
           },
         ],

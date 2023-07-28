@@ -657,6 +657,7 @@ type Post implements Node {
   date: DateTime
   title: String!
   text: String!
+  ranking: Int!
 
   """Account controlling the document"""
   author: CeramicAccount!
@@ -795,6 +796,7 @@ input PostInput {
   date: DateTime
   title: String!
   text: String!
+  ranking: Int!
 }
 
 type UpdatePostPayload {
@@ -821,6 +823,7 @@ input PartialPostInput {
   date: DateTime
   title: String
   text: String
+  ranking: Int
 }"
 `;
 

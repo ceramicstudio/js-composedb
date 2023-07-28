@@ -48,3 +48,23 @@ exports[`client create and query post with comments 1`] = `
   },
 }
 `;
+
+exports[`client create and query post with filters 1`] = `
+{
+  "data": {
+    "viewer": {
+      "postList": {
+        "edges": [
+          {
+            "node": {
+              "ranking": 5,
+              "text": "First post content",
+              "title": "A first post",
+            },
+          },
+        ],
+      },
+    },
+  },
+}
+`;
