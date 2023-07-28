@@ -1,4 +1,7 @@
-type Picture @createModel(accountRelation: LIST, description: "A Picture model") {
+type Picture
+  @createModel(accountRelation: LIST, description: "A Picture model")
+  @createIndex(fields: [{path: ["url"]}])
+{
   url: String! @string(minLength: 0, maxLength: 140)
 }
 

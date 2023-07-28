@@ -662,6 +662,7 @@ export class Composite {
     return {
       version: this.#definition.version,
       models: encodeSignedMap(this.#commits),
+      indices: this.#definition.indices,
       aliases: this.#definition.aliases,
       views: this.#definition.views,
     }
