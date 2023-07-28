@@ -71,13 +71,14 @@ describe('runtime', () => {
       }
     `
     await runtime.executeQuery(createPostMutation, {
-      input: { content: { title: 'A first post', text: 'First post content' } },
+      input: { content: { title: 'A first post', text: 'First post content', ranking: 1 } },
     })
     const postRes = await runtime.executeQuery<{ createPost: { document: { id: string } } }>(
       createPostMutation,
-      { input: { content: { title: 'A second post', text: 'Second post content' } } },
+      { input: { content: { title: 'A second post', text: 'Second post content', ranking: 2 } } },
     )
     const postID = postRes.data?.createPost.document.id
+    expect(postID).toBeDefined()
 
     const createCommentMutation = `
       mutation CreateComment($input: CreateCommentInput!) {
