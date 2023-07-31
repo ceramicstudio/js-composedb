@@ -141,30 +141,63 @@ describe('runtime', () => {
       }
     `
     await runtime.executeQuery(createPostMutation, {
-      input: { content: { title: 'A first post', text: 'First post content', ranking: 5 } },
+      input: {
+        content: { title: 'A first post', text: 'First post content', ranking: 5 },
+      },
     })
     await runtime.executeQuery(createPostMutation, {
-      input: { content: { title: 'A second post', text: 'Second post content', ranking: 4 } },
+      input: {
+        content: {
+          title: 'A second post',
+          text: 'Second post content',
+          ranking: 4,
+          date: '2023-07-31T12:00:00.000Z',
+        },
+      },
+    })
+    await runtime.executeQuery(createPostMutation, {
+      input: {
+        content: { title: 'A third post', text: 'Third post content', ranking: 7, share: 0.4 },
+      },
     })
 
-    const res = await runtime.executeQuery(
-      `
-      query {
-        viewer {
-          postList(filters: { where: { ranking : { greaterThan: 4 } } }, first: 5) {
-            edges {
-              node {
-                title
-                text
-                ranking
-              }
+    const filterQuery = `query FilterPostQuery($input: PostFiltersInput!) {
+      viewer {
+        postList(filters: $input, first: 5) {
+          edges {
+            node {
+              title
+              text
+              ranking
             }
           }
         }
       }
-      `,
-    )
-    expect(res).toMatchSnapshot()
+    }`
+
+    const filterVars1 = {
+      input: {
+        and: [{ where: { ranking: { greaterThan: 4 } } }, { where: { ranking: { lessThan: 7 } } }],
+      },
+    }
+    const res1 = await runtime.executeQuery(filterQuery, filterVars1)
+    expect(res1).toMatchSnapshot()
+
+    const filterVars2 = {
+      input: {
+        where: { date: { isNull: false } },
+      },
+    }
+    const res2 = await runtime.executeQuery(filterQuery, filterVars2)
+    expect(res2).toMatchSnapshot()
+
+    const filterVars3 = {
+      input: {
+        where: { share: { lessThanOrEqualTo: 0.5 } },
+      },
+    }
+    const res3 = await runtime.executeQuery(filterQuery, filterVars3)
+    expect(res3).toMatchSnapshot()
   }, 60000)
 
   test('can create a document using extra scalars', async () => {

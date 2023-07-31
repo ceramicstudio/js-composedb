@@ -1,6 +1,11 @@
 import type { QueryFilters, Sorting } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
-import { CeramicCommitID, getScalar } from '@composedb/graphql-scalars'
+import {
+  CeramicCommitID,
+  getScalar,
+  GraphQLDate,
+  GraphQLDateTime,
+} from '@composedb/graphql-scalars'
 import type {
   RuntimeCompositeDefinition,
   RuntimeList,
@@ -166,12 +171,16 @@ const valueFilterInputs = {
   FloatValueFilter: createScalarValueFilterInput(GraphQLFloat),
   IntValueFilter: createScalarValueFilterInput(GraphQLInt),
   StringValueFilter: createScalarValueFilterInput(GraphQLString),
+  DateValueFilter: createScalarValueFilterInput(GraphQLDate),
+  DateTimeValueFilter: createScalarValueFilterInput(GraphQLDateTime),
 } as const
 const valueFilterInputsTypes: Record<string, string> = {
   boolean: 'BooleanValueFilter',
   float: 'FloatValueFilter',
   integer: 'IntValueFilter',
   string: 'StringValueFilter',
+  datetime: 'DateTimeValueFilter',
+  date: 'DateValueFilter',
 }
 
 /**

@@ -3,6 +3,8 @@ type Post
   @createModel(accountRelation: LIST, description: "Simple post") 
   @createIndex(fields: [{path:["title"]}]) 
   @createIndex(fields: [{path:["ranking"]}])
+  @createIndex(fields: [{path:["date"]}])
+  @createIndex(fields: [{path:["share"]}])
 {
   author: DID! @documentAccount
   version: CommitID! @documentVersion
@@ -10,6 +12,7 @@ type Post
   title: String! @string(minLength: 10, maxLength: 100)
   text: String! @string(maxLength: 2000)
   ranking: Int!
+  share: Float
 }
 `
 

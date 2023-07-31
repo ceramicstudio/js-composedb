@@ -408,3 +408,43 @@ exports[`runtime create and query post with filters 1`] = `
   },
 }
 `;
+
+exports[`runtime create and query post with filters 2`] = `
+{
+  "data": {
+    "viewer": {
+      "postList": {
+        "edges": [
+          {
+            "node": {
+              "ranking": 4,
+              "text": "Second post content",
+              "title": "A second post",
+            },
+          },
+        ],
+      },
+    },
+  },
+}
+`;
+
+exports[`runtime create and query post with filters 3`] = `
+{
+  "data": {
+    "viewer": {
+      "postList": {
+        "edges": [
+          {
+            "node": {
+              "ranking": 7,
+              "text": "Third post content",
+              "title": "A third post",
+            },
+          },
+        ],
+      },
+    },
+  },
+}
+`;
