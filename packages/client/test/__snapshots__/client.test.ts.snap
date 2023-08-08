@@ -49,17 +49,78 @@ exports[`client create and query post with comments 1`] = `
 }
 `;
 
-exports[`client create and query post with filters 1`] = `
+exports[`client create and query ratings with filters and ordering 1`] = `
 {
   "data": {
     "viewer": {
-      "postList": {
+      "ratingList": {
         "edges": [
           {
             "node": {
-              "ranking": 5,
-              "text": "First post content",
-              "title": "A first post",
+              "title": "one",
+              "value": 5,
+            },
+          },
+        ],
+      },
+    },
+  },
+}
+`;
+
+exports[`client create and query ratings with filters and ordering 2`] = `
+{
+  "data": {
+    "viewer": {
+      "ratingList": {
+        "edges": [
+          {
+            "node": {
+              "title": "two",
+              "value": 2.5,
+            },
+          },
+          {
+            "node": {
+              "title": "three",
+              "value": 3.5,
+            },
+          },
+          {
+            "node": {
+              "title": "one",
+              "value": 5,
+            },
+          },
+        ],
+      },
+    },
+  },
+}
+`;
+
+exports[`client create and query ratings with filters and ordering 3`] = `
+{
+  "data": {
+    "viewer": {
+      "ratingList": {
+        "edges": [
+          {
+            "node": {
+              "title": "one",
+              "value": 5,
+            },
+          },
+          {
+            "node": {
+              "title": "three",
+              "value": 3.5,
+            },
+          },
+          {
+            "node": {
+              "title": "two",
+              "value": 2.5,
             },
           },
         ],

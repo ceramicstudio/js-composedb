@@ -8,6 +8,7 @@ import {
   loadPostSchemaWithComments,
   postSchema,
   profilesSchema,
+  ratingSchema,
 } from '@composedb/test-schemas'
 import type { Executor } from '@graphql-tools/utils'
 import { jest } from '@jest/globals'
@@ -61,11 +62,11 @@ describe('client', () => {
       }
     `
     await client.executeQuery(createPostMutation, {
-      input: { content: { title: 'A first post', text: 'First post content', ranking: 1 } },
+      input: { content: { title: 'A first post', text: 'First post content' } },
     })
     const postRes = await client.executeQuery<{ createPost: { document: { id: string } } }>(
       createPostMutation,
-      { input: { content: { title: 'A second post', text: 'Second post content', ranking: 2 } } },
+      { input: { content: { title: 'A second post', text: 'Second post content' } } },
     )
     const postID = postRes.data?.createPost.document.id
     expect(postID).toBeDefined()
@@ -116,37 +117,38 @@ describe('client', () => {
     expect(res).toMatchSnapshot()
   }, 60000)
 
-  test('create and query post with filters', async () => {
-    const composite = await Composite.create({ ceramic, schema: postSchema })
-    const definition = composite.toRuntime()
-    const client = new ComposeClient({ ceramic, definition })
+  test('create and query ratings with filters and ordering', async () => {
+    const composite = await Composite.create({ ceramic, schema: ratingSchema })
+    const client = new ComposeClient({ ceramic, definition: composite.toRuntime() })
 
-    const createPostMutation = `
-      mutation CreatePost($input: CreatePostInput!) {
-        createPost(input: $input) {
+    const createRatingMutation = `
+      mutation CreateRating($input: CreateRatingInput!) {
+        createRating(input: $input) {
           document {
             id
           }
         }
       }
     `
-    await client.executeQuery(createPostMutation, {
-      input: { content: { title: 'A first post', text: 'First post content', ranking: 5 } },
+    await client.executeQuery(createRatingMutation, {
+      input: { content: { title: 'one', value: 5 } },
     })
-    await client.executeQuery(createPostMutation, {
-      input: { content: { title: 'A second post', text: 'Second post content', ranking: 4 } },
+    await client.executeQuery(createRatingMutation, {
+      input: { content: { title: 'two', value: 2.5 } },
+    })
+    await client.executeQuery(createRatingMutation, {
+      input: { content: { title: 'three', value: 3.5 } },
     })
 
-    const res = await client.executeQuery(
+    const filtered = await client.executeQuery(
       `
       query {
         viewer {
-          postList(filters: { where: { ranking : { greaterThan: 4 } } }, first: 5) {
+          ratingList(filters: { where: { value : { greaterThan: 4 } } }, first: 5) {
             edges {
               node {
                 title
-                text
-                ranking
+                value
               }
             }
           }
@@ -154,7 +156,43 @@ describe('client', () => {
       }
       `,
     )
-    expect(res).toMatchSnapshot()
+    expect(filtered).toMatchSnapshot()
+
+    const ascending = await client.executeQuery(
+      `
+      query {
+        viewer {
+          ratingList(sorting: { value: ASC }, first: 5) {
+            edges {
+              node {
+                title
+                value
+              }
+            }
+          }
+        }
+      }
+      `,
+    )
+    expect(ascending).toMatchSnapshot()
+
+    const descending = await client.executeQuery(
+      `
+      query {
+        viewer {
+          ratingList(sorting: { value: DESC }, first: 5) {
+            edges {
+              node {
+                title
+                value
+              }
+            }
+          }
+        }
+      }
+      `,
+    )
+    expect(descending).toMatchSnapshot()
   }, 60000)
 
   test('with remote executor', async () => {

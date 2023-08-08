@@ -80,11 +80,6 @@ exports[`Runtime format Post with comments relations 1`] = `
         "required": false,
         "type": "datetime",
       },
-      "ranking": {
-        "indexed": true,
-        "required": true,
-        "type": "integer",
-      },
       "text": {
         "required": true,
         "type": "string",
@@ -167,10 +162,6 @@ exports[`Runtime format Post with comments relations 2`] = `
       "date": {
         "required": false,
         "type": "datetime",
-      },
-      "ranking": {
-        "required": true,
-        "type": "integer",
       },
       "text": {
         "required": true,
@@ -270,10 +261,6 @@ exports[`Runtime format Post with comments relations 3`] = `
       "date": {
         "required": false,
         "type": "datetime",
-      },
-      "ranking": {
-        "required": true,
-        "type": "integer",
       },
       "text": {
         "required": true,

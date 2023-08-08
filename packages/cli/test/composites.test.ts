@@ -62,7 +62,7 @@ describe('composites', () => {
       ])
       const output = create.stdout.toString()
       expect(output.includes('"version":"1.0"')).toBe(true)
-      expect(output.includes('"indices":{"Post"')).toBe(true)
+      expect(output.includes('"indices":{"')).toBe(true)
       expect(output.includes('"aliases":')).toBe(true)
       expect(output.includes('"views":')).toBe(true)
     }, 60000)
