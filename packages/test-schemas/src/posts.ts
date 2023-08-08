@@ -2,14 +2,12 @@ export const postSchema = `
 type Post 
   @createModel(accountRelation: LIST, description: "Simple post") 
   @createIndex(fields: [{path:["title"]}]) 
-  @createIndex(fields: [{path:["ranking"]}])
 {
   author: DID! @documentAccount
   version: CommitID! @documentVersion
   date: DateTime
   title: String! @string(minLength: 10, maxLength: 100)
   text: String! @string(maxLength: 2000)
-  ranking: Int!
 }
 `
 
