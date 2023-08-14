@@ -580,6 +580,7 @@ export class Composite {
       Object.assign(nextParams.commits, commits)
       Object.assign(nextDefinition.models, definition.models)
       Object.assign(nextDefinition.aliases, def.aliases)
+      Object.assign(nextDefinition.indices, def.indices)
       merge(nextDefinition.views, def.views)
       for (const name of def.commonEmbeds) {
         collectedEmbeds.add(name)
