@@ -10,6 +10,8 @@ import {
   loadPostSchemaWithComments,
   postSchema,
   profilesSchema,
+  noteSchema,
+  ratingSchema,
 } from '@composedb/test-schemas'
 import type { ModelDefinition } from '@composedb/types'
 import { jest } from '@jest/globals'
@@ -550,6 +552,16 @@ describe('composite', () => {
           models: {},
           root: { foo: 'test' },
         })
+      })
+
+      test('with indices', async () => {
+        const postComposite = await Composite.create({ ceramic, schema: postSchema })
+        const ratingComposite = await Composite.create({ ceramic, schema: ratingSchema })
+        const noteComposite = await Composite.create({ ceramic, schema: noteSchema })
+        const mergedComposite = postComposite.merge([ratingComposite, noteComposite]).toJSON()
+        expect(mergedComposite).toHaveProperty('indices.Post')
+        expect(mergedComposite).toHaveProperty('indices.Rating')
+        expect(mergedComposite).toHaveProperty('indices.Note')
       })
     })
   })
