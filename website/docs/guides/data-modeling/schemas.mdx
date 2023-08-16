@@ -86,7 +86,12 @@ type Learner {
 
 ### Directives
 
-Directives are keywords that help add validation rules to a scalar. Not all scalars need to have directives, though Strings are required to have a maxLength. Let’s add directives to the two shapes used in this guide:
+ComposeDB comes with [a list of different directives](../../api/sdl/directives.mdx) that can be used to create or load data models, define type validation rules, and create indices 
+for specific fields which enables them to be used for document filtering and sorting. 
+
+#### Type validation directives
+
+Directives are keywords that add validation rules to a scalar. Not all scalars need to have directives, though Strings are required to have a maxLength. Let’s add directives to the two shapes used in this guide:
 
 ```graphql
 type EducationModule {
@@ -109,6 +114,33 @@ Where:
 - `@string` adds validation rules to values that are strings, e.g. minimum and maximum length
 - `@int` adds validation rules to values that are integers, e.g. minimum and maximum values
 - `@list` adds validation rules to an array, e.g. maximum length
+
+
+#### Directives for creating indices 
+
+To be able to filter the query results by a specific field and sort them in a specific order, 
+you are required to create indices for corresponding fields. In ComposeDB indices work the 
+same way as in traditional databases - they speed up querying processes. You can create indices 
+for specific fields using `@createIndex` directive as follows:
+
+```graphql
+type Posts @createModel(accountRelation: LIST, description: "A simple Post")
+@createIndex(fields: [{path: "title"}])
+@createIndex(fields: [{path: "tag"}])
+@createIndex(fields: [{path: "created_at"}])
+{
+    title: String! @string(minLength: 1, maxLength: 100)
+    body: String! @string(minLength: 1, maxLength: 100)
+    tag: String! @string(minLength: 1, maxLength: 100)
+    ranking: Int!
+    created_at: DateTime!
+}
+```
+
+The example above will create indices for the fields `title`, `tag` and `created_at`, and will enable you to filter the documents based on the values in these fields as well as sort the results in a specified order. 
+
+You can create indices for individual or multiple fields in your data models.
+
 
 ## Next Steps
 

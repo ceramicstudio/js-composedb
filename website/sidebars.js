@@ -151,6 +151,7 @@ const sidebars = {
       items: [
         { type: 'doc', id: 'guides/data-interactions/queries', label: 'Queries' },
         { type: 'doc', id: 'guides/data-interactions/mutations', label: 'Mutations' },
+        { type: 'doc', id: 'guides/data-interactions/filtering-and-sorting', label: 'Filtering and Sorting' },
       ],
     },
   ],
