@@ -152,6 +152,284 @@ query ($id: ID!) {
 }
 ```
 
+## Query filtering and sorting
+
+Query filtering and sorting allows you to filter the query results based on specific fields and sort the results in a specified order. This guide dives deeper into how you can write queries to filter and sort the returned documents.
+
+### Query filtering
+
+When building your application you might want to filter the query results based on a specific condition. There are two types of conditions you can define for filtering the documents:
+
+- [value conditions](../../api/runtime/schema.mdx#value-conditions)  - simple conditions that apply to a single field in a document
+- [logical conditions](../../api/runtime/schema.mdx#logical-conditions) - multiple conditions that create more complex filtering
+
+#### Create indices
+
+If you want a specific field in your data model to be used as a filter, you have to create an index for that specific field. This can be done using using `@createIndex` directive in your data model graphql schema.
+
+For example, let’s say we would like to be able to filter the documents stored in the `Posts` model by fields `title`, `tag`, `ranking` and `created_at`. To define the indices for these fields we are going to update the model schema definition as follows:
+
+```graph
+type Posts @createModel(accountRelation: LIST, description: "A simple Post")
+@createIndex(fields: [{path: "title"}])
+@createIndex(fields: [{path: "tag"}])
+@createIndex(fields: [{path: "ranking"}])
+@createIndex(fields: [{path: "created_at"}])
+{
+    title: String! @string(minLength: 1, maxLength: 100)
+    body: String! @string(minLength: 1, maxLength: 100)
+    tag: String! @string(minLength: 1, maxLength: 100)
+    ranking: Int!
+    created_at: DateTime!
+}
+```
+
+We can then create some example data with different inputs by running a series of [mutations](./mutations.mdx#create-data) like the following:
+
+Create post:
+
+```graphql
+mutation CreatePosts($input: CreatePostsInput!){
+  createPosts(input: $input){
+    document{
+      title
+      body
+      tag
+      ranking
+      created_at
+    }
+  }
+}
+```
+
+Content for the post:
+
+```json
+{
+  "input": {
+    "content": {
+      "title": "Let's talk about web3",
+      "body": "This is my first tutorial covering web3",
+      "tag": "tutorial",
+      "ranking": 10,
+      "created_at": "2023-07-11T10:02:08.190Z"
+    }
+  }
+}
+```
+
+With indices defined and some data available we can now perform various queries with filters applied to specific fields.
+
+#### Filter documents based on value conditions
+
+ComposeDB enables you to filter documents based on specific [value conditions](../../api/runtime/schema.mdx#value-conditions) applied to a specific field. Below is an example query that filters posts based on the post ranking. Key things to understand about the query in the example below:
+
+- variable `input` of a type `PostsFiltersInput` allows the `postsIndex` to be filtered by a specified condition
+- the `input` variable below defines the condition that is used to filter the documents. In this specific example, the query will return the documents that have a ranking greater than `8`.
+
+Query:
+
+```graphql
+query MyQuery($input:PostsFiltersInput!) {
+  postsIndex(filters:$input, first:5){
+    edges{
+      node{
+        title
+        body
+        created_at
+		ranking
+		tag
+      }
+    }
+  }
+}
+```
+
+Filtering condition:
+
+```json
+{
+  "input":{
+    "where": {
+      "ranking":{
+        "greaterThan": 8
+      }
+    }
+  }
+}
+
+```
+
+Let’s look at a few more examples of what queries with filters you can write. We will reuse the same query called `MyQuery` as above and will modify the query conditions.
+
+Return all documents where the field `tag` is not null:
+
+```json
+{
+  "input":{
+    "where": {
+      "tag":{
+        "isNull": false
+      }
+    }
+  }
+}
+
+```
+
+Return all documents where the field tag has a value `tutorial` or `guide`:
+
+```json
+{
+  "input":{
+    "where": {
+      "tag":{
+        "in": ["tutorial", "guide"]
+      }
+    }
+  }
+}
+```
+
+Return documents that were created after a specific date:
+
+```json
+{
+   "input":{
+         "where":{
+            "created_at":{
+               "greaterThan":"2023-05-12",
+             }
+         }
+     }
+}
+
+```
+
+Check out the reference for a full list of available [value conditions](../../api/runtime/schema.mdx#value-conditions).
+
+#### Filter documents using logical conditions
+
+In addition to filtering documents based on values of a specific field, you might want to write more complex queries that would include logical conditions like `and`, `or` or `not`. 
+
+This can be achieved by defining logical conditions like the example below. Here, we are using `and` logical condition in the input variable. This query will return the documents that have a tag `update` and were created before the date 2023-08-10:
+
+Query:
+
+```graphql
+query MyQuery($input:PostsFiltersInput!) {
+  postsIndex(filters:$input, first:5){
+    edges{
+      node{
+        title
+        body
+        created_at
+        ranking
+        tag
+      }
+    }
+  }
+}
+```
+
+Filtering condition:
+
+```json
+{
+   "input":{
+      "and":[
+         {
+            "where":{
+               "tag":{
+                  "equalTo":"update"
+               }
+            }
+         },
+         {
+            "where":{
+               "created_at":{
+                  "lessThan":"2023-08-10"
+               }
+            }
+         }
+      ]
+   }
+}
+```
+
+Similarly, you can filter the documents based on the range of values. For example, let's say you would like to return the documents created between `2023-04-01` and `2023-08-01`:
+
+```json
+{
+   "input":{
+      "and":[
+         {
+            "where":{
+               "created_at":{
+                  "greaterThenOrEqualTo":"2023-04-01"
+               }
+            }
+         },
+         {
+            "where":{
+               "created_at":{
+                  "lessThanOrEqualTo":"2023-08-01"
+               }
+            }
+         }
+      ]
+   }
+}
+```
+
+### Sorting
+
+Sorting allows you to sort the returned documents by a specified order - `ascending` or `descending`. For a field to be used for sorting the results, it needs to have an index created just like we specified in [Create Indices](#create-indices) section of this guide.
+
+Below is an example query that returns the document stored in a Posts model, filtered by a specified date and ordered in an ascending order based on the `title` field. Key things to understand about the query defined below:
+
+- variable `sortinput` of a type `PostsSortingInput`  allows the postsIndex to be sorted using a specified ordering option.
+- The `sortinput` variable below defines the field and the sorting order. In this example, the results will be sorted in an ascending order based on the `title` field.
+
+Query:
+
+```graphql
+query MyQuery($input:PostsFiltersInput!, $sortinput:PostsSortingInput!) {
+  postsIndex(filters:$input, sorting:$sortinput, first:5){
+    edges{
+      node{
+        title
+        body
+        created_at
+        ranking
+        tag
+      }
+    }
+  }
+}
+```
+Filtering and sorting condition:
+
+```json
+{
+   "input":{
+         "where":{
+            "created_at":{
+               "greaterThan":"2023-05-12",
+             }
+         }
+   },
+   "sortinput":{
+      "title":"ASC"
+   }
+}
+```
+
+Sorting documents by multiple fields is technically supported by ComposeDB, however, we don’t advice sorting documents by multiple fields as the order of which fields will be used for sorting cannot be guaranteed. 
+
+Check out the reference for more details about [sorting](../../api/runtime/schema.mdx#sorting).
+
+
 ## Things to Know
 ---
 ComposeDB client automatically generates a GraphQL Schema from a compiled composite. It includes two objects: a  `CeramicAccount` object and a root `Query` object used as an entrypoint to access the graph.
@@ -169,6 +447,10 @@ The `Query` object provides entrypoints for accessing data in the graph, using
 - `node(id: ID!): Node`: loads any `Node` (account or document) by its `id`
 - `viewer: CeramicAccount`: the account attached to the Ceramic instance, if authenticated
 - Other fields will be generated based on the models present in the definition, providing entry-points by querying the index
+
+
+
+
 
 ## Next Steps
 ---
