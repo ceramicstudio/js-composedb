@@ -295,13 +295,13 @@ Return documents that were created after a specific date:
 
 ```json
 {
-   "input":{
-         "where":{
-            "created_at":{
-               "greaterThan":"2023-05-12",
-             }
-         }
-     }
+  "input":{
+    "where":{
+      "created_at":{
+        "greaterThan":"2023-05-12",
+      }
+    }
+  }
 }
 
 ```
@@ -336,24 +336,24 @@ query MyQuery($input:PostsFiltersInput!) {
 
 ```json
 {
-   "input":{
-      "and":[
-         {
-            "where":{
-               "tag":{
-                  "equalTo":"update"
-               }
-            }
-         },
-         {
-            "where":{
-               "created_at":{
-                  "lessThan":"2023-08-10"
-               }
-            }
-         }
-      ]
-   }
+  "input":{
+    "and":[
+      {
+        "where":{
+          "tag":{
+            "equalTo":"update"
+          }
+        }
+      },
+      {
+        "where":{
+          "created_at":{
+            "lessThan":"2023-08-10"
+          }
+        }
+      }
+    ]
+  }
 }
 ```
 
@@ -361,30 +361,30 @@ Similarly, you can filter the documents based on a range of values. For example,
 
 ```json
 {
-   "input":{
-      "and":[
-         {
-            "where":{
-               "created_at":{
-                  "greaterThenOrEqualTo":"2023-04-01"
-               }
-            }
-         },
-         {
-            "where":{
-               "created_at":{
-                  "lessThanOrEqualTo":"2023-08-01"
-               }
-            }
-         }
-      ]
-   }
+  "input":{
+    "and":[
+      {
+        "where":{
+          "created_at":{
+            "greaterThenOrEqualTo":"2023-04-01"
+          }
+        }
+      },
+      {
+        "where":{
+          "created_at":{
+            "lessThanOrEqualTo":"2023-08-01"
+          }
+        }
+      }
+    ]
+  }
 }
 ```
 
 ### Sorting
 
-Sorting allows you to sort the returned documents by a specified order - `ascending` or `descending`. For a field to be used for sorting the returned documents, it needs to have an index created just like we specified in [Create Indices](#create-indices) section of this guide.
+Sorting allows you to sort the returned documents by a specified order - ascending, specified as `ASC`, or descending, speficied as `DESC`. For a field to be used for sorting the returned documents, it needs to have an index created just like we specified in [Create Indices](#create-indices) section of this guide.
 
 Below is an example query that returns the document stored in a Posts model, filtered by a specified date and ordered in an ascending order based on the `title` field. Key things to understand about the query defined below:
 
@@ -412,16 +412,16 @@ Filtering and sorting condition:
 
 ```json
 {
-   "input":{
-         "where":{
-            "created_at":{
-               "greaterThan":"2023-05-12",
-             }
-         }
-   },
-   "sortinput":{
-      "title":"ASC"
-   }
+  "input":{
+    "where":{
+      "created_at":{
+        "greaterThan":"2023-05-12"
+      }
+    }
+  },
+  "sortinput":{
+    "title":"ASC"
+  }
 }
 ```
 
