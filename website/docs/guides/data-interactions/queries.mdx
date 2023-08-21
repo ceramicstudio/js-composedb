@@ -154,7 +154,7 @@ query ($id: ID!) {
 
 ## Query filtering and sorting
 
-Query filtering and sorting allows you to filter the query results based on specific fields and sort the results in a specified order. This guide dives deeper into how you can write queries to filter and sort the returned documents.
+Query filtering and sorting allows you to filter the query results based on specific fields and sort the results in a specified order.
 
 ### Query filtering
 
@@ -186,8 +186,8 @@ type Posts @createModel(accountRelation: LIST, description: "A simple Post")
 
 We can then create some example data with different inputs by running a series of [mutations](./mutations.mdx#create-data) like the following:
 
-Create post:
 
+*Query to create a post:*
 ```graphql
 mutation CreatePosts($input: CreatePostsInput!){
   createPosts(input: $input){
@@ -202,8 +202,8 @@ mutation CreatePosts($input: CreatePostsInput!){
 }
 ```
 
-Content for the post:
 
+*Input variable with content for the post:*
 ```json
 {
   "input": {
@@ -227,7 +227,7 @@ ComposeDB enables you to filter documents based on specific [value conditions](.
 - variable `input` of a type `PostsFiltersInput` allows the `postsIndex` to be filtered by a specified condition
 - the `input` variable below defines the condition that is used to filter the documents. In this specific example, the query will return the documents that have a ranking greater than `8`.
 
-Query:
+*Query:*
 
 ```graphql
 query MyQuery($input:PostsFiltersInput!) {
@@ -245,7 +245,7 @@ query MyQuery($input:PostsFiltersInput!) {
 }
 ```
 
-Filtering condition:
+*Filtering condition:*
 
 ```json
 {
@@ -260,7 +260,7 @@ Filtering condition:
 
 ```
 
-Let’s look at a few more examples of what queries with filters you can write. We will reuse the same query called `MyQuery` as above and will modify the query conditions.
+Let’s look at a few more examples of what queries with value conditions you can write. We will reuse the same query called `MyQuery` as above and will only modify the query conditions.
 
 Return all documents where the field `tag` is not null:
 
@@ -314,7 +314,7 @@ In addition to filtering documents based on values of a specific field, you migh
 
 This can be achieved by defining logical conditions like the example below. Here, we are using `and` logical condition in the input variable. This query will return the documents that have a tag `update` and were created before the date 2023-08-10:
 
-Query:
+*Query:*
 
 ```graphql
 query MyQuery($input:PostsFiltersInput!) {
@@ -332,7 +332,7 @@ query MyQuery($input:PostsFiltersInput!) {
 }
 ```
 
-Filtering condition:
+*Filtering condition:*
 
 ```json
 {
@@ -357,7 +357,7 @@ Filtering condition:
 }
 ```
 
-Similarly, you can filter the documents based on the range of values. For example, let's say you would like to return the documents created between `2023-04-01` and `2023-08-01`:
+Similarly, you can filter the documents based on a range of values. For example, let's say you would like to return the documents created between `2023-04-01` and `2023-08-01`:
 
 ```json
 {
@@ -384,12 +384,12 @@ Similarly, you can filter the documents based on the range of values. For exampl
 
 ### Sorting
 
-Sorting allows you to sort the returned documents by a specified order - `ascending` or `descending`. For a field to be used for sorting the results, it needs to have an index created just like we specified in [Create Indices](#create-indices) section of this guide.
+Sorting allows you to sort the returned documents by a specified order - `ascending` or `descending`. For a field to be used for sorting the returned documents, it needs to have an index created just like we specified in [Create Indices](#create-indices) section of this guide.
 
 Below is an example query that returns the document stored in a Posts model, filtered by a specified date and ordered in an ascending order based on the `title` field. Key things to understand about the query defined below:
 
 - variable `sortinput` of a type `PostsSortingInput`  allows the postsIndex to be sorted using a specified ordering option.
-- The `sortinput` variable below defines the field and the sorting order. In this example, the results will be sorted in an ascending order based on the `title` field.
+- the `sortinput` variable below defines the field that will be used for sorting and the sorting order. In this example, the results will be sorted in an ascending order based on the `title` field.
 
 Query:
 
