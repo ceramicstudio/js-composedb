@@ -12,7 +12,7 @@ The first step to build with ComposeDB is setting up your development environmen
 **Supported operating systems:**
 - Linux
 - Mac 
-- Windows (**only WSL2**)
+- Windows (**only [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) **)
 
 :::
 
@@ -438,7 +438,7 @@ Copy this authenticated DID key and store it in a secure place, just like with y
 ### Using your account
 
 The very first time you spin up a Ceramic node, a node configuration file is automatically created for you where you can configure how your node is operated. Here you have to provide the DID key which is authorised to interact with the Admin API.
-The Ceramic node configuration file will be created inside of the automatically created directory `./ceramic` which can be access using the following command:
+The Ceramic node configuration file will be created inside of the automatically created directory `./ceramic` in your home directory (usually `/home/USERNAME/` on Linux or `/Users/USERNAME/` on Mac). This directory can be accessed using the following command:
 
 ```bash
 cd ~/.ceramic
@@ -448,7 +448,7 @@ Inside of this directory you should see the following files:
 - `daemon.config.json` - your Ceramic node configuration file
 - `statestore` - a local directory for [persisting the data](https://developers.ceramic.network/run/nodes/nodes/#ceramic-state-store) 
 
-Apen the `daemon.config.json` file using your preferred code editor and provide the authenticated DID, generated in the [generate your account](#generate-your-account) step of this guide, in the `admin-dids` section of the file as shown below:
+Open the `daemon.config.json` file using your preferred code editor and provide the authenticated DID, generated in the [generate your account](#generate-your-account) step of this guide, in the `admin-dids` section of the file as shown below:
 
 ```json
 {
@@ -465,7 +465,7 @@ Apen the `daemon.config.json` file using your preferred code editor and provide 
 ```
 
 Save this file and restart your Ceramic node for the changes to be applied. To do that, simply stop the process that is running the Ceramic node by hitting `ctrl+C` on your keyboard 
-and spinning the node once again by following the steps in the [Confirmation](#confirmation) step of this guide.
+and spin up the node once again by following the steps in the [Confirmation](#confirmation) section of this guide.
 
 ### Confirmation
 ---
