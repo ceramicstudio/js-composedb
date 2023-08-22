@@ -3,7 +3,19 @@ import TabItem from '@theme/TabItem'
 
 # Set up your environment
 
-The first step to build with ComposeDB is setting up your development environment. This guide will show you how to install and configure relevant packages and tools.
+The first step to build with ComposeDB is setting up your development environment. Currently, there are two ways of how you can configure your working environment:
+- [Using the Wheel](#installation-using-wheel) - the recommended and the easiest way to configure your working environment and install the necessary dependencies.
+- [Using JavaScript package managers](#installation-using-javascript-package-managers) - an alternative, more manual, way to configure your working environment which supports `npm`, `pnpm` and `yarn`.
+
+:::note
+
+**Supported operating systems:**
+- Linux
+- Mac 
+- Windows (**only [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) **)
+
+:::
+
 
 ## Installation using Wheel
 
@@ -383,14 +395,8 @@ yarn dlx @ceramicnetwork/cli daemon
 If you see the following output in your terminal, that means you have successfully started a local node and connected to Clay testnet 🚀
 
 ```bash
-IMPORTANT: Ceramic API running on 0.0.0.0:7007'
+IMPORTANT: Ceramic API running on 0.0.0.0:7007
 ```
-
-:::note
-
-After you start a node, a node configuration file is created. Later in this guide, you’ll be editing this file. You can find it at the following path: `~/.ceramic/daemon.config.json`
-
-:::
 
 ### Developer Account
 ---
@@ -417,11 +423,32 @@ Indexing is one of the key features of ComposeDB. In order to notify the Ceramic
 composedb did:from-private-key your-private-key
 ```
 
-⚠️ Copy this authenticated DID key and store it in a secure place, just like with your private key above. This DID key will have to be provided in your Ceramic node’s configuration file which will ensure that only authorized users can make changes to your application, e.g. deploy models on your Ceramic node.
+The generated DID key will have the following format:
+
+```json
+did:key:...
+```
+
+:::caution
+
+Copy this authenticated DID key and store it in a secure place, just like with your private key above. This DID key will have to be provided in your Ceramic node’s configuration file which will ensure that only authorized users can make changes to your application, e.g. deploy models on your Ceramic node.
+
+:::
 
 ### Using your account
 
-Provide the authenticated DID by opening the node configuration file which defaults to `~/.ceramic/daemon.config.json` and specifying it in the `admin-dids` section of the file as shown below:
+The very first time you spin up a Ceramic node, a node configuration file is automatically created for you where you can configure how your node is operated. Here you have to provide the DID key which is authorised to interact with the Admin API.
+The Ceramic node configuration file will be created inside of the automatically created directory `./ceramic` in your home directory (usually `/home/USERNAME/` on Linux or `/Users/USERNAME/` on Mac). This directory can be accessed using the following command:
+
+```bash
+cd ~/.ceramic
+```
+
+Inside of this directory you should see the following files:
+- `daemon.config.json` - your Ceramic node configuration file
+- `statestore` - a local directory for [persisting the data](https://developers.ceramic.network/run/nodes/nodes/#ceramic-state-store) 
+
+Open the `daemon.config.json` file using your preferred code editor and provide the authenticated DID, generated in the [generate your account](#generate-your-account) step of this guide, in the `admin-dids` section of the file as shown below:
 
 ```json
 {
@@ -437,7 +464,8 @@ Provide the authenticated DID by opening the node configuration file which defau
 }
 ```
 
-Save this file. By this point you should have your development environment and all configurations in place to get started working on your application.
+Save this file and restart your Ceramic node for the changes to be applied. To do that, simply stop the process that is running the Ceramic node by hitting `ctrl+C` on your keyboard 
+and spin up the node once again by following the steps in the [Confirmation](#confirmation) section of this guide.
 
 ### Confirmation
 ---
@@ -451,8 +479,11 @@ ceramic daemon --network=testnet-clay
 Once again, you should see your local Ceramic node up and running as follows:
 
 ```bash
-IMPORTANT: Ceramic API running on 0.0.0.0:7007'
+IMPORTANT: Ceramic API running on 0.0.0.0:7007
 ```
+
+By this point you should have your development environment and all configurations in place to get started working on your application.
+
 
 ## Next Steps
 ---
