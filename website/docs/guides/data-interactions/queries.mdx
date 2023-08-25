@@ -382,6 +382,25 @@ Similarly, you can filter the documents based on a range of values. For example,
 }
 ```
 
+Note: the query above can also be written in a less verbose way as shown below. Under the hood, this filtering condition 
+will use the same `and` logic as the example written above:
+
+```json
+{
+  "input":{      
+    "where":{
+      "created_at":{
+        "greaterThenOrEqualTo":"2023-04-01",
+        "lessThanOrEqualTo":"2023-08-01"
+      }
+    }    
+  }
+}
+```
+Check out the [reference](../../api/runtime/schema.mdx#logical-conditions) for more examples of how you can write queries with logical conditions.
+
+
+
 ### Sorting
 
 Sorting allows you to sort the returned documents by a specified order - ascending, specified as `ASC`, or descending, speficied as `DESC`. For a field to be used for sorting the returned documents, it needs to have an index created just like we specified in [Create Indices](#create-indices) section of this guide.
