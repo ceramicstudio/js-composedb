@@ -189,9 +189,9 @@ We can then create some example data with different inputs by running a series o
 
 *Query to create a post:*
 ```graphql
-mutation CreatePosts($input: CreatePostsInput!){
-  createPosts(input: $input){
-    document{
+mutation CreatePosts($input: CreatePostsInput!) {
+  createPosts(input: $input) {
+    document {
       title
       body
       tag
@@ -231,9 +231,9 @@ ComposeDB enables you to filter documents based on specific [value conditions](.
 
 ```graphql
 query MyQuery($input:PostsFiltersInput!) {
-  postsIndex(filters:$input, first:5){
-    edges{
-      node{
+  postsIndex(filters:$input, first:5) {
+    edges {
+      node {
         title
         body
         created_at
@@ -249,9 +249,9 @@ query MyQuery($input:PostsFiltersInput!) {
 
 ```json
 {
-  "input":{
+  "input": {
     "where": {
-      "ranking":{
+      "ranking": {
         "greaterThan": 8
       }
     }
@@ -266,9 +266,9 @@ Return all documents where the field `tag` is not null:
 
 ```json
 {
-  "input":{
+  "input": {
     "where": {
-      "tag":{
+      "tag": {
         "isNull": false
       }
     }
@@ -281,9 +281,9 @@ Return all documents where the field tag has a value `tutorial` or `guide`:
 
 ```json
 {
-  "input":{
+  "input": {
     "where": {
-      "tag":{
+      "tag": {
         "in": ["tutorial", "guide"]
       }
     }
@@ -295,10 +295,10 @@ Return documents that were created after a specific date:
 
 ```json
 {
-  "input":{
-    "where":{
-      "created_at":{
-        "greaterThan":"2023-05-12",
+  "input": {
+    "where": {
+      "created_at": {
+        "greaterThan":"2023-05-12"
       }
     }
   }
@@ -312,15 +312,15 @@ Check out the reference for a full list of available [value conditions](../../ap
 
 In addition to filtering documents based on values of a specific field, you might want to write more complex queries that would include logical conditions like `and`, `or` or `not`. 
 
-This can be achieved by defining logical conditions like the example below. Here, we are using `and` logical condition in the input variable. This query will return the documents that have a tag `update` and were created before the date 2023-08-10:
+This can be achieved by defining logical conditions like the example below. Here, we are using `or` logical condition in the input variable. This query will return the documents that have a tag `update` or were created before the date 2023-08-10:
 
 *Query:*
 
 ```graphql
 query MyQuery($input:PostsFiltersInput!) {
-  postsIndex(filters:$input, first:5){
-    edges{
-      node{
+  postsIndex(filters:$input, first:5) {
+    edges {
+      node {
         title
         body
         created_at
@@ -336,18 +336,18 @@ query MyQuery($input:PostsFiltersInput!) {
 
 ```json
 {
-  "input":{
-    "and":[
+  "input": {
+    "or": [
       {
-        "where":{
-          "tag":{
+        "where": {
+          "tag": {
             "equalTo":"update"
           }
         }
       },
       {
-        "where":{
-          "created_at":{
+        "where": {
+          "created_at": {
             "lessThan":"2023-08-10"
           }
         }
@@ -361,18 +361,18 @@ Similarly, you can filter the documents based on a range of values. For example,
 
 ```json
 {
-  "input":{
-    "and":[
+  "input": {
+    "and": [
       {
-        "where":{
-          "created_at":{
+        "where": {
+          "created_at": {
             "greaterThenOrEqualTo":"2023-04-01"
           }
         }
       },
       {
-        "where":{
-          "created_at":{
+        "where": {
+          "created_at": {
             "lessThanOrEqualTo":"2023-08-01"
           }
         }
@@ -381,6 +381,48 @@ Similarly, you can filter the documents based on a range of values. For example,
   }
 }
 ```
+
+Note: while writing the queries in a verbose way enables you to avoid ambiguity, there is a possibility to write shorter queries that imply the expected logic. For example, 
+the query above that is querying and filtering the documents based on a range of dates can also be written in a less verbose way as shown below. Under the hood, this filtering 
+condition will use the same and logic as the example written above.
+
+```json
+{
+  "input": {      
+    "where": {
+      "created_at": {
+        "greaterThenOrEqualTo":"2023-04-01",
+        "lessThanOrEqualTo":"2023-08-01"
+      }
+    }    
+  }
+}
+```
+
+Similarly, you can have multiple fields in a single `where` statement with implicit `and` logic. The query below will return the documents that were created 
+within a specified date range and have either `tutorial` or `guide` tag:
+
+```json
+{
+  "input": {
+    "where": {
+      "created_at": {
+        "greaterThanOrEqualTo":"2023-04-01",
+        "lessThanOrEqualTo":"2023-08-01"
+      },
+      "tag": {
+        "in": ["tutorial", "guide"]
+      }
+    }
+  }
+}
+```
+
+
+
+Check out the [reference](../../api/runtime/schema.mdx#logical-conditions) for more examples of how you can write queries with logical conditions.
+
+
 
 ### Sorting
 
@@ -395,9 +437,9 @@ Query:
 
 ```graphql
 query MyQuery($input:PostsFiltersInput!, $sortinput:PostsSortingInput!) {
-  postsIndex(filters:$input, sorting:$sortinput, first:5){
-    edges{
-      node{
+  postsIndex(filters:$input, sorting:$sortinput, first:5) {
+    edges {
+      node {
         title
         body
         created_at
@@ -412,14 +454,14 @@ Filtering and sorting condition:
 
 ```json
 {
-  "input":{
-    "where":{
-      "created_at":{
+  "input": {
+    "where": {
+      "created_at": {
         "greaterThan":"2023-05-12"
       }
     }
   },
-  "sortinput":{
+  "sortinput": {
     "title":"ASC"
   }
 }
