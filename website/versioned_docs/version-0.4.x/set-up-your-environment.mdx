@@ -508,12 +508,16 @@ By this point you should have your development environment and all configuration
 Some questions and issues come up more often than others. We've compiled a list of the most common ones here.
 
 <details>
-  <summary>Which setup method is better: wheel or JavaScript package managers?</summary>
+  <summary>Which setup method is better: Wheel or JavaScript package managers?</summary>
   <div>
     <div>
       Wheel is the recommended and the easiest way to configure your working environment and install
-      all the necessary dependencies. We highly recommended going with wheel if you are just
+      all the necessary dependencies. We highly recommended going with Wheel if you are just
       starting out with Ceramic. Everything will be taken care of for you.
+    </div>
+    <div>
+      You might consider using JavaScript package managers if you are already familiar with Ceramic
+      and need more manual configuration and control over your working environment.
     </div>
   </div>
 </details>
@@ -529,7 +533,7 @@ Some questions and issues come up more often than others. We've compiled a list 
 </details>
 
 <details>
-  <summary>Which node version is preferred?</summary>
+  <summary>Which Node.js version is preferred?</summary>
   <div>
     <div>
       We have seen the best results using Node.js v16. Earlier or later versions can cause issues
@@ -542,7 +546,7 @@ Some questions and issues come up more often than others. We've compiled a list 
   <summary>How long does it take to install the packages?</summary>
   <div>
     <div>
-      Installing everything (either with wheel or JavaScript packages) takes usually between 2 and 5
+      Installing everything (either with Wheel or JavaScript packages) takes usually between 2 and 5
       minutes. Throughout the guide above you can find what kind of output you should be looking for
       to know that everything was installed correctly.
     </div>
@@ -553,10 +557,14 @@ Some questions and issues come up more often than others. We've compiled a list 
   <div>
     <div>
       Sometimes, especially when using JavaScript package managers to install Ceramic and ComposeDB,
-      it's easy to forget that you need to run all of the commands in the app's directory. With
-      JavaScript package managers you need to open 2-3 terminal windows and run different commands,
-      so it's easy to miss that you can be in a wrong directory. Please make sure you run all the
-      commands where they're supposed to run.
+      it's easy to forget that you need to run all of the commands in the app's directory. This
+      directory is either automatically created for you when using Wheel, or you create it manually
+      when using JavaScript package managers.
+    </div>
+    <div>
+      When installing with JavaScript package managers you need to open 2-3 terminal windows and run
+      different commands, so it's easy to miss that you can be in a wrong directory. Please make
+      sure you run all the commands where they're supposed to run.
     </div>
   </div>
 </details>
@@ -566,7 +574,7 @@ Some questions and issues come up more often than others. We've compiled a list 
     <div>
       When installing ComposeDB with JavaScript package managers, at some point you need to edit
       your Ceramic node config file. By default, it's in your home directory, in .ceramic folder
-      (*not* in the app directory). It's easy to miss this details so please check the path. This
+      (*not* in the app directory). It's easy to miss this detail so please check the path. This
       command should take you to the right directory: cd ~/.ceramic
     </div>
   </div>
@@ -574,8 +582,8 @@ Some questions and issues come up more often than others. We've compiled a list 
 <details>
   <summary>How to restart a node after stopping it?</summary>
   <div>
-    When you use wheel to install Ceramic and ComposeDB, it takes care of the whole installation
-    process. But please note that wheel is just an installer, not a node launcher. If you want to
+    When you use Wheel to install Ceramic and ComposeDB, it takes care of the whole installation
+    process. But please note that Wheel is just an installer, not a node launcher. If you want to
     launch Ceramic and ComposeDB again, after you have stopped it, you need to launch Ceramic daemon
     again and then launch ComposeDB.
   </div>
@@ -590,11 +598,12 @@ Some questions and issues come up more often than others. We've compiled a list 
   </div>
 </details>
 <details>
-  <summary>How do I interact with the data once the node is running?</summary>
+  <summary>How do I interact with the data once Ceramic node is running?</summary>
   <div>
     <div>
-      You interact with data through a GraphQL Server. You can find all the details on how to set it
-      up, launch, and interact with your data in section of this guide, "3. Interact with data"
+      The easiest way to interact with data is through a GraphQL Server. You can find all the
+      details on how to set it up, launch, and interact with your data in section of this guide, "3.
+      Interact with data"
     </div>
   </div>
 </details>
@@ -617,14 +626,14 @@ Some questions and issues come up more often than others. We've compiled a list 
   </div>
 </details>
 <details>
-  <summary>What if my question not answered on this page?</summary>
+  <summary>What if my question is not answered on this page?</summary>
   <div>
     <div></div>
     <div>
-      If your question is not answered in this guide, we recommend visiting our Community Forum or
-      joining our Discord server (see links in the footer). There, you can ask your question and get
-      help from our community of developers and users. Both places are great to ask anything: from
-      beginner to expert questions. The community and our developers are there to help you.
+      If your question is not answered in this guide, we recommend visiting our Community Forum (see
+      the link in the footer). There, you can ask your question and get help from our community of
+      developers and users. It's great to ask anything: from beginner to expert questions. The
+      community and our developers are there to help you.
     </div>
   </div>
 </details>
