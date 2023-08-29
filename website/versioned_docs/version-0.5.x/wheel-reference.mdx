@@ -1,0 +1,152 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Wheel reference
+
+This reference explains Wheel prompt options and covers Ceramic configurations in more detail.
+
+## Wheel prompt reference
+
+With Wheel, you can fully customize your working directory. Below you can find a prompt reference
+covering each step of the Wheel prompt.
+
+### Project Type
+
+Your project type based on the project development stage. You can choose one of
+the following options:
+
+- `InMemory` - recommended project type for developers who are new to Ceramic and ComposeDB.
+  It’s the best option for projects in an early prototyping stage and getting familiar with Ceramic stack.
+  This option runs all of the processes in-memory and doesn’t require you to configure Ceramic Anchor Service.
+  This also means that the data generated for your project will not be anchored on a blockchain and will be lost
+  once you close your terminal.
+- `Dev` - or projects in early testing/development stage. This is a recommended option for projects in an early
+  ideation stage or testing. Your node will connect to a dev-unstable network which is a Ceramic network dedicated
+  to testing. Important thing to remember about dev-unstable network is that the data stored on this network is wiped
+  out periodically as part of regular housekeeping. This means that the data streams generated for your project can be lost.
+- `Clay` - for projects in the active development stage. It’s a recommended option for projects that are past the ideation
+  stage. Your node will connect to the clay-testnet network and anchor the data streams so that they are available for you
+  project at any point of the development. Clay testnet, just like dev-unstable network gets wiped out periodically for
+  housekeeping reasons.
+- `Mainnet` - for projects in the production stage. This option will require you to do more advanced configurations for
+  your working environment. Generally, this option is only recommended for generating a production cofiguration file to be
+  used with a production deployment like [Kubernetes](https://composedb.js.org/docs/0.4.x/guides/composedb-server/running-in-the-cloud).
+
+### Project Name
+
+Set the name for your project. You can use a default option ceramic-test-app or type a custom one. This
+name will be used to create a local directory of your project.
+
+### Project Path
+
+Path to your project local directory. You can use the default suggested path or specify a custom one.
+
+### Include Ceramic
+
+An option to install Ceramic CLI and Ceramic dependencies in your working environment.
+Defaults to `Y` - yes. To skip Ceramic installation, type `n`.
+
+### Include ComposeDB
+
+An option to install ComposeDB CLI and dependencies in your working environment.
+Defaults to `Y` - yes. To skip ComposeDB installation, type `n`.
+
+### Include ComposeDB Sample Application?
+
+An option to include and set up an example web3 social application built using ComposeDB
+on Ceramic. This application can be used as an easy way to test ComposeDB features or use
+this project as a basis for a new unique application. Defaults to `n` - no. To opt-in, type `Y`.
+
+### Admin DID Configuration
+
+Indexing is one of the key features of ComposeDB. In order to notify the Ceramic node which models have to be indexed, the
+ComposeDB tools have to interact with the restricted Admin API. Calling the API requires an authenticated Decentralized
+Identifier (DID) to be provided in the node configuration file. You can choose from the following options:
+
+- Generate DID and Private Key - generate a new admin DID as well as a private key (recommended for all new projects)
+- Input From File - you will be given an option to input an existing private key as well as a corresponding admin DID
+
+### File to save DID private key to?
+
+An option to store your DID private key on a specified local file. You can use a default path,
+specify a custom one or skip this step if you don’t want to store a DID private key on a local file by pressing esc on your keyboard.
+
+### CAS URL
+
+`Dev`, `Clay` and `Mainnet` projects run a node that connects to CAS (Ceramic Anchor Service) to create anchor
+commits on the blockchain for the data streams generated for your project. You will be given an option to specify CAS URL - you can
+use the default suggestion (recommended in most of the cases) or specify a custom url if you run your own anchor service.
+
+### CAS Authentication
+
+In order to control the nodes connected to CAS (Ceramic Anchor Service), you will have to [configure the authentication](https://composedb.js.org/docs/0.4.x/guides/composedb-server/access-mainnet).
+This will allow you to set or revoke DIDs for your nodes. You can choose from the following options:
+
+- Email Based Authentication - an email authentication methid. You will be asked to provide an email that will be used to provide you with an OTP code (a passcode) needed for the authentication.
+- IP Based Authentication (Deprecated) - currently deprecated authentication method. Not recommended for new Ceramic users.
+
+### Wheel config file location
+
+Specifies the path to the Wheel configuration file. This file contains all parameters set during the Wheel configuration process. You can use the default suggestion
+or set a custom one.
+
+### Configure Ceramic
+
+When installing Ceramic you can either go with default configurations (recommended if you are new to Ceramic) or you can configure a bunch of parameters for how your node is set up.
+You can choose one of the following options:
+
+- Skip: Use default configuration based on network
+- Advanced: Configure all ceramic options
+
+Check out Ceramic configurations section to learn the details about the parameters you can configure for Basic and Advanced options.
+
+### Would you like ceramic started as a daemon?
+
+An option to start your Ceramic daemon which will spin up the node using the Ceramic configuration you chose. Defaults to `Y` - yes. If you want to skip and run your node later, type `n`.
+
+## Ceramic configuration
+
+This section dives deeper into the Ceramic parameters you can configure when you choose `Advanced: Configure all ceramic options` option in your wheel prompt.
+
+### Bundled or Remote IPFS
+
+An option to define if IFPS runs in the same compute process as Ceramic. You have two options to choose from:
+
+- Bundled - IPFS running in same compute process as Ceramic; recommended for early prototyping.
+- Remote - IPFS running in separate compute process; recommended for production and everything besides early prototyping.
+  This assumes that you have the IPFS process setup and can provide an IPFS Hostname.
+
+### State Store
+
+An option to choose where your data will be persisted. To run a Ceramic node in production, it is critical to persist the [Ceramic state store](https://developers.ceramic.network/run/nodes/nodes/#ceramic-state-store)
+and the [IPFS datastore](https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#datastorespec). You can choose from two options:
+
+- Local - Ceramic state store will be stored on your machine's filesystem. This is a good option for early development and prototyping.
+  If you choose this option, you will be asked to provide a path to your preferred state store directory or you can go with a provided default option.
+- S3 - cloud statestore. It’s a recommended option for production use cases. This assumes that you have an S3 bucked already setup and can provide
+  the path to your bucket running on the cloud.
+
+### Bind address
+
+Specifies the url for the Ceramic daemon. Defaults to `127.0.0.1`.
+
+### Bind port
+
+Specifies the port for Ceramic daemon. Defaults to `7071`.
+
+### Cors origins
+
+An option to define which domains are allowed to access the node using the http-api. Default option allows access to all domains.
+
+### Run as gateway?
+
+An option to run the node in a read-only mode. This option doesn’t support data mutations.
+
+### Indexing Database
+
+Indexing is one of the key features of ComposeDB on Ceramic. ComposeDB indexes data to improve the query performance. You can choose which database will be used to store indexed data:
+
+- Sqlite - simple [sqlite](https://sqlite.org/index.html) database running on your local machine. This option is very lightweight, doesn’t require advanced configurations and is
+  recommended for projects in an early development stage. When choosing this option you will be asked to configure the sqlite database location - either use your current working directory or specify a custom one.
+- Postgres - a Postgres database running on your local machine. This option requires a little bit more configuration and is required for production use cases. When you choose this option, you will be asked to provide
+  the Postgres Database connection string.

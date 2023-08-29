@@ -1,6 +1,6 @@
 # @composedb/constants
 
-## 0.5.0-rc.0
+## 0.5.0
 
 ### Minor Changes
 

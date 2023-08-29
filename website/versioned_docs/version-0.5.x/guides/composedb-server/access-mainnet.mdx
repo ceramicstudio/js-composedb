@@ -1,0 +1,145 @@
+# Access Ceramic Mainnet
+
+To join mainnet, you must register your Ceramic node with the 3Box Labs’ Ceramic Anchor Service (CAS). The job of CAS is to anchor Ceramic streams on the Ethereum blockchain so your node will not work without access to CAS.
+
+To register you will need (1) a valid email address and (2) the DID used by your Ceramic daemon.
+
+:::caution
+
+IMPORTANT: The daemon config file should be considered secret and should not be shared because it will store a private seed used to authenticate your node to the 3Box Labs Ceramic Anchor Service. 
+
+If you need to share your node’s configuration, you can safely copy and paste it from your daemon startup logs, which always excludes the private seed url.
+
+:::
+
+## Step 1. Start your node and copy your Key DID
+
+If this is your first time starting a Ceramic node, a random private seed url will be generated for you. The seed in this url is used to create a [Key DID](https://developers.ceramic.network/reference/accounts/key-did/) for your Ceramic node. When you start the daemon, it will display the Key DID in the console logs like the one below.
+
+```bash
+IMPORTANT: DID set to 'did:key:z6MkppuNZjR4QR8rxrPv4ejbGqgUcwwmxse47efsB3C1XnaM'
+```
+
+Copy the quoted DID so you can use it later.
+
+## Step 2. Verify your email address
+
+A valid email address is required so that you have a way to control the Ceramic nodes that are given access to the 3Box Labs anchor service. Using this email you will be able to register or revoke DIDs for your nodes.
+
+```bash
+> curl --request POST \
+  --url https://cas.3boxlabs.com/api/v0/auth/verification \
+  --header 'Content-Type: application/json' \
+  --data '{"email": "youremailaddress"}'
+```
+
+You should see a response that says `"Please check your email for your verification code."`
+
+Now check your email and copy the one time passcode enclosed within. It will be a string of letters and numbers _similar_ to this: **`2451cc10-5a39-494d-b8eb-1971ecd813de`.**
+
+## Step 3. Register your DID
+
+Use your DID, the one time passcode, and the same email address, to register your DID.
+
+```bash
+> curl --request POST \
+  --url https://cas.3boxlabs.com/api/v0/auth/did \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "email": "youremailaddress",
+	  "otp": "youronetimepasscode",
+	  "dids": [
+		  "yourdid"
+	  ]
+  }'
+```
+
+You should see a response that says `[{"email":"youremailaddress","did":"yourdid","nonce":"0","status":"Active"}]`.
+
+Finally, start your Ceramic node again. You will know that the DID registration was successful if you see logs in the console like the ones below.
+
+```bash
+IMPORTANT: Connected to anchor service 'https://cas.3boxlabs.com' with supported anchor chains ['eip155:1']
+IMPORTANT: Ceramic API running on 0.0.0.0:7007'
+```
+
+## Existing Node Operators
+
+Already running a node? Learn how to upgrade.
+    
+If you are already running a Ceramic daemon connected to mainnet, you have been using IP address based authentication to connect to the 3Box Labs mainnet CAS. You are not required to re-register or make any changes to your daemon, however please note that we will be deprecating IP address based authentication in the future. To prepare for deprecation, we recommend updating your daemon config file to use DID based authentication, then registering your DID with the steps above.
+
+If you have run a Ceramic daemon before but have not yet connected to mainnet, you must update your daemon config file to use DID based authentication, then register your DID with the steps above.
+
+### Updating to DID based authentication
+    
+First you will need to generate a private seed. You can do this with the ComposeDB CLI.
+    
+```bash
+> composedb did:generate-private-key
+✔ Generating random private key... Done!
+99918d7f36991ec38d76e1cf21d14c5348d1513512c957d0b809efbf3ad18983
+```
+
+Copy the string of numbers and letters logged to the console.
+
+:::note
+
+As a security best practice, do not use any private key or seed more than once.
+
+:::
+
+Update your daemon.config.json file to set your anchor auth method and node private seed url.
+
+```bash
+  "anchor": {
+    "auth-method": "did"
+  },
+```
+
+```bash
+  "node": {
+    "privateSeedUrl": "inplace:ed25519#private_seed_copied_from_above"
+  },
+```
+
+Save the file and follow the steps above to register your DID.
+
+## Rate Limits
+
+By default, requests to CAS are capped at 200 requests per second, 130 concurrent requests, and 10,000,000 requests per week. 
+
+For larger apps, we can increase the cap to 600 requests per second, 400 concurrent requests, and 300,000,000 requests per week.
+
+Interested in larger caps for your app? Reach out to [partners@3box.io](mailto:partners@3box.io) to discuss directly with our team.
+
+As we improve scalability, expect rate limiting to be removed.
+    
+## Revoking a DID
+If your private seed has been compromised or lost you should revoke your DID and generate a new one so that your daemon can not be impersonated. Each Ceramic daemon needs to have a unique DID in order for streams to be anchored correctly, so it is important that the private seed used to generate the DID is only used in one place.
+
+To revoke your DID you will need the email address you used to register the DID.
+
+### Step 1. Verify your email address
+
+```bash
+> curl --request POST \
+  --url https://cas.3boxlabs.com/api/v0/auth/verification \
+  --header 'Content-Type: application/json' \
+  --data '{"email": "youremailaddress"}'
+```
+
+Now check your email and copy the one time passcode enclosed within. It will be a string of letters and numbers similar to this: **`2451cc10-5a39-494d-b8eb-1971ecd813de`.**
+
+### Step 2. Send a revocation request
+
+Make a PATCH request to the endpoint below with your DID added to the end. The full url should like similar to `https://cas.3boxlabs.com/api/v0/auth/did/did:key:z6MkmrAdXvCBGzQVbHLNYq6y9gfFgmnYFqvmwktp3wyQFAok`.
+
+```bash
+> curl --request PATCH \
+  --url https://cas.3boxlabs.com/api/v0/auth/did/yourdid \
+  --header 'Content-Type: application/json' \
+  --data '{"email": "youremailaddress", "otp": "youronetimepasscode"}'
+```
+
+You should see a response that says `{"email":”youremailaddress", "did": "yourdid", "status": "Revoked"}`

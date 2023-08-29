@@ -30,14 +30,19 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           includeCurrentVersion: true,
-          lastVersion: '0.4.x',
+          lastVersion: '0.5.x',
           versions: {
-            current: {
-              banner: 'unreleased',
-              label: 'Preview',
-              path: 'preview',
+            // current: {
+            //   banner: 'unreleased',
+            //   label: 'Preview',
+            //   path: 'preview',
+            // },
+            '0.5.x': {
+              label: '0.5.x',
+              path: '0.5.x',
             },
             '0.4.x': {
+              banner: 'unmaintained',
               label: '0.4.x',
               path: '0.4.x',
             },
@@ -128,15 +133,15 @@ const config = {
             items: [
               {
                 label: 'Getting Started',
-                to: '/docs/0.4.x/getting-started',
+                to: '/docs/0.5.x/getting-started',
               },
               {
                 label: 'Guides',
-                to: '/docs/0.4.x/guides',
+                to: '/docs/0.5.x/guides',
               },
               {
                 label: 'API',
-                to: '/docs/0.4.x/api/modules/client',
+                to: '/docs/0.5.x/api/modules/client',
               },
             ],
           },

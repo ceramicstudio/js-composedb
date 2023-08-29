@@ -1,6 +1,6 @@
 # @composedb/cli
 
-## 0.5.0-rc.0
+## 0.5.0
 
 ### Minor Changes
 
@@ -9,10 +9,10 @@
 ### Patch Changes
 
 - Updated dependencies
-  - @composedb/client@0.5.0-rc.0
-  - @composedb/devtools@0.5.0-rc.0
-  - @composedb/devtools-node@0.5.0-rc.0
-  - @composedb/runtime@0.5.0-rc.0
+  - @composedb/client@0.5.0
+  - @composedb/devtools@0.5.0
+  - @composedb/devtools-node@0.5.0
+  - @composedb/runtime@0.5.0
 
 ## 0.4.4
 
