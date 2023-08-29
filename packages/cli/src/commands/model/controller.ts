@@ -25,7 +25,7 @@ export default class ModelController extends Command<QueryCommandFlags, { stream
       })
       this.spinner.succeed(`Loading the model... Done!`)
       // Logging the controller to stdout, so that it can be piped using standard I/O or redirected to a file
-      this.log(model.metadata.controller.toString())
+      this.log(model.metadata.controller as string)
     } catch (e) {
       this.spinner.fail((e as Error).message)
       return

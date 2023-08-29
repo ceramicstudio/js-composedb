@@ -1,0 +1,174 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+import DocCardList from '@theme/DocCardList';
+
+# JavaScript Client
+APIs to interact with ComposeDB from JavaScript, TypeScript, or React. 
+
+## Prerequisites
+---
+- A [compiled composite](../../guides/data-modeling/composites.mdx#compiling-composites)
+
+## Installation
+---
+Install the ComposeDB client package:
+
+<Tabs
+  defaultValue="pnpm"
+  groupId="npm-or-pnpm-or-yarn"
+  values={[
+    {label: 'npm', value: 'npm'},
+    {label: 'pnpm', value: 'pnpm'},
+    {label: 'yarn', value: 'yarn'},
+  ]}>
+  <TabItem value="npm">
+
+```bash
+npm install @composedb/client
+```
+
+  </TabItem>
+  <TabItem value="pnpm">
+
+```bash
+pnpm add @composedb/client
+```
+
+  </TabItem>
+  <TabItem value="yarn">
+
+```bash
+yarn add @composedb/client
+```
+
+  </TabItem>
+</Tabs>
+
+If you’re using TypeScript, you may also need to install ComposeDB Types:
+
+<Tabs
+  defaultValue="pnpm"
+  groupId="npm-or-pnpm-or-yarn"
+  values={[
+    {label: 'npm', value: 'npm'},
+    {label: 'pnpm', value: 'pnpm'},
+    {label: 'yarn', value: 'yarn'},
+  ]}>
+  <TabItem value="npm">
+
+```bash
+npm install -D @composedb/types
+```
+
+  </TabItem>
+  <TabItem value="pnpm">
+
+```bash
+pnpm add -D @composedb/types
+```
+
+  </TabItem>
+  <TabItem value="yarn">
+
+```bash
+yarn add -D @composedb/types
+```
+
+  </TabItem>
+</Tabs>
+
+
+## Configuration
+---
+Create a client instance by passing your server URL and your compiled composite:
+
+```jsx
+// Import ComposeDB client
+
+import { ComposeClient }from '@composedb/client'
+
+// Import your compiled composite
+
+import { definition }from './__generated__/definition.js'
+
+// Create an instance of ComposeClient
+// Pass the URL of your Ceramic server
+// Pass reference to your compiled composite
+
+const compose = new ComposeClient({ ceramic: 'http://localhost:7007', definition })
+
+```
+
+More details: [`ComposeClient`](../../api/classes/client.ComposeClient.md)
+
+## Queries
+---
+### Executing Queries
+
+Execute GraphQL [Queries](../../guides/data-interactions/queries.mdx) using the schema that is auto-generated from your compiled composite:
+
+```jsx
+// Get account of authenticated user
+
+await compose.executeQuery(`
+  query {
+    viewer {
+      id
+    }
+  }
+`)
+
+```
+
+More details: [`executeQuery`](../../api/classes/client.ComposeClient.md#executequery)
+
+## Mutations
+---
+### Enabling Mutations
+
+:::tip
+Before enabling mutations you must [authenticate the user](./../composedb-client/authenticate-users.mdx).
+:::
+
+After you have an authenticated user, enable [mutations](../../guides/data-interactions/mutations.mdx) by setting their authenticated account on the ComposeDB client:
+
+<Tabs
+  defaultValue="with-sessions"
+  groupId="with-or-without-sessions"
+  values={[
+    {label: 'With Sessions', value: 'with-sessions'},
+    {label: 'Without Sessions', value: 'without-sessions'},
+  ]}>
+  <TabItem value="with-sessions">
+
+```jsx
+// Assign the authorized did from your session to your client
+
+compose.setDID(session.did)
+```
+
+  </TabItem>
+  <TabItem value="without-sessions">
+
+```jsx
+// Call setDID method on ComposeClient instance
+// Using authenticated did instance
+
+compose.setDID(did)
+```
+
+  </TabItem>
+</Tabs>
+
+### Executing mutations
+In your client, you can execute GraphQL mutations using the schema that is auto-generated from your compiled composite. Follow examples in the [mutations](../../guides/data-interactions/mutations.mdx) guide.
+
+## Next Steps
+---
+Learn how to [**Authenticate Users →**](./../composedb-client/authenticate-users.mdx)
+
+## Related Guides
+---
+ComposeDB’s JavaScript client optionally works with popular GraphQL clients:
+
+<DocCardList />

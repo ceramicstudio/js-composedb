@@ -1,0 +1,295 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Composites
+Guides for creating, deploying, and using composites.
+
+## Overview
+---
+In order to start using a model in your app, you’ll have to include it in a composite. Composites are collections of one or more models and represent the complete GraphQL schema for your app. For basic usage, follow these steps:
+
+1. Create a composite containing one or more models
+2. Deploy the composite to your ComposeDB server
+3. Compile the composite for usage by your ComposeDB client
+
+## Prerequisites
+---
+- If you want to manage your composites from the CLI, you will need to have it installed
+- If you want to manage your composites from JavaScript, you will need to install the [`@composedb/devtools`](../../api/modules/devtools.md) library
+- One or more `.graphql` files containing your models
+
+## Basic Usage
+---
+### Creating composites
+Let’s say you have a model written in a `my-schema.graphql` file. To convert this schema into a composite, run the following:
+
+<Tabs
+  defaultValue="cli"
+  groupId="cli-or-js"
+  values={[
+    {label: 'CLI', value: 'cli'},
+    {label: 'JavaScript', value: 'js'},
+  ]}>
+  <TabItem value="cli">
+
+```bash
+composedb composite:create my-schema.graphql --output=my-composite.json --did-private-key=your-private-key
+```
+
+  </TabItem>
+  <TabItem value="js">
+
+```jsx
+import { CeramicClient } from '@ceramicnetwork/http-client'
+import { DID } from 'dids'
+import { Ed25519Provider } from 'key-did-provider-ed25519'
+import { getResolver } from 'key-did-resolver'
+import { fromString } from 'uint8arrays/from-string'
+
+// Import the devtool node package
+import { createComposite, writeEncodedComposite } from '@composedb/devtools-node'
+
+// Hexadecimal-encoded private key for a DID having admin access to the target Ceramic node
+// Replace the example key here by your admin private key
+const privateKey = fromString('b0cb[...]515f', 'base16')
+
+const did = new DID({
+  resolver: getResolver(),
+  provider: new Ed25519Provider(privateKey),
+})
+await did.authenticate()
+
+// Replace by the URL of the Ceramic node you want to deploy the Models to
+const ceramic = new CeramicClient('http://localhost:7007')
+// An authenticated DID with admin access must be set on the Ceramic instance
+ceramic.did = did
+
+// Replace by the path to the source schema file
+const composite = await createComposite(ceramic, './source-schema.graphql')
+
+// Replace by the path to the encoded composite file
+await writeEncodedComposite(composite, './my-composite.json')
+```
+
+  </TabItem>
+</Tabs>
+
+This will create a file called `my-composite.json` which contains the composite in JSON. 
+
+### Deploying composites
+After creating the composite, deploy it to your local node: 
+
+<Tabs
+  defaultValue="cli"
+  groupId="cli-or-js"
+  values={[
+    {label: 'CLI', value: 'cli'},
+    {label: 'JavaScript', value: 'js'},
+  ]}>
+  <TabItem value="cli">
+
+```bash
+composedb composite:deploy my-composite.json --ceramic-url=http://localhost:7007 --did-private-key=your-private-key
+```
+
+  </TabItem>
+  <TabItem value="js">
+
+```jsx
+import { CeramicClient } from '@ceramicnetwork/http-client'
+import { DID } from 'dids'
+import { Ed25519Provider } from 'key-did-provider-ed25519'
+import { getResolver } from 'key-did-resolver'
+import { fromString } from 'uint8arrays/from-string'
+
+import { readEncodedComposite } from '@composedb/devtools-node'
+
+// Hexadecimal-encoded private key for a DID having admin access to the target Ceramic node
+// Replace the example key here by your admin private key
+const privateKey = fromString('b0cb[...]515f', 'base16')
+
+const did = new DID({
+  resolver: getResolver(),
+  provider: new Ed25519Provider(privateKey),
+})
+await did.authenticate()
+
+// Replace by the URL of the Ceramic node you want to deploy the Models to
+const ceramic = new CeramicClient('http://localhost:7007')
+// An authenticated DID with admin access must be set on the Ceramic instance
+ceramic.did = did
+
+// Replace by the path to the local encoded composite file
+const composite = await readEncodedComposite(ceramic, 'my-first-composite.json')
+
+// Notify the Ceramic node to index the models present in the composite
+await composite.startIndexingOn(ceramic)
+```
+
+  </TabItem>
+</Tabs>
+
+:::tip
+This will also automatically add all models contained in the composite to the [Model Catalog](./model-catalog.mdx).
+:::
+
+
+### Compiling composites
+
+After deploying your composite, compile it so you can start perform [data interactions](../../guides/data-interactions/data-interactions.mdx) using the ComposeDB client.
+
+```bash
+composedb composite:compile my-first-composite.json runtime-composite.json
+```
+
+## Advanced
+---
+### Merging composites
+
+If you have more than one composite, you need to merge them into a single composite for use in your app. This may apply when:
+
+- You want to use multiple models from the [catalog](./model-catalog.mdx#using-multiple-models)
+- You want to use a model from the catalog and one or more models you created
+- You create multiple models and store their schemas in different GraphQL files
+
+Let’s say you have two composites where `simple-profile-composite.json` contains the model for a profile model and `post-composite.json` contains the model for a post. To merge, reference both composite JSON files and specify an output file path for the merged composite. 
+
+<Tabs
+  defaultValue="cli"
+  groupId="cli-or-js"
+  values={[
+    {label: 'CLI', value: 'cli'},
+    {label: 'JavaScript', value: 'js'},
+  ]}>
+  <TabItem value="cli">
+
+```bash
+composedb composite:merge simple-profile-composite.json post-composite.json --output=merged-composite.json
+```
+
+  </TabItem>
+  <TabItem value="js">
+
+```jsx
+import { CeramicClient } from '@ceramicnetwork/http-client'
+import { Composite } from '@composedb/devtools'
+import { readEncodedComposite, writeEncodedComposite } from '@composedb/devtools-node'
+
+const ceramic = new CeramicClient('http://localhost:7007')
+
+const loadSources = [
+  'simple-profile-composite.json',
+  'post-composite.json',
+].map(async (path) => await readEncodedComposite(ceramic, path))
+const sourceComposites = await Promise.all(loadSources)
+const mergedComposite = Composite.from(sourceComposites)
+
+await writeEncodedComposite(mergedComposite, 'merged-composite.json')
+```
+
+:::caution
+***Note:*** To run the code above, you need a Ceramic JS HTTP client library installed on your machine to connect your app to a Ceramic node. Ceramic JS HTTP client can be installed by running the following command:
+
+`pnpm install @ceramicnetwork/http-client`
+
+:::
+
+  </TabItem>
+</Tabs>
+
+The output of either example is a new file named `merged-composite.json` which contains the models of both merged composites. From here you need to [deploy](#deploying-composites) the composite to your node, then [compile](#compiling-composites) the composite to start using it. 
+
+### Extracting composites
+In cases where your composite contain models not needed by your application, or in other cases where you generally want to separate models in your composite, you can extract models into a separate composite. 
+
+As an example, let’s reuse the `merged-composite.json` file from the previous section and assume you want to extract the profile model into a separate composite. To do this, load the `merged-composite.json` file and specify which model(s) you’d like to extract into a new composite file.
+
+<Tabs
+  defaultValue="cli"
+  groupId="cli-or-js"
+  values={[
+    {label: 'CLI', value: 'cli'},
+    {label: 'JavaScript', value: 'js'},
+  ]}>
+  <TabItem value="cli">
+
+```bash
+composedb composite:extract-model merged-composite.json kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc --output=new-composite.json
+```
+
+  </TabItem>
+  <TabItem value="js">
+
+```jsx
+import { CeramicClient } from '@ceramicnetwork/http-client'
+import { Composite } from '@composedb/devtools'
+import { readEncodedComposite, writeEncodedComposite } from '@composedb/devtools-node'
+
+const ceramic = new CeramicClient('http://localhost:7007')
+const sourceComposite = await readEncodedComposite(ceramic, 'merged-composite.json')
+
+const mergedComposite = sourceComposite.copy(['kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc'])
+await writeEncodedComposite(mergedComposite, 'new-composite.json')
+```
+  </TabItem>
+</Tabs>
+
+This will create a file called `new-composite.json` with your profile model in it. From here you need to deploy the composite to your node, then [compile](#compiling-composites) the composite to start using it. 
+
+### Inspecting composites
+If you want to check what models are included in a specific composite, follow the steps below:
+
+1. Compile the composite:
+`composedb composite:compile my-first-composite.json runtime-composite.json`
+
+2. View the GraphQL schema of the composite:
+[`composedb graphql:schema runtime-composite.json --output=schema.graphql`](../../api/commands/cli.graphql.md#composedb-graphqlschema)
+
+### Aliasing composites
+In general, models are referenced using their unique model streamIDs which are not memorable. Models can be more easily referenced by aliasing them to your preferred names. 
+
+To manually set aliases for your models, add the following section to your composite JSON file. In this case we will use the aliases `SimpleProfile` and `Post`.
+
+```jsx
+"aliases":{
+      "kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc":"SimpleProfile",
+      "kjzl6hvfrbw6c99mdfpjx1z3fue7sesgua6gsl1vu97229lq56344zu9bawnf96":"Post"
+   }
+```
+
+To do aliases programmatically, use the ComposeDB Devtools library. Here’s an example script that loads a composite JSON file and assigns `SimpleProfile` and `Post`:
+
+```jsx
+import { CeramicClient } from '@ceramicnetwork/http-client'
+import { Composite } from '@composedb/devtools'
+import { readEncodedComposite, writeEncodedComposite } from '@composedb/devtools-node'
+
+const ceramic = new CeramicClient('http://localhost:7007')
+const sourceComposite = await readEncodedComposite(ceramic, 'merged-composite.json')
+
+const newComposite = sourceComposite.setAliases({
+  'kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc': 'SimpleProfile',
+  'kjzl6hvfrbw6c99mdfpjx1z3fue7sesgua6gsl1vu97229lq56344zu9bawnf96': 'Post',
+})
+await writeEncodedComposite(newComposite, 'new-composite.json')
+```
+
+This script will create a file named `new-composite.json` including model aliases:
+
+```jsx
+"aliases":{
+      "kjzl6hvfrbw6c7keo17n66rxyo21nqqaa9lh491jz16od43nokz7ksfcvzi6bwc":"SimpleProfile",
+      "kjzl6hvfrbw6c99mdfpjx1z3fue7sesgua6gsl1vu97229lq56344zu9bawnf96":"Post"
+   }
+```
+
+From here you need to [deploy](#deploying-composites) the composite to your node, then [compile](#compiling-composites) the composite to start using it. When interacting with the models inside your app, you can refer to them using their human-readable aliases rather than their streamIDs. 
+
+## Next Steps
+---
+Set up your [**ComposeDB Client**](../../guides/composedb-client/composedb-client.mdx)
+
+## Related Guides
+---
+- [Model Catalog](../../guides/data-modeling/model-catalog.mdx)
+- [Writing Models](../../guides/data-modeling/writing-models.mdx)

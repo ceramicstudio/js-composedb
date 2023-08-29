@@ -10,6 +10,8 @@ import stripAnsi from 'strip-ansi'
 // @ts-ignore
 import { TEST_OUTPUT_DIR_PATH } from '../globalConsts.js' // not a module
 
+const { readFile, readJSON } = fs
+
 const MODEL1_JSON =
   '{"version": "1.0","name":"Model1","accountRelation":{"type":"list"},"schema":{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","properties":{"stringPropName":{"type":"string","maxLength":80}},"additionalProperties":false,"required":["stringPropName"]}}'
 
@@ -23,10 +25,10 @@ describe('composites', () => {
   let encodedProfilesComposite: Record<string, unknown>
   beforeAll(async () => {
     const [undeployed, profiles] = await Promise.all([
-      fs.readJSON(
+      readJSON(
         fileURLToPath(new URL('mocks/encoded.composite.undeployed.json', import.meta.url)),
       ) as Promise<Record<string, unknown>>,
-      fs.readJSON(
+      readJSON(
         fileURLToPath(new URL('mocks/encoded.composite.profiles.json', import.meta.url)),
       ) as Promise<Record<string, unknown>>,
     ])
@@ -330,9 +332,9 @@ describe('composites', () => {
       ).toBe(true)
 
       const [jsonRepresentation, jsRepresentation, tsRepresentation] = await Promise.all([
-        fs.readFile(`${dirpath}/${filename}.json`, 'utf8'),
-        fs.readFile(`${dirpath}/${filename}.js`, 'utf8'),
-        fs.readFile(`${dirpath}/${filename}.ts`, 'utf8'),
+        readFile(`${dirpath}/${filename}.json`, 'utf8'),
+        readFile(`${dirpath}/${filename}.js`, 'utf8'),
+        readFile(`${dirpath}/${filename}.ts`, 'utf8'),
       ])
 
       expect(jsonRepresentation).toMatchSnapshot()

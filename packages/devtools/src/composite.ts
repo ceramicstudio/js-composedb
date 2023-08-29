@@ -79,8 +79,9 @@ function assertModelsHaveCommits(
 }
 
 function assertSupportedWriteModelController(model: Model, ceramic: CeramicApi): void {
-  const unsupported = `Unsupported model controller ${model.metadata.controller}`
-  if (model.metadata.controller.startsWith('did:pkh:')) {
+  const controller = model.metadata.controller as string
+  const unsupported = `Unsupported model controller ${controller}`
+  if (controller.startsWith('did:pkh:')) {
     if (ceramic.context == null) {
       throw new Error(`${unsupported}, missing ceramic context`)
     }
@@ -99,7 +100,7 @@ function assertSupportedWriteModelController(model: Model, ceramic: CeramicApi):
     if (!hasModelResource) {
       throw new Error(`${unsupported}, only cacao with resource ${MODEL_STREAM_ID} is supported`)
     }
-  } else if (!model.metadata.controller.startsWith('did:key:')) {
+  } else if (!controller.startsWith('did:key:')) {
     throw new Error(`${unsupported}, only did:key and did:pkh are supported`)
   }
 }
@@ -108,17 +109,15 @@ async function assertSupportedReadModelController(
   model: Model,
   signedCommitContainer: SignedCommitContainer,
 ): Promise<void> {
-  const unsupported = `Unsupported model controller ${model.metadata.controller}`
-  if (
-    model.metadata.controller.startsWith('did:pkh:') &&
-    signedCommitContainer.cacaoBlock != null
-  ) {
+  const controller = model.metadata.controller as string
+  const unsupported = `Unsupported model controller ${controller}`
+  if (controller.startsWith('did:pkh:') && signedCommitContainer.cacaoBlock != null) {
     const cacao = await Cacao.fromBlockBytes(signedCommitContainer.cacaoBlock)
     if (cacao == null) {
       throw new Error(`${unsupported}, only did:pkh with CACAO is supported`)
     }
-    assertValidCacao(cacao, model.metadata.controller)
-  } else if (!model.metadata.controller.startsWith('did:key:')) {
+    assertValidCacao(cacao, controller)
+  } else if (!controller.startsWith('did:key:')) {
     throw new Error(`${unsupported}, only did:key is supported`)
   }
 }
