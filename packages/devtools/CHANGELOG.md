@@ -1,6 +1,6 @@
 # @composedb/devtools
 
-## 0.5.0-rc.0
+## 0.5.0
 
 ### Minor Changes
 
@@ -9,7 +9,7 @@
 ### Patch Changes
 
 - Updated dependencies
-  - @composedb/graphql-scalars@0.5.0-rc.0
+  - @composedb/graphql-scalars@0.5.0
 
 ## 0.4.4
 

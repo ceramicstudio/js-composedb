@@ -1,6 +1,6 @@
 {
   "name": "@composedb/devtools-node",
-  "version": "0.5.0-rc.3",
+  "version": "0.5.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://composedb.js.org",
@@ -37,20 +37,20 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/http-client": "^2.28.0-rc.0",
-    "@composedb/client": "workspace:^0.5.0-rc.3",
-    "@composedb/runtime": "workspace:^0.5.0-rc.3",
-    "@composedb/server": "workspace:^0.5.0-rc.3",
+    "@ceramicnetwork/http-client": "^2.30.0",
+    "@composedb/client": "workspace:^0.5.0",
+    "@composedb/runtime": "workspace:^0.5.0",
+    "@composedb/server": "workspace:^0.5.0",
     "fs-extra": "^11.1.1"
   },
   "peerDependencies": {
-    "@composedb/devtools": "workspace:^0.5.0-rc.3"
+    "@composedb/devtools": "workspace:^0.5.0"
   },
   "devDependencies": {
-    "@composedb/devtools": "workspace:^0.5.0-rc.3",
-    "@composedb/types": "workspace:^0.5.0-rc.3",
+    "@composedb/devtools": "workspace:^0.5.0",
+    "@composedb/types": "workspace:^0.5.0",
     "@types/fs-extra": "^11.0.1",
-    "dids": "^4.0.3"
+    "dids": "^4.0.4"
   },
   "jest": {
     "extensionsToTreatAsEsm": [
