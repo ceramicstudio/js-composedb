@@ -29,7 +29,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          includeCurrentVersion: true,
+          includeCurrentVersion: false,
           lastVersion: '0.5.x',
           versions: {
             // current: {
