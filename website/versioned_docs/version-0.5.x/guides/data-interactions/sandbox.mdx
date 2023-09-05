@@ -1,0 +1,287 @@
+import App from '@site/src/App.jsx';
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Sandbox
+
+Using the knowledge you just aquired from the [**queries**](./queries) page, follow the guide below to test your skills!
+
+## Data Models
+---
+The schema definitions that this sandbox uses are outlined in [**this repository**](https://github.com/mzkrasner/playground-test/tree/new/composites). --> *replace with Ethdenver once updated*
+
+The sandbox has been pre-populated with data corresponding to several fictionary people. Feel free to use example queries provided for you in the guide below, or build your own based on the schema definitions above. 
+
+*Please note that this sandbox only processes read requests.*
+
+## Reading Profiles
+
+Use the example queries below to access data related to the `BasicProfile` model:
+
+
+<Tabs
+  defaultValue="profile-index"
+  groupId="with-or-without-sessions"
+  values={[
+    {label: 'Profile Index', value: 'profile-index'},
+    {label: 'Profile with Posts', value: 'with-posts'},
+    {label: 'Known Stream', value: 'known-stream'},
+  ]}>
+  <TabItem value="profile-index">
+
+```graphql
+query{
+  basicProfileIndex(first: 10){
+    edges{
+      node{
+        id
+        username
+        description
+        gender
+        emoji
+      }
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="with-posts">
+
+```graphql
+query{
+  basicProfileIndex(first: 10){
+    edges{
+      node{
+        username
+        posts(first: 5){
+          edges{
+            node{
+              body
+              created
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="known-stream">
+
+```graphql
+query{
+  node(id: "k2t6wzhkhabz3a7xz88mk93y1q2waejk1w2b5rs3kc82e42dgpe4l1h4mcibih"){
+    ... on BasicProfile{
+        id
+        username
+        description
+        gender
+        emoji
+    }
+  }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+<div style={{height: "60rem", width: "100%", margin: "auto"}}><App /></div>
+
+## Reading Posts
+
+Use the example queries below to access data related to the `Posts` model:
+
+<Tabs
+  defaultValue="posts-index"
+  groupId="with-or-without-sessions"
+  values={[
+    {label: 'Posts Index', value: 'posts-index'},
+    {label: 'Filtered by Tag', value: 'tag-filtered'},
+    {label: 'Filtered by Date', value: 'date-filter'},
+    {label: 'Combining Filters', value: 'filter-combine'},
+  ]}>
+  <TabItem value="posts-index">
+
+```graphql
+query{
+  postsIndex(first: 10){
+    edges{
+      node{
+        id
+        body
+        tag
+        created
+        profile{
+          username
+        }
+      }
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="tag-filtered">
+
+```graphql
+query{
+  postsIndex(
+    filters: {
+      where: {
+        tag: {
+          equalTo: "Governance"
+        }
+      }
+    }
+    first: 10
+  ){
+    edges{
+    node{
+      body
+      created
+      profile{
+        username
+      }
+    }
+  }
+ }
+}
+```
+
+  </TabItem>
+  <TabItem value="date-filter">
+
+```graphql
+query{
+  postsIndex(
+    filters: {
+      where: {
+        created: {
+          greaterThan: "2022-05-10T14:15:00Z"
+        }
+      }
+    }
+    first: 10
+  ){
+    edges{
+    node{
+      body
+      created
+      profile{
+        username
+      }
+    }
+  }
+ }
+}
+```
+
+</TabItem>
+
+  <TabItem value="filter-combine">
+
+```graphql
+query{
+  postsIndex(filters: {
+    and: [
+      {
+        where: {
+          created: {
+          greaterThan: "2022-05-10T14:15:00Z"
+        }
+        }
+      },
+      {
+        and: {
+          where: {
+            tag: {
+              equalTo: "Governance"
+            }
+          }
+        }
+      }
+    ]
+  }
+  first: 20
+  ){
+    edges{
+      node{
+        body
+        created
+        tag
+      }
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+<div style={{height: "60rem", width: "100%", margin: "auto"}}><App /></div>
+
+## Reading Comments
+
+Use the example queries below to access data related to the `Comments` model:
+
+<Tabs
+  defaultValue="comments-post"
+  groupId="with-or-without-sessions"
+  values={[
+    {label: 'Comments with Post', value: 'comments-post'},
+    {label: 'Ordered Comments', value: 'ordered-comments'}
+  ]}>
+  <TabItem value="comments-post">
+
+```graphql
+query{
+  commentsIndex(last: 20){
+    edges{
+      node{
+        comment
+        post{
+          body
+          profile{
+            username
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="ordered-comments">
+
+```graphql
+query{
+  commentsIndex(sorting:
+  {
+    created: ASC
+  }
+    first: 10
+  ){
+    edges{
+      node{
+        comment
+        created
+        post{
+          body
+          profile{
+            username
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+<div style={{height: "60rem", width: "100%", margin: "auto"}}><App /></div>
