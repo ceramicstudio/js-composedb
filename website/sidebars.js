@@ -32,6 +32,7 @@ const sidebars = {
       ],
     },
     { type: 'doc', id: 'core-concepts', label: 'Core Concepts' },
+    { type: 'doc', id: 'ceramic-roadmap', label: 'Roadmap' },
     { type: 'doc', id: 'community', label: 'Community' },
   ],
   guides: [
