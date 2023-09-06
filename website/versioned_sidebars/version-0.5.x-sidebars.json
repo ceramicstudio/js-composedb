@@ -213,11 +213,6 @@
           "type": "doc",
           "id": "guides/data-interactions/mutations",
           "label": "Mutations"
-        },
-        {
-          "type": "doc",
-          "id": "guides/data-interactions/sandbox",
-          "label": "Sandbox"
         }
       ]
     }

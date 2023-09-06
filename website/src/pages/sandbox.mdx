@@ -4,17 +4,24 @@ import TabItem from '@theme/TabItem'
 
 # Sandbox
 
-Using the knowledge you just aquired from the [**queries**](./queries) page, follow the guide below to test your skills!
+Test out several pre-made example queries below to gain hands-on exposure to accessing documents by relations, filtering and ordering by fields, and combining query logic.
+
+For a deeper dive into querying, visit the [**queries**](./docs/0.5.x/guides/data-interactions/queries) page.
 
 ## Data Models
 ---
-The schema definitions that this sandbox uses are outlined in [**this repository**](https://github.com/mzkrasner/playground-test/tree/new/composites). --> *replace with Ethdenver once updated*
+The schema definitions that this sandbox uses are outlined in [**this repository**](https://github.com/mzkrasner/playground-test/tree/new/composites). --> *replace with Ethdenver once updated* <-- The sandbox has been pre-populated with data corresponding to several fictionary people.
 
-The sandbox has been pre-populated with data corresponding to several fictionary people. Feel free to use example queries provided for you in the guide below, or build your own based on the schema definitions above. 
+### Instructions
+
+To interact with the ComposeDB Sandbox, simply copy the prewritten queries from the code samples into the left-hand side of the embedded GraphiQL IDE and press the pink play icon to execute the query. Results returned from your query will populate in the right-hand side of the interface. 
+
+You can also alter your query logic however you see fit, or build your own queries entirely from scratch based on the schema definitions.
 
 *Please note that this sandbox only processes read requests.*
 
 ## Reading Profiles
+---
 
 Use the example queries below to access data related to the `BasicProfile` model:
 
@@ -89,8 +96,10 @@ query{
 </Tabs>
 
 <div style={{height: "60rem", width: "100%", margin: "auto"}}><App /></div>
+---
 
 ## Reading Posts
+---
 
 Use the example queries below to access data related to the `Posts` model:
 
@@ -222,8 +231,10 @@ query{
 </Tabs>
 
 <div style={{height: "60rem", width: "100%", margin: "auto"}}><App /></div>
+---
 
 ## Reading Comments
+---
 
 Use the example queries below to access data related to the `Comments` model:
 
@@ -285,3 +296,9 @@ query{
 </Tabs>
 
 <div style={{height: "60rem", width: "100%", margin: "auto"}}><App /></div>
+---
+
+## Next Steps
+---
+
+To begin building with ComposeDB in your local environment using the same data models you just queried, get started [**Using the Wheel**](./docs/0.5.x/wheel-reference).
