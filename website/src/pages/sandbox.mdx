@@ -32,6 +32,7 @@ Use the example queries below to access data related to the `BasicProfile` model
   values={[
     {label: 'Profile Index', value: 'profile-index'},
     {label: 'Profile with Posts', value: 'with-posts'},
+    {label: 'Profile with Comments on Posts', value: 'with-comments'},
     {label: 'Known Stream', value: 'known-stream'},
   ]}>
   <TabItem value="profile-index">
@@ -76,6 +77,40 @@ query{
 ```
 
   </TabItem>
+  <TabItem value="with-comments">
+
+```graphql
+query{
+  basicProfileIndex(first: 10){
+    edges{
+      node{
+        username
+        posts(first: 5){
+          edges{
+            node{
+              body
+              created
+              responses(first: 10){
+                edges{
+                  node{
+                    comment
+                    created
+                    profile{
+                      username
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+  </TabItem>
   <TabItem value="known-stream">
 
 ```graphql
@@ -107,7 +142,7 @@ Use the example queries below to access data related to the `Posts` model:
   defaultValue="posts-index"
   groupId="with-or-without-sessions"
   values={[
-    {label: 'Posts Index', value: 'posts-index'},
+    {label: 'Posts Index with First Comment', value: 'posts-index'},
     {label: 'Filtered by Tag', value: 'tag-filtered'},
     {label: 'Filtered by Date', value: 'date-filter'},
     {label: 'Combining Filters', value: 'filter-combine'},
@@ -125,6 +160,17 @@ query{
         created
         profile{
           username
+        }
+        responses(first: 1){
+          edges{
+            node{
+              comment
+              created
+              profile{
+                username
+              }
+            }
+          }
         }
       }
     }
