@@ -90,19 +90,33 @@ describe('runtime', () => {
         }
       }
     `
-    await runtime.executeQuery(createCommentMutation, {
-      input: { content: { postID, text: 'A first comment' } },
-    })
-    await runtime.executeQuery(createCommentMutation, {
-      input: { content: { postID, text: 'A second comment' } },
-    })
-    await runtime.executeQuery(createCommentMutation, {
-      input: { content: { postID, text: 'A third comment' } },
-    })
+
+    async function createComment(text: string): Promise<string> {
+      const result = await runtime.executeQuery<{ createComment: { document: { id: string } } }>(
+        createCommentMutation,
+        { input: { content: { postID, text } } },
+      )
+      const id = result.data?.createComment.document.id
+      if (id == null) {
+        throw new Error(`Missing ID from comment creation result`)
+      }
+      return id
+    }
+
+    const comment1 = await createComment('A first comment')
+    const comment2 = await createComment('A second comment')
+    const comment3 = await createComment('A third comment')
 
     const res = await runtime.executeQuery(
       `
-      query {
+      fragment CommentFragment on Comment {
+        text
+      }
+
+      query ($ids: [ID!]!) {
+        comments: nodes(ids: $ids) {
+          ...CommentFragment
+        }
         viewer {
           postList(first: 5) {
             edges {
@@ -113,7 +127,7 @@ describe('runtime', () => {
                 comments(first: 5) {
                   edges {
                     node {
-                      text
+                      ...CommentFragment
                     }
                   }
                 }
@@ -123,6 +137,7 @@ describe('runtime', () => {
         }
       }
       `,
+      { ids: [comment1, comment2, comment3] },
     )
     expect(res).toMatchSnapshot()
   }, 60000)
