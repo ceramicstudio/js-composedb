@@ -35,6 +35,12 @@ exports[`runtime create a document with enum 1`] = `
 
 exports[`runtime create and query post with comments 1`] = `
 "type Query {
+  """Fetches objects given their IDs"""
+  nodes(
+    """The IDs of objects"""
+    ids: [ID!]!
+  ): [Node]!
+
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -340,6 +346,17 @@ input PartialPostInput {
 exports[`runtime create and query post with comments 2`] = `
 {
   "data": {
+    "comments": [
+      {
+        "text": "A first comment",
+      },
+      {
+        "text": "A second comment",
+      },
+      {
+        "text": "A third comment",
+      },
+    ],
     "viewer": {
       "postList": {
         "edges": [

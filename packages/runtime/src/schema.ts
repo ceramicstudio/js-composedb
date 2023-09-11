@@ -849,7 +849,10 @@ class SchemaBuilder {
   }
 
   _createSchema(definitions: SharedDefinitions) {
-    const queryFields = { ...definitions.queryFields }
+    const queryFields: GraphQLFieldConfigMap<unknown, Context> = {
+      nodes: definitions.nodesField,
+      ...definitions.queryFields,
+    }
 
     for (const [alias, model] of Object.entries(this.#def.models)) {
       const first = alias[0].toLowerCase()

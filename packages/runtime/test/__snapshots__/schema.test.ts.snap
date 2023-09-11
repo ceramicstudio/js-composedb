@@ -2,6 +2,12 @@
 
 exports[`schema extra scalars 1`] = `
 "type Query {
+  """Fetches objects given their IDs"""
+  nodes(
+    """The IDs of objects"""
+    ids: [ID!]!
+  ): [Node]!
+
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -311,6 +317,12 @@ input UpdateOptionsInput {
 
 exports[`schema note 1`] = `
 "type Query {
+  """Fetches objects given their IDs"""
+  nodes(
+    """The IDs of objects"""
+    ids: [ID!]!
+  ): [Node]!
+
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -522,6 +534,12 @@ input UpdateOptionsInput {
 
 exports[`schema post and comments 1`] = `
 "type Query {
+  """Fetches objects given their IDs"""
+  nodes(
+    """The IDs of objects"""
+    ids: [ID!]!
+  ): [Node]!
+
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -826,6 +844,12 @@ input PartialPostInput {
 
 exports[`schema profile 1`] = `
 "type Query {
+  """Fetches objects given their IDs"""
+  nodes(
+    """The IDs of objects"""
+    ids: [ID!]!
+  ): [Node]!
+
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
