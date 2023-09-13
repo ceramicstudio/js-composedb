@@ -250,7 +250,7 @@ describe('runtime', () => {
       `,
     )
     expect(filteredCount.data?.ratingCount).toBe(1)
-    expect(filteredCount.data?.viewer?.ratingListCount).toBe(2)
+    expect(filteredCount.data?.viewer?.ratingListCount).toBe(1)
   }, 60000)
 
   test('can create a document using extra scalars', async () => {

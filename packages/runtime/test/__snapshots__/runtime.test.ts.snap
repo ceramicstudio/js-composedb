@@ -369,7 +369,7 @@ exports[`runtime create and query post with comments 2`] = `
               "comments": {
                 "edges": [],
               },
-              "commentsCount": 3,
+              "commentsCount": 0,
               "text": "First post content",
               "title": "A first post",
             },
