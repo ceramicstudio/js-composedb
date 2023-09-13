@@ -1,0 +1,367 @@
+---
+title: ComposeDB API Sandbox
+description: Test out example GraphQL queries on ComposeDB to learn how to access documents by relations, how to filter, and more.
+hide_table_of_contents: true
+---
+
+```mdx-code-block
+import App from '../components/HomepageFeatures/App';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+```
+
+# Sandbox
+
+Test out several pre-made example queries below to gain hands-on exposure to accessing documents by relations, filtering and ordering by fields, and combining query logic.
+
+For a deeper dive into querying, visit the [**queries**](./docs/0.5.x/guides/data-interactions/queries) page.
+
+## Data Models
+---
+The schema definitions that this sandbox uses are outlined in [**this repository**](https://github.com/ceramicstudio/EthDenver2023Demo/tree/main/composites). The sandbox has been pre-populated with data corresponding to several fictionary people.
+
+### Instructions
+
+To interact with the ComposeDB Sandbox, simply copy the prewritten queries from the code samples into the left-hand side of the embedded GraphiQL IDE and press the pink play icon to execute the query. Results returned from your query will populate in the right-hand side of the interface. 
+
+You can also alter your query logic however you see fit, or build your own queries entirely from scratch based on the schema definitions.
+
+*Please note that this sandbox only processes read requests.*
+
+## Reading Profiles
+---
+
+Use the example queries below to access data related to the `BasicProfile` model:
+
+
+<Tabs
+  defaultValue="profile-index"
+  groupId="with-or-without-sessions"
+  values={[
+    {label: 'Profile Index', value: 'profile-index'},
+    {label: 'Profile with Posts', value: 'with-posts'},
+    {label: 'Profile with Comments on Posts', value: 'with-comments'},
+    {label: 'Known Stream', value: 'known-stream'},
+  ]}>
+  <TabItem value="profile-index">
+
+```graphql
+query{
+  basicProfileIndex(first: 10){
+    edges{
+      node{
+        id
+        username
+        description
+        gender
+        emoji
+      }
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="with-posts">
+
+```graphql
+query{
+  basicProfileIndex(first: 10){
+    edges{
+      node{
+        username
+        posts(first: 5){
+          edges{
+            node{
+              body
+              created
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="with-comments">
+
+```graphql
+query{
+  basicProfileIndex(first: 10){
+    edges{
+      node{
+        username
+        posts(first: 5){
+          edges{
+            node{
+              body
+              created
+              responses(first: 10){
+                edges{
+                  node{
+                    comment
+                    created
+                    profile{
+                      username
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="known-stream">
+
+```graphql
+query{
+  node(id: "k2t6wzhkhabz3a7xz88mk93y1q2waejk1w2b5rs3kc82e42dgpe4l1h4mcibih"){
+    ... on BasicProfile{
+        id
+        username
+        description
+        gender
+        emoji
+    }
+  }
+}
+```
+
+  </TabItem>
+  </Tabs>
+
+```mdx-code-block
+<div style={{height: "60rem", width: "100%", margin: "auto"}}><App /></div>
+```
+
+---
+
+## Reading Posts
+---
+
+Use the example queries below to access data related to the `Posts` model:
+
+<Tabs
+  defaultValue="posts-index"
+  groupId="with-or-without-sessions"
+  values={[
+    {label: 'Posts Index with First Comment', value: 'posts-index'},
+    {label: 'Filtered by Tag', value: 'tag-filtered'},
+    {label: 'Filtered by Date', value: 'date-filter'},
+    {label: 'Combining Filters', value: 'filter-combine'},
+  ]}>
+  <TabItem value="posts-index">
+
+```graphql
+query{
+  postsIndex(first: 10){
+    edges{
+      node{
+        id
+        body
+        tag
+        created
+        profile{
+          username
+        }
+        responses(first: 1){
+          edges{
+            node{
+              comment
+              created
+              profile{
+                username
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="tag-filtered">
+
+```graphql
+query{
+  postsIndex(
+    filters: {
+      where: {
+        tag: {
+          equalTo: "Governance"
+        }
+      }
+    }
+    first: 10
+  ){
+    edges{
+    node{
+      body
+      created
+      profile{
+        username
+      }
+    }
+  }
+ }
+}
+```
+
+  </TabItem>
+  <TabItem value="date-filter">
+
+```graphql
+query{
+  postsIndex(
+    filters: {
+      where: {
+        created: {
+          greaterThan: "2022-05-10T14:15:00Z"
+        }
+      }
+    }
+    first: 10
+  ){
+    edges{
+    node{
+      body
+      created
+      profile{
+        username
+      }
+    }
+  }
+ }
+}
+```
+
+</TabItem>
+
+  <TabItem value="filter-combine">
+
+```graphql
+query{
+  postsIndex(filters: {
+    and: [
+      {
+        where: {
+          created: {
+          greaterThan: "2022-05-10T14:15:00Z"
+        }
+        }
+      },
+      {
+        and: {
+          where: {
+            tag: {
+              equalTo: "Governance"
+            }
+          }
+        }
+      }
+    ]
+  }
+  first: 20
+  ){
+    edges{
+      node{
+        body
+        created
+        tag
+      }
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+```mdx-code-block
+<div style={{height: "60rem", width: "100%", margin: "auto"}}><App /></div>
+```
+
+---
+
+## Reading Comments
+---
+
+Use the example queries below to access data related to the `Comments` model:
+
+<Tabs
+  defaultValue="comments-post"
+  groupId="with-or-without-sessions"
+  values={[
+    {label: 'Comments with Post', value: 'comments-post'},
+    {label: 'Ordered Comments', value: 'ordered-comments'}
+  ]}>
+  <TabItem value="comments-post">
+
+```graphql
+query{
+  commentsIndex(last: 20){
+    edges{
+      node{
+        comment
+        post{
+          body
+          profile{
+            username
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="ordered-comments">
+
+```graphql
+query{
+  commentsIndex(sorting:
+  {
+    created: ASC
+  }
+    first: 10
+  ){
+    edges{
+      node{
+        comment
+        created
+        post{
+          body
+          profile{
+            username
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+```mdx-code-block
+<div style={{height: "60rem", width: "100%", margin: "auto"}}><App /></div>
+```
+
+---
+
+## Next Steps
+---
+
+To begin building with ComposeDB in your local environment using the same data models you just queried, get started [**Using the Wheel**](./docs/0.5.x/wheel-reference).
