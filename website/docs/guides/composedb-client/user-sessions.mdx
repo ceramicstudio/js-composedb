@@ -112,7 +112,7 @@ const authMethod = await EthereumWebAuth.getAuthMethod(ethprovider, accountId)
 
 const compose = new ComposeClient()
 
-const session = await DIDSession.authorize(authMethod, { resources: compose.resources})
+const session = await DIDSession.get(accountId, authMethod, { resources: compose.resources})
 compose.setDID(session.did)
 ```
 
@@ -132,7 +132,7 @@ const authMethod = await SolanaWebAuth.getAuthMethod(solProvider, accountId)
 
 const compose = new ComposeClient()
 
-const session = await DIDSession.authorize(authMethod, { resources: compose.resources})
+const session = await DIDSession.get(accountId, authMethod, { resources: compose.resources})
 compose.setDID(session.did)
 ```
 
@@ -158,28 +158,6 @@ The `compose.resources` is an array of URI-formatted streamIDs of models, for ex
 ]
 ```
 
-## Additional Usage
----
-
-Once you authorize and create a session, you can serialize and store session for later. 
-
-:::tip
-
-Sessions by default are valid for 7 days.
-
-```jsx
-// Create session as above, store for later
-const session = await DIDSession.authorize(authMethod, { resources: [...]})
-const sessionString = session.serialize()
-
-// write/save session string where you want (ie localstorage)
-// ...
-
-// Later re initialize session
-const session2 = await DIDSession.fromSession(sessionString)
-const compose = new ComposeClient()
-compose.did = session.did
-```
 
 ### Session Lifecycle
 
@@ -222,26 +200,7 @@ const authMethod = await EthereumWebAuth.getAuthMethod(ethProvider, accountId)
 
 const compose = new ComposeClient()
 
-const loadSession = async (authMethod) => {
-	// Check if user session already in storage
-  const sessionStr = localStorage.getItem('didsession')
-  let session
-
-	// If session string available, create a new did-session object
-  if (sessionStr) {
-    session = await DIDSession.fromSession(sessionStr)
-  }
-
-	// If no session available, create a new user session and store in local storage
-  if (!session || (session.hasSession && session.isExpired)) {
-		const session = await DIDSession.authorize(authMethod, { resources: compose.resources})
-    localStorage.setItem('didsession', session.serialize())
-  }
-
-  return session
-}
-
-const session = await loadSession(authMethod)
+const session = await DIDSession.get(accountId, authMethod, { resources: compose.resources})
 compose.setDID(session.did)
 
 // pass ceramic instance where needed, ie glaze
@@ -249,7 +208,7 @@ compose.setDID(session.did)
 
 // Before mutations, check if a session is still valid, if expired, create new
 if (session.isExpired) {
-  const session = loadSession(authMethod)
+  const session = await DIDSession.get(accountId, authMethod, { resources: compose.resources})
   compose.setDID(session.did)
 }
 
