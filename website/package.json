@@ -17,13 +17,9 @@
   },
   "dependencies": {
     "@composedb/client": "workspace:^0.5.0",
-    "@composedb/devtools": "workspace:^0.5.0",
-    "@composedb/devtools-node": "workspace:^0.5.0",
-    "@composedb/runtime": "workspace:^0.5.0",
-    "@ceramicnetwork/cli": "2.38.0",
-    "@ceramicnetwork/common": "2.33.0",
-    "@ceramicnetwork/http-client": "2.30.0",
-    "@composedb/cli": "0.5.0",
+    "@ceramicnetwork/cli": "^2.38.0",
+    "@ceramicnetwork/common": "^2.33.0",
+    "@ceramicnetwork/http-client": "^2.30.0",
     "@docusaurus/core": "^2.4.1",
     "@docusaurus/plugin-content-docs": "^2.4.1",
     "@docusaurus/preset-classic": "^2.4.1",
@@ -40,8 +36,7 @@
     "react-scripts": "5.0.1"
   },
   "devDependencies": {
-    "@composedb/cli": "^0.5.0",
-    "@composedb/types": "workspace:^0.5.0",
+    "@composedb/cli": "workspace:^0.5.0",
     "@docusaurus/module-type-aliases": "^2.4.1",
     "@docusaurus/types": "^2.4.1",
     "@tsconfig/docusaurus": "^2.0.0",

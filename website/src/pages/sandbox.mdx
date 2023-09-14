@@ -17,22 +17,24 @@ Test out several pre-made example queries below to gain hands-on exposure to acc
 For a deeper dive into querying, visit the [**queries**](./docs/0.5.x/guides/data-interactions/queries) page.
 
 ## Data Models
+
 ---
+
 The schema definitions that this sandbox uses are outlined in [**this repository**](https://github.com/ceramicstudio/EthDenver2023Demo/tree/main/composites). The sandbox has been pre-populated with data corresponding to several fictionary people.
 
 ### Instructions
 
-To interact with the ComposeDB Sandbox, simply copy the prewritten queries from the code samples into the left-hand side of the embedded GraphiQL IDE and press the pink play icon to execute the query. Results returned from your query will populate in the right-hand side of the interface. 
+To interact with the ComposeDB Sandbox, simply copy the prewritten queries from the code samples into the left-hand side of the embedded GraphiQL IDE and press the pink play icon to execute the query. Results returned from your query will populate in the right-hand side of the interface.
 
 You can also alter your query logic however you see fit, or build your own queries entirely from scratch based on the schema definitions.
 
-*Please note that this sandbox only processes read requests.*
+_Please note that this sandbox only processes read requests._
 
 ## Reading Profiles
+
 ---
 
 Use the example queries below to access data related to the `BasicProfile` model:
-
 
 <Tabs
   defaultValue="profile-index"
@@ -46,10 +48,10 @@ Use the example queries below to access data related to the `BasicProfile` model
   <TabItem value="profile-index">
 
 ```graphql
-query{
-  basicProfileIndex(first: 10){
-    edges{
-      node{
+query {
+  basicProfileIndex(first: 10) {
+    edges {
+      node {
         id
         username
         description
@@ -65,14 +67,14 @@ query{
   <TabItem value="with-posts">
 
 ```graphql
-query{
-  basicProfileIndex(first: 10){
-    edges{
-      node{
+query {
+  basicProfileIndex(first: 10) {
+    edges {
+      node {
         username
-        posts(first: 5){
-          edges{
-            node{
+        posts(first: 5) {
+          edges {
+            node {
               body
               created
             }
@@ -88,22 +90,22 @@ query{
   <TabItem value="with-comments">
 
 ```graphql
-query{
-  basicProfileIndex(first: 10){
-    edges{
-      node{
+query {
+  basicProfileIndex(first: 10) {
+    edges {
+      node {
         username
-        posts(first: 5){
-          edges{
-            node{
+        posts(first: 5) {
+          edges {
+            node {
               body
               created
-              responses(first: 10){
-                edges{
-                  node{
+              responses(first: 10) {
+                edges {
+                  node {
                     comment
                     created
-                    profile{
+                    profile {
                       username
                     }
                   }
@@ -122,14 +124,14 @@ query{
   <TabItem value="known-stream">
 
 ```graphql
-query{
-  node(id: "k2t6wzhkhabz3a7xz88mk93y1q2waejk1w2b5rs3kc82e42dgpe4l1h4mcibih"){
-    ... on BasicProfile{
-        id
-        username
-        description
-        gender
-        emoji
+query {
+  node(id: "k2t6wzhkhabz3a7xz88mk93y1q2waejk1w2b5rs3kc82e42dgpe4l1h4mcibih") {
+    ... on BasicProfile {
+      id
+      username
+      description
+      gender
+      emoji
     }
   }
 }
@@ -145,6 +147,7 @@ query{
 ---
 
 ## Reading Posts
+
 ---
 
 Use the example queries below to access data related to the `Posts` model:
@@ -161,23 +164,23 @@ Use the example queries below to access data related to the `Posts` model:
   <TabItem value="posts-index">
 
 ```graphql
-query{
-  postsIndex(first: 10){
-    edges{
-      node{
+query {
+  postsIndex(first: 10) {
+    edges {
+      node {
         id
         body
         tag
         created
-        profile{
+        profile {
           username
         }
-        responses(first: 1){
-          edges{
-            node{
+        responses(first: 1) {
+          edges {
+            node {
               comment
               created
-              profile{
+              profile {
                 username
               }
             }
@@ -193,27 +196,18 @@ query{
   <TabItem value="tag-filtered">
 
 ```graphql
-query{
-  postsIndex(
-    filters: {
-      where: {
-        tag: {
-          equalTo: "Governance"
+query {
+  postsIndex(filters: { where: { tag: { equalTo: "Governance" } } }, first: 10) {
+    edges {
+      node {
+        body
+        created
+        profile {
+          username
         }
       }
     }
-    first: 10
-  ){
-    edges{
-    node{
-      body
-      created
-      profile{
-        username
-      }
-    }
   }
- }
 }
 ```
 
@@ -221,27 +215,18 @@ query{
   <TabItem value="date-filter">
 
 ```graphql
-query{
-  postsIndex(
-    filters: {
-      where: {
-        created: {
-          greaterThan: "2022-05-10T14:15:00Z"
+query {
+  postsIndex(filters: { where: { created: { greaterThan: "2022-05-10T14:15:00Z" } } }, first: 10) {
+    edges {
+      node {
+        body
+        created
+        profile {
+          username
         }
       }
     }
-    first: 10
-  ){
-    edges{
-    node{
-      body
-      created
-      profile{
-        username
-      }
-    }
   }
- }
 }
 ```
 
@@ -250,31 +235,18 @@ query{
   <TabItem value="filter-combine">
 
 ```graphql
-query{
-  postsIndex(filters: {
-    and: [
-      {
-        where: {
-          created: {
-          greaterThan: "2022-05-10T14:15:00Z"
-        }
-        }
-      },
-      {
-        and: {
-          where: {
-            tag: {
-              equalTo: "Governance"
-            }
-          }
-        }
-      }
-    ]
-  }
-  first: 20
-  ){
-    edges{
-      node{
+query {
+  postsIndex(
+    filters: {
+      and: [
+        { where: { created: { greaterThan: "2022-05-10T14:15:00Z" } } }
+        { and: { where: { tag: { equalTo: "Governance" } } } }
+      ]
+    }
+    first: 20
+  ) {
+    edges {
+      node {
         body
         created
         tag
@@ -294,6 +266,7 @@ query{
 ---
 
 ## Reading Comments
+
 ---
 
 Use the example queries below to access data related to the `Comments` model:
@@ -308,14 +281,14 @@ Use the example queries below to access data related to the `Comments` model:
   <TabItem value="comments-post">
 
 ```graphql
-query{
-  commentsIndex(last: 20){
-    edges{
-      node{
+query {
+  commentsIndex(last: 20) {
+    edges {
+      node {
         comment
-        post{
+        post {
           body
-          profile{
+          profile {
             username
           }
         }
@@ -329,20 +302,15 @@ query{
   <TabItem value="ordered-comments">
 
 ```graphql
-query{
-  commentsIndex(sorting:
-  {
-    created: ASC
-  }
-    first: 10
-  ){
-    edges{
-      node{
+query {
+  commentsIndex(sorting: { created: ASC }, first: 10) {
+    edges {
+      node {
         comment
         created
-        post{
+        post {
           body
-          profile{
+          profile {
             username
           }
         }
@@ -362,6 +330,7 @@ query{
 ---
 
 ## Next Steps
+
 ---
 
 To begin building with ComposeDB in your local environment using the same data models you just queried, get started [**Using the Wheel**](./docs/0.5.x/wheel-reference).
