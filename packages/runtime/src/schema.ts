@@ -294,6 +294,20 @@ class SchemaBuilder {
                 })
               },
             }
+            config[`${alias}Count`] = {
+              type: new GraphQLNonNull(GraphQLInt),
+              args: filtersObj ? { filters: { type: filtersObj } } : {},
+              resolve: async (
+                account,
+                { filters }: ConnectionFiltersArgument,
+                ctx,
+              ): Promise<number> => {
+                if (filters != null) {
+                  assertValidQueryFilters(filters)
+                }
+                return await ctx.queryCount({ queryFilters: filters, account, model: model.id })
+              },
+            }
           } else {
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             throw new Error(`Unsupported reference type: ${reference.type}`)
@@ -879,6 +893,16 @@ class SchemaBuilder {
             assertValidQueryFilters(filters)
           }
           return await ctx.queryConnection({ ...args, queryFilters: filters, model: model.id })
+        },
+      }
+      queryFields[`${first}${rest}Count`] = {
+        type: new GraphQLNonNull(GraphQLInt),
+        args: filtersObj ? { filters: { type: filtersObj } } : {},
+        resolve: async (_, { filters }: ConnectionFiltersArgument, ctx): Promise<number> => {
+          if (filters != null) {
+            assertValidQueryFilters(filters)
+          }
+          return await ctx.queryCount({ queryFilters: filters, model: model.id })
         },
       }
     }

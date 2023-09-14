@@ -219,6 +219,38 @@ describe('runtime', () => {
       `,
     )
     expect(descending).toMatchSnapshot()
+
+    const totalCount = await runtime.executeQuery<{
+      ratingCount: number
+      viewer: { ratingListCount: number }
+    }>(
+      `
+      query {
+        ratingCount
+        viewer {
+          ratingListCount
+        }
+      }
+      `,
+    )
+    expect(totalCount.data?.ratingCount).toBe(3)
+    expect(totalCount.data?.viewer?.ratingListCount).toBe(3)
+
+    const filteredCount = await runtime.executeQuery<{
+      ratingCount: number
+      viewer: { ratingListCount: number }
+    }>(
+      `
+      query {
+        ratingCount(filters: { where: { value : { lessThan: 3 } } })
+        viewer {
+          ratingListCount(filters: { where: { value : { greaterThan: 4 } } })
+        }
+      }
+      `,
+    )
+    expect(filteredCount.data?.ratingCount).toBe(1)
+    expect(filteredCount.data?.viewer?.ratingListCount).toBe(1)
   }, 60000)
 
   test('can create a document using extra scalars', async () => {
