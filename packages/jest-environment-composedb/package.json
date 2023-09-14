@@ -23,7 +23,7 @@
     "lint": "eslint index.js --fix"
   },
   "dependencies": {
-    "@ceramicnetwork/core": "^2.40.0",
+    "@ceramicnetwork/core": "^2.41.0",
     "dids": "^4.0.4",
     "ipfs-core": "^0.18.1",
     "jest-environment-node": "^29.7.0",
