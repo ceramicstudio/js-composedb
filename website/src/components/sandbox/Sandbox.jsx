@@ -124,11 +124,6 @@ const fetcher = async (graphQLParams) => {
     definition,
   })
 
-  ReactGA.event({
-    category: 'sandbox-query',
-    action: 'general-submit',
-  })
-
   const data = await composeClient.executeQuery(`${graphQLParams.query}`)
   console.log(data)
 
@@ -137,13 +132,12 @@ const fetcher = async (graphQLParams) => {
       category: 'sandbox-query',
       action: 'query-error',
     })
-  } else {
+  }
+  if (!data.data.__schema) {
     ReactGA.event({
       category: 'sandbox-query',
       action: 'query-success',
     })
-  }
-  if (!data.data.__schema) {
     return data.data
   }
 }
