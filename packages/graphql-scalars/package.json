@@ -42,6 +42,6 @@
     "caip": "^1.1.0",
     "graphql": "^16.8.0",
     "graphql-scalars": "^1.22.2",
-    "multiformats": "^12.1.0"
+    "multiformats": "^12.1.1"
   }
 }

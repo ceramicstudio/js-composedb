@@ -31,6 +31,7 @@ exports[`schema extra scalars 1`] = `
     filters: ExtraScalarsFiltersInput
     sorting: ExtraScalarsSortingInput
   ): ExtraScalarsConnection
+  extraScalarsCount(filters: ExtraScalarsFiltersInput): Int!
 }
 
 """An object with an ID"""
@@ -62,6 +63,7 @@ type CeramicAccount implements Node {
     filters: ExtraScalarsFiltersInput
     sorting: ExtraScalarsSortingInput
   ): ExtraScalarsConnection
+  extraScalarsListCount(filters: ExtraScalarsFiltersInput): Int!
 }
 
 """A connection to a list of items."""
@@ -346,6 +348,7 @@ exports[`schema note 1`] = `
     filters: NoteFiltersInput
     sorting: NoteSortingInput
   ): NoteConnection
+  noteCount(filters: NoteFiltersInput): Int!
 }
 
 """An object with an ID"""
@@ -377,6 +380,7 @@ type CeramicAccount implements Node {
     filters: NoteFiltersInput
     sorting: NoteSortingInput
   ): NoteConnection
+  noteListCount(filters: NoteFiltersInput): Int!
 }
 
 """A connection to a list of items."""
@@ -561,6 +565,7 @@ exports[`schema post and comments 1`] = `
     """Returns the last n items from the list."""
     last: Int
   ): CommentConnection
+  commentCount: Int!
   postIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -574,6 +579,7 @@ exports[`schema post and comments 1`] = `
     """Returns the last n items from the list."""
     last: Int
   ): PostConnection
+  postCount: Int!
 }
 
 """An object with an ID"""
@@ -603,6 +609,7 @@ type CeramicAccount implements Node {
     """Returns the last n items from the list."""
     last: Int
   ): CommentConnection
+  commentListCount: Int!
   postList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -616,6 +623,7 @@ type CeramicAccount implements Node {
     """Returns the last n items from the list."""
     last: Int
   ): PostConnection
+  postListCount: Int!
 }
 
 """A connection to a list of items."""
@@ -873,6 +881,7 @@ exports[`schema profile 1`] = `
     filters: GenericProfileFiltersInput
     sorting: GenericProfileSortingInput
   ): GenericProfileConnection
+  genericProfileCount(filters: GenericProfileFiltersInput): Int!
   socialProfileIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -888,6 +897,7 @@ exports[`schema profile 1`] = `
     filters: SocialProfileFiltersInput
     sorting: SocialProfileSortingInput
   ): SocialProfileConnection
+  socialProfileCount(filters: SocialProfileFiltersInput): Int!
   personProfileIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -903,6 +913,7 @@ exports[`schema profile 1`] = `
     filters: PersonProfileFiltersInput
     sorting: PersonProfileSortingInput
   ): PersonProfileConnection
+  personProfileCount(filters: PersonProfileFiltersInput): Int!
 }
 
 """An object with an ID"""
