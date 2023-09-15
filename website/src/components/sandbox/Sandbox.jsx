@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import useIsBrowser from '@docusaurus/useIsBrowser'
 import { GraphiQL } from 'graphiql'
 import 'graphiql/graphiql.min.css'
 import { ComposeClient } from '@composedb/client'
@@ -153,18 +154,11 @@ const settings = {
   posts: Posts,
 }
 
-export default function App(appProps) {
-  const [ready, setReady] = useState(false)
-
-  useEffect(() => {
-    localStorage.removeItem('graphiql:tabState')
-    localStorage.removeItem('graphiql:query')
-    localStorage.removeItem('graphiql:operationName')
-    setReady(true)
-  }, [])
-  return ready ? (
-    <GraphiQL defaultTabs={settings[appProps.appProps].values} fetcher={fetcher} />
+export default function Sandbox(props) {
+  const isBrowser = useIsBrowser()
+  return isBrowser ? (
+    <GraphiQL defaultTabs={settings[props.queries].values} storage={null} fetcher={fetcher} />
   ) : (
-    <div>'loading...'</div>
+    <div>loading...</div>
   )
 }
