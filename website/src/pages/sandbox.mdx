@@ -1,0 +1,75 @@
+---
+title: ComposeDB API Sandbox
+description: Test out example GraphQL queries on ComposeDB to learn how to access documents by relations, how to filter, and more.
+hide_table_of_contents: true
+---
+
+import Sandbox from '../components/sandbox/Sandbox';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+# Sandbox
+
+Test out several pre-made example queries below to gain hands-on exposure to accessing documents by relations, filtering and ordering by fields, and combining query logic.
+
+For a deeper dive into querying, visit the [**queries**](./docs/0.5.x/guides/data-interactions/queries) page.
+
+## Data Models
+
+---
+
+The schema definitions that this sandbox uses are outlined in [**this repository**](https://github.com/ceramicstudio/EthDenver2023Demo/tree/main/composites). The sandbox has been pre-populated with data corresponding to several fictionary people.
+
+### Instructions
+
+To interact with the ComposeDB Sandbox, simply press the pink play icon to execute the pre-written queries in the left-hand side of the embedded GraphiQL IDE. Results returned from your query will populate in the right-hand side of the interface.
+
+You can also alter your query logic however you see fit, or build your own queries entirely from scratch based on the schema definitions.
+
+_Please note that this sandbox only processes read requests._
+
+## Reading Profiles
+
+---
+
+Use the example queries below to access data related to the `BasicProfile` model:
+
+
+
+<div style={{height: "60rem", width: "100%", margin: "auto"}}><Sandbox queries='profiles' /></div>
+
+<br />
+---
+
+## Reading Posts
+
+---
+
+Use the example queries below to access data related to the `Posts` model:
+
+
+
+<div style={{height: "60rem", width: "100%", margin: "auto"}}><Sandbox queries='posts' /></div>
+
+<br />
+---
+
+## Reading Comments
+
+---
+
+Use the example queries below to access data related to the `Comments` model:
+
+
+<div style={{height: "60rem", width: "100%", margin: "auto"}}><Sandbox queries='comments' /></div>
+
+
+<br />
+---
+
+## Next Steps
+
+---
+
+To begin building with ComposeDB in your local environment using the same data models you just queried, get started [**Using the Wheel**](./docs/0.5.x/wheel-reference).

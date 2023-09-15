@@ -118,6 +118,11 @@ const config = {
             label: 'Reference',
           },
           {
+            to: 'sandbox',
+            label: 'ComposeDB Sandbox',
+            position: 'left',
+          },
+          {
             type: 'docsVersionDropdown',
             position: 'right',
           },
