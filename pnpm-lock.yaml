@@ -516,6 +516,9 @@ importers:
       '@docusaurus/plugin-content-docs':
         specifier: ^2.4.1
         version: 2.4.1(@swc/core@1.3.84)(eslint@8.49.0)(react-dom@17.0.2)(react@17.0.2)(typescript@5.2.2)
+      '@docusaurus/plugin-google-tag-manager':
+        specifier: ^2.4.1
+        version: 2.4.1(@swc/core@1.3.84)(eslint@8.49.0)(react-dom@17.0.2)(react@17.0.2)(typescript@5.2.2)
       '@docusaurus/preset-classic':
         specifier: ^2.4.1
         version: 2.4.1(@algolia/client-search@4.20.0)(@swc/core@1.3.84)(eslint@8.49.0)(react-dom@17.0.2)(react@17.0.2)(search-insights@2.8.2)(typescript@5.2.2)
@@ -4036,7 +4039,7 @@ packages:
     dependencies:
       '@docusaurus/logger': 2.4.1
       '@docusaurus/utils': 2.4.1(@docusaurus/types@2.4.1)(@swc/core@1.3.84)
-      joi: 17.10.0
+      joi: 17.10.1
       js-yaml: 4.1.0
       tslib: 2.6.2
     transitivePeerDependencies:
@@ -15825,7 +15828,6 @@ packages:
       '@sideway/address': 4.1.4
       '@sideway/formula': 3.0.1
       '@sideway/pinpoint': 2.0.0
-    dev: false
 
   /js-sha256@0.9.0:
     resolution: {integrity: sha512-sga3MHh9sgQN2+pJ9VYZ+1LPwXOxuBJBA5nrR5/ofPfuiJBE2hnjsaN8se8JznOmGLN2p49Pe5U/ttafcs/apA==}
@@ -22434,7 +22436,7 @@ packages:
     hasBin: true
     dependencies:
       axios: 0.25.0
-      joi: 17.10.0
+      joi: 17.10.1
       lodash: 4.17.21
       minimist: 1.2.8
       rxjs: 7.8.1
@@ -22448,7 +22450,7 @@ packages:
     hasBin: true
     dependencies:
       axios: 0.27.2
-      joi: 17.10.0
+      joi: 17.10.1
       lodash: 4.17.21
       minimist: 1.2.8
       rxjs: 7.8.1
