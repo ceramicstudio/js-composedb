@@ -11,6 +11,9 @@ const postsIndex =
         profile {
           username
         }
+        author{
+          id
+        }
         responses(first: 1) {
           edges {
             node {
@@ -24,6 +27,34 @@ const postsIndex =
         }
       }
     }
+  }
+}`
+
+const knownDid = 
+`query KnownDid{
+  node(id: "did:pkh:eip155:11155111:0x8071f6f971b438f7c0ea72c950430ee7655fabce") {
+      ... on CeramicAccount {
+      id
+      postsList(first: 100) {
+        edges {
+        node {
+            id
+            body
+            created
+            profile {
+              username
+            }
+          	responses(first: 5){
+              edges{
+                node{
+                  comment
+                }
+              }
+          	}
+          }
+        }
+      }
+    } 
   }
 }`
 
@@ -83,6 +114,7 @@ const combineFilters =
 const Posts = {
   values: [
     {title: `Posts Index`, query: postsIndex},
+    {title: `Known DID`, query: knownDid},
     {title: `Tag Filtered`, query: tagFiltered},
     {title: `Date Filtered`, query: dateFiltered},
     {title: `Combine Filters`, query: combineFilters},

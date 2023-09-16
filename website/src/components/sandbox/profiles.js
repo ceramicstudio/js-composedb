@@ -5,6 +5,9 @@ const profileIndex =
     edges {
       node {
         id
+        author{
+          id
+        }
         username
         description
         gender
@@ -13,6 +16,22 @@ const profileIndex =
     }
   }
 }`
+
+const knownDid = 
+`query KnownDid {
+  node(id: "did:pkh:eip155:11155111:0x8071f6f971b438f7c0ea72c950430ee7655fabce") {
+  ... on CeramicAccount {
+        basicProfile {
+          id
+          name
+          username
+          description
+          gender
+          emoji
+        }
+      }
+  	}
+	}`
 
 const withPosts = 
 `query WithPosts {
@@ -81,6 +100,7 @@ const knownStream =
 const Profiles = {
   values: [
     {title: `Profile Index`, query: profileIndex},
+    {title: `Known Did`, query: knownDid},
     {title: `Profile with Posts`, query: withPosts},
     {title: `Profile with Comments on Posts`, query: withComments},
     {title: `Known Stream`, query: knownStream},
