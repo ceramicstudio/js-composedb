@@ -19,7 +19,7 @@ const profileIndex =
 
 const knownDid = 
 `query KnownDid {
-  node(id: "did:pkh:eip155:11155111:0x8071f6f971b438f7c0ea72c950430ee7655fabce") {
+  node(id: "did:pkh:eip155:1:0xc362c16a0dcbea78fb03a8f97f56deea905617bb") {
   ... on CeramicAccount {
         basicProfile {
           id
