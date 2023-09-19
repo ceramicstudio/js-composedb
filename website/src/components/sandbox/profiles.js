@@ -1,6 +1,8 @@
 
 const profileIndex = 
-`query ProfileIndex {
+`# gets the first 10 indexed BasicProfile instances
+
+query ProfileIndex {
   basicProfileIndex(first: 10) {
     edges {
       node {
@@ -18,7 +20,10 @@ const profileIndex =
 }`
 
 const knownDid = 
-`query KnownDid {
+`# gets the BasicProfile instance (if exists) 
+# known pkh:did (using chainID 1 for Eth Mainnet) 
+
+query KnownDid {
   node(id: "did:pkh:eip155:1:0xc362c16a0dcbea78fb03a8f97f56deea905617bb") {
   ... on CeramicAccount {
         basicProfile {
@@ -34,7 +39,12 @@ const knownDid =
 	}`
 
 const withPosts = 
-`query WithPosts {
+`# gets the first 10 indexed BasicProfile instances
+
+# gets the first 5 posts published by each of the 
+# 10 BasicProfile instances (if exists)
+
+query WithPosts {
   basicProfileIndex(first: 10) {
     edges {
       node {
@@ -53,7 +63,18 @@ const withPosts =
 }`
 
 const withComments = 
-`query WithComments {
+`# gets the first 10 indexed BasicProfile instances
+
+# gets the first 5 posts published by each of the 
+# 10 BasicProfile instances (if exists)
+
+# gets the first 10 responses corresponding to each
+# of the 5 posts (if exists) 
+
+# gets the corresponding BasicProfile instance for
+# each response & prints only the username property 
+
+query WithComments {
   basicProfileIndex(first: 10) {
     edges {
       node {
@@ -84,7 +105,10 @@ const withComments =
 
 
 const knownStream = 
-`query KnownStream {
+`# gets the BasicProfile instance (if exists) 
+# based on a known StreamID
+
+query KnownStream {
   node(id: "k2t6wzhkhabz3a7xz88mk93y1q2waejk1w2b5rs3kc82e42dgpe4l1h4mcibih") {
     ... on BasicProfile {
       id
