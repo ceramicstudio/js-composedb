@@ -1,6 +1,14 @@
 
 const commentsPost = 
-`query CommentsWithPost {
+`# gets the last 20 indexed Comments instances (if exists)
+
+# gets the corresponding Posts instance that the comment
+# is responding to
+
+# gets the BasicProfile instance and its username property
+# corresponding to the Posts instance
+
+query CommentsWithPost {
     commentsIndex(last: 20) {
       edges {
         node {
@@ -17,7 +25,17 @@ const commentsPost =
   }`
 
 const orderedComments = 
-`query OrderedComments {
+`# gets the first 10 indexed Comments instances (if exists)
+# based on sorting by each instance's created (date) field
+# in ascending order
+
+# gets the corresponding Posts instance that the comment
+# is responding to
+
+# gets the BasicProfile instance and its username property
+# corresponding to the Posts instance
+
+query OrderedComments {
     commentsIndex(sorting: { created: ASC }, first: 10) {
       edges {
         node {
