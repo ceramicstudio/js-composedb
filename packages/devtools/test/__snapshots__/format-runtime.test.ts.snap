@@ -584,3 +584,45 @@ exports[`Runtime format Profile definition with added model view 1`] = `
   },
 }
 `;
+
+exports[`Runtime format Social with account reference 1`] = `
+{
+  "accountData": {
+    "otherOfPersonMetList": {
+      "name": "PersonMet",
+      "property": "other",
+      "type": "account",
+    },
+    "personMetList": {
+      "name": "PersonMet",
+      "type": "connection",
+    },
+  },
+  "enums": {},
+  "models": {
+    "PersonMet": {
+      "accountRelation": {
+        "type": "list",
+      },
+      "id": "PersonMetID",
+    },
+  },
+  "objects": {
+    "PersonMet": {
+      "date": {
+        "indexed": true,
+        "required": false,
+        "type": "date",
+      },
+      "other": {
+        "required": true,
+        "type": "did",
+      },
+      "self": {
+        "type": "view",
+        "viewType": "documentAccount",
+      },
+    },
+  },
+}
+`;

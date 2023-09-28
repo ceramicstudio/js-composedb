@@ -1,4 +1,8 @@
-import type { ModelDefinition, ModelViewsDefinition } from '@ceramicnetwork/stream-model'
+import type {
+  ModelDefinition,
+  ModelRelationsDefinition,
+  ModelViewsDefinition,
+} from '@ceramicnetwork/stream-model'
 import type {
   CustomRuntimeScalarType,
   InternalCompositeDefinition,
@@ -7,9 +11,10 @@ import type {
   RuntimeList,
   RuntimeObjectField,
   RuntimeObjectFields,
-  RuntimeScalar,
   RuntimeReference,
+  RuntimeScalar,
   RuntimeScalarCommon,
+  RuntimeViewReference,
 } from '@composedb/types'
 import { camelCase, pascalCase } from 'change-case'
 import { JsonReference } from 'json-ptr'
@@ -47,6 +52,7 @@ type ExtractSchemaParams = {
 }
 
 type RuntimeModelDefinition = {
+  accountData: Record<string, RuntimeViewReference>
   objects: Record<string, RuntimeObjectFields>
   enums: Record<string, Array<string>>
   unions: Record<string, Array<string>>
@@ -54,8 +60,10 @@ type RuntimeModelDefinition = {
 
 /** @internal */
 export class RuntimeModelBuilder {
+  #accountData: Record<string, RuntimeViewReference> = {}
   #commonEmbeds: Array<string>
   #modelName: string
+  #modelRelations: ModelRelationsDefinition
   #modelSchema: JSONSchema.Object
   #modelViews: ModelViewsDefinition
   #objects: Record<string, RuntimeObjectFields> = {}
@@ -65,6 +73,7 @@ export class RuntimeModelBuilder {
   constructor(params: RuntimeModelBuilderParams) {
     this.#commonEmbeds = params.commonEmbeds ?? []
     this.#modelName = params.name
+    this.#modelRelations = params.definition.relations ?? {}
     this.#modelSchema = params.definition.schema
     this.#modelViews = params.views
   }
@@ -73,8 +82,10 @@ export class RuntimeModelBuilder {
     const modelObject = this._buildObject(this.#modelSchema)
     this.#objects[this.#modelName] = modelObject
     // TODO (post-MVP): build relations
+    this._buildRelations(this.#modelRelations)
     this._buildViews(modelObject, this.#modelViews)
     return {
+      accountData: this.#accountData,
       objects: this.#objects,
       enums: this.#enums,
       unions: this.#unions,
@@ -244,6 +255,15 @@ export class RuntimeModelBuilder {
     }
   }
 
+  _buildRelations(relations: ModelRelationsDefinition = {}): void {
+    for (const [key, relation] of Object.entries(relations)) {
+      if (relation.type === 'account') {
+        const relationKey = camelCase(`${key}Of${this.#modelName}List`)
+        this.#accountData[relationKey] = { type: 'account', name: this.#modelName, property: key }
+      }
+    }
+  }
+
   _buildViews(object: RuntimeObjectFields, views: ModelViewsDefinition = {}): void {
     for (const [key, view] of Object.entries(views)) {
       object[key] = viewDefinitionToRuntime(view)
@@ -306,6 +326,7 @@ export function createRuntimeDefinition(
     })
     const builtModel = modelBuilder.build()
     // Inject extracted types to runtime definition
+    Object.assign(runtime.accountData, builtModel.accountData)
     Object.assign(runtime.objects, builtModel.objects)
     Object.assign(runtime.enums, builtModel.enums)
     for (const idx of definition.indices?.[modelName] ?? []) {
@@ -327,6 +348,5 @@ export function createRuntimeDefinition(
     }
   }
 
-  // TODO: handle definition.views for models relations, accountData and root view
   return runtime
 }

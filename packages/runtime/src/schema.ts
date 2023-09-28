@@ -1,4 +1,4 @@
-import type { QueryFilters, Sorting } from '@ceramicnetwork/common'
+import type { BaseQuery, QueryFilters, Sorting } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { CeramicCommitID, getScalar } from '@composedb/graphql-scalars'
 import type {
@@ -47,7 +47,11 @@ import {
 
 import type { Context } from './context.js'
 import type { UpdateDocOptions } from './loader.js'
-import { assertValidQueryFilters, createRelationQueryFilters } from './query.js'
+import {
+  type ConnectionQuery,
+  assertValidQueryFilters,
+  createRelationQueryFilters,
+} from './query.js'
 import { ObjMap } from 'graphql/jsutils/ObjMap'
 
 const NON_SCALAR_FIELD_TYPES: Array<RuntimeObjectField['type']> = [
@@ -100,6 +104,20 @@ const connectionArgsWithAccount = {
     type: GraphQLID,
     description: 'Returns only documents created by the provided account',
   },
+}
+
+const SetOptionsInput = new GraphQLInputObjectType({
+  name: 'SetOptionsInput',
+  fields: {
+    syncTimeout: {
+      type: GraphQLInt,
+      description: 'Maximum amount of time to lookup the stream over the network, in seconds',
+    },
+  },
+})
+
+type SetOptions = {
+  syncTimeout?: number
 }
 
 const UpdateOptionsInput = new GraphQLInputObjectType({
@@ -265,7 +283,7 @@ class SchemaBuilder {
                 return await ctx.querySingle({ account, model: model.id })
               },
             }
-          } else if (reference.type === 'connection') {
+          } else if (reference.type === 'account' || reference.type === 'connection') {
             const filtersObj = this.#inputObjects[`${reference.name}Filters`]
             const sortingObj = this.#inputObjects[`${reference.name}Sorting`]
             const args: ObjMap<GraphQLArgumentConfig> = {
@@ -283,15 +301,23 @@ class SchemaBuilder {
                 { filters, ...args }: ConnectionQueryArguments,
                 ctx,
               ): Promise<Connection<ModelInstanceDocument | null>> => {
-                if (filters != null) {
-                  assertValidQueryFilters(filters)
+                const query: ConnectionQuery = { ...args, model: model.id }
+                if (reference.type === 'account') {
+                  // Current account is referenced in a document field
+                  query.queryFilters = createRelationQueryFilters(
+                    reference.property,
+                    account,
+                    filters,
+                  )
+                } else {
+                  // Current account is the controller of the document
+                  query.account = account
+                  if (filters != null) {
+                    assertValidQueryFilters(filters)
+                    query.queryFilters = filters
+                  }
                 }
-                return await ctx.queryConnection({
-                  ...args,
-                  queryFilters: filters,
-                  account,
-                  model: model.id,
-                })
+                return await ctx.queryConnection(query)
               },
             }
             config[`${alias}Count`] = {
@@ -302,10 +328,23 @@ class SchemaBuilder {
                 { filters }: ConnectionFiltersArgument,
                 ctx,
               ): Promise<number> => {
-                if (filters != null) {
-                  assertValidQueryFilters(filters)
+                const query: BaseQuery = { model: model.id }
+                if (reference.type === 'account') {
+                  // Current account is referenced in a document field
+                  query.queryFilters = createRelationQueryFilters(
+                    reference.property,
+                    account,
+                    filters,
+                  )
+                } else {
+                  // Current account is the controller of the document
+                  query.account = account
+                  if (filters != null) {
+                    assertValidQueryFilters(filters)
+                    query.queryFilters = filters
+                  }
                 }
-                return await ctx.queryCount({ queryFilters: filters, account, model: model.id })
+                return await ctx.queryCount(query)
               },
             }
           } else {
@@ -818,26 +857,49 @@ class SchemaBuilder {
     name: string,
     model: RuntimeModel,
   ) {
-    this.#mutations[`create${name}`] = mutationWithClientMutationId({
-      name: `Create${name}`,
-      inputFields: () => ({
-        content: { type: new GraphQLNonNull(this.#inputObjects[name]) },
-      }),
-      outputFields: () => ({
-        ...queryFields,
-        document: { type: new GraphQLNonNull(this.#types[name]) },
-      }),
-      mutateAndGetPayload: async (input: { content: Record<string, unknown> }, ctx: Context) => {
-        if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
-          throw new Error('Ceramic instance is not authenticated')
-        }
-        const document =
-          model.accountRelation.type === 'single'
-            ? await ctx.createSingle(model.id, input.content)
-            : await ctx.createDoc(model.id, input.content)
-        return { document }
-      },
-    })
+    if (model.accountRelation.type === 'single') {
+      this.#mutations[`create${name}`] = mutationWithClientMutationId({
+        name: `Create${name}`,
+        inputFields: () => ({
+          content: { type: new GraphQLNonNull(this.#inputObjects[name]) },
+          options: { type: SetOptionsInput },
+        }),
+        outputFields: () => ({
+          ...queryFields,
+          document: { type: new GraphQLNonNull(this.#types[name]) },
+        }),
+        mutateAndGetPayload: async (
+          input: { content: Record<string, unknown>; options?: SetOptions },
+          ctx: Context,
+        ) => {
+          if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
+            throw new Error('Ceramic instance is not authenticated')
+          }
+          const document = await ctx.createSingle(model.id, input.content, {
+            syncTimeoutSeconds: input.options?.syncTimeout,
+          })
+          return { document }
+        },
+      })
+    } else {
+      this.#mutations[`create${name}`] = mutationWithClientMutationId({
+        name: `Create${name}`,
+        inputFields: () => ({
+          content: { type: new GraphQLNonNull(this.#inputObjects[name]) },
+        }),
+        outputFields: () => ({
+          ...queryFields,
+          document: { type: new GraphQLNonNull(this.#types[name]) },
+        }),
+        mutateAndGetPayload: async (input: { content: Record<string, unknown> }, ctx: Context) => {
+          if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
+            throw new Error('Ceramic instance is not authenticated')
+          }
+          const document = await ctx.createDoc(model.id, input.content)
+          return { document }
+        },
+      })
+    }
 
     this.#mutations[`update${name}`] = mutationWithClientMutationId({
       name: `Update${name}`,

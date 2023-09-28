@@ -1,4 +1,4 @@
-import type { BaseQuery, CeramicApi } from '@ceramicnetwork/common'
+import type { BaseQuery, CeramicApi, CreateOpts } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import type { CommitID, StreamID } from '@ceramicnetwork/streamid'
 import type { Connection } from 'graphql-relay'
@@ -63,6 +63,7 @@ export type Context = {
   createSingle: <Content extends Record<string, any>>(
     model: string,
     content: Content,
+    options?: CreateOpts,
   ) => Promise<ModelInstanceDocument<Content>>
   /**
    * Update an existing document.
@@ -118,12 +119,13 @@ export function createContext(params: ContextParams): Context {
     createSingle: async <Content extends Record<string, any> = Record<string, any>>(
       model: string,
       content: Content,
+      options?: CreateOpts,
     ): Promise<ModelInstanceDocument<Content>> => {
       const controller = getViewerID()
       if (controller == null) {
         throw new Error('Document can only be created with an authenticated account')
       }
-      const doc = await loader.single<Content>(controller, model)
+      const doc = await loader.single<Content>(controller, model, options)
       await doc.replace(content)
       return doc
     },

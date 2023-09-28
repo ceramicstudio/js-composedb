@@ -201,7 +201,9 @@ export type RuntimeObjectFields = Record<string, RuntimeObjectField>
 /** Runtime views types. */
 export type RuntimeViewReferenceType = 'connection' | 'node'
 /** Runtime view reference representation. */
-export type RuntimeViewReference = { type: RuntimeViewReferenceType; name: string }
+export type RuntimeViewReference =
+  | { type: 'account'; name: string; property: string }
+  | { type: RuntimeViewReferenceType; name: string }
 
 /** Runtime model information. */
 export type RuntimeModel = { id: string; accountRelation: ModelAccountRelation }

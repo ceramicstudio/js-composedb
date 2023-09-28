@@ -1135,6 +1135,7 @@ type CreateGenericProfilePayload {
 
 input CreateGenericProfileInput {
   content: GenericProfileInput!
+  options: SetOptionsInput
   clientMutationId: String
 }
 
@@ -1154,6 +1155,13 @@ input ImageMetadataInput {
   width: Int!
   height: Int!
   size: Int
+}
+
+input SetOptionsInput {
+  """
+  Maximum amount of time to lookup the stream over the network, in seconds
+  """
+  syncTimeout: Int
 }
 
 type UpdateGenericProfilePayload {
@@ -1209,6 +1217,7 @@ type CreateSocialProfilePayload {
 
 input CreateSocialProfileInput {
   content: SocialProfileInput!
+  options: SetOptionsInput
   clientMutationId: String
 }
 
@@ -1261,6 +1270,7 @@ type CreatePersonProfilePayload {
 
 input CreatePersonProfileInput {
   content: PersonProfileInput!
+  options: SetOptionsInput
   clientMutationId: String
 }
 

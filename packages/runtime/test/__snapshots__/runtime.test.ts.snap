@@ -487,3 +487,100 @@ exports[`runtime create and query ratings with filters and ordering 3`] = `
   },
 }
 `;
+
+exports[`runtime relation to account reference 1`] = `
+{
+  "data": {
+    "alice": {
+      "met": {
+        "edges": [],
+      },
+      "metBy": {
+        "edges": [
+          {
+            "node": {
+              "self": {
+                "id": "did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp",
+              },
+            },
+          },
+        ],
+      },
+      "metByCount": 1,
+      "metCount": 0,
+    },
+    "bob": {
+      "met": {
+        "edges": [],
+      },
+      "metBy": {
+        "edges": [
+          {
+            "node": {
+              "self": {
+                "id": "did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp",
+              },
+            },
+          },
+          {
+            "node": {
+              "self": {
+                "id": "did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp",
+              },
+            },
+          },
+          {
+            "node": {
+              "self": {
+                "id": "did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp",
+              },
+            },
+          },
+        ],
+      },
+      "metByCount": 3,
+      "metCount": 0,
+    },
+    "viewer": {
+      "id": "did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp",
+      "met": {
+        "edges": [
+          {
+            "node": {
+              "other": {
+                "id": "did:test:bob",
+              },
+            },
+          },
+          {
+            "node": {
+              "other": {
+                "id": "did:test:alice",
+              },
+            },
+          },
+          {
+            "node": {
+              "other": {
+                "id": "did:test:bob",
+              },
+            },
+          },
+          {
+            "node": {
+              "other": {
+                "id": "did:test:bob",
+              },
+            },
+          },
+        ],
+      },
+      "metBy": {
+        "edges": [],
+      },
+      "metByCount": 0,
+      "metCount": 4,
+    },
+  },
+}
+`;

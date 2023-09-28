@@ -6,6 +6,7 @@ import {
   noteSchema,
   postSchema,
   profilesSchema,
+  socialSchema,
 } from '@composedb/test-schemas'
 
 import { createRuntimeDefinition, getName, mockDefinitionFromSchema } from '../src'
@@ -64,5 +65,11 @@ describe('Runtime format', () => {
       commentDefinition.models,
     )
     expect(createRuntimeDefinition(postWithCommentsDefinition)).toMatchSnapshot()
+  })
+
+  test('Social with account reference', () => {
+    const socialDefinition = mockDefinitionFromSchema(socialSchema)
+    const runtime = createRuntimeDefinition(socialDefinition)
+    expect(runtime).toMatchSnapshot()
   })
 })

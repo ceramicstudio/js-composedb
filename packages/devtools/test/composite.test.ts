@@ -720,7 +720,7 @@ describe('composite', () => {
         definition: composite.toJSON(),
       })
       const fromJSONCompositeParams = fromJSONComposite.toParams()
-      expect(Object.keys(fromJSONCompositeParams.commits).length).toEqual(3)
+      expect(Object.keys(fromJSONCompositeParams.commits)).toHaveLength(3)
     })
   })
 
@@ -734,7 +734,7 @@ describe('composite', () => {
         models: composite.modelIDs,
       })
       const fromModelsCompositeParams = fromModelsComposite.toParams()
-      expect(Object.keys(fromModelsCompositeParams.commits).length).toEqual(3)
+      expect(Object.keys(fromModelsCompositeParams.commits)).toHaveLength(3)
     })
   })
 
