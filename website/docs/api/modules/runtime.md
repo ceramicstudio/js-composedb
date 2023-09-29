@@ -34,7 +34,7 @@ ___
 | :------ | :------ | :------ |
 | `ceramic` | `CeramicApi` | Ceramic client instance used internally. |
 | `createDoc` | <Content\>(`model`: `string`, `content`: `Content`) => `Promise`<`ModelInstanceDocument`<`Content`\>\> | Create a new document with the given model and content. |
-| `createSingle` | <Content\>(`model`: `string`, `content`: `Content`) => `Promise`<`ModelInstanceDocument`<`Content`\>\> | Create a new single document with the given model and content. |
+| `createSingle` | <Content\>(`model`: `string`, `content`: `Content`, `options?`: `CreateOpts`) => `Promise`<`ModelInstanceDocument`<`Content`\>\> | Create a new single document with the given model and content. |
 | `getViewerID` | () => `string` \| ``null`` | ID of the current viewer (authenticated DID), if set. |
 | `isAuthenticated` | () => `boolean` | Returns whether the Ceramic client instance used internally is authenticated or not. When not authenticated, mutations will fail. |
 | `loadDoc` | <Content\>(`id`: `string` \| `CommitID` \| `StreamID`, `fresh?`: `boolean`) => `Promise`<`ModelInstanceDocument`<`Content`\>\> | Load a document by ID, using the cache if possible. |

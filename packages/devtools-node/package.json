@@ -37,7 +37,7 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/http-client": "^2.31.0",
+    "@ceramicnetwork/http-client": "^2.32.0",
     "@composedb/client": "workspace:^0.5.2",
     "@composedb/runtime": "workspace:^0.5.2",
     "@composedb/server": "workspace:^0.5.2",
@@ -49,7 +49,7 @@
   "devDependencies": {
     "@composedb/devtools": "workspace:^0.5.1",
     "@composedb/types": "workspace:^0.5.1",
-    "@types/fs-extra": "^11.0.1",
+    "@types/fs-extra": "^11.0.2",
     "dids": "^4.0.4"
   },
   "jest": {
