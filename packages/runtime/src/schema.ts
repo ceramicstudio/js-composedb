@@ -13,6 +13,7 @@ import type {
   RuntimeScalar,
   RuntimeScalarCommon,
   RuntimeViewField,
+  RuntimeViewReference,
 } from '@composedb/types'
 import {
   GraphQLBoolean,
@@ -47,11 +48,7 @@ import {
 
 import type { Context } from './context.js'
 import type { UpdateDocOptions } from './loader.js'
-import {
-  type ConnectionQuery,
-  assertValidQueryFilters,
-  createRelationQueryFilters,
-} from './query.js'
+import { assertValidQueryFilters, createRelationQueryFilters } from './query.js'
 import { ObjMap } from 'graphql/jsutils/ObjMap'
 
 const NON_SCALAR_FIELD_TYPES: Array<RuntimeObjectField['type']> = [
@@ -97,6 +94,27 @@ type ConnectionQueryArguments = ConnectionArguments &
   ConnectionSortingArgument
 type ConnectionRelationArguments = ConnectionQueryArguments & ConnectionAccountArgument
 type ConnectionRelationCountArguments = ConnectionAccountArgument & ConnectionFiltersArgument
+
+function createAccountReferenceQuery(
+  modelID: string,
+  account: string,
+  reference: RuntimeViewReference,
+  filters?: QueryFilters,
+): BaseQuery {
+  const query: BaseQuery = { model: modelID }
+  if (reference.type === 'account') {
+    // Current account is referenced in a document field
+    query.queryFilters = createRelationQueryFilters(reference.property, account, filters)
+  } else {
+    // Current account is the controller of the document
+    query.account = account
+    if (filters != null) {
+      assertValidQueryFilters(filters)
+      query.queryFilters = filters
+    }
+  }
+  return query
+}
 
 const connectionArgsWithAccount = {
   ...connectionArgs,
@@ -301,23 +319,8 @@ class SchemaBuilder {
                 { filters, ...args }: ConnectionQueryArguments,
                 ctx,
               ): Promise<Connection<ModelInstanceDocument | null>> => {
-                const query: ConnectionQuery = { ...args, model: model.id }
-                if (reference.type === 'account') {
-                  // Current account is referenced in a document field
-                  query.queryFilters = createRelationQueryFilters(
-                    reference.property,
-                    account,
-                    filters,
-                  )
-                } else {
-                  // Current account is the controller of the document
-                  query.account = account
-                  if (filters != null) {
-                    assertValidQueryFilters(filters)
-                    query.queryFilters = filters
-                  }
-                }
-                return await ctx.queryConnection(query)
+                const query = createAccountReferenceQuery(model.id, account, reference, filters)
+                return await ctx.queryConnection({ ...query, ...args })
               },
             }
             config[`${alias}Count`] = {
@@ -328,22 +331,7 @@ class SchemaBuilder {
                 { filters }: ConnectionFiltersArgument,
                 ctx,
               ): Promise<number> => {
-                const query: BaseQuery = { model: model.id }
-                if (reference.type === 'account') {
-                  // Current account is referenced in a document field
-                  query.queryFilters = createRelationQueryFilters(
-                    reference.property,
-                    account,
-                    filters,
-                  )
-                } else {
-                  // Current account is the controller of the document
-                  query.account = account
-                  if (filters != null) {
-                    assertValidQueryFilters(filters)
-                    query.queryFilters = filters
-                  }
-                }
+                const query = createAccountReferenceQuery(model.id, account, reference, filters)
                 return await ctx.queryCount(query)
               },
             }
