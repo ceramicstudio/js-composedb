@@ -13,20 +13,26 @@ import {
   postSchema,
   profilesSchema,
   ratingSchema,
+  socialSchema,
 } from '@composedb/test-schemas'
+import { jest } from '@jest/globals'
 import { AccountId, ChainId } from 'caip'
 import { CID } from 'multiformats/cid'
 
-import { ComposeRuntime, printGraphQLSchema } from '../src'
+import { ComposeRuntime, createContext, printGraphQLSchema } from '../src'
 
 declare global {
   const ceramic: CeramicApi
 }
 
 describe('runtime', () => {
-  test('create profile', async () => {
+  test('create profile with custom sync timeout', async () => {
     const composite = await Composite.create({ ceramic, schema: profilesSchema })
-    const runtime = new ComposeRuntime({ ceramic, definition: composite.toRuntime() })
+
+    const context = createContext({ ceramic })
+    const spy = jest.spyOn(context, 'createSingle')
+
+    const runtime = new ComposeRuntime({ ceramic, context, definition: composite.toRuntime() })
     const res = await runtime.executeQuery<{ createGenericProfile: { document: { id: string } } }>(
       `
       mutation CreateProfile($input: CreateGenericProfileInput!) {
@@ -37,9 +43,14 @@ describe('runtime', () => {
         }
       }
       `,
-      { input: { content: { name: 'Alice' } } },
+      { input: { content: { name: 'Alice' }, options: { syncTimeout: 1 } } },
     )
     expect(res.data?.createGenericProfile.document.id).toBeDefined()
+    expect(spy).toHaveBeenCalledWith(
+      expect.any(String),
+      { name: 'Alice' },
+      { syncTimeoutSeconds: 1 },
+    )
   }, 30000)
 
   test('create and query post with comments', async () => {
@@ -147,24 +158,35 @@ describe('runtime', () => {
     const definition = composite.toRuntime()
     const runtime = new ComposeRuntime({ ceramic, definition })
 
-    const createRatingMutation = `
-      mutation CreateRating($input: CreateRatingInput!) {
-        createRating(input: $input) {
+    await runtime.executeQuery(
+      `
+      mutation CreateRatings(
+        $input1: CreateRatingInput!,
+        $input2: CreateRatingInput!,
+        $input3: CreateRatingInput!) {
+        rating1: createRating(input: $input1) {
+          document {
+            id
+          }
+        }
+        rating2: createRating(input: $input2) {
+          document {
+            id
+          }
+        }
+        rating3: createRating(input: $input3) {
           document {
             id
           }
         }
       }
-    `
-    await runtime.executeQuery(createRatingMutation, {
-      input: { content: { title: 'one', value: 5 } },
-    })
-    await runtime.executeQuery(createRatingMutation, {
-      input: { content: { title: 'two', value: 2.5 } },
-    })
-    await runtime.executeQuery(createRatingMutation, {
-      input: { content: { title: 'three', value: 3.5 } },
-    })
+    `,
+      {
+        input1: { content: { title: 'one', value: 5 } },
+        input2: { content: { title: 'two', value: 2.5 } },
+        input3: { content: { title: 'three', value: 3.5 } },
+      },
+    )
 
     const filtered = await runtime.executeQuery(
       `
@@ -344,5 +366,82 @@ describe('runtime', () => {
       },
     )
     expect(res.data?.createNote.document).toMatchSnapshot()
+  }, 20000)
+
+  test('relation to account reference', async () => {
+    const composite = await Composite.create({ ceramic, schema: socialSchema })
+    const runtime = new ComposeRuntime({ ceramic, definition: composite.toRuntime() })
+
+    await runtime.executeQuery(
+      `
+      mutation CreateMeetings(
+        $aliceInput: CreatePersonMetInput!,
+        $bobInput: CreatePersonMetInput!) {
+        metBob1: createPersonMet(input: $bobInput) {
+          document {
+            id
+          }
+        }
+        metAlice1: createPersonMet(input: $aliceInput) {
+          document {
+            id
+          }
+        }
+        metBob2: createPersonMet(input: $bobInput) {
+          document {
+            id
+          }
+        }
+        metBob3: createPersonMet(input: $bobInput) {
+          document {
+            id
+          }
+        }
+      }
+      `,
+      {
+        aliceInput: { content: { other: 'did:test:alice' } },
+        bobInput: { content: { other: 'did:test:bob' } },
+      },
+    )
+
+    const res = await runtime.executeQuery(`
+      fragment MetRelations on CeramicAccount {
+        met: personMetList(first: 10) {
+          edges {
+            node {
+              other {
+                id
+              }
+            }
+          }
+        }
+        metCount: personMetListCount
+        metBy: otherOfPersonMetList(first: 10) {
+          edges {
+            node {
+              self {
+                id
+              }
+            }
+          }
+        }
+        metByCount: otherOfPersonMetListCount
+      }
+
+      query {
+        alice: node(id: "did:test:alice") {
+          ...MetRelations
+        }
+        bob: node(id: "did:test:bob") {
+          ...MetRelations
+        }
+        viewer {
+          id
+          ...MetRelations
+        }
+      }
+    `)
+    expect(res).toMatchSnapshot()
   }, 20000)
 })

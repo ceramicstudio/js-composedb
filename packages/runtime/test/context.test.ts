@@ -106,8 +106,23 @@ describe('context', () => {
 
       const content = {}
       await expect(context.createSingle('testID', content)).resolves.toBe(expectedDoc)
-      expect(single).toHaveBeenCalledWith('did:test:123', 'testID')
+      expect(single).toHaveBeenCalledWith('did:test:123', 'testID', undefined)
       expect(replace).toHaveBeenCalledWith(content)
+    })
+
+    test('uses the single() method of the loader with options', async () => {
+      const replace = jest.fn()
+      const expectedDoc = { replace }
+      const single = jest.fn(() => expectedDoc)
+      const loader = { single } as unknown as DocumentLoader
+      const ceramic = { did: { id: 'did:test:123' } } as unknown as CeramicApi
+      const context = createContext({ ceramic, loader })
+
+      const content = {}
+      await expect(
+        context.createSingle('testID', content, { syncTimeoutSeconds: 30 }),
+      ).resolves.toBe(expectedDoc)
+      expect(single).toHaveBeenCalledWith('did:test:123', 'testID', { syncTimeoutSeconds: 30 })
     })
   })
 

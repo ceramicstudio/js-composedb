@@ -182,6 +182,8 @@ Similar to [Document objects](#document-objects), all `CeramicAccount` objects a
 
 In addition to the `id: ID!` field, the `isViewer: Boolean!` field representing whether the account is the viewer associated to the ComposeDB client are always present, while other fields are generated based on the models present in the composite.
 
+Relations to all documents controlled by the given DID for the models present in the composite are automatically generated, while relations from documents using a `DID` scalar field can be explicitly added using the [`@accountReference` directive](../sdl/directives.mdx#accountreference).
+
 Example [Schema definition](../../guides/data-modeling/schemas.mdx):
 
 ```graphql
@@ -189,8 +191,12 @@ type Profile @createModel(accountRelation: SINGLE, description: "A basic profile
   displayName: String! @string(minLength: 5, maxLength: 100)
 }
 
-type Post @createModel(accountRelation: LIST, description: "A simple post") {
-  text: String! @string(minLength: 5, maxLength: 100)
+type Meeting @createModel(accountRelation: LIST, description: "Meeting event") {
+  # @documentAccount represents the account controlling the document
+  self: DID! @documentAccount
+  # @accountReference signals the field needs to be indexed and queryable on the CeramicAccount object
+  other: DID! @accountReference
+  date: Date
 }
 ```
 
@@ -203,25 +209,33 @@ type CeramicAccount implements Node {
   # The following fields are always present
   id: ID!
   isViewer: Boolean!
-  # The Post relation is a connection because the Post account relation is LIST
-  postList: PostConnection
-  # The Post relation is a single object because the Profile account relation is SINGLE
+  # The Meeting relation is a connection because the Meeting account relation is LIST
+  # The meetingList connection allows to access all the Meeting documents controlled by the account
+  meetingList: MeetingConnection
+  meetingListCount: Int!
+  # The otherOfMeetingList connection allows to access all the Meeting documents where the account DID is set as the value of the "other" field
+  otherOfMeetingList: MeetingConnection
+  otherOfMeetingListCount: Int!
+  # The Profile relation is a single object because the Profile account relation is SINGLE
   profile: Profile
 }
 
-type Post implements Node {
+type Meeting implements Node {
   id: ID!
-  text: String!
+  # DID scalars are turned into CeramicAccount objects so their relations can be accessed
+  self: CeramicAccount!
+  other: CeramicAccount!
+  date: Date
 }
 
-type PostConnection {
-  edges: [PostEdge]
+type MeetingConnection {
+  edges: [MeetingEdge]
   pageInfo: PageInfo
 }
 
-type PostEdge {
+type MeetingEdge {
   cursor: String
-  node: Post
+  node: Meeting
 }
 
 type Profile implements Node {
@@ -261,13 +275,16 @@ type Query {
   viewer: CeramicAccount
   # ℹ️ Connection arguments are omitted in this example for brevity
   postIndex: PostConnection
+  postCount: Int!
   profileIndex: ProfileConnection
+  profileCount: Int!
 }
 
 type CeramicAccount implements Node {
   id: ID!
   isViewer: Boolean!
   postList: PostConnection
+  postListCount: Int!
   profile: Profile
 }
 
