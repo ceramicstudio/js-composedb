@@ -129,7 +129,8 @@ const SetOptionsInput = new GraphQLInputObjectType({
   fields: {
     syncTimeout: {
       type: GraphQLInt,
-      description: 'Maximum amount of time to lookup the stream over the network, in seconds',
+      description:
+        'Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds',
     },
   },
 })
