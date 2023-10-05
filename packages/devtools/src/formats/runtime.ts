@@ -1,3 +1,4 @@
+import type { FieldsIndex } from '@ceramicnetwork/common'
 import type {
   ModelDefinition,
   ModelRelationsDefinition,
@@ -22,7 +23,6 @@ import { JsonReference } from 'json-ptr'
 import { type ScalarTitle, SCALAR_RUNTIME_TYPES } from '../schema/scalars.js'
 import type { AnySchema, ScalarSchema } from '../types.js'
 import { viewDefinitionToRuntime } from '../utils.js'
-import { FieldsIndex } from '@ceramicnetwork/common'
 
 type EnumSchema = JSONSchema.String & { title: string; enum: Array<string> }
 

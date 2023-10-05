@@ -1159,7 +1159,7 @@ input ImageMetadataInput {
 
 input SetOptionsInput {
   """
-  Maximum amount of time to lookup the stream over the network, in seconds
+  Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds
   """
   syncTimeout: Int
 }
