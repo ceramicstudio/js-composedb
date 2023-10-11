@@ -36,3 +36,14 @@ This monorepo uses [pnpm](https://pnpm.io/), make sure to install it first if yo
 ## License
 
 Dual licensed under [MIT](LICENSE-MIT) and [Apache 2](LICENSE-APACHE)
+
+## Releasing
+
+To perform a release, you must first generate a changeset. Create a branch, e.g. `chore-release`, and then generate your
+changeset
+
+    pnpm changeset
+
+Commit this changeset, push the branch, and then merge the branch.
+
+Once merged, run the release action. Choose `pre-release` or `release` depending on whether the release is a preview release
