@@ -56,6 +56,11 @@
       "type": "doc",
       "id": "community",
       "label": "Community"
+    },
+    {
+      "type": "doc",
+      "id": "examples",
+      "label": "Starters & Tutorials"
     }
   ],
   "guides": [
