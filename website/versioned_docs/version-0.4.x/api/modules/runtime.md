@@ -4,6 +4,11 @@ title: "Module: runtime"
 custom_edit_url: null
 ---
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 ComposeDB runtime module, converting a runtime composite to an executable GraphQL schema.
 
 ## Installation

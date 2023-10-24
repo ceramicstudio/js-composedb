@@ -1,5 +1,10 @@
 # Using Relay
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 :::tip What is Relay?
 
 [Relay](https://relay.dev/) is a popular GraphQL client for React.
