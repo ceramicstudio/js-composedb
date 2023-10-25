@@ -1,5 +1,10 @@
 # Concepts overview
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 ComposeDB provides a **graph structure** for interacting with data on the
 [Ceramic network](https://ceramic.network/).
 

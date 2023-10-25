@@ -1,4 +1,10 @@
 # ComposeDB Docs
+
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 ![Introduction](/img/intro-dataverse.png)
 
 ComposeDB on Ceramic is a decentralized, composable graph database! It provides a set of Typescript libraries and tools that allow developers to rapidly build applications on [Ceramic](https://ceramic.network/) — including the ability to discover, create, share and reuse composable data models using [GraphQL](https://www.graphql.org/).

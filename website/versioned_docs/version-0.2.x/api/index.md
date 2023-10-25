@@ -5,6 +5,13 @@ hide_table_of_contents: true
 custom_edit_url: null
 ---
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
+
+
 ## Modules
 
 - [client](modules/client.md)

@@ -1,5 +1,10 @@
 # Supported directives
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 Directives provide extra metadata when declaring scalars, lists and shapes.
 
 ## Model identification

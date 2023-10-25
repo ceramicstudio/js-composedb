@@ -1,5 +1,10 @@
 # Supported scalars
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 Scalars represent the leaf values in the graph, either as part of key-value
 properties in shapes, or value of items in lists. You can learn more about
 scalars in the
