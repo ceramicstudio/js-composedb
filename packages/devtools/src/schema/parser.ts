@@ -1,5 +1,5 @@
 import type {
-  ModelAccountRelation,
+  ModelAccountRelationV2,
   ModelRelationDefinition,
   ModelRelationsDefinition,
 } from '@ceramicnetwork/stream-model'
@@ -21,12 +21,14 @@ import {
   type GraphQLSchema,
   type GraphQLType,
   isEnumType,
+  isInterfaceType,
   isListType,
   isNonNullType,
   isObjectType,
   isScalarType,
 } from 'graphql'
 
+import { NODE_INTERFACE_NAME } from '../constants.js'
 import type { ScalarSchema } from '../types.js'
 
 import { getScalarSchema } from './scalars.js'
@@ -43,8 +45,9 @@ import type {
   ViewFieldDefinition,
 } from './types.js'
 
-const ACCOUNT_RELATIONS: Record<string, ModelAccountRelation> = {
+const ACCOUNT_RELATIONS: Record<string, ModelAccountRelationV2> = {
   LIST: { type: 'list' },
+  NONE: { type: 'none' },
   SINGLE: { type: 'single' },
 }
 
@@ -84,16 +87,18 @@ export class SchemaParser {
         }
         return type
       },
-      [MapperKind.INTERFACE_TYPE]: (_type: GraphQLInterfaceType) => {
-        throw new Error('GraphQL interfaces are not supported')
-        // const model = this._parseModelDirective(type)
-        // if (model == null) {
-        //   // throw new Error(`Missing @createModel or @loadModel directive for interface ${type.name}`)
-        //   this.#def.interfaces[type.name] = this._parseObject(type)
-        // } else {
-        //   this.#def.models[type.name] = model
-        // }
-        // return type
+      [MapperKind.INTERFACE_TYPE]: (type: GraphQLInterfaceType) => {
+        const directives = getDirectives(this.#schema, type)
+        const object = this._parseObject(type)
+        this.#def.objects[type.name] = object
+        const model = this._parseModelDirective(type, directives, object)
+        if (model == null) {
+          // throw new Error(`Missing @createModel or @loadModel directive for interface ${type.name}`)
+          this.#def.interfaces[type.name] = this._parseObject(type)
+        } else {
+          this.#def.models[type.name] = model
+        }
+        return type
       },
       [MapperKind.OBJECT_TYPE]: (type: GraphQLObjectType) => {
         const directives = getDirectives(this.#schema, type)
@@ -125,7 +130,7 @@ export class SchemaParser {
       const model = this.#def.models[name]
       if (model.action === 'create') {
         for (const [key, relation] of Object.entries(model.relations)) {
-          if (relation.type === 'document') {
+          if (relation.type === 'document' && relation.model !== null) {
             relation.model = this._getRelatedModelID(key, relation.model)
           }
         }
@@ -137,7 +142,11 @@ export class SchemaParser {
         throw new Error(`Missing object definition for model ${name}`)
       }
       for (const [key, field] of Object.entries(object.properties)) {
-        if (field.type === 'view' && field.viewType === 'relation') {
+        if (
+          field.type === 'view' &&
+          field.viewType === 'relation' &&
+          field.relation.model !== null
+        ) {
           field.relation.model = this._getRelatedModelID(key, field.relation.model)
         }
       }
@@ -194,6 +203,7 @@ export class SchemaParser {
     }
 
     if (createModel != null) {
+      const isInterface = isInterfaceType(type)
       const { accountRelation, description } = (createModel.args ?? {}) as {
         accountRelation?: string
         description?: string
@@ -203,12 +213,21 @@ export class SchemaParser {
           `Missing accountRelation value for @createModel directive on object ${type.name}`,
         )
       }
-      const accountRelationValue = ACCOUNT_RELATIONS[accountRelation]
+      if (accountRelation === 'SET') {
+        throw new Error(
+          `Unsupported SET accountRelation value for @createModel directive on object ${type.name}`,
+        )
+      }
+
+      const accountRelationValue = isInterface
+        ? { type: 'none' }
+        : ACCOUNT_RELATIONS[accountRelation]
       if (accountRelationValue == null) {
         throw new Error(
           `Unsupported accountRelation value ${accountRelation} for @createModel directive on object ${type.name}`,
         )
       }
+
       // Future: handle account relation of type set
       // if (accountRelationValue === ModelAccountRelation.SET) {
       //   if (accountRelationProperty == null) {
@@ -232,6 +251,7 @@ export class SchemaParser {
       //     )
       //   }
       // }
+
       if (description == null || description === '') {
         throw new Error(
           `Missing description value for @createModel directive on object ${type.name}`,
@@ -240,10 +260,10 @@ export class SchemaParser {
 
       return {
         action: 'create',
-        // interface: isInterfaceType(type),
-        // implements: type.getInterfaces().map((i) => i.name),
+        interface: isInterfaceType(type),
+        implements: type.getInterfaces().map((i) => i.name),
         description,
-        accountRelation: accountRelationValue,
+        accountRelation: accountRelationValue as ModelAccountRelationV2,
         relations: object.relations,
       }
     }
@@ -320,7 +340,7 @@ export class SchemaParser {
               `Unsupported @documentReference directive on field ${fieldName} of object ${objectName}, @documentReference can only be set on a StreamID scalar`,
             )
           }
-          return { type: 'document', model: directive.args?.model as string }
+          return { type: 'document', model: directive.args?.model ?? null }
       }
     }
   }
@@ -349,7 +369,7 @@ export class SchemaParser {
           }
           return { type: 'view', required: true, viewType: 'documentVersion' }
         case 'relationDocument': {
-          if (!isObjectType(type)) {
+          if (!isInterfaceType(type) && !isObjectType(type)) {
             throw new Error(
               `Unsupported @relationDocument directive on field ${fieldName} of object ${objectName}, @relationDocument can only be set on a referenced object`,
             )
@@ -369,7 +389,11 @@ export class SchemaParser {
             type: 'view',
             required: false,
             viewType: 'relation',
-            relation: { source: 'document', model: type.name, property },
+            relation: {
+              source: 'document',
+              model: type.name === NODE_INTERFACE_NAME ? null : type.name,
+              property,
+            },
           }
         }
         case 'relationFrom': {

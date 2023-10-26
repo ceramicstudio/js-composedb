@@ -5,9 +5,9 @@
  */
 
 import type {
-  ModelAccountRelation,
+  ModelAccountRelationV2,
   ModelDefinition,
-  ModelViewsDefinition,
+  ModelViewsDefinitionV2,
 } from '@ceramicnetwork/stream-model'
 import type { FieldsIndex } from '@ceramicnetwork/common'
 import type { DagJWSResult, JWSSignature } from 'dids'
@@ -42,7 +42,7 @@ export type CompositeViewsDefinition = {
   account?: Record<string, unknown>
   // TODO: Query-level views
   root?: Record<string, unknown>
-  models?: Record<string, ModelViewsDefinition>
+  models?: Record<string, ModelViewsDefinitionV2>
 }
 
 /**
@@ -178,7 +178,7 @@ export type RuntimeRelationSource = 'document' | 'queryConnection' | 'queryCount
 /** Runtime relation field representation. */
 export type RuntimeRelation = {
   source: RuntimeRelationSource
-  model: string
+  model: string | null
   property: string
 }
 /** Runtime view types. */
@@ -206,7 +206,12 @@ export type RuntimeViewReference =
   | { type: RuntimeViewReferenceType; name: string }
 
 /** Runtime model information. */
-export type RuntimeModel = { id: string; accountRelation: ModelAccountRelation }
+export type RuntimeModel = {
+  id: string
+  interface: boolean
+  implements: Array<string>
+  accountRelation: ModelAccountRelationV2
+}
 
 /**
  * Runtime composite definition, used by the {@linkcode client.ComposeClient ComposeClient class} to

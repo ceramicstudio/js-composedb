@@ -5,7 +5,7 @@ import type {
   SignedCommitContainer,
   Context,
 } from '@ceramicnetwork/common'
-import { Model, type ModelViewsDefinition } from '@ceramicnetwork/stream-model'
+import { Model, type ModelViewsDefinitionV2 } from '@ceramicnetwork/stream-model'
 import { Cacao } from '@didtools/cacao'
 import type {
   CompositeViewsDefinition,
@@ -329,7 +329,7 @@ export class Composite {
   /**
    * Current version of the composites format.
    */
-  static VERSION = '1.0'
+  static VERSION = '1.1'
 
   /**
    * Create new model streams based on the provided `schema` and group them in a composite
@@ -342,7 +342,7 @@ export class Composite {
       models: {},
       commonEmbeds,
     }
-    const modelsViews: Record<string, ModelViewsDefinition> = {}
+    const modelsViews: Record<string, ModelViewsDefinitionV2> = {}
     const modelsIndices: Record<string, Array<FieldsIndex>> = {}
     const commits: Record<string, any> = {}
 

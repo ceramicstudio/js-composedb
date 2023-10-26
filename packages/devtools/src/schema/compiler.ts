@@ -1,4 +1,4 @@
-import type { ModelViewsDefinition } from '@ceramicnetwork/stream-model'
+import type { ModelViewsDefinitionV2 } from '@ceramicnetwork/stream-model'
 import type { JSONSchema } from '@composedb/types'
 import type { SetRequired } from 'type-fest'
 
@@ -250,7 +250,7 @@ export class SchemaCompiler {
       }
     })
     if (modelDefinition.action === 'load') {
-      const views: ModelViewsDefinition = {}
+      const views: ModelViewsDefinitionV2 = {}
       for (const [key, field] of Object.entries(objectDefinition.properties)) {
         if (key === DOC_ID_FIELD) {
           // id can be set as unique field to ensure the object is not empty, as it's not supported
@@ -274,7 +274,7 @@ export class SchemaCompiler {
       )
     }
 
-    const views: ModelViewsDefinition = {}
+    const views: ModelViewsDefinitionV2 = {}
     const object: CompileObject = {
       $schema: 'https://json-schema.org/draft/2020-12/schema',
       type: 'object',
@@ -325,20 +325,10 @@ export class SchemaCompiler {
       }
     }
 
+    const { action, ...definition } = modelDefinition
     return {
       action: 'create',
-      model: {
-        version: '1.0',
-        name,
-        description: modelDefinition.description,
-        // TODO: add once supported in model definition
-        // interface: definition.interface,
-        // implements: definition.implements,
-        accountRelation: modelDefinition.accountRelation,
-        schema: object,
-        relations: modelDefinition.relations,
-        views,
-      },
+      model: { ...definition, version: '2.0', name, schema: object, views },
       indices,
     }
   }

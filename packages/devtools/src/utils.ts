@@ -1,4 +1,7 @@
-import type { ModelRelationViewDefinition, ModelViewDefinition } from '@ceramicnetwork/stream-model'
+import type {
+  ModelRelationViewDefinitionV2,
+  ModelViewDefinitionV2,
+} from '@ceramicnetwork/stream-model'
 import type { StreamRef } from '@ceramicnetwork/streamid'
 import type { RuntimeRelation, RuntimeRelationSource, RuntimeViewField } from '@composedb/types'
 
@@ -39,7 +42,7 @@ export async function promiseMap<
   )
 }
 
-type RelationViewType = ModelRelationViewDefinition['type']
+type RelationViewType = ModelRelationViewDefinitionV2['type']
 
 const RELATION_VIEW_SOURCES: Record<RelationViewType, RuntimeRelationSource> = {
   relationDocument: 'document',
@@ -51,16 +54,16 @@ const RELATION_VIEW_TYPES = Object.keys(RELATION_VIEW_SOURCES)
 
 /** @internal */
 export function assertRelationViewDefinition(
-  view: ModelViewDefinition,
-): ModelRelationViewDefinition {
+  view: ModelViewDefinitionV2,
+): ModelRelationViewDefinitionV2 {
   if (!RELATION_VIEW_TYPES.includes(view.type)) {
     throw new Error(`Invalid relation view: ${view.type}`)
   }
-  return view as ModelRelationViewDefinition
+  return view as ModelRelationViewDefinitionV2
 }
 
 /** @internal */
-export function viewDefinitionToRuntimeRelation(view: ModelViewDefinition): RuntimeRelation {
+export function viewDefinitionToRuntimeRelation(view: ModelViewDefinitionV2): RuntimeRelation {
   const relation = assertRelationViewDefinition(view)
   return {
     source: RELATION_VIEW_SOURCES[relation.type],
@@ -70,7 +73,7 @@ export function viewDefinitionToRuntimeRelation(view: ModelViewDefinition): Runt
 }
 
 /** @internal */
-export function viewDefinitionToRuntime(view: ModelViewDefinition): RuntimeViewField {
+export function viewDefinitionToRuntime(view: ModelViewDefinitionV2): RuntimeViewField {
   switch (view.type) {
     case 'documentAccount':
     case 'documentVersion':
@@ -90,12 +93,16 @@ export function viewDefinitionToRuntime(view: ModelViewDefinition): RuntimeViewF
 }
 
 /** @internal */
-export function viewRuntimeToModel(field: RuntimeViewField): ModelViewDefinition {
+export function viewRuntimeToModel(field: RuntimeViewField): ModelViewDefinitionV2 {
   if (field.viewType === 'relation') {
     const { model, property, source } = field.relation
+    if (source === 'document') {
+      return { type: 'relationDocument', model, property }
+    }
+    if (model == null) {
+      throw new Error(`Missing model for ${source} relation view`)
+    }
     switch (source) {
-      case 'document':
-        return { type: 'relationDocument', model, property }
       case 'queryConnection':
         return { type: 'relationFrom', model, property }
       case 'queryCount':

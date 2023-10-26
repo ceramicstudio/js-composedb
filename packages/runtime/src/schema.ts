@@ -36,6 +36,7 @@ import {
   GraphQLString,
   assertValidSchema,
   GraphQLArgumentConfig,
+  isInterfaceType,
 } from 'graphql'
 import {
   type Connection,
@@ -83,7 +84,7 @@ type BuildObjectParams = {
   fields: RuntimeObjectFields
   definitions: SharedDefinitions
 }
-type BuildDocumentObjectParams = BuildObjectParams & { model: RuntimeModel }
+type BuildModelObjectParams = BuildObjectParams & { model: RuntimeModel }
 
 type ConnectionAccountArgument = { account?: string }
 type ConnectionFiltersArgument = { filters?: QueryFilters }
@@ -232,7 +233,7 @@ class SchemaBuilder {
   // Schema options
   #isReadonly: boolean
   // Internal records
-  #types: Record<string, GraphQLEnumType | GraphQLObjectType> = { SortOrder }
+  #types: Record<string, GraphQLEnumType | GraphQLInterfaceType | GraphQLObjectType> = { SortOrder }
   #inputObjects: Record<string, GraphQLInputObjectType> = { ...valueFilterInputs }
   #mutations: Record<string, GraphQLFieldConfig<any, Context>> = {}
   // Internal mapping of model IDs to object names
@@ -357,6 +358,19 @@ class SchemaBuilder {
     return { ...nodeDefs, accountObject, queryFields }
   }
 
+  _resolveInterfaces(names: Array<string>, modelName: string): Array<GraphQLInterfaceType> {
+    return names.map((name) => {
+      const type = this.#types[name]
+      if (type == null) {
+        throw new Error(`Missing interface ${name} for ${modelName}`)
+      }
+      if (!isInterfaceType(type)) {
+        throw new Error(`Invalid type for ${name} for ${modelName}, expected interface`)
+      }
+      return type
+    })
+  }
+
   _buildEnums() {
     for (const [name, values] of Object.entries(this.#def.enums)) {
       this.#types[name] = new GraphQLEnumType({
@@ -377,15 +391,66 @@ class SchemaBuilder {
 
   _buildObjectType(params: BuildObjectParams) {
     const model = this.#def.models[params.name]
-    return model
-      ? this._buildDocumentObjectType({ model, ...params })
-      : this._buildEmbeddedObjectType(params)
+    if (model == null) {
+      this._buildEmbeddedObjectType(params)
+    } else {
+      const modelParams = { model, ...params }
+      if (model.interface) {
+        this._buildInterfaceObjectType(modelParams)
+      } else {
+        this._buildDocumentObjectType(modelParams)
+      }
+    }
   }
 
-  _buildDocumentObjectType({ model, definitions, name, fields }: BuildDocumentObjectParams) {
+  _buildInterfaceObjectType({ model, definitions, name, fields }: BuildModelObjectParams) {
+    this.#types[name] = new GraphQLInterfaceType({
+      name,
+      interfaces: () => this._resolveInterfaces(model.implements, name),
+      fields: () => {
+        const config: GraphQLFieldConfigMap<ModelInstanceDocument, Context> = {}
+        for (const [key, field] of Object.entries(fields)) {
+          switch (field.type) {
+            case 'meta':
+              // Don't show meta fields in schema
+              continue
+            case 'reference':
+              config[key] = this._buildDocumentObjectReferenceField(key, field)
+              break
+            case 'list':
+              config[key] = {
+                type: this._buildObjectListFieldType(definitions, field),
+                resolve: (doc) => doc.content?.[key] as unknown,
+              }
+              break
+            case 'view': {
+              const view = this._buildDocumentObjectViewField(key, definitions, field, fields)
+              if (view) {
+                config[key] = view
+              }
+              break
+            }
+            default:
+              config[key] = {
+                type: this._buildScalarFieldType(definitions, field),
+                resolve: (doc) => doc.content?.[key] as unknown,
+              }
+          }
+        }
+        return config
+      },
+    })
+
+    this._buildFiltersType(name, fields)
+    this._buildSortingType(name, fields)
+  }
+
+  _buildDocumentObjectType({ model, definitions, name, fields }: BuildModelObjectParams) {
     this.#types[name] = new GraphQLObjectType<ModelInstanceDocument>({
       name,
-      interfaces: [definitions.nodeInterface],
+      interfaces: () => {
+        return [definitions.nodeInterface].concat(this._resolveInterfaces(model.implements, name))
+      },
       isTypeOf: (value: ModelInstanceDocument) => {
         return value.metadata.model.toString() === model.id
       },
@@ -569,46 +634,61 @@ class SchemaBuilder {
 
   _buildDocumentObjectRelation(
     key: string,
+    definitions: SharedDefinitions,
     relation: RuntimeRelation,
     objectFields: RuntimeObjectFields,
   ): GraphQLFieldConfig<ModelInstanceDocument, Context> {
-    const modelAlias = this.#modelAliases[relation.model]
-    if (modelAlias == null) {
-      throw new Error(
-        `Model alias not found for relation with ID ${relation.model} on field ${key}`,
-      )
-    }
+    if (relation.source === 'document') {
+      const ref = objectFields[relation.property]
+      if (ref == null) {
+        throw new Error(
+          `Missing reference field ${relation.property} for relation defined on field ${key}`,
+        )
+      }
 
-    switch (relation.source) {
-      case 'document': {
-        const ref = objectFields[relation.property]
-        if (ref == null) {
-          throw new Error(
-            `Missing reference field ${relation.property} for relation defined on field ${key}`,
-          )
-        }
-        return {
-          type: this.#types[modelAlias],
-          resolve: async (doc, _args, ctx): Promise<ModelInstanceDocument | null> => {
-            const id = doc.content?.[relation.property] as string | void
-            if (id == null) {
-              return null
-            }
-            const loaded = await ctx.loadDoc(id)
-            if (loaded == null) {
-              return null
-            }
+      const type = relation.model
+        ? this.#types[this.#modelAliases[relation.model]]
+        : definitions.nodeInterface
+      if (type == null) {
+        throw new Error(`Model not found for relation with ID ${relation.model} on field ${key}`)
+      }
+
+      return {
+        type,
+        resolve: async (doc, _args, ctx): Promise<ModelInstanceDocument | null> => {
+          const id = doc.content?.[relation.property] as string | void
+          if (id == null) {
+            return null
+          }
+          const loaded = await ctx.loadDoc(id)
+          if (loaded == null) {
+            return null
+          }
+          if (relation.model != null && !isInterfaceType(type)) {
             const loadedModel = loaded.metadata.model.toString()
-            if (relation.model != null && loadedModel !== relation.model) {
+            if (loadedModel !== relation.model) {
               console.warn(
                 `Ignoring unexpected model ${loadedModel} for document ${id}, expected model ${relation.model}`,
               )
               return null
             }
-            return loaded
-          },
-        }
+          }
+          return loaded
+        },
       }
+    }
+
+    const relationModel = relation.model
+    if (relationModel == null) {
+      throw new Error(`Missing model for relation on field ${key}`)
+    }
+
+    const modelAlias = this.#modelAliases[relationModel]
+    if (modelAlias == null) {
+      throw new Error(`Model alias not found for relation with ID ${relationModel} on field ${key}`)
+    }
+
+    switch (relation.source) {
       case 'queryConnection': {
         const qcFiltersObj = this.#inputObjects[`${modelAlias}Filters`]
         const qcSortingObj = this.#inputObjects[`${modelAlias}Sorting`]
@@ -637,7 +717,7 @@ class SchemaBuilder {
             return await ctx.queryConnection({
               ...args,
               account,
-              model: relation.model,
+              model: relationModel,
               queryFilters,
             })
           },
@@ -665,7 +745,7 @@ class SchemaBuilder {
               doc.id.toString(),
               args.filters,
             )
-            return await ctx.queryCount({ account, model: relation.model, queryFilters })
+            return await ctx.queryCount({ account, model: relationModel, queryFilters })
           },
         }
       }
@@ -695,7 +775,7 @@ class SchemaBuilder {
           resolve: (doc): string => doc.commitId.toString(),
         }
       case 'relation':
-        return this._buildDocumentObjectRelation(key, field.relation, objectFields)
+        return this._buildDocumentObjectRelation(key, definitions, field.relation, objectFields)
       default:
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore

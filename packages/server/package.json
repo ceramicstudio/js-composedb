@@ -40,15 +40,15 @@
   },
   "dependencies": {
     "@ceramicnetwork/http-client": "^2.32.0",
-    "@composedb/constants": "workspace:^0.5.0",
-    "@composedb/runtime": "workspace:^0.5.2",
+    "@composedb/constants": "workspace:^",
+    "@composedb/runtime": "workspace:^",
     "get-port": "^7.0.0",
     "graphql": "^16.8.1",
     "graphql-yoga": "^4.0.5"
   },
   "devDependencies": {
     "@ceramicnetwork/common": "^2.35.0",
-    "@composedb/types": "workspace:^0.5.1",
+    "@composedb/types": "workspace:^",
     "@types/node": "^20.7.1"
   },
   "jest": {

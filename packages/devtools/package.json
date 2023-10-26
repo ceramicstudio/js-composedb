@@ -42,7 +42,7 @@
     "@ceramicnetwork/common": "^2.35.0",
     "@ceramicnetwork/stream-model": "^1.17.0",
     "@ceramicnetwork/streamid": "^2.17.0",
-    "@composedb/graphql-scalars": "workspace:^0.5.0",
+    "@composedb/graphql-scalars": "workspace:^",
     "@didtools/cacao": "^2.0.0",
     "@graphql-tools/schema": "^10.0.0",
     "@graphql-tools/utils": "^10.0.6",
@@ -55,8 +55,8 @@
     "uint8arrays": "^4.0.6"
   },
   "devDependencies": {
-    "@composedb/test-schemas": "workspace:^0.5.1",
-    "@composedb/types": "workspace:^0.5.1",
+    "@composedb/test-schemas": "workspace:^",
+    "@composedb/types": "workspace:^",
     "@types/jest": "^29.5.5",
     "@types/lodash-es": "^4.17.9",
     "@types/node": "^20.7.1",
@@ -65,8 +65,7 @@
     "dids": "^4.0.4",
     "fs-extra": "^11.1.1",
     "graphql": "^16.8.1",
-    "graphql-tools": "^9.0.0",
-    "jest-environment-composedb": "workspace:^0.5.0"
+    "jest-environment-composedb": "workspace:^"
   },
   "jest": {
     "extensionsToTreatAsEsm": [

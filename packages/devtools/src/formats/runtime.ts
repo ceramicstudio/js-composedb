@@ -1,8 +1,8 @@
 import type { FieldsIndex } from '@ceramicnetwork/common'
 import type {
   ModelDefinition,
-  ModelRelationsDefinition,
-  ModelViewsDefinition,
+  ModelRelationsDefinitionV2,
+  ModelViewsDefinitionV2,
 } from '@ceramicnetwork/stream-model'
 import type {
   CustomRuntimeScalarType,
@@ -41,7 +41,7 @@ type RuntimeModelBuilderParams = {
   name: string
   definition: ModelDefinition
   commonEmbeds?: Array<string>
-  views: ModelViewsDefinition
+  views: ModelViewsDefinitionV2
 }
 
 type ExtractSchemaParams = {
@@ -63,9 +63,9 @@ export class RuntimeModelBuilder {
   #accountData: Record<string, RuntimeViewReference> = {}
   #commonEmbeds: Array<string>
   #modelName: string
-  #modelRelations: ModelRelationsDefinition
+  #modelRelations: ModelRelationsDefinitionV2
   #modelSchema: JSONSchema.Object
-  #modelViews: ModelViewsDefinition
+  #modelViews: ModelViewsDefinitionV2
   #objects: Record<string, RuntimeObjectFields> = {}
   #enums: Record<string, Array<string>> = {}
   #unions: Record<string, Array<string>> = {}
@@ -255,7 +255,7 @@ export class RuntimeModelBuilder {
     }
   }
 
-  _buildRelations(relations: ModelRelationsDefinition = {}): void {
+  _buildRelations(relations: ModelRelationsDefinitionV2 = {}): void {
     for (const [key, relation] of Object.entries(relations)) {
       if (relation.type === 'account') {
         const relationKey = camelCase(`${key}Of${this.#modelName}List`)
@@ -264,7 +264,7 @@ export class RuntimeModelBuilder {
     }
   }
 
-  _buildViews(object: RuntimeObjectFields, views: ModelViewsDefinition = {}): void {
+  _buildViews(object: RuntimeObjectFields, views: ModelViewsDefinitionV2 = {}): void {
     for (const [key, view] of Object.entries(views)) {
       object[key] = viewDefinitionToRuntime(view)
     }
@@ -313,8 +313,16 @@ export function createRuntimeDefinition(
 
   for (const [modelID, modelDefinition] of Object.entries(definition.models)) {
     const modelName = definition.aliases?.[modelID] ?? modelDefinition.name
+    const interfaceDefinition =
+      modelDefinition.version === '1.0'
+        ? { interface: false, implements: [] }
+        : { interface: modelDefinition.interface, implements: modelDefinition.implements }
     // Add name to model metadata mapping
-    runtime.models[modelName] = { id: modelID, accountRelation: modelDefinition.accountRelation }
+    runtime.models[modelName] = {
+      ...interfaceDefinition,
+      id: modelID,
+      accountRelation: modelDefinition.accountRelation,
+    }
     // Extract objects, enums, relations and views from model schema
     const modelViews = modelDefinition.views ?? {}
     const compositeModelViews = definition.views?.models?.[modelID] ?? {}
