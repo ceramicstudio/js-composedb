@@ -325,7 +325,7 @@ export class SchemaCompiler {
       }
     }
 
-    const { action, ...definition } = modelDefinition
+    const { action: _a, ...definition } = modelDefinition
     return {
       action: 'create',
       model: { ...definition, version: '2.0', name, schema: object, views },

@@ -123,7 +123,7 @@ async function assertSupportedReadModelController(
 }
 
 function assertValidCacao(cacao: Cacao, controller: string): void {
-  if (cacao.p.iss != controller) {
+  if (cacao.p.iss !== controller) {
     throw new Error(`Cacao issuer ${cacao.p.iss} does not match controller ${controller}`)
   }
   if (cacao.p.exp != null) {

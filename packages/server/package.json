@@ -44,12 +44,12 @@
     "@composedb/runtime": "workspace:^",
     "get-port": "^7.0.0",
     "graphql": "^16.8.1",
-    "graphql-yoga": "^4.0.5"
+    "graphql-yoga": "^5.0.0"
   },
   "devDependencies": {
     "@ceramicnetwork/common": "^2.35.0",
     "@composedb/types": "workspace:^",
-    "@types/node": "^20.7.1"
+    "@types/node": "^20.8.9"
   },
   "jest": {
     "extensionsToTreatAsEsm": [

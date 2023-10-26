@@ -45,15 +45,10 @@ enum ModelAccountRelation {
   SINGLE # Account to single stream (IDX)
 }
 
-directive @createModel(
-  description: String!
-  accountRelation: ModelAccountRelation!
-) on OBJECT
-
-directive @createModel(description: String!) on INTERFACE
+directive @createModel(description: String!, accountRelation: ModelAccountRelation) on OBJECT
+directive @createModel(description: String!, accountRelation: ModelAccountRelation) on INTERFACE
 
 directive @loadModel(id: StreamID!) on OBJECT
-
 directive @loadModel(id: StreamID!) on INTERFACE
 
 # Indices definition

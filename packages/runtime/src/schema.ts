@@ -358,7 +358,7 @@ class SchemaBuilder {
     return { ...nodeDefs, accountObject, queryFields }
   }
 
-  _resolveInterfaces(names: Array<string>, modelName: string): Array<GraphQLInterfaceType> {
+  _resolveInterfaces(modelName: string, names: Array<string> = []): Array<GraphQLInterfaceType> {
     return names.map((name) => {
       const type = this.#types[name]
       if (type == null) {
@@ -406,7 +406,7 @@ class SchemaBuilder {
   _buildInterfaceObjectType({ model, definitions, name, fields }: BuildModelObjectParams) {
     this.#types[name] = new GraphQLInterfaceType({
       name,
-      interfaces: () => this._resolveInterfaces(model.implements, name),
+      interfaces: () => this._resolveInterfaces(name, model.implements),
       fields: () => {
         const config: GraphQLFieldConfigMap<ModelInstanceDocument, Context> = {}
         for (const [key, field] of Object.entries(fields)) {
@@ -449,7 +449,7 @@ class SchemaBuilder {
     this.#types[name] = new GraphQLObjectType<ModelInstanceDocument>({
       name,
       interfaces: () => {
-        return [definitions.nodeInterface].concat(this._resolveInterfaces(model.implements, name))
+        return [definitions.nodeInterface].concat(this._resolveInterfaces(name, model.implements))
       },
       isTypeOf: (value: ModelInstanceDocument) => {
         return value.metadata.model.toString() === model.id

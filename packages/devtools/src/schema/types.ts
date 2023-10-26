@@ -74,7 +74,7 @@ export type ParsedModelDefinition = ParsedCreateModelDefinition | ParsedLoadMode
 
 export type SchemaDefinition = {
   enums: Record<string, Array<string>>
-  interfaces: Record<string, ObjectDefinition>
+  // interfaces: Record<string, ObjectDefinition>
   models: Record<string, ParsedModelDefinition>
   objects: Record<string, ObjectDefinition>
 }

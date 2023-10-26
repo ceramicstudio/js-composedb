@@ -131,7 +131,7 @@ scalar ChainAgnosticChainID @specifiedBy(url: "https://github.com/ChainAgnostic/
 scalar InterPlanetaryCID @specifiedBy(url: "https://github.com/multiformats/cid")
 
 """A Ceramic Commit ID"""
-scalar CeramicCommitID @specifiedBy(url: "https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#commitid")
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
 
 """A country code as defined by ISO 3166-1 alpha-2"""
 scalar CountryCode
@@ -160,7 +160,7 @@ A local time string (i.e., with no associated timezone) in 24-hr \`HH:mm[:ss[.SS
 scalar LocalTime
 
 """A Ceramic Stream ID"""
-scalar CeramicStreamID @specifiedBy(url: "https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#streamid")
+scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
 
 """
 A time string at UTC, such as 10:15:30Z, compliant with the \`full-time\` format outlined in section 5.6 of the RFC 3339profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
@@ -436,7 +436,7 @@ enum NoteStatus {
 }
 
 """A Ceramic Commit ID"""
-scalar CeramicCommitID @specifiedBy(url: "https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#commitid")
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
 
 input NoteFiltersInput {
   where: NoteObjectFilterInput
@@ -673,10 +673,10 @@ type Comment implements Node {
 }
 
 """A Ceramic Stream ID"""
-scalar CeramicStreamID @specifiedBy(url: "https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#streamid")
+scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
 
 """A Ceramic Commit ID"""
-scalar CeramicCommitID @specifiedBy(url: "https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#commitid")
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
 
 type Post implements Node {
   id: ID!
@@ -1200,7 +1200,7 @@ input UpdateOptionsInput {
 }
 
 """A Ceramic Commit ID"""
-scalar CeramicCommitID @specifiedBy(url: "https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#commitid")
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
 
 type CreateSocialProfilePayload {
   """Fetches an object given its ID"""

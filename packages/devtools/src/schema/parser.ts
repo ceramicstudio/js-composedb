@@ -69,7 +69,7 @@ type IntermediaryObjectDefinition = DefinitionWithReferences<ObjectFieldsDefinit
 export class SchemaParser {
   #def: SchemaDefinition = {
     enums: {},
-    interfaces: {},
+    // interfaces: {},
     models: {},
     objects: {},
   }
@@ -88,13 +88,16 @@ export class SchemaParser {
         return type
       },
       [MapperKind.INTERFACE_TYPE]: (type: GraphQLInterfaceType) => {
+        if (type.name === NODE_INTERFACE_NAME) {
+          return type
+        }
         const directives = getDirectives(this.#schema, type)
         const object = this._parseObject(type)
         this.#def.objects[type.name] = object
         const model = this._parseModelDirective(type, directives, object)
         if (model == null) {
-          // throw new Error(`Missing @createModel or @loadModel directive for interface ${type.name}`)
-          this.#def.interfaces[type.name] = this._parseObject(type)
+          throw new Error(`Missing @createModel or @loadModel directive for interface ${type.name}`)
+          // this.#def.interfaces[type.name] = this._parseObject(type)
         } else {
           this.#def.models[type.name] = model
         }
@@ -204,24 +207,15 @@ export class SchemaParser {
 
     if (createModel != null) {
       const isInterface = isInterfaceType(type)
-      const { accountRelation, description } = (createModel.args ?? {}) as {
-        accountRelation?: string
-        description?: string
-      }
-      if (accountRelation == null) {
-        throw new Error(
-          `Missing accountRelation value for @createModel directive on object ${type.name}`,
-        )
-      }
+      const args = (createModel.args ?? {}) as { accountRelation?: string; description?: string }
+      const accountRelation = args.accountRelation ?? 'LIST'
       if (accountRelation === 'SET') {
         throw new Error(
           `Unsupported SET accountRelation value for @createModel directive on object ${type.name}`,
         )
       }
 
-      const accountRelationValue = isInterface
-        ? { type: 'none' }
-        : ACCOUNT_RELATIONS[accountRelation]
+      const accountRelationValue = ACCOUNT_RELATIONS[isInterface ? 'NONE' : accountRelation]
       if (accountRelationValue == null) {
         throw new Error(
           `Unsupported accountRelation value ${accountRelation} for @createModel directive on object ${type.name}`,
@@ -252,7 +246,7 @@ export class SchemaParser {
       //   }
       // }
 
-      if (description == null || description === '') {
+      if (args.description == null || args.description === '') {
         throw new Error(
           `Missing description value for @createModel directive on object ${type.name}`,
         )
@@ -262,7 +256,7 @@ export class SchemaParser {
         action: 'create',
         interface: isInterfaceType(type),
         implements: type.getInterfaces().map((i) => i.name),
-        description,
+        description: args.description,
         accountRelation: accountRelationValue as ModelAccountRelationV2,
         relations: object.relations,
       }
@@ -340,7 +334,7 @@ export class SchemaParser {
               `Unsupported @documentReference directive on field ${fieldName} of object ${objectName}, @documentReference can only be set on a StreamID scalar`,
             )
           }
-          return { type: 'document', model: directive.args?.model ?? null }
+          return { type: 'document', model: (directive.args?.model as string) ?? null }
       }
     }
   }

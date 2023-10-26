@@ -28,7 +28,7 @@ describe('composite', () => {
       test('throws if the version is not compatible', () => {
         expect(
           () => new Composite({ commits: {}, definition: { version: '2.0', models: {} } }),
-        ).toThrow('Unsupported Composite version 2.0, expected version 1.0')
+        ).toThrow(`Unsupported Composite version 2.0, expected version ${Composite.VERSION}`)
       })
 
       test('throws if commits do not match the definition models', () => {

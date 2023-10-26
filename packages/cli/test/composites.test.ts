@@ -63,7 +63,7 @@ describe('composites', () => {
         `--did-private-key=${seed}`,
       ])
       const output = create.stdout.toString()
-      expect(output.includes('"version":"1.0"')).toBe(true)
+      expect(output.includes('"version":"1.1"')).toBe(true)
       expect(output.includes('"indices":{"')).toBe(true)
       expect(output.includes('"aliases":')).toBe(true)
       expect(output.includes('"views":')).toBe(true)
@@ -159,7 +159,7 @@ describe('composites', () => {
         model2StreamID,
         `--did-private-key=${seed}`,
       ])
-      expect(create.stdout.toString().includes('"version":"1.0"')).toBe(true)
+      expect(create.stdout.toString().includes('"version":"1.1"')).toBe(true)
       expect(create.stdout.toString().includes('"aliases":')).toBe(true)
       expect(create.stdout.toString().includes('"views":')).toBe(true)
       expect(create.stdout.toString().includes(model1StreamID)).toBe(true)

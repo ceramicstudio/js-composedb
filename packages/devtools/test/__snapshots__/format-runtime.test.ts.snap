@@ -21,6 +21,8 @@ exports[`Runtime format Note model definition with views 1`] = `
         "type": "list",
       },
       "id": "NoteID",
+      "implements": [],
+      "interface": false,
     },
   },
   "objects": {
@@ -68,6 +70,8 @@ exports[`Runtime format Post with comments relations 1`] = `
         "type": "list",
       },
       "id": "PostID",
+      "implements": [],
+      "interface": false,
     },
   },
   "objects": {
@@ -117,12 +121,16 @@ exports[`Runtime format Post with comments relations 2`] = `
         "type": "list",
       },
       "id": "CommentID",
+      "implements": [],
+      "interface": false,
     },
     "Post": {
       "accountRelation": {
         "type": "list",
       },
       "id": "PostID",
+      "implements": [],
+      "interface": false,
     },
   },
   "objects": {
@@ -199,12 +207,16 @@ exports[`Runtime format Post with comments relations 3`] = `
         "type": "list",
       },
       "id": "CommentID",
+      "implements": [],
+      "interface": false,
     },
     "Post": {
       "accountRelation": {
         "type": "list",
       },
       "id": "PostID",
+      "implements": [],
+      "interface": false,
     },
   },
   "objects": {
@@ -302,18 +314,24 @@ exports[`Runtime format Profile - multiples models with common local references 
         "type": "single",
       },
       "id": "GenericProfileID",
+      "implements": [],
+      "interface": false,
     },
     "PersonProfile": {
       "accountRelation": {
         "type": "single",
       },
       "id": "PersonProfileID",
+      "implements": [],
+      "interface": false,
     },
     "SocialProfile": {
       "accountRelation": {
         "type": "single",
       },
       "id": "SocialProfileID",
+      "implements": [],
+      "interface": false,
     },
   },
   "objects": {
@@ -453,18 +471,24 @@ exports[`Runtime format Profile definition with added model view 1`] = `
         "type": "single",
       },
       "id": "GenericProfileID",
+      "implements": [],
+      "interface": false,
     },
     "PersonProfile": {
       "accountRelation": {
         "type": "single",
       },
       "id": "PersonProfileID",
+      "implements": [],
+      "interface": false,
     },
     "SocialProfile": {
       "accountRelation": {
         "type": "single",
       },
       "id": "SocialProfileID",
+      "implements": [],
+      "interface": false,
     },
   },
   "objects": {
@@ -605,6 +629,8 @@ exports[`Runtime format Social with account reference 1`] = `
         "type": "list",
       },
       "id": "PersonMetID",
+      "implements": [],
+      "interface": false,
     },
   },
   "objects": {

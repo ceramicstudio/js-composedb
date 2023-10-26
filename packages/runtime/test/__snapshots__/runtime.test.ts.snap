@@ -170,7 +170,7 @@ type Comment implements Node {
 }
 
 """A Ceramic Stream ID"""
-scalar CeramicStreamID @specifiedBy(url: "https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#streamid")
+scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
 
 type Post implements Node {
   id: ID!
@@ -211,7 +211,7 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the \`da
 scalar DateTime
 
 """A Ceramic Commit ID"""
-scalar CeramicCommitID @specifiedBy(url: "https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#commitid")
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
 
 """A connection to a list of items."""
 type PostConnection {
