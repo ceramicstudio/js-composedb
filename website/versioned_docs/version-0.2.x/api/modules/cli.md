@@ -4,6 +4,11 @@ title: "Module: CLI"
 custom_edit_url: null
 ---
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 ComposeDB CLI - the Command Line Interface that enables interactions with a Ceramic Node
 
 You can check the [Getting Started](../../first-composite.mdx) Section for some examples (remember to switch to the 'Using the CLI' tab!)

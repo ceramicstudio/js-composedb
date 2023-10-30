@@ -1,5 +1,10 @@
 # Querying the graph
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 The [`ComposeClient`](../../api/classes/client.ComposeClient.md) automatically generates a GraphQL Schema from the runtime composite definition.
 
 It notablly creates a [`CeramicAccount` object](#ceramicaccount-object) that replaces [`DID` scalar](../creating-composites/scalars.md#did) representations, and the root [`Query` object](#query-object) used as an entry-point to acces the graph.

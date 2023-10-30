@@ -4,6 +4,11 @@ title: "Class: ComposeRuntime"
 custom_edit_url: null
 ---
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 [runtime](../modules/runtime.md).ComposeRuntime
 
 The ComposeRuntime class provides APIs to execute queries on a GraphQL schema generated from a

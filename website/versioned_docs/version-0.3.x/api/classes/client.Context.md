@@ -4,6 +4,11 @@ title: "Class: Context"
 custom_edit_url: null
 ---
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 [client](../modules/client.md).Context
 
 GraphQL execution context, exported by the [`client`](../modules/client.md) module.

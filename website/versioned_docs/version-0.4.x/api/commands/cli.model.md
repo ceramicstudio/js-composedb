@@ -4,6 +4,11 @@ title: "CLI: model:* commands"
 custom_edit_url: null
 ---
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 The group of [CLI](../modules/cli.md) `model:*` commands enables discovery of [Models](../../core-concepts.mdx#models), as well as their creation and interactions with them.
 
 ## Command List
