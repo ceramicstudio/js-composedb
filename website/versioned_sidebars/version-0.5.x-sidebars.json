@@ -58,9 +58,20 @@
       "label": "Community"
     },
     {
-      "type": "doc",
-      "id": "examples",
-      "label": "Starters & Tutorials"
+      "type": "category",
+      "collapsed": false,
+      "label": "Starters & Tutorials",
+      "link": {
+        "type": "doc",
+        "id": "examples"
+      },
+      "items": [
+        {
+          "type": "doc",
+          "id": "verifiable-credentials",
+          "label": "Verifiable Credentials"
+        }
+      ]
     }
   ],
   "guides": [
@@ -218,22 +229,6 @@
           "type": "doc",
           "id": "guides/data-interactions/mutations",
           "label": "Mutations"
-        }
-      ]
-    },
-    {
-      "type": "category",
-      "collapsed": false,
-      "label": "Topic Guides",
-      "link": {
-        "type": "doc",
-        "id": "guides/topic-guides/topic-guides"
-      },
-      "items": [
-        {
-          "type": "doc",
-          "id": "guides/topic-guides/verifiable-credentials",
-          "label": "Verifiable Credentials"
         }
       ]
     }
