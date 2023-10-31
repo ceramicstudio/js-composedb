@@ -127,19 +127,19 @@ export class SchemaParser {
       throw new Error('No models found in Composite Definition Schema')
     }
 
-    // Once all models are defined, we need to replace the model names used in relations by their ID
+    // Once all models are defined, we need to validate the model names used in relations
     for (const name of modelsNames) {
-      // Replace model names in model relations
+      // Validate model names in model relations
       const model = this.#def.models[name]
       if (model.action === 'create') {
         for (const [key, relation] of Object.entries(model.relations)) {
           if (relation.type === 'document' && relation.model !== null) {
-            relation.model = this._getRelatedModelID(key, relation.model)
+            this._validateRelatedModel(key, relation.model)
           }
         }
       }
 
-      // Replace model names in object views
+      // Validate model names in object views
       const object = this.#def.objects[name]
       if (object == null) {
         throw new Error(`Missing object definition for model ${name}`)
@@ -150,7 +150,7 @@ export class SchemaParser {
           field.viewType === 'relation' &&
           field.relation.model !== null
         ) {
-          field.relation.model = this._getRelatedModelID(key, field.relation.model)
+          this._validateRelatedModel(key, field.relation.model)
         }
       }
     }
@@ -169,19 +169,13 @@ export class SchemaParser {
     })
   }
 
-  _getRelatedModelID(key: string, modelName: string): string {
+  _validateRelatedModel(key: string, modelName: string): void {
     const relatedModel = this.#def.models[modelName]
     if (relatedModel == null) {
       throw new Error(
         `Missing related model ${modelName} for relation defined on field ${key} of object ${modelName}`,
       )
     }
-    if (relatedModel.action === 'create') {
-      throw new Error(
-        `Unsupported relation to model ${modelName} defined on field ${key} of object ${modelName}, related models must be loaded using the @loadModel directive`,
-      )
-    }
-    return relatedModel.id
   }
 
   _parseModelDirective(
@@ -202,7 +196,7 @@ export class SchemaParser {
           `Unsupported @createModel and @loadModel directives on same object ${type.name}`,
         )
       }
-      return { action: 'load', id }
+      return { action: 'load', interface: isInterfaceType(type), id }
     }
 
     if (createModel != null) {

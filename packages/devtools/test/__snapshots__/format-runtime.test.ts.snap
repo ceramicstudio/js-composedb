@@ -141,7 +141,7 @@ exports[`Runtime format Post with comments relations 2`] = `
       },
       "post": {
         "relation": {
-          "model": "PostID",
+          "model": "Post",
           "property": "postID",
           "source": "document",
         },
@@ -227,7 +227,7 @@ exports[`Runtime format Post with comments relations 3`] = `
       },
       "post": {
         "relation": {
-          "model": "PostID",
+          "model": "Post",
           "property": "postID",
           "source": "document",
         },
@@ -254,7 +254,7 @@ exports[`Runtime format Post with comments relations 3`] = `
       },
       "comments": {
         "relation": {
-          "model": "CommentID",
+          "model": "Comment",
           "property": "postID",
           "source": "queryConnection",
         },
@@ -263,7 +263,7 @@ exports[`Runtime format Post with comments relations 3`] = `
       },
       "commentsCount": {
         "relation": {
-          "model": "CommentID",
+          "model": "Comment",
           "property": "postID",
           "source": "queryCount",
         },

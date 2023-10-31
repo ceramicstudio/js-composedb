@@ -3,18 +3,16 @@ import type {
   CeramicCommit,
   ModelData,
   SignedCommitContainer,
-  Context,
 } from '@ceramicnetwork/common'
-import { Model, type ModelViewsDefinitionV2 } from '@ceramicnetwork/stream-model'
-import { Cacao } from '@didtools/cacao'
-import type {
+import { Model } from '@ceramicnetwork/stream-model'
+import { StreamID } from '@ceramicnetwork/streamid'
+import {
   CompositeViewsDefinition,
   EncodedCompositeDefinition,
   InternalCompositeDefinition,
   ModelDefinition,
   RuntimeCompositeDefinition,
   StreamCommits,
-  FieldsIndex,
 } from '@composedb/types'
 import { cloneDeep, merge } from 'lodash-es'
 import createObjectHash from 'object-hash'
@@ -22,31 +20,19 @@ import createObjectHash from 'object-hash'
 import { decodeSignedMap, encodeSignedMap } from './formats/json.js'
 import { createRuntimeDefinition } from './formats/runtime.js'
 import { createAbstractCompositeDefinition } from './schema/compiler.js'
-import type { AbstractModelDefinition } from './schema/types.js'
-import { StreamID } from '@ceramicnetwork/streamid'
-
-// The hardcoded "model" StreamID that all Model streams have in their metadata. This provides
-// a "model" StreamID that can be indexed to query the set of all published Models.
-// The StreamID uses the "UNLOADABLE" StreamType, and has string representation: "kh4q0ozorrgaq2mezktnrmdwleo1d"
-
-const MODEL_STREAM_ID = Model.MODEL.toString()
+import { createIntermediaryCompositeDefinition } from './schema/resolution.js'
+import {
+  assertAuthenticatedDID,
+  assertSupportedReadModelController,
+  isSignedCommitContainer,
+} from './schema/validation.js'
 
 const MODEL_GENESIS_OPTS = {
   anchor: true,
   publish: true,
 }
 
-function assertAuthenticatedDID(ceramic: CeramicApi): void {
-  if (!ceramic.did?.authenticated) {
-    throw new Error(`An authenticated DID must be attached to the Ceramic instance`)
-  }
-}
-
 type StrictCompositeDefinition = Required<InternalCompositeDefinition>
-
-function isSignedCommitContainer(input: Record<string, any>): input is SignedCommitContainer {
-  return Object.keys(input).includes('jws') && Object.keys(input).includes('linkedBlock')
-}
 
 function toStrictDefinition(definition: InternalCompositeDefinition): StrictCompositeDefinition {
   const emptyViews = { account: {}, root: {}, models: {} }
@@ -75,63 +61,6 @@ function assertModelsHaveCommits(
     if (commits[id] == null) {
       throw new Error(`Missing commits for model ${id}`)
     }
-  }
-}
-
-function assertSupportedWriteModelController(model: Model, ceramic: CeramicApi): void {
-  const controller = model.metadata.controller as string
-  const unsupported = `Unsupported model controller ${controller}`
-  if (controller.startsWith('did:pkh:')) {
-    if (ceramic.context == null) {
-      throw new Error(`${unsupported}, missing ceramic context`)
-    }
-    const context = ceramic.context as Context
-    if (context.did == null) {
-      throw new Error(`${unsupported}, did missing from ceramic context`)
-    }
-    if (!context.did.hasCapability) {
-      throw new Error(`${unsupported}, only did:pkh with CACAO is supported`)
-    }
-    const cacao: Cacao = context.did.capability
-    if (cacao.p.exp != null) {
-      throw new Error(`${unsupported}, only did:pkh CACAO without expiry is supported`)
-    }
-    const hasModelResource = cacao.p.resources?.includes(`ceramic://*?model=${MODEL_STREAM_ID}`)
-    if (!hasModelResource) {
-      throw new Error(`${unsupported}, only cacao with resource ${MODEL_STREAM_ID} is supported`)
-    }
-  } else if (!controller.startsWith('did:key:')) {
-    throw new Error(`${unsupported}, only did:key and did:pkh are supported`)
-  }
-}
-
-async function assertSupportedReadModelController(
-  model: Model,
-  signedCommitContainer: SignedCommitContainer,
-): Promise<void> {
-  const controller = model.metadata.controller as string
-  const unsupported = `Unsupported model controller ${controller}`
-  if (controller.startsWith('did:pkh:') && signedCommitContainer.cacaoBlock != null) {
-    const cacao = await Cacao.fromBlockBytes(signedCommitContainer.cacaoBlock)
-    if (cacao == null) {
-      throw new Error(`${unsupported}, only did:pkh with CACAO is supported`)
-    }
-    assertValidCacao(cacao, controller)
-  } else if (!controller.startsWith('did:key:')) {
-    throw new Error(`${unsupported}, only did:key is supported`)
-  }
-}
-
-function assertValidCacao(cacao: Cacao, controller: string): void {
-  if (cacao.p.iss !== controller) {
-    throw new Error(`Cacao issuer ${cacao.p.iss} does not match controller ${controller}`)
-  }
-  if (cacao.p.exp != null) {
-    throw new Error(`only did:pkh CACAO without expiry is supported`)
-  }
-  const hasModelResource = cacao.p.resources?.includes(`ceramic://*?model=${MODEL_STREAM_ID}`)
-  if (!hasModelResource) {
-    throw new Error(`only cacao with resource "ceramic://*?model=${MODEL_STREAM_ID}" is supported`)
   }
 }
 
@@ -336,50 +265,22 @@ export class Composite {
    * wrapped in a Composite instance.
    */
   static async create(params: CreateParams): Promise<Composite> {
-    const { commonEmbeds, models } = createAbstractCompositeDefinition(params.schema)
-    const definition: InternalCompositeDefinition = {
-      version: Composite.VERSION,
-      models: {},
-      commonEmbeds,
-    }
-    const modelsViews: Record<string, ModelViewsDefinitionV2> = {}
-    const modelsIndices: Record<string, Array<FieldsIndex>> = {}
-    const commits: Record<string, any> = {}
-
-    // TODO: once interfaces are supported, they need to be loaded or created first
-    await Promise.all(
-      // For each model definition...
-      Object.values(models).map(async (abstractModel: AbstractModelDefinition) => {
-        // Create or load the model stream
-        let model
-        if (abstractModel.action === 'create') {
-          assertAuthenticatedDID(params.ceramic)
-          model = await Model.create(params.ceramic, abstractModel.model)
-          if (abstractModel.indices) {
-            modelsIndices[abstractModel.model.name] = abstractModel.indices
-          }
-        } else {
-          model = await Model.load(params.ceramic, abstractModel.id)
-          modelsViews[abstractModel.id] = abstractModel.views
-          if (abstractModel.indices) {
-            modelsIndices[abstractModel.id] = abstractModel.indices
-          }
-        }
-        assertSupportedWriteModelController(model, params.ceramic)
-        const id = model.id.toString()
-        definition.models[id] = model.content
-
-        // load stream commits for the model stream
-        const streamCommits = await params.ceramic.loadStreamCommits(id)
-        commits[id] = streamCommits
-          .map((c) => c.value as Record<string, any>)
-          .filter(isSignedCommitContainer)
-      }),
+    const { commonEmbeds, models: abstractModels } = createAbstractCompositeDefinition(
+      params.schema,
     )
-
-    definition.views = { models: modelsViews }
-    definition.indices = modelsIndices
-    const composite = new Composite({ commits, definition })
+    const { commits, views, ...definition } = await createIntermediaryCompositeDefinition(
+      params.ceramic,
+      abstractModels,
+    )
+    const composite = new Composite({
+      commits,
+      definition: {
+        ...definition,
+        version: Composite.VERSION,
+        commonEmbeds,
+        views: { models: views },
+      },
+    })
 
     // By default, add models to the index
     if (params.index !== false) {

@@ -18,7 +18,7 @@ export function mockDefinition(
       const definition = abstractModel.model
       models[`${definition.name}ID`] = definition
       if (abstractModel.indices) {
-        modelsIndices[abstractModel.model.name] = abstractModel.indices
+        modelsIndices[`${definition.name}ID`] = abstractModel.indices
       }
     } else {
       const definition = providedModels[abstractModel.id]

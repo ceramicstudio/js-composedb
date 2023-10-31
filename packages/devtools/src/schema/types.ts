@@ -67,6 +67,7 @@ export type ParsedCreateModelDefinition = {
 
 export type ParsedLoadModelDefinition = {
   action: 'load'
+  interface: boolean
   id: string
 }
 

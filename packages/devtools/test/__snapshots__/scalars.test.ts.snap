@@ -4,7 +4,7 @@ exports[`scalars support extra scalars 1`] = `
 {
   "commonEmbeds": [],
   "indices": {
-    "ExtraScalars": [
+    "ExtraScalarsID": [
       {
         "fields": [
           {

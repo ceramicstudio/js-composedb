@@ -555,13 +555,13 @@ describe('composite', () => {
       })
 
       test('with indices', async () => {
-        const postComposite = await Composite.create({ ceramic, schema: postSchema })
-        const ratingComposite = await Composite.create({ ceramic, schema: ratingSchema })
-        const noteComposite = await Composite.create({ ceramic, schema: noteSchema })
+        const [postComposite, ratingComposite, noteComposite] = await Promise.all([
+          Composite.create({ ceramic, schema: postSchema }),
+          Composite.create({ ceramic, schema: ratingSchema }),
+          Composite.create({ ceramic, schema: noteSchema }),
+        ])
         const mergedComposite = postComposite.merge([ratingComposite, noteComposite]).toJSON()
-        expect(mergedComposite).toHaveProperty('indices.Post')
-        expect(mergedComposite).toHaveProperty('indices.Rating')
-        expect(mergedComposite).toHaveProperty('indices.Note')
+        expect(Object.keys(mergedComposite.indices ?? {})).toHaveLength(3)
       })
     })
   })

@@ -664,9 +664,17 @@ class SchemaBuilder {
           if (loaded == null) {
             return null
           }
-          if (relation.model != null && !isInterfaceType(type)) {
+          if (relation.model != null) {
             const loadedModel = loaded.metadata.model.toString()
-            if (loadedModel !== relation.model) {
+            if (isInterfaceType(type)) {
+              const model = this.#def.models[this.#modelAliases[loadedModel]]
+              if (model == null || !model.implements.includes(relation.model)) {
+                console.warn(
+                  `Ignoring unsupported model ${loadedModel} for document ${id}, expected model implementing the ${relation.model} interface`,
+                )
+                return null
+              }
+            } else if (loadedModel !== relation.model) {
               console.warn(
                 `Ignoring unexpected model ${loadedModel} for document ${id}, expected model ${relation.model}`,
               )
