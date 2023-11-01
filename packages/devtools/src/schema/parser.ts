@@ -251,7 +251,7 @@ export class SchemaParser {
         interface: isInterfaceType(type),
         implements: type.getInterfaces().map((i) => i.name),
         description: args.description,
-        accountRelation: accountRelationValue as ModelAccountRelationV2,
+        accountRelation: accountRelationValue,
         relations: object.relations,
       }
     }

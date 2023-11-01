@@ -103,11 +103,12 @@ function executeCreateFactory(
         if (existing == null) {
           compositeViews[name] = view
         } else {
-          viewsPromises[name] = getDependencyID(view.model).then((model) => ({
-            ...view,
-            model,
-          }))
+          viewsPromises[name] = getDependencyID(view.model).then((model) => {
+            return { ...view, model }
+          })
         }
+      } else {
+        viewsPromises[name] = Promise.resolve(view)
       }
     }
 
@@ -282,6 +283,8 @@ export async function createIntermediaryCompositeDefinition(
     indices: {},
     views: {},
   }
+  const modelIDs: Record<string, string> = {}
+
   await Promise.all(
     Object.values(executing).map(async (executedPromise) => {
       const res = await executedPromise
@@ -290,7 +293,25 @@ export async function createIntermediaryCompositeDefinition(
       definition.commits[res.id] = await res.commitsPromise
       definition.indices[res.id] = res.indices
       definition.views[res.id] = res.views
+      modelIDs[res.name] = res.id
     }),
   )
+  // Replace referenced models in composite views by their ID
+  for (const modelViews of Object.values(definition.views)) {
+    for (const view of Object.values(modelViews)) {
+      if (
+        (view.type === 'relationCountFrom' ||
+          view.type === 'relationFrom' ||
+          view.type === 'relationDocument') &&
+        view.model !== null
+      ) {
+        const id = modelIDs[view.model]
+        if (id == null) {
+          throw new Error(`ID not found for referenced model ${view.model}`)
+        }
+        view.model = id
+      }
+    }
+  }
   return definition
 }

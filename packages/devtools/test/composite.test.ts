@@ -6,11 +6,10 @@ import type { CeramicApi } from '@ceramicnetwork/common'
 import { StreamID } from '@ceramicnetwork/streamid'
 import {
   ImageMetadataType,
-  createCommentSchemaWithPost,
-  loadPostSchemaWithComments,
+  mediaSchema,
+  noteSchema,
   postSchema,
   profilesSchema,
-  noteSchema,
   ratingSchema,
 } from '@composedb/test-schemas'
 import type { ModelDefinition } from '@composedb/types'
@@ -561,7 +560,7 @@ describe('composite', () => {
           Composite.create({ ceramic, schema: noteSchema }),
         ])
         const mergedComposite = postComposite.merge([ratingComposite, noteComposite]).toJSON()
-        expect(Object.keys(mergedComposite.indices ?? {})).toHaveLength(3)
+        expect(Object.keys(mergedComposite.indices ?? {})).toHaveLength(4)
       })
     })
   })
@@ -739,21 +738,12 @@ describe('composite', () => {
   })
 
   test('Relations support', async () => {
-    const postComposite = await Composite.create({ ceramic, schema: postSchema })
-    const postID = postComposite.modelIDs[0]
-    expect(postID).toBeDefined()
+    const composite = await Composite.create({ ceramic, schema: postSchema })
+    expect(composite.modelIDs).toHaveLength(2)
+  })
 
-    const postAndCommentComposite = await Composite.create({
-      ceramic,
-      schema: createCommentSchemaWithPost(postID),
-    })
-    const commentID = postAndCommentComposite.modelIDs.find((id) => id !== postID)
-    expect(commentID).toBeDefined()
-
-    const postWithCommentComposite = await Composite.create({
-      ceramic,
-      schema: loadPostSchemaWithComments(postID, commentID as string),
-    })
-    expect(postWithCommentComposite.modelIDs).toHaveLength(2)
-  }, 120000)
+  test('Interfaces support', async () => {
+    const composite = await Composite.create({ ceramic, schema: mediaSchema })
+    expect(composite.modelIDs).toHaveLength(6)
+  })
 })

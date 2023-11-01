@@ -543,16 +543,15 @@ export class Composite {
    */
   async startIndexingOn(ceramic: CeramicApi): Promise<void> {
     assertAuthenticatedDID(ceramic)
-    const definedIndices: Array<ModelData> = Array.from(Object.keys(this.#definition.models)).map(
-      (id) => {
-        const streamID = StreamID.fromString(id)
-        const indices = this.#definition.indices?.[id] ?? []
-        return {
-          streamID,
-          indices,
-        }
-      },
-    )
+    const definedIndices: Array<ModelData> = []
+    for (const [id, model] of Object.entries(this.#definition.models)) {
+      if (model.version === '1.0' || !model.interface) {
+        definedIndices.push({
+          streamID: StreamID.fromString(id),
+          indices: this.#definition.indices?.[id] ?? [],
+        })
+      }
+    }
     await ceramic.admin.startIndexingModelData(definedIndices)
   }
 

@@ -1,13 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import {
-  createCommentSchemaWithPost,
-  loadPostSchemaWithComments,
-  noteSchema,
-  postSchema,
-  profilesSchema,
-  socialSchema,
-} from '@composedb/test-schemas'
+import { noteSchema, postSchema, profilesSchema, socialSchema } from '@composedb/test-schemas'
 
 import { createRuntimeDefinition, getName, mockDefinitionFromSchema } from '../src'
 
@@ -52,19 +45,8 @@ describe('Runtime format', () => {
 
   test('Post with comments relations', () => {
     const postDefinition = mockDefinitionFromSchema(postSchema)
-    expect(createRuntimeDefinition(postDefinition)).toMatchSnapshot()
-
-    const commentDefinition = mockDefinitionFromSchema(
-      createCommentSchemaWithPost('PostID'),
-      postDefinition.models,
-    )
-    expect(createRuntimeDefinition(commentDefinition)).toMatchSnapshot()
-
-    const postWithCommentsDefinition = mockDefinitionFromSchema(
-      loadPostSchemaWithComments('PostID', 'CommentID'),
-      commentDefinition.models,
-    )
-    expect(createRuntimeDefinition(postWithCommentsDefinition)).toMatchSnapshot()
+    const runtime = createRuntimeDefinition(postDefinition)
+    expect(runtime).toMatchSnapshot()
   })
 
   test('Social with account reference', () => {

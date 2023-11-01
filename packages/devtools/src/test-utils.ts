@@ -16,6 +16,16 @@ export function mockDefinition(
   for (const abstractModel of Object.values(definition.models)) {
     if (abstractModel.action === 'create') {
       const definition = abstractModel.model
+      for (const view of Object.values(definition.views ?? {})) {
+        if (
+          (view.type === 'relationCountFrom' ||
+            view.type === 'relationDocument' ||
+            view.type === 'relationFrom') &&
+          view.model !== null
+        ) {
+          view.model = `${view.model}ID`
+        }
+      }
       models[`${definition.name}ID`] = definition
       if (abstractModel.indices) {
         modelsIndices[`${definition.name}ID`] = abstractModel.indices
