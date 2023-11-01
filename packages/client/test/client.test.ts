@@ -3,13 +3,7 @@
  */
 
 import { Composite } from '@composedb/devtools'
-import {
-  createCommentSchemaWithPost,
-  loadPostSchemaWithComments,
-  postSchema,
-  profilesSchema,
-  ratingSchema,
-} from '@composedb/test-schemas'
+import { postSchema, profilesSchema, ratingSchema } from '@composedb/test-schemas'
 import type { Executor } from '@graphql-tools/utils'
 import { jest } from '@jest/globals'
 
@@ -35,19 +29,7 @@ describe('client', () => {
   }, 30000)
 
   test('create and query post with comments', async () => {
-    const postComposite = await Composite.create({ ceramic, schema: postSchema })
-    const postModelID = postComposite.modelIDs[0]
-
-    const commentComposite = await Composite.create({
-      ceramic,
-      schema: createCommentSchemaWithPost(postModelID),
-    })
-    const commentModelID = commentComposite.modelIDs.find((id) => id !== postModelID) as string
-
-    const composite = await Composite.create({
-      ceramic,
-      schema: loadPostSchemaWithComments(postModelID, commentModelID),
-    })
+    const composite = await Composite.create({ ceramic, schema: postSchema })
     const definition = composite.toRuntime()
 
     const client = new ComposeClient({ ceramic, definition })
