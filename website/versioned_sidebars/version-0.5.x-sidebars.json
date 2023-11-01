@@ -231,6 +231,22 @@
           "label": "Mutations"
         }
       ]
+    },
+    {
+      "type": "category",
+      "collapsed": false,
+      "label": "Topic Guides",
+      "link": {
+        "type": "doc",
+        "id": "guides/topic-guides/topic-guides"
+      },
+      "items": [
+        {
+          "type": "doc",
+          "id": "guides/topic-guides/verifiable-credentials",
+          "label": "Verifiable Credentials"
+        }
+      ]
     }
   ],
   "api": [
