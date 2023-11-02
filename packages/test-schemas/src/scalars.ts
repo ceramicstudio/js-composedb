@@ -1,3 +1,7 @@
+/**
+ * Scalars schema
+ */
+
 export const extraScalarsSchema = `
 type ExtraScalars 
   @createModel(accountRelation: LIST, description: "Kitchen sink of added scalar types") 

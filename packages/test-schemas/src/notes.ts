@@ -1,3 +1,7 @@
+/**
+ * Enum schema
+ */
+
 export const noteSchema = `
 enum NoteStatus {
   DEFAULT

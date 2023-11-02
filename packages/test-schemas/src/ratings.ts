@@ -1,3 +1,7 @@
+/**
+ * Custom index schema
+ */
+
 export const ratingSchema = `
 enum RatingSource {
   INTERNAL

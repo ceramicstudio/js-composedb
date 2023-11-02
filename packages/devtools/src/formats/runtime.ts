@@ -340,15 +340,19 @@ export function createRuntimeDefinition(
     // Attach entry-point to account store based on relation type
     if (modelDefinition.accountRelation != null) {
       const key = camelCase(modelName)
-      const relationType = modelDefinition.accountRelation.type
-      if (relationType === 'single') {
-        runtime.accountData[key] = { type: 'node', name: modelName }
-        // @ts-ignore TS2367, should be unnecessary check based on type definition but more types
-        // could be added later
-      } else if (relationType === 'list') {
+      if (modelDefinition.version !== '1.0' && modelDefinition.interface) {
         runtime.accountData[key + 'List'] = { type: 'connection', name: modelName }
       } else {
-        throw new Error(`Unsupported account relation type: ${relationType as string}`)
+        const relationType = modelDefinition.accountRelation.type
+        if (relationType === 'single') {
+          runtime.accountData[key] = { type: 'node', name: modelName }
+          // @ts-ignore TS2367, should be unnecessary check based on type definition but more types
+          // could be added later
+        } else if (relationType === 'list') {
+          runtime.accountData[key + 'List'] = { type: 'connection', name: modelName }
+        } else {
+          throw new Error(`Unsupported account relation type: ${relationType as string}`)
+        }
       }
     }
   }

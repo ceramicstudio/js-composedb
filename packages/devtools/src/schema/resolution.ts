@@ -5,6 +5,7 @@ import {
   type ModelDefinition,
   type ModelDefinitionV2,
   type ModelViewsDefinitionV2,
+  loadAllModelInterfaces,
 } from '@ceramicnetwork/stream-model'
 import type { StreamID } from '@ceramicnetwork/streamid'
 import type { FieldsIndex } from '@composedb/types'
@@ -82,7 +83,9 @@ function executeCreateFactory(
 
     const implementsPromise = isV1
       ? []
-      : Promise.all(sourceDefinition.implements.map(getDependencyID))
+      : Promise.all(sourceDefinition.implements.map(getDependencyID)).then((ids) => {
+          return loadAllModelInterfaces(ceramic, ids)
+        })
 
     const relationsPromise = promiseMap(sourceDefinition.relations ?? {}, async (relation) => {
       return relation.type === 'document' && relation.model !== null

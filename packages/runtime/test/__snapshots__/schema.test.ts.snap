@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`schema extra scalars 1`] = `
+exports[`schema media interfaces 1`] = `
 "type Query {
   """Fetches objects given their IDs"""
   nodes(
@@ -16,7 +16,7 @@ exports[`schema extra scalars 1`] = `
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  extraScalarsIndex(
+  mediaMetadataIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
 
@@ -28,10 +28,132 @@ exports[`schema extra scalars 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
-    filters: ExtraScalarsFiltersInput
-    sorting: ExtraScalarsSortingInput
-  ): ExtraScalarsConnection
-  extraScalarsCount(filters: ExtraScalarsFiltersInput): Int!
+    filters: MediaMetadataFiltersInput
+    sorting: MediaMetadataSortingInput
+  ): MediaMetadataConnection
+  mediaMetadataCount(filters: MediaMetadataFiltersInput): Int!
+  visualMediaIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: VisualMediaFiltersInput
+    sorting: VisualMediaSortingInput
+  ): VisualMediaConnection
+  visualMediaCount(filters: VisualMediaFiltersInput): Int!
+  timeMediaIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: TimeMediaFiltersInput
+    sorting: TimeMediaSortingInput
+  ): TimeMediaConnection
+  timeMediaCount(filters: TimeMediaFiltersInput): Int!
+  imageMediaIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: ImageMediaFiltersInput
+    sorting: ImageMediaSortingInput
+  ): ImageMediaConnection
+  imageMediaCount(filters: ImageMediaFiltersInput): Int!
+  audioMediaIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: AudioMediaFiltersInput
+    sorting: AudioMediaSortingInput
+  ): AudioMediaConnection
+  audioMediaCount(filters: AudioMediaFiltersInput): Int!
+  videoMediaIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: VideoMediaFiltersInput
+    sorting: VideoMediaSortingInput
+  ): VideoMediaConnection
+  videoMediaCount(filters: VideoMediaFiltersInput): Int!
+  myImageIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): MyImageConnection
+  myImageCount: Int!
+  myAudioIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): MyAudioConnection
+  myAudioCount: Int!
+  myVideoIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): MyVideoConnection
+  myVideoCount: Int!
 }
 
 """An object with an ID"""
@@ -48,7 +170,7 @@ type CeramicAccount implements Node {
   Whether the Ceramic instance is currently authenticated with this account or not
   """
   isViewer: Boolean!
-  extraScalarsList(
+  mediaMetadataList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
 
@@ -60,19 +182,141 @@ type CeramicAccount implements Node {
 
     """Returns the last n items from the list."""
     last: Int
-    filters: ExtraScalarsFiltersInput
-    sorting: ExtraScalarsSortingInput
-  ): ExtraScalarsConnection
-  extraScalarsListCount(filters: ExtraScalarsFiltersInput): Int!
+    filters: MediaMetadataFiltersInput
+    sorting: MediaMetadataSortingInput
+  ): MediaMetadataConnection
+  mediaMetadataListCount(filters: MediaMetadataFiltersInput): Int!
+  visualMediaList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: VisualMediaFiltersInput
+    sorting: VisualMediaSortingInput
+  ): VisualMediaConnection
+  visualMediaListCount(filters: VisualMediaFiltersInput): Int!
+  timeMediaList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: TimeMediaFiltersInput
+    sorting: TimeMediaSortingInput
+  ): TimeMediaConnection
+  timeMediaListCount(filters: TimeMediaFiltersInput): Int!
+  imageMediaList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: ImageMediaFiltersInput
+    sorting: ImageMediaSortingInput
+  ): ImageMediaConnection
+  imageMediaListCount(filters: ImageMediaFiltersInput): Int!
+  audioMediaList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: AudioMediaFiltersInput
+    sorting: AudioMediaSortingInput
+  ): AudioMediaConnection
+  audioMediaListCount(filters: AudioMediaFiltersInput): Int!
+  videoMediaList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: VideoMediaFiltersInput
+    sorting: VideoMediaSortingInput
+  ): VideoMediaConnection
+  videoMediaListCount(filters: VideoMediaFiltersInput): Int!
+  myImageList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): MyImageConnection
+  myImageListCount: Int!
+  myAudioList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): MyAudioConnection
+  myAudioListCount: Int!
+  myVideoList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): MyVideoConnection
+  myVideoListCount: Int!
 }
 
 """A connection to a list of items."""
-type ExtraScalarsConnection {
+type MediaMetadataConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [ExtraScalarsEdge]
+  edges: [MediaMetadataEdge]
 }
 
 """Information about pagination in a connection."""
@@ -91,107 +335,29 @@ type PageInfo {
 }
 
 """An edge in a connection."""
-type ExtraScalarsEdge {
+type MediaMetadataEdge {
   """The item at the end of the edge"""
-  node: ExtraScalars
+  node: MediaMetadata
 
   """A cursor for use in pagination"""
   cursor: String!
 }
 
-type ExtraScalars implements Node {
-  id: ID!
-  accountID: ChainAgnosticAccountID
-  chainID: ChainAgnosticChainID
-  cid: InterPlanetaryCID
-  commitID: CeramicCommitID
-  countryCode: CountryCode
-  date: Date
-  dateTime: DateTime
-  did: CeramicAccount
-  latitude: Float
-  localDate: LocalDate
-  locale: Locale
-  localTime: LocalTime
-  longitude: Float
-  streamID: CeramicStreamID
-  time: Time
-  timeZone: TimeZone
-  uri: URI
-  utcOffset: UtcOffset
+interface MediaMetadata {
+  src: String!
+  size: Int
 }
 
-"""A Chain Agnostic AccountId"""
-scalar ChainAgnosticAccountID @specifiedBy(url: "https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-10.md")
-
-"""A Chain Agnostic ChainId"""
-scalar ChainAgnosticChainID @specifiedBy(url: "https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-2.md")
-
-"""A IPLD CID"""
-scalar InterPlanetaryCID @specifiedBy(url: "https://github.com/multiformats/cid")
-
-"""A Ceramic Commit ID"""
-scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
-
-"""A country code as defined by ISO 3166-1 alpha-2"""
-scalar CountryCode
-
-"""
-A date string, such as 2007-12-03, compliant with the \`full-date\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-"""
-scalar Date
-
-"""
-A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the \`date-time\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-"""
-scalar DateTime
-
-"""
-A local date string (i.e., with no associated timezone) in \`YYYY-MM-DD\` format, e.g. \`2020-01-01\`.
-"""
-scalar LocalDate
-
-"""The locale in the format of a BCP 47 (RFC 5646) standard string"""
-scalar Locale
-
-"""
-A local time string (i.e., with no associated timezone) in 24-hr \`HH:mm[:ss[.SSS]]\` format, e.g. \`14:25\` or \`14:25:06\` or \`14:25:06.123\`.
-"""
-scalar LocalTime
-
-"""A Ceramic Stream ID"""
-scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
-
-"""
-A time string at UTC, such as 10:15:30Z, compliant with the \`full-time\` format outlined in section 5.6 of the RFC 3339profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-"""
-scalar Time
-
-"""
-A field whose value exists in the standard IANA Time Zone Database: https://www.iana.org/time-zones
-"""
-scalar TimeZone
-
-"""
-A field whose value conforms to the standard Uniform Resource Identifier (URI) format as specified in RFC3986.
-"""
-scalar URI @specifiedBy(url: "https://www.ietf.org/rfc/rfc3986.txt")
-
-"""
-A field whose value is a UTC Offset: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-"""
-scalar UtcOffset
-
-input ExtraScalarsFiltersInput {
-  where: ExtraScalarsObjectFilterInput
-  and: [ExtraScalarsFiltersInput!]
-  or: [ExtraScalarsFiltersInput!]
-  not: ExtraScalarsFiltersInput
+input MediaMetadataFiltersInput {
+  where: MediaMetadataObjectFilterInput
+  and: [MediaMetadataFiltersInput!]
+  or: [MediaMetadataFiltersInput!]
+  not: MediaMetadataFiltersInput
 }
 
-input ExtraScalarsObjectFilterInput {
-  dateTime: StringValueFilterInput
-  streamID: StringValueFilterInput
+input MediaMetadataObjectFilterInput {
+  src: StringValueFilterInput
+  size: IntValueFilterInput
 }
 
 input StringValueFilterInput {
@@ -206,9 +372,21 @@ input StringValueFilterInput {
   greaterThanOrEqualTo: String
 }
 
-input ExtraScalarsSortingInput {
-  dateTime: SortOrder
-  streamID: SortOrder
+input IntValueFilterInput {
+  isNull: Boolean
+  equalTo: Int
+  notEqualTo: Int
+  in: [Int!]
+  notIn: [Int!]
+  lessThan: Int
+  lessThanOrEqualTo: Int
+  greaterThan: Int
+  greaterThanOrEqualTo: Int
+}
+
+input MediaMetadataSortingInput {
+  src: SortOrder
+  size: SortOrder
 }
 
 enum SortOrder {
@@ -216,94 +394,358 @@ enum SortOrder {
   DESC
 }
 
-type Mutation {
-  createExtraScalars(input: CreateExtraScalarsInput!): CreateExtraScalarsPayload
-  updateExtraScalars(input: UpdateExtraScalarsInput!): UpdateExtraScalarsPayload
+"""A connection to a list of items."""
+type VisualMediaConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [VisualMediaEdge]
 }
 
-type CreateExtraScalarsPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
+"""An edge in a connection."""
+type VisualMediaEdge {
+  """The item at the end of the edge"""
+  node: VisualMedia
 
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: ExtraScalars!
-  clientMutationId: String
+  """A cursor for use in pagination"""
+  cursor: String!
 }
 
-input CreateExtraScalarsInput {
-  content: ExtraScalarsInput!
-  clientMutationId: String
+interface VisualMedia {
+  width: Int!
+  height: Int!
 }
 
-input ExtraScalarsInput {
-  accountID: ChainAgnosticAccountID
-  chainID: ChainAgnosticChainID
-  cid: InterPlanetaryCID
-  commitID: CeramicCommitID
-  countryCode: CountryCode
-  date: Date
-  dateTime: DateTime
-  did: DID
-  latitude: Float
-  localDate: LocalDate
-  locale: Locale
-  localTime: LocalTime
-  longitude: Float
-  streamID: CeramicStreamID
-  time: Time
-  timeZone: TimeZone
-  uri: URI
-  utcOffset: UtcOffset
+input VisualMediaFiltersInput {
+  where: VisualMediaObjectFilterInput
+  and: [VisualMediaFiltersInput!]
+  or: [VisualMediaFiltersInput!]
+  not: VisualMediaFiltersInput
 }
 
-"""
-A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
-"""
-scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
-
-type UpdateExtraScalarsPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: ExtraScalars!
-  clientMutationId: String
+input VisualMediaObjectFilterInput {
+  width: IntValueFilterInput
+  height: IntValueFilterInput
 }
 
-input UpdateExtraScalarsInput {
+input VisualMediaSortingInput {
+  width: SortOrder
+  height: SortOrder
+}
+
+"""A connection to a list of items."""
+type TimeMediaConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TimeMediaEdge]
+}
+
+"""An edge in a connection."""
+type TimeMediaEdge {
+  """The item at the end of the edge"""
+  node: TimeMedia
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+interface TimeMedia {
+  duration: Int!
+}
+
+input TimeMediaFiltersInput {
+  where: TimeMediaObjectFilterInput
+  and: [TimeMediaFiltersInput!]
+  or: [TimeMediaFiltersInput!]
+  not: TimeMediaFiltersInput
+}
+
+input TimeMediaObjectFilterInput {
+  duration: IntValueFilterInput
+}
+
+input TimeMediaSortingInput {
+  duration: SortOrder
+}
+
+"""A connection to a list of items."""
+type ImageMediaConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ImageMediaEdge]
+}
+
+"""An edge in a connection."""
+type ImageMediaEdge {
+  """The item at the end of the edge"""
+  node: ImageMedia
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+interface ImageMedia implements MediaMetadata & VisualMedia {
+  src: String!
+  size: Int
+  width: Int!
+  height: Int!
+}
+
+input ImageMediaFiltersInput {
+  where: ImageMediaObjectFilterInput
+  and: [ImageMediaFiltersInput!]
+  or: [ImageMediaFiltersInput!]
+  not: ImageMediaFiltersInput
+}
+
+input ImageMediaObjectFilterInput {
+  src: StringValueFilterInput
+  size: IntValueFilterInput
+  width: IntValueFilterInput
+  height: IntValueFilterInput
+}
+
+input ImageMediaSortingInput {
+  src: SortOrder
+  size: SortOrder
+  width: SortOrder
+  height: SortOrder
+}
+
+"""A connection to a list of items."""
+type AudioMediaConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [AudioMediaEdge]
+}
+
+"""An edge in a connection."""
+type AudioMediaEdge {
+  """The item at the end of the edge"""
+  node: AudioMedia
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+interface AudioMedia implements MediaMetadata & TimeMedia {
+  src: String!
+  size: Int
+  duration: Int!
+}
+
+input AudioMediaFiltersInput {
+  where: AudioMediaObjectFilterInput
+  and: [AudioMediaFiltersInput!]
+  or: [AudioMediaFiltersInput!]
+  not: AudioMediaFiltersInput
+}
+
+input AudioMediaObjectFilterInput {
+  src: StringValueFilterInput
+  size: IntValueFilterInput
+  duration: IntValueFilterInput
+}
+
+input AudioMediaSortingInput {
+  src: SortOrder
+  size: SortOrder
+  duration: SortOrder
+}
+
+"""A connection to a list of items."""
+type VideoMediaConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [VideoMediaEdge]
+}
+
+"""An edge in a connection."""
+type VideoMediaEdge {
+  """The item at the end of the edge"""
+  node: VideoMedia
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+interface VideoMedia implements MediaMetadata & VisualMedia & TimeMedia {
+  src: String!
+  size: Int
+  duration: Int!
+  width: Int!
+  height: Int!
+}
+
+input VideoMediaFiltersInput {
+  where: VideoMediaObjectFilterInput
+  and: [VideoMediaFiltersInput!]
+  or: [VideoMediaFiltersInput!]
+  not: VideoMediaFiltersInput
+}
+
+input VideoMediaObjectFilterInput {
+  src: StringValueFilterInput
+  size: IntValueFilterInput
+  duration: IntValueFilterInput
+  width: IntValueFilterInput
+  height: IntValueFilterInput
+}
+
+input VideoMediaSortingInput {
+  src: SortOrder
+  size: SortOrder
+  duration: SortOrder
+  width: SortOrder
+  height: SortOrder
+}
+
+"""A connection to a list of items."""
+type MyImageConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [MyImageEdge]
+}
+
+"""An edge in a connection."""
+type MyImageEdge {
+  """The item at the end of the edge"""
+  node: MyImage
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type MyImage implements Node & ImageMedia & MediaMetadata & VisualMedia {
   id: ID!
-  content: PartialExtraScalarsInput!
+  src: String!
+  size: Int
+  width: Int!
+  height: Int!
+}
+
+"""A connection to a list of items."""
+type MyAudioConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [MyAudioEdge]
+}
+
+"""An edge in a connection."""
+type MyAudioEdge {
+  """The item at the end of the edge"""
+  node: MyAudio
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type MyAudio implements Node & AudioMedia & MediaMetadata & TimeMedia {
+  id: ID!
+  src: String!
+  size: Int
+  duration: Int!
+}
+
+"""A connection to a list of items."""
+type MyVideoConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [MyVideoEdge]
+}
+
+"""An edge in a connection."""
+type MyVideoEdge {
+  """The item at the end of the edge"""
+  node: MyVideo
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type MyVideo implements Node & VideoMedia & MediaMetadata & VisualMedia & TimeMedia {
+  id: ID!
+  src: String!
+  size: Int
+  duration: Int!
+  width: Int!
+  height: Int!
+}
+
+type Mutation {
+  createMyImage(input: CreateMyImageInput!): CreateMyImagePayload
+  updateMyImage(input: UpdateMyImageInput!): UpdateMyImagePayload
+  createMyAudio(input: CreateMyAudioInput!): CreateMyAudioPayload
+  updateMyAudio(input: UpdateMyAudioInput!): UpdateMyAudioPayload
+  createMyVideo(input: CreateMyVideoInput!): CreateMyVideoPayload
+  updateMyVideo(input: UpdateMyVideoInput!): UpdateMyVideoPayload
+}
+
+type CreateMyImagePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyImage!
+  clientMutationId: String
+}
+
+input CreateMyImageInput {
+  content: MyImageInput!
+  clientMutationId: String
+}
+
+input MyImageInput {
+  src: String!
+  size: Int
+  width: Int!
+  height: Int!
+}
+
+type UpdateMyImagePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyImage!
+  clientMutationId: String
+}
+
+input UpdateMyImageInput {
+  id: ID!
+  content: PartialMyImageInput!
   options: UpdateOptionsInput
   clientMutationId: String
 }
 
-input PartialExtraScalarsInput {
-  accountID: ChainAgnosticAccountID
-  chainID: ChainAgnosticChainID
-  cid: InterPlanetaryCID
-  commitID: CeramicCommitID
-  countryCode: CountryCode
-  date: Date
-  dateTime: DateTime
-  did: DID
-  latitude: Float
-  localDate: LocalDate
-  locale: Locale
-  localTime: LocalTime
-  longitude: Float
-  streamID: CeramicStreamID
-  time: Time
-  timeZone: TimeZone
-  uri: URI
-  utcOffset: UtcOffset
+input PartialMyImageInput {
+  src: String
+  size: Int
+  width: Int
+  height: Int
 }
 
 input UpdateOptionsInput {
@@ -314,10 +756,117 @@ input UpdateOptionsInput {
 
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
+}
+
+"""A Ceramic Commit ID"""
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
+
+type CreateMyAudioPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyAudio!
+  clientMutationId: String
+}
+
+input CreateMyAudioInput {
+  content: MyAudioInput!
+  clientMutationId: String
+}
+
+input MyAudioInput {
+  src: String!
+  size: Int
+  duration: Int!
+}
+
+type UpdateMyAudioPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyAudio!
+  clientMutationId: String
+}
+
+input UpdateMyAudioInput {
+  id: ID!
+  content: PartialMyAudioInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialMyAudioInput {
+  src: String
+  size: Int
+  duration: Int
+}
+
+type CreateMyVideoPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyVideo!
+  clientMutationId: String
+}
+
+input CreateMyVideoInput {
+  content: MyVideoInput!
+  clientMutationId: String
+}
+
+input MyVideoInput {
+  src: String!
+  size: Int
+  duration: Int!
+  width: Int!
+  height: Int!
+}
+
+type UpdateMyVideoPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyVideo!
+  clientMutationId: String
+}
+
+input UpdateMyVideoInput {
+  id: ID!
+  content: PartialMyVideoInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialMyVideoInput {
+  src: String
+  size: Int
+  duration: Int
+  width: Int
+  height: Int
 }"
 `;
 
-exports[`schema note 1`] = `
+exports[`schema note with enum support 1`] = `
 "type Query {
   """Fetches objects given their IDs"""
   nodes(
@@ -536,7 +1085,7 @@ input UpdateOptionsInput {
 }"
 `;
 
-exports[`schema post and comments 1`] = `
+exports[`schema post and comments with relations 1`] = `
 "type Query {
   """Fetches objects given their IDs"""
   nodes(
@@ -908,7 +1457,7 @@ input PartialCommentInput {
 }"
 `;
 
-exports[`schema profile 1`] = `
+exports[`schema profiles with SINGLE account relation 1`] = `
 "type Query {
   """Fetches objects given their IDs"""
   nodes(
@@ -1368,5 +1917,322 @@ input PartialPersonProfileInput {
   residenceCountry: CountryCode
   nationalities: [CountryCode]
   affiliations: [String]
+}"
+`;
+
+exports[`schema supported scalars 1`] = `
+"type Query {
+  """Fetches objects given their IDs"""
+  nodes(
+    """The IDs of objects"""
+    ids: [ID!]!
+  ): [Node]!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  extraScalarsIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: ExtraScalarsFiltersInput
+    sorting: ExtraScalarsSortingInput
+  ): ExtraScalarsConnection
+  extraScalarsCount(filters: ExtraScalarsFiltersInput): Int!
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+type CeramicAccount implements Node {
+  """Globally unique identifier of the account (DID string)"""
+  id: ID!
+
+  """
+  Whether the Ceramic instance is currently authenticated with this account or not
+  """
+  isViewer: Boolean!
+  extraScalarsList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: ExtraScalarsFiltersInput
+    sorting: ExtraScalarsSortingInput
+  ): ExtraScalarsConnection
+  extraScalarsListCount(filters: ExtraScalarsFiltersInput): Int!
+}
+
+"""A connection to a list of items."""
+type ExtraScalarsConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ExtraScalarsEdge]
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""An edge in a connection."""
+type ExtraScalarsEdge {
+  """The item at the end of the edge"""
+  node: ExtraScalars
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type ExtraScalars implements Node {
+  id: ID!
+  accountID: ChainAgnosticAccountID
+  chainID: ChainAgnosticChainID
+  cid: InterPlanetaryCID
+  commitID: CeramicCommitID
+  countryCode: CountryCode
+  date: Date
+  dateTime: DateTime
+  did: CeramicAccount
+  latitude: Float
+  localDate: LocalDate
+  locale: Locale
+  localTime: LocalTime
+  longitude: Float
+  streamID: CeramicStreamID
+  time: Time
+  timeZone: TimeZone
+  uri: URI
+  utcOffset: UtcOffset
+}
+
+"""A Chain Agnostic AccountId"""
+scalar ChainAgnosticAccountID @specifiedBy(url: "https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-10.md")
+
+"""A Chain Agnostic ChainId"""
+scalar ChainAgnosticChainID @specifiedBy(url: "https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-2.md")
+
+"""A IPLD CID"""
+scalar InterPlanetaryCID @specifiedBy(url: "https://github.com/multiformats/cid")
+
+"""A Ceramic Commit ID"""
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
+
+"""A country code as defined by ISO 3166-1 alpha-2"""
+scalar CountryCode
+
+"""
+A date string, such as 2007-12-03, compliant with the \`full-date\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the \`date-time\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+"""
+A local date string (i.e., with no associated timezone) in \`YYYY-MM-DD\` format, e.g. \`2020-01-01\`.
+"""
+scalar LocalDate
+
+"""The locale in the format of a BCP 47 (RFC 5646) standard string"""
+scalar Locale
+
+"""
+A local time string (i.e., with no associated timezone) in 24-hr \`HH:mm[:ss[.SSS]]\` format, e.g. \`14:25\` or \`14:25:06\` or \`14:25:06.123\`.
+"""
+scalar LocalTime
+
+"""A Ceramic Stream ID"""
+scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
+
+"""
+A time string at UTC, such as 10:15:30Z, compliant with the \`full-time\` format outlined in section 5.6 of the RFC 3339profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Time
+
+"""
+A field whose value exists in the standard IANA Time Zone Database: https://www.iana.org/time-zones
+"""
+scalar TimeZone
+
+"""
+A field whose value conforms to the standard Uniform Resource Identifier (URI) format as specified in RFC3986.
+"""
+scalar URI @specifiedBy(url: "https://www.ietf.org/rfc/rfc3986.txt")
+
+"""
+A field whose value is a UTC Offset: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+"""
+scalar UtcOffset
+
+input ExtraScalarsFiltersInput {
+  where: ExtraScalarsObjectFilterInput
+  and: [ExtraScalarsFiltersInput!]
+  or: [ExtraScalarsFiltersInput!]
+  not: ExtraScalarsFiltersInput
+}
+
+input ExtraScalarsObjectFilterInput {
+  dateTime: StringValueFilterInput
+  streamID: StringValueFilterInput
+}
+
+input StringValueFilterInput {
+  isNull: Boolean
+  equalTo: String
+  notEqualTo: String
+  in: [String!]
+  notIn: [String!]
+  lessThan: String
+  lessThanOrEqualTo: String
+  greaterThan: String
+  greaterThanOrEqualTo: String
+}
+
+input ExtraScalarsSortingInput {
+  dateTime: SortOrder
+  streamID: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+type Mutation {
+  createExtraScalars(input: CreateExtraScalarsInput!): CreateExtraScalarsPayload
+  updateExtraScalars(input: UpdateExtraScalarsInput!): UpdateExtraScalarsPayload
+}
+
+type CreateExtraScalarsPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: ExtraScalars!
+  clientMutationId: String
+}
+
+input CreateExtraScalarsInput {
+  content: ExtraScalarsInput!
+  clientMutationId: String
+}
+
+input ExtraScalarsInput {
+  accountID: ChainAgnosticAccountID
+  chainID: ChainAgnosticChainID
+  cid: InterPlanetaryCID
+  commitID: CeramicCommitID
+  countryCode: CountryCode
+  date: Date
+  dateTime: DateTime
+  did: DID
+  latitude: Float
+  localDate: LocalDate
+  locale: Locale
+  localTime: LocalTime
+  longitude: Float
+  streamID: CeramicStreamID
+  time: Time
+  timeZone: TimeZone
+  uri: URI
+  utcOffset: UtcOffset
+}
+
+"""
+A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
+"""
+scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
+
+type UpdateExtraScalarsPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: ExtraScalars!
+  clientMutationId: String
+}
+
+input UpdateExtraScalarsInput {
+  id: ID!
+  content: PartialExtraScalarsInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialExtraScalarsInput {
+  accountID: ChainAgnosticAccountID
+  chainID: ChainAgnosticChainID
+  cid: InterPlanetaryCID
+  commitID: CeramicCommitID
+  countryCode: CountryCode
+  date: Date
+  dateTime: DateTime
+  did: DID
+  latitude: Float
+  localDate: LocalDate
+  locale: Locale
+  localTime: LocalTime
+  longitude: Float
+  streamID: CeramicStreamID
+  time: Time
+  timeZone: TimeZone
+  uri: URI
+  utcOffset: UtcOffset
+}
+
+input UpdateOptionsInput {
+  """
+  Fully replace the document contents instead of performing a shallow merge
+  """
+  replace: Boolean = false
+
+  """Only perform mutation if the document matches the provided version"""
+  version: CeramicCommitID
 }"
 `;

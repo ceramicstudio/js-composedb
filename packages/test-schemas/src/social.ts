@@ -1,3 +1,7 @@
+/**
+ * Account reference schema
+ */
+
 export const socialSchema = `
 type PersonMet
   @createModel(accountRelation: LIST, description: "Another person met")

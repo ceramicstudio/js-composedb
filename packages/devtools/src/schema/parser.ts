@@ -32,7 +32,7 @@ import { NODE_INTERFACE_NAME } from '../constants.js'
 import type { ScalarSchema } from '../types.js'
 
 import { getScalarSchema } from './scalars.js'
-import { typeDefinitions } from './typeDefinitions.js'
+import { typeDefinitions } from './type-definitions.js'
 import type {
   Field,
   ItemDefinition,

@@ -97,12 +97,12 @@ type ConnectionRelationArguments = ConnectionQueryArguments & ConnectionAccountA
 type ConnectionRelationCountArguments = ConnectionAccountArgument & ConnectionFiltersArgument
 
 function createAccountReferenceQuery(
-  modelID: string,
+  models: Array<string>,
   account: string,
   reference: RuntimeViewReference,
   filters?: QueryFilters,
 ): BaseQuery {
-  const query: BaseQuery = { model: modelID }
+  const query: BaseQuery = { models }
   if (reference.type === 'account') {
     // Current account is referenced in a document field
     query.queryFilters = createRelationQueryFilters(reference.property, account, filters)
@@ -300,7 +300,7 @@ class SchemaBuilder {
             config[alias] = {
               type: this.#types[reference.name],
               resolve: async (account, _, ctx): Promise<ModelInstanceDocument | null> => {
-                return await ctx.querySingle({ account, model: model.id })
+                return await ctx.querySingle({ account, models: [model.id] })
               },
             }
           } else if (reference.type === 'account' || reference.type === 'connection') {
@@ -321,7 +321,7 @@ class SchemaBuilder {
                 { filters, ...args }: ConnectionQueryArguments,
                 ctx,
               ): Promise<Connection<ModelInstanceDocument | null>> => {
-                const query = createAccountReferenceQuery(model.id, account, reference, filters)
+                const query = createAccountReferenceQuery([model.id], account, reference, filters)
                 return await ctx.queryConnection({ ...query, ...args })
               },
             }
@@ -333,7 +333,7 @@ class SchemaBuilder {
                 { filters }: ConnectionFiltersArgument,
                 ctx,
               ): Promise<number> => {
-                const query = createAccountReferenceQuery(model.id, account, reference, filters)
+                const query = createAccountReferenceQuery([model.id], account, reference, filters)
                 return await ctx.queryCount(query)
               },
             }
@@ -359,7 +359,7 @@ class SchemaBuilder {
   }
 
   _resolveInterfaces(modelName: string, names: Array<string> = []): Array<GraphQLInterfaceType> {
-    return names.map((name) => {
+    const allInterfaces = names.flatMap((name) => {
       const type = this.#types[name]
       if (type == null) {
         throw new Error(`Missing interface ${name} for ${modelName}`)
@@ -367,8 +367,9 @@ class SchemaBuilder {
       if (!isInterfaceType(type)) {
         throw new Error(`Invalid type for ${name} for ${modelName}, expected interface`)
       }
-      return type
+      return [type].concat(type.getInterfaces())
     })
+    return Array.from(new Set(allInterfaces))
   }
 
   _buildEnums() {
@@ -441,8 +442,8 @@ class SchemaBuilder {
       },
     })
 
-    this._buildFiltersType(name, fields)
-    this._buildSortingType(name, fields)
+    this._buildFiltersType(name, fields, true)
+    this._buildSortingType(name, fields, true)
   }
 
   _buildDocumentObjectType({ model, definitions, name, fields }: BuildModelObjectParams) {
@@ -725,7 +726,7 @@ class SchemaBuilder {
             return await ctx.queryConnection({
               ...args,
               account,
-              model: relationModel,
+              models: [relationModel],
               queryFilters,
             })
           },
@@ -753,7 +754,7 @@ class SchemaBuilder {
               doc.id.toString(),
               args.filters,
             )
-            return await ctx.queryCount({ account, model: relationModel, queryFilters })
+            return await ctx.queryCount({ account, models: [relationModel], queryFilters })
           },
         }
       }
@@ -797,14 +798,14 @@ class SchemaBuilder {
     return field.required ? new GraphQLNonNull(type) : type
   }
 
-  _buildFiltersType(objectName: string, fields: RuntimeObjectFields) {
+  _buildFiltersType(objectName: string, fields: RuntimeObjectFields, isInterface = false) {
     const objectInputName = `${objectName}ObjectFilter`
     const inputName = `${objectName}Filters`
 
     const config: GraphQLInputFieldConfigMap = {}
     for (const [key, field] of Object.entries(fields)) {
       let type: GraphQLInputObjectType | undefined
-      if (field.type === 'reference' && (field as RuntimeReference).indexed) {
+      if (field.type === 'reference' && ((field as RuntimeReference).indexed || isInterface)) {
         if (field.refType === 'enum') {
           const enumType = this.#types[field.refName] as GraphQLEnumType
           type = createEnumValueFilterInput(enumType)
@@ -812,7 +813,7 @@ class SchemaBuilder {
         } else if (field.refType === 'node') {
           type = this.#inputObjects.StringValueFilter
         }
-      } else if (isScalarField(field) && (field as RuntimeScalarCommon).indexed) {
+      } else if (isScalarField(field) && ((field as RuntimeScalarCommon).indexed || isInterface)) {
         type = this.#inputObjects[valueFilterInputsTypes[field.type] ?? 'StringValueFilter']
       }
       if (type != null) {
@@ -838,13 +839,13 @@ class SchemaBuilder {
     }
   }
 
-  _buildSortingType(objectName: string, fields: RuntimeObjectFields) {
+  _buildSortingType(objectName: string, fields: RuntimeObjectFields, isInterface = false) {
     const name = `${objectName}Sorting`
     const config: GraphQLInputFieldConfigMap = {}
     for (const [key, field] of Object.entries(fields)) {
       if (
         (isStringReferenceField(field) || isScalarField(field)) &&
-        (field as RuntimeScalarCommon).indexed
+        ((field as RuntimeScalarCommon).indexed || isInterface)
       ) {
         config[key] = { type: SortOrder }
       }
@@ -1031,7 +1032,7 @@ class SchemaBuilder {
           if (filters != null) {
             assertValidQueryFilters(filters)
           }
-          return await ctx.queryConnection({ ...args, queryFilters: filters, model: model.id })
+          return await ctx.queryConnection({ ...args, queryFilters: filters, models: [model.id] })
         },
       }
       queryFields[`${first}${rest}Count`] = {
@@ -1041,7 +1042,7 @@ class SchemaBuilder {
           if (filters != null) {
             assertValidQueryFilters(filters)
           }
-          return await ctx.queryCount({ queryFilters: filters, model: model.id })
+          return await ctx.queryCount({ queryFilters: filters, models: [model.id] })
         },
       }
     }
