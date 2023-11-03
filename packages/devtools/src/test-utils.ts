@@ -16,6 +16,9 @@ export function mockDefinition(
   for (const abstractModel of Object.values(definition.models)) {
     if (abstractModel.action === 'create') {
       const definition = abstractModel.model
+      if (definition.version !== '1.0') {
+        definition.implements = definition.implements.map((name) => `${name}ID`)
+      }
       for (const view of Object.values(definition.views ?? {})) {
         if (
           (view.type === 'relationCountFrom' ||

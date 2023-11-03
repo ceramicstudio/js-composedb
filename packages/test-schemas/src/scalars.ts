@@ -15,6 +15,7 @@ type ExtraScalars
   date: Date
   dateTime: DateTime
   did: DID
+  duration: Duration
   latitude: Latitude
   localDate: LocalDate
   locale: Locale

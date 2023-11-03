@@ -358,8 +358,12 @@ class SchemaBuilder {
     return { ...nodeDefs, accountObject, queryFields }
   }
 
-  _resolveInterfaces(modelName: string, names: Array<string> = []): Array<GraphQLInterfaceType> {
-    const allInterfaces = names.flatMap((name) => {
+  _resolveInterfaces(modelName: string, ids: Array<string> = []): Array<GraphQLInterfaceType> {
+    const allInterfaces = ids.flatMap((id) => {
+      const name = this.#modelAliases[id]
+      if (name == null) {
+        throw new Error(`Missing alias for interface ID ${id} used by ${modelName}`)
+      }
       const type = this.#types[name]
       if (type == null) {
         throw new Error(`Missing interface ${name} for ${modelName}`)

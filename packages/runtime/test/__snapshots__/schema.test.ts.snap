@@ -124,8 +124,10 @@ exports[`schema media interfaces 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
+    filters: MyImageFiltersInput
+    sorting: MyImageSortingInput
   ): MyImageConnection
-  myImageCount: Int!
+  myImageCount(filters: MyImageFiltersInput): Int!
   myAudioIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -138,8 +140,10 @@ exports[`schema media interfaces 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
+    filters: MyAudioFiltersInput
+    sorting: MyAudioSortingInput
   ): MyAudioConnection
-  myAudioCount: Int!
+  myAudioCount(filters: MyAudioFiltersInput): Int!
   myVideoIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -152,8 +156,10 @@ exports[`schema media interfaces 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
+    filters: MyVideoFiltersInput
+    sorting: MyVideoSortingInput
   ): MyVideoConnection
-  myVideoCount: Int!
+  myVideoCount(filters: MyVideoFiltersInput): Int!
 }
 
 """An object with an ID"""
@@ -278,8 +284,10 @@ type CeramicAccount implements Node {
 
     """Returns the last n items from the list."""
     last: Int
+    filters: MyImageFiltersInput
+    sorting: MyImageSortingInput
   ): MyImageConnection
-  myImageListCount: Int!
+  myImageListCount(filters: MyImageFiltersInput): Int!
   myAudioList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -292,8 +300,10 @@ type CeramicAccount implements Node {
 
     """Returns the last n items from the list."""
     last: Int
+    filters: MyAudioFiltersInput
+    sorting: MyAudioSortingInput
   ): MyAudioConnection
-  myAudioListCount: Int!
+  myAudioListCount(filters: MyAudioFiltersInput): Int!
   myVideoList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -306,8 +316,10 @@ type CeramicAccount implements Node {
 
     """Returns the last n items from the list."""
     last: Int
+    filters: MyVideoFiltersInput
+    sorting: MyVideoSortingInput
   ): MyVideoConnection
-  myVideoListCount: Int!
+  myVideoListCount(filters: MyVideoFiltersInput): Int!
 }
 
 """A connection to a list of items."""
@@ -453,8 +465,11 @@ type TimeMediaEdge {
 }
 
 interface TimeMedia {
-  duration: Int!
+  duration: Duration!
 }
+
+"\\n    A string representing a duration conforming to the ISO8601 standard,\\n    such as: P1W1DT13H23M34S\\n    P is the duration designator (for period) placed at the start of the duration representation.\\n    Y is the year designator that follows the value for the number of years.\\n    M is the month designator that follows the value for the number of months.\\n    W is the week designator that follows the value for the number of weeks.\\n    D is the day designator that follows the value for the number of days.\\n    T is the time designator that precedes the time components of the representation.\\n    H is the hour designator that follows the value for the number of hours.\\n    M is the minute designator that follows the value for the number of minutes.\\n    S is the second designator that follows the value for the number of seconds.\\n\\n    Note the time designator, T, that precedes the time value.\\n\\n    Matches moment.js, Luxon and DateFns implementations\\n    ,/. is valid for decimal places and +/- is a valid prefix\\n  "
+scalar Duration
 
 input TimeMediaFiltersInput {
   where: TimeMediaObjectFilterInput
@@ -464,7 +479,7 @@ input TimeMediaFiltersInput {
 }
 
 input TimeMediaObjectFilterInput {
-  duration: IntValueFilterInput
+  duration: StringValueFilterInput
 }
 
 input TimeMediaSortingInput {
@@ -538,7 +553,7 @@ type AudioMediaEdge {
 interface AudioMedia implements MediaMetadata & TimeMedia {
   src: String!
   size: Int
-  duration: Int!
+  duration: Duration!
 }
 
 input AudioMediaFiltersInput {
@@ -551,7 +566,7 @@ input AudioMediaFiltersInput {
 input AudioMediaObjectFilterInput {
   src: StringValueFilterInput
   size: IntValueFilterInput
-  duration: IntValueFilterInput
+  duration: StringValueFilterInput
 }
 
 input AudioMediaSortingInput {
@@ -581,7 +596,7 @@ type VideoMediaEdge {
 interface VideoMedia implements MediaMetadata & VisualMedia & TimeMedia {
   src: String!
   size: Int
-  duration: Int!
+  duration: Duration!
   width: Int!
   height: Int!
 }
@@ -596,7 +611,7 @@ input VideoMediaFiltersInput {
 input VideoMediaObjectFilterInput {
   src: StringValueFilterInput
   size: IntValueFilterInput
-  duration: IntValueFilterInput
+  duration: StringValueFilterInput
   width: IntValueFilterInput
   height: IntValueFilterInput
 }
@@ -635,6 +650,25 @@ type MyImage implements Node & ImageMedia & MediaMetadata & VisualMedia {
   height: Int!
 }
 
+input MyImageFiltersInput {
+  where: MyImageObjectFilterInput
+  and: [MyImageFiltersInput!]
+  or: [MyImageFiltersInput!]
+  not: MyImageFiltersInput
+}
+
+input MyImageObjectFilterInput {
+  src: StringValueFilterInput
+  width: IntValueFilterInput
+  height: IntValueFilterInput
+}
+
+input MyImageSortingInput {
+  src: SortOrder
+  width: SortOrder
+  height: SortOrder
+}
+
 """A connection to a list of items."""
 type MyAudioConnection {
   """Information to aid in pagination."""
@@ -657,7 +691,22 @@ type MyAudio implements Node & AudioMedia & MediaMetadata & TimeMedia {
   id: ID!
   src: String!
   size: Int
-  duration: Int!
+  duration: Duration!
+}
+
+input MyAudioFiltersInput {
+  where: MyAudioObjectFilterInput
+  and: [MyAudioFiltersInput!]
+  or: [MyAudioFiltersInput!]
+  not: MyAudioFiltersInput
+}
+
+input MyAudioObjectFilterInput {
+  duration: StringValueFilterInput
+}
+
+input MyAudioSortingInput {
+  duration: SortOrder
 }
 
 """A connection to a list of items."""
@@ -682,9 +731,30 @@ type MyVideo implements Node & VideoMedia & MediaMetadata & VisualMedia & TimeMe
   id: ID!
   src: String!
   size: Int
-  duration: Int!
+  duration: Duration!
   width: Int!
   height: Int!
+}
+
+input MyVideoFiltersInput {
+  where: MyVideoObjectFilterInput
+  and: [MyVideoFiltersInput!]
+  or: [MyVideoFiltersInput!]
+  not: MyVideoFiltersInput
+}
+
+input MyVideoObjectFilterInput {
+  src: StringValueFilterInput
+  duration: StringValueFilterInput
+  width: IntValueFilterInput
+  height: IntValueFilterInput
+}
+
+input MyVideoSortingInput {
+  src: SortOrder
+  duration: SortOrder
+  width: SortOrder
+  height: SortOrder
 }
 
 type Mutation {
@@ -782,7 +852,7 @@ input CreateMyAudioInput {
 input MyAudioInput {
   src: String!
   size: Int
-  duration: Int!
+  duration: Duration!
 }
 
 type UpdateMyAudioPayload {
@@ -808,7 +878,7 @@ input UpdateMyAudioInput {
 input PartialMyAudioInput {
   src: String
   size: Int
-  duration: Int
+  duration: Duration
 }
 
 type CreateMyVideoPayload {
@@ -832,7 +902,7 @@ input CreateMyVideoInput {
 input MyVideoInput {
   src: String!
   size: Int
-  duration: Int!
+  duration: Duration!
   width: Int!
   height: Int!
 }
@@ -860,7 +930,7 @@ input UpdateMyVideoInput {
 input PartialMyVideoInput {
   src: String
   size: Int
-  duration: Int
+  duration: Duration
   width: Int
   height: Int
 }"
@@ -2029,6 +2099,7 @@ type ExtraScalars implements Node {
   date: Date
   dateTime: DateTime
   did: CeramicAccount
+  duration: Duration
   latitude: Float
   localDate: LocalDate
   locale: Locale
@@ -2065,6 +2136,9 @@ scalar Date
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the \`date-time\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
 scalar DateTime
+
+"\\n    A string representing a duration conforming to the ISO8601 standard,\\n    such as: P1W1DT13H23M34S\\n    P is the duration designator (for period) placed at the start of the duration representation.\\n    Y is the year designator that follows the value for the number of years.\\n    M is the month designator that follows the value for the number of months.\\n    W is the week designator that follows the value for the number of weeks.\\n    D is the day designator that follows the value for the number of days.\\n    T is the time designator that precedes the time components of the representation.\\n    H is the hour designator that follows the value for the number of hours.\\n    M is the minute designator that follows the value for the number of minutes.\\n    S is the second designator that follows the value for the number of seconds.\\n\\n    Note the time designator, T, that precedes the time value.\\n\\n    Matches moment.js, Luxon and DateFns implementations\\n    ,/. is valid for decimal places and +/- is a valid prefix\\n  "
+scalar Duration
 
 """
 A local date string (i.e., with no associated timezone) in \`YYYY-MM-DD\` format, e.g. \`2020-01-01\`.
@@ -2168,6 +2242,7 @@ input ExtraScalarsInput {
   date: Date
   dateTime: DateTime
   did: DID
+  duration: Duration
   latitude: Float
   localDate: LocalDate
   locale: Locale
@@ -2214,6 +2289,7 @@ input PartialExtraScalarsInput {
   date: Date
   dateTime: DateTime
   did: DID
+  duration: Duration
   latitude: Float
   localDate: LocalDate
   locale: Locale

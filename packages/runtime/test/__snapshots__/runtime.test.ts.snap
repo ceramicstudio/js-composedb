@@ -12,6 +12,7 @@ exports[`runtime can create a document using extra scalars 1`] = `
   "did": {
     "id": "did:test:123",
   },
+  "duration": "P1Y2M22DT5H24M15S",
   "latitude": 53.471,
   "localDate": "2023-01-31",
   "localTime": "14:25:06.123",
@@ -541,6 +542,65 @@ exports[`runtime create and query ratings with filters and ordering 3`] = `
           },
         ],
       },
+    },
+  },
+}
+`;
+
+exports[`runtime interfaces queries 1`] = `
+{
+  "data": {
+    "mediaMetadataIndex": {
+      "edges": [
+        {
+          "node": {
+            "__typename": "MyImage",
+            "height": 600,
+            "src": "http://my/image1",
+            "width": 800,
+          },
+        },
+        {
+          "node": {
+            "__typename": "MyImage",
+            "height": 800,
+            "src": "http://my/image2",
+            "width": 1600,
+          },
+        },
+        {
+          "node": {
+            "__typename": "MyAudio",
+            "duration": "PT2M36S",
+            "src": "http://my/audio1",
+          },
+        },
+        {
+          "node": {
+            "__typename": "MyAudio",
+            "duration": "PT5M4S",
+            "src": "http://my/audio2",
+          },
+        },
+        {
+          "node": {
+            "__typename": "MyVideo",
+            "duration": "PT2H5M48S",
+            "height": 1080,
+            "src": "http://my/video1",
+            "width": 1920,
+          },
+        },
+        {
+          "node": {
+            "__typename": "MyVideo",
+            "duration": "PT1H34M15S",
+            "height": 2160,
+            "src": "http://my/video2",
+            "width": 4096,
+          },
+        },
+      ],
     },
   },
 }

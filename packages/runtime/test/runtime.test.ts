@@ -7,6 +7,7 @@ import { CommitID, StreamID } from '@ceramicnetwork/streamid'
 import { Composite } from '@composedb/devtools'
 import {
   extraScalarsSchema,
+  mediaSchema,
   noteSchema,
   postSchema,
   profilesSchema,
@@ -279,6 +280,7 @@ describe('runtime', () => {
             did {
               id
             }
+            duration
             latitude
             localDate
             locale
@@ -306,6 +308,7 @@ describe('runtime', () => {
             date: '2023-01-31',
             dateTime: '2023-01-31T16:04:16.475Z',
             did: 'did:test:123',
+            duration: 'P1Y2M22DT5H24M15S',
             latitude: 53.471,
             localDate: '2023-01-31',
             locale: 'en-gb',
@@ -430,4 +433,85 @@ describe('runtime', () => {
     `)
     expect(res).toMatchSnapshot()
   }, 20000)
+
+  test('interfaces queries', async () => {
+    const composite = await Composite.create({ ceramic, schema: mediaSchema })
+    const runtime = new ComposeRuntime({ ceramic, definition: composite.toRuntime() })
+
+    await runtime.executeQuery(
+      `
+      mutation CreateMedia(
+        $image1Input: CreateMyImageInput!,
+        $image2Input: CreateMyImageInput!,
+        $audio1Input: CreateMyAudioInput!,
+        $audio2Input: CreateMyAudioInput!,
+        $video1Input: CreateMyVideoInput!,
+        $video2Input: CreateMyVideoInput!) {
+        image1: createMyImage(input: $image1Input) {
+          document {
+            id
+          }
+        }
+        image2: createMyImage(input: $image2Input) {
+          document {
+            id
+          }
+        }
+        audio1: createMyAudio(input: $audio1Input) {
+          document {
+            id
+          }
+        }
+        audio2: createMyAudio(input: $audio2Input) {
+          document {
+            id
+          }
+        }
+        video1: createMyVideo(input: $video1Input) {
+          document {
+            id
+          }
+        }
+        video2: createMyVideo(input: $video2Input) {
+          document {
+            id
+          }
+        }
+      }
+      `,
+      {
+        image1Input: { content: { src: 'http://my/image1', width: 800, height: 600 } },
+        image2Input: { content: { src: 'http://my/image2', width: 1600, height: 800 } },
+        audio1Input: { content: { src: 'http://my/audio1', duration: 'PT2M36S' } },
+        audio2Input: { content: { src: 'http://my/audio2', duration: 'PT5M4S' } },
+        video1Input: {
+          content: { src: 'http://my/video1', duration: 'PT2H5M48S', width: 1920, height: 1080 },
+        },
+        video2Input: {
+          content: { src: 'http://my/video2', duration: 'PT1H34M15S', width: 4096, height: 2160 },
+        },
+      },
+    )
+
+    const res = await runtime.executeQuery(`
+      query {
+        mediaMetadataIndex(first: 10) {
+          edges {
+            node {
+              __typename
+              src
+              ...on TimeMedia {
+                duration
+              }
+              ...on VisualMedia {
+                width
+                height
+              }
+            }
+          }
+        }
+      }
+    `)
+    expect(res).toMatchSnapshot()
+  })
 })
