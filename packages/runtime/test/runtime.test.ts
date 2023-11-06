@@ -438,7 +438,7 @@ describe('runtime', () => {
     const composite = await Composite.create({ ceramic, schema: mediaSchema })
     const runtime = new ComposeRuntime({ ceramic, definition: composite.toRuntime() })
 
-    await runtime.executeQuery(
+    const createdMedia = await runtime.executeQuery<Record<string, { document: { id: string } }>>(
       `
       mutation CreateMedia(
         $image1Input: CreateMyImageInput!,
@@ -513,5 +513,217 @@ describe('runtime', () => {
       }
     `)
     expect(res).toMatchSnapshot()
-  })
+
+    const visualRes = await runtime.executeQuery(`
+      query {
+        visualMediaIndex(first: 10, filters: { where: { width: { greaterThan: 1000 } } }, sorting: { width: DESC }) {
+          edges {
+            node {
+              __typename
+              width
+              height
+              ...on MediaMetadata {
+                src
+              }
+            }
+          }
+        }
+      }
+    `)
+    expect(visualRes).toMatchSnapshot()
+
+    const createdCollections = await runtime.executeQuery<
+      Record<string, { document: { id: string } }>
+    >(
+      `
+      mutation CreateCollections(
+        $collection1Input: CreateMyMediaCollectionInput!,
+        $collection2Input: CreateMyMediaCollectionInput!,
+      ) {
+        collection1: createMyMediaCollection(input: $collection1Input) {
+          document {
+            id
+          }
+        }
+        collection2: createMyMediaCollection(input: $collection2Input) {
+          document {
+            id
+          }
+        }
+      }
+      `,
+      {
+        collection1Input: {
+          content: { name: 'First collection', createdAt: '2023-11-01T10:26:04Z' },
+        },
+        collection2Input: {
+          content: { name: 'Second collection', createdAt: '2023-11-02T05:15:46Z' },
+        },
+      },
+    )
+
+    const image1ID = createdMedia.data!.image1.document.id
+    const image2ID = createdMedia.data!.image2.document.id
+    const audio1ID = createdMedia.data!.audio1.document.id
+    const audio2ID = createdMedia.data!.audio2.document.id
+    const video1ID = createdMedia.data!.video1.document.id
+    const video2ID = createdMedia.data!.video2.document.id
+    const collection1ID = createdCollections.data!.collection1.document.id
+    const collection2ID = createdCollections.data!.collection2.document.id
+
+    await runtime.executeQuery(
+      `
+      mutation CreateItems(
+        $item1Input: CreateMyMediaCollectionItemInput!,
+        $item2Input: CreateMyMediaCollectionItemInput!,
+        $item3Input: CreateMyMediaCollectionItemInput!,
+        $item4Input: CreateMyMediaCollectionItemInput!,
+        $item5Input: CreateMyMediaCollectionItemInput!,
+        $item6Input: CreateMyMediaCollectionItemInput!,
+        $item7Input: CreateMyMediaCollectionItemInput!,
+        $item8Input: CreateMyMediaCollectionItemInput!,
+      ) {
+        item1: createMyMediaCollectionItem(input: $item1Input) {
+          document {
+            id
+          }
+        }
+        item2: createMyMediaCollectionItem(input: $item2Input) {
+          document {
+            id
+          }
+        }
+        item3: createMyMediaCollectionItem(input: $item3Input) {
+          document {
+            id
+          }
+        }
+        item4: createMyMediaCollectionItem(input: $item4Input) {
+          document {
+            id
+          }
+        }
+        item5: createMyMediaCollectionItem(input: $item5Input) {
+          document {
+            id
+          }
+        }
+        item6: createMyMediaCollectionItem(input: $item6Input) {
+          document {
+            id
+          }
+        }
+        item7: createMyMediaCollectionItem(input: $item7Input) {
+          document {
+            id
+          }
+        }
+        item8: createMyMediaCollectionItem(input: $item8Input) {
+          document {
+            id
+          }
+        }
+      }
+      `,
+      {
+        item1Input: {
+          content: {
+            collectionID: collection1ID,
+            itemID: video1ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+        item2Input: {
+          content: {
+            collectionID: collection1ID,
+            itemID: video2ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+        item3Input: {
+          content: {
+            collectionID: collection2ID,
+            itemID: video2ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+        item4Input: {
+          content: {
+            collectionID: collection1ID,
+            itemID: image2ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+        item5Input: {
+          content: {
+            collectionID: collection2ID,
+            itemID: image2ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+        item6Input: {
+          content: {
+            collectionID: collection1ID,
+            itemID: image1ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+        item7Input: {
+          content: {
+            collectionID: collection1ID,
+            itemID: audio2ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+        item8Input: {
+          content: {
+            collectionID: collection2ID,
+            itemID: audio1ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+      },
+    )
+
+    const relationsRes = await runtime.executeQuery(
+      `
+      query {
+        collection1: node(id: "${collection1ID}") {
+          ...on Collection {
+            itemsCount
+            items(first: 10) {
+              edges {
+                node {
+                  item {
+                    __typename
+                    ...on MediaMetadata {
+                      src
+                    }
+                  } 
+                }
+              }
+            }
+          }
+        }
+        video2: node(id: "${video2ID}") {
+          ...on MediaMetadata {
+            collectionItemsCount
+            collectionItems(first: 10) {
+              edges {
+                node {
+                  collection {
+                    ...on Collection {
+                      name
+                    }
+                  } 
+                }
+              }
+            }
+          }
+        }
+      }
+      `,
+    )
+    expect(relationsRes).toMatchSnapshot()
+  }, 30000)
 })

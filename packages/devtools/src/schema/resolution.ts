@@ -178,6 +178,7 @@ function assertNoCircularDependency(
   models: Record<string, ResolveModel>,
   targetModel: string,
   currentModel = targetModel,
+  visited: Array<string> = [],
 ): void {
   const dependencies = models[currentModel]?.requiredDependencies ?? []
   if (dependencies.includes(targetModel)) {
@@ -187,8 +188,13 @@ function assertNoCircularDependency(
       throw new Error(`Circular dependency of model ${targetModel} in model ${currentModel}`)
     }
   }
+  if (visited.includes(currentModel)) {
+    throw new Error(
+      `Circular dependency of model ${currentModel} in visited models: ${visited.join(', ')}`,
+    )
+  }
   for (const model of dependencies) {
-    assertNoCircularDependency(models, targetModel, model)
+    assertNoCircularDependency(models, targetModel, model, [...visited, currentModel])
   }
 }
 
@@ -207,11 +213,13 @@ export async function createIntermediaryCompositeDefinition(
       }
     } else if (definition.action === 'create') {
       const isInterface = definition.model.version !== '1.0' && definition.model.interface
-      let requiredDependencies: Array<string> = []
-      const viewDependencies: Array<string> = []
+      const requiredDependencies = new Set<string>()
+      const viewDependencies = new Set<string>()
 
       if (definition.model.version !== '1.0') {
-        requiredDependencies = [...definition.model.implements]
+        for (const dependency of definition.model.implements) {
+          requiredDependencies.add(dependency)
+        }
       }
 
       for (const relation of Object.values(definition.model.relations ?? {})) {
@@ -219,7 +227,7 @@ export async function createIntermediaryCompositeDefinition(
           if (relation.model === modelName) {
             throw new Error(`Unsupported self-reference relation on model ${modelName}`)
           }
-          requiredDependencies.push(relation.model)
+          requiredDependencies.add(relation.model)
         }
       }
 
@@ -232,16 +240,16 @@ export async function createIntermediaryCompositeDefinition(
         ) {
           if (isInterface) {
             // Views must be present in the model definition of interfaces
-            requiredDependencies.push(view.model)
+            requiredDependencies.add(view.model)
           } else {
-            viewDependencies.push(view.model)
+            viewDependencies.add(view.model)
           }
         }
       }
 
       toResolve[modelName] = {
-        requiredDependencies,
-        viewDependencies,
+        requiredDependencies: Array.from(requiredDependencies),
+        viewDependencies: Array.from(viewDependencies),
         name: modelName,
         execute: executeCreateFactory(ceramic, modelName, definition),
       }

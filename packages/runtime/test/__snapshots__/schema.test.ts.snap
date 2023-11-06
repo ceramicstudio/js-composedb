@@ -32,6 +32,38 @@ exports[`schema media interfaces 1`] = `
     sorting: MediaMetadataSortingInput
   ): MediaMetadataConnection
   mediaMetadataCount(filters: MediaMetadataFiltersInput): Int!
+  collectionItemIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: CollectionItemFiltersInput
+    sorting: CollectionItemSortingInput
+  ): CollectionItemConnection
+  collectionItemCount(filters: CollectionItemFiltersInput): Int!
+  collectionIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: CollectionFiltersInput
+    sorting: CollectionSortingInput
+  ): CollectionConnection
+  collectionCount(filters: CollectionFiltersInput): Int!
   visualMediaIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -160,6 +192,38 @@ exports[`schema media interfaces 1`] = `
     sorting: MyVideoSortingInput
   ): MyVideoConnection
   myVideoCount(filters: MyVideoFiltersInput): Int!
+  myMediaCollectionItemIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: MyMediaCollectionItemFiltersInput
+    sorting: MyMediaCollectionItemSortingInput
+  ): MyMediaCollectionItemConnection
+  myMediaCollectionItemCount(filters: MyMediaCollectionItemFiltersInput): Int!
+  myMediaCollectionIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: MyMediaCollectionFiltersInput
+    sorting: MyMediaCollectionSortingInput
+  ): MyMediaCollectionConnection
+  myMediaCollectionCount(filters: MyMediaCollectionFiltersInput): Int!
 }
 
 """An object with an ID"""
@@ -192,6 +256,38 @@ type CeramicAccount implements Node {
     sorting: MediaMetadataSortingInput
   ): MediaMetadataConnection
   mediaMetadataListCount(filters: MediaMetadataFiltersInput): Int!
+  collectionItemList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: CollectionItemFiltersInput
+    sorting: CollectionItemSortingInput
+  ): CollectionItemConnection
+  collectionItemListCount(filters: CollectionItemFiltersInput): Int!
+  collectionList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: CollectionFiltersInput
+    sorting: CollectionSortingInput
+  ): CollectionConnection
+  collectionListCount(filters: CollectionFiltersInput): Int!
   visualMediaList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -320,6 +416,38 @@ type CeramicAccount implements Node {
     sorting: MyVideoSortingInput
   ): MyVideoConnection
   myVideoListCount(filters: MyVideoFiltersInput): Int!
+  myMediaCollectionItemList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: MyMediaCollectionItemFiltersInput
+    sorting: MyMediaCollectionItemSortingInput
+  ): MyMediaCollectionItemConnection
+  myMediaCollectionItemListCount(filters: MyMediaCollectionItemFiltersInput): Int!
+  myMediaCollectionList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: MyMediaCollectionFiltersInput
+    sorting: MyMediaCollectionSortingInput
+  ): MyMediaCollectionConnection
+  myMediaCollectionListCount(filters: MyMediaCollectionFiltersInput): Int!
 }
 
 """A connection to a list of items."""
@@ -358,18 +486,69 @@ type MediaMetadataEdge {
 interface MediaMetadata {
   src: String!
   size: Int
+  collectionItems(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+    sorting: CollectionItemSortingInput
+  ): CollectionItemConnection!
+  collectionItemsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+  ): Int!
 }
 
-input MediaMetadataFiltersInput {
-  where: MediaMetadataObjectFilterInput
-  and: [MediaMetadataFiltersInput!]
-  or: [MediaMetadataFiltersInput!]
-  not: MediaMetadataFiltersInput
+"""A connection to a list of items."""
+type CollectionItemConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CollectionItemEdge]
 }
 
-input MediaMetadataObjectFilterInput {
-  src: StringValueFilterInput
-  size: IntValueFilterInput
+"""An edge in a connection."""
+type CollectionItemEdge {
+  """The item at the end of the edge"""
+  node: CollectionItem
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+interface CollectionItem {
+  collectionID: CeramicStreamID!
+  itemID: CeramicStreamID!
+  collection: Node
+  item: Node
+}
+
+"""A Ceramic Stream ID"""
+scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
+
+input CollectionItemFiltersInput {
+  where: CollectionItemObjectFilterInput
+  and: [CollectionItemFiltersInput!]
+  or: [CollectionItemFiltersInput!]
+  not: CollectionItemFiltersInput
+}
+
+input CollectionItemObjectFilterInput {
+  collectionID: StringValueFilterInput
+  itemID: StringValueFilterInput
 }
 
 input StringValueFilterInput {
@@ -382,6 +561,28 @@ input StringValueFilterInput {
   lessThanOrEqualTo: String
   greaterThan: String
   greaterThanOrEqualTo: String
+}
+
+input CollectionItemSortingInput {
+  collectionID: SortOrder
+  itemID: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+input MediaMetadataFiltersInput {
+  where: MediaMetadataObjectFilterInput
+  and: [MediaMetadataFiltersInput!]
+  or: [MediaMetadataFiltersInput!]
+  not: MediaMetadataFiltersInput
+}
+
+input MediaMetadataObjectFilterInput {
+  src: StringValueFilterInput
+  size: IntValueFilterInput
 }
 
 input IntValueFilterInput {
@@ -401,9 +602,67 @@ input MediaMetadataSortingInput {
   size: SortOrder
 }
 
-enum SortOrder {
-  ASC
-  DESC
+"""A connection to a list of items."""
+type CollectionConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CollectionEdge]
+}
+
+"""An edge in a connection."""
+type CollectionEdge {
+  """The item at the end of the edge"""
+  node: Collection
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+interface Collection {
+  name: String!
+  description: String
+  items(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+    sorting: CollectionItemSortingInput
+  ): CollectionItemConnection!
+  itemsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+  ): Int!
+}
+
+input CollectionFiltersInput {
+  where: CollectionObjectFilterInput
+  and: [CollectionFiltersInput!]
+  or: [CollectionFiltersInput!]
+  not: CollectionFiltersInput
+}
+
+input CollectionObjectFilterInput {
+  name: StringValueFilterInput
+  description: StringValueFilterInput
+}
+
+input CollectionSortingInput {
+  name: SortOrder
+  description: SortOrder
 }
 
 """A connection to a list of items."""
@@ -509,6 +768,29 @@ interface ImageMedia implements MediaMetadata & VisualMedia {
   size: Int
   width: Int!
   height: Int!
+  collectionItems(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+    sorting: CollectionItemSortingInput
+  ): CollectionItemConnection!
+  collectionItemsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+  ): Int!
 }
 
 input ImageMediaFiltersInput {
@@ -554,6 +836,29 @@ interface AudioMedia implements MediaMetadata & TimeMedia {
   src: String!
   size: Int
   duration: Duration!
+  collectionItems(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+    sorting: CollectionItemSortingInput
+  ): CollectionItemConnection!
+  collectionItemsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+  ): Int!
 }
 
 input AudioMediaFiltersInput {
@@ -599,6 +904,29 @@ interface VideoMedia implements MediaMetadata & VisualMedia & TimeMedia {
   duration: Duration!
   width: Int!
   height: Int!
+  collectionItems(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+    sorting: CollectionItemSortingInput
+  ): CollectionItemConnection!
+  collectionItemsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+  ): Int!
 }
 
 input VideoMediaFiltersInput {
@@ -648,6 +976,29 @@ type MyImage implements Node & ImageMedia & MediaMetadata & VisualMedia {
   size: Int
   width: Int!
   height: Int!
+  collectionItems(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+    sorting: CollectionItemSortingInput
+  ): CollectionItemConnection!
+  collectionItemsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+  ): Int!
 }
 
 input MyImageFiltersInput {
@@ -692,6 +1043,29 @@ type MyAudio implements Node & AudioMedia & MediaMetadata & TimeMedia {
   src: String!
   size: Int
   duration: Duration!
+  collectionItems(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+    sorting: CollectionItemSortingInput
+  ): CollectionItemConnection!
+  collectionItemsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+  ): Int!
 }
 
 input MyAudioFiltersInput {
@@ -734,6 +1108,29 @@ type MyVideo implements Node & VideoMedia & MediaMetadata & VisualMedia & TimeMe
   duration: Duration!
   width: Int!
   height: Int!
+  collectionItems(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+    sorting: CollectionItemSortingInput
+  ): CollectionItemConnection!
+  collectionItemsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+  ): Int!
 }
 
 input MyVideoFiltersInput {
@@ -757,6 +1154,116 @@ input MyVideoSortingInput {
   height: SortOrder
 }
 
+"""A connection to a list of items."""
+type MyMediaCollectionItemConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [MyMediaCollectionItemEdge]
+}
+
+"""An edge in a connection."""
+type MyMediaCollectionItemEdge {
+  """The item at the end of the edge"""
+  node: MyMediaCollectionItem
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type MyMediaCollectionItem implements Node & CollectionItem {
+  id: ID!
+  collectionID: CeramicStreamID!
+  itemID: CeramicStreamID!
+  createdAt: DateTime!
+  collection: Node
+  item: Node
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the \`date-time\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+input MyMediaCollectionItemFiltersInput {
+  where: MyMediaCollectionItemObjectFilterInput
+  and: [MyMediaCollectionItemFiltersInput!]
+  or: [MyMediaCollectionItemFiltersInput!]
+  not: MyMediaCollectionItemFiltersInput
+}
+
+input MyMediaCollectionItemObjectFilterInput {
+  createdAt: StringValueFilterInput
+}
+
+input MyMediaCollectionItemSortingInput {
+  createdAt: SortOrder
+}
+
+"""A connection to a list of items."""
+type MyMediaCollectionConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [MyMediaCollectionEdge]
+}
+
+"""An edge in a connection."""
+type MyMediaCollectionEdge {
+  """The item at the end of the edge"""
+  node: MyMediaCollection
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type MyMediaCollection implements Node & Collection {
+  id: ID!
+  name: String!
+  description: String
+  createdAt: DateTime!
+  items(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+    sorting: CollectionItemSortingInput
+  ): CollectionItemConnection!
+  itemsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+  ): Int!
+}
+
+input MyMediaCollectionFiltersInput {
+  where: MyMediaCollectionObjectFilterInput
+  and: [MyMediaCollectionFiltersInput!]
+  or: [MyMediaCollectionFiltersInput!]
+  not: MyMediaCollectionFiltersInput
+}
+
+input MyMediaCollectionObjectFilterInput {
+  createdAt: StringValueFilterInput
+}
+
+input MyMediaCollectionSortingInput {
+  createdAt: SortOrder
+}
+
 type Mutation {
   createMyImage(input: CreateMyImageInput!): CreateMyImagePayload
   updateMyImage(input: UpdateMyImageInput!): UpdateMyImagePayload
@@ -764,6 +1271,10 @@ type Mutation {
   updateMyAudio(input: UpdateMyAudioInput!): UpdateMyAudioPayload
   createMyVideo(input: CreateMyVideoInput!): CreateMyVideoPayload
   updateMyVideo(input: UpdateMyVideoInput!): UpdateMyVideoPayload
+  createMyMediaCollectionItem(input: CreateMyMediaCollectionItemInput!): CreateMyMediaCollectionItemPayload
+  updateMyMediaCollectionItem(input: UpdateMyMediaCollectionItemInput!): UpdateMyMediaCollectionItemPayload
+  createMyMediaCollection(input: CreateMyMediaCollectionInput!): CreateMyMediaCollectionPayload
+  updateMyMediaCollection(input: UpdateMyMediaCollectionInput!): UpdateMyMediaCollectionPayload
 }
 
 type CreateMyImagePayload {
@@ -933,6 +1444,106 @@ input PartialMyVideoInput {
   duration: Duration
   width: Int
   height: Int
+}
+
+type CreateMyMediaCollectionItemPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyMediaCollectionItem!
+  clientMutationId: String
+}
+
+input CreateMyMediaCollectionItemInput {
+  content: MyMediaCollectionItemInput!
+  clientMutationId: String
+}
+
+input MyMediaCollectionItemInput {
+  collectionID: CeramicStreamID!
+  itemID: CeramicStreamID!
+  createdAt: DateTime!
+}
+
+type UpdateMyMediaCollectionItemPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyMediaCollectionItem!
+  clientMutationId: String
+}
+
+input UpdateMyMediaCollectionItemInput {
+  id: ID!
+  content: PartialMyMediaCollectionItemInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialMyMediaCollectionItemInput {
+  collectionID: CeramicStreamID
+  itemID: CeramicStreamID
+  createdAt: DateTime
+}
+
+type CreateMyMediaCollectionPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyMediaCollection!
+  clientMutationId: String
+}
+
+input CreateMyMediaCollectionInput {
+  content: MyMediaCollectionInput!
+  clientMutationId: String
+}
+
+input MyMediaCollectionInput {
+  name: String!
+  description: String
+  createdAt: DateTime!
+}
+
+type UpdateMyMediaCollectionPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyMediaCollection!
+  clientMutationId: String
+}
+
+input UpdateMyMediaCollectionInput {
+  id: ID!
+  content: PartialMyMediaCollectionInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialMyMediaCollectionInput {
+  name: String
+  description: String
+  createdAt: DateTime
 }"
 `;
 

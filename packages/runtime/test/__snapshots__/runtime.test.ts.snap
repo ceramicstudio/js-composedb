@@ -606,6 +606,116 @@ exports[`runtime interfaces queries 1`] = `
 }
 `;
 
+exports[`runtime interfaces queries 2`] = `
+{
+  "data": {
+    "visualMediaIndex": {
+      "edges": [
+        {
+          "node": {
+            "__typename": "MyVideo",
+            "height": 2160,
+            "src": "http://my/video2",
+            "width": 4096,
+          },
+        },
+        {
+          "node": {
+            "__typename": "MyVideo",
+            "height": 1080,
+            "src": "http://my/video1",
+            "width": 1920,
+          },
+        },
+        {
+          "node": {
+            "__typename": "MyImage",
+            "height": 800,
+            "src": "http://my/image2",
+            "width": 1600,
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`runtime interfaces queries 3`] = `
+{
+  "data": {
+    "collection1": {
+      "items": {
+        "edges": [
+          {
+            "node": {
+              "item": {
+                "__typename": "MyVideo",
+                "src": "http://my/video1",
+              },
+            },
+          },
+          {
+            "node": {
+              "item": {
+                "__typename": "MyVideo",
+                "src": "http://my/video2",
+              },
+            },
+          },
+          {
+            "node": {
+              "item": {
+                "__typename": "MyImage",
+                "src": "http://my/image2",
+              },
+            },
+          },
+          {
+            "node": {
+              "item": {
+                "__typename": "MyImage",
+                "src": "http://my/image1",
+              },
+            },
+          },
+          {
+            "node": {
+              "item": {
+                "__typename": "MyAudio",
+                "src": "http://my/audio2",
+              },
+            },
+          },
+        ],
+      },
+      "itemsCount": 5,
+    },
+    "video2": {
+      "collectionItems": {
+        "edges": [
+          {
+            "node": {
+              "collection": {
+                "name": "First collection",
+              },
+            },
+          },
+          {
+            "node": {
+              "collection": {
+                "name": "Second collection",
+              },
+            },
+          },
+        ],
+      },
+      "collectionItemsCount": 2,
+    },
+  },
+}
+`;
+
 exports[`runtime relation to account reference 1`] = `
 {
   "data": {
