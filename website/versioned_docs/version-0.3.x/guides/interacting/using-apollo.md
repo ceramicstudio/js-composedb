@@ -1,5 +1,10 @@
 # Using Apollo
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 :::tip What is Apollo?
 
 [Apollo](https://www.apollographql.com/docs/react/api/core/ApolloClient) is a popular GraphQL client for React and other platforms.

@@ -1,5 +1,10 @@
 # Schema definition
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 Composite schemas are based on [GraphQL's Schema Definition Language](https://graphql.org/learn/schema/), using a subset of functionalities offered by GraphQL to describe models used by ComposeDB.
 
 ## Schema Definition Language

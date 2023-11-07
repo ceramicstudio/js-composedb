@@ -4,6 +4,11 @@ title: "Module: client"
 custom_edit_url: null
 ---
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 High-level ComposeDB client, based on the [`ComposeDB runtime`](runtime.md).
 
 ## Installation

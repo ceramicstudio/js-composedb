@@ -1,5 +1,10 @@
 # Concepts overview
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 ComposeDB provides a **graph structure** for interacting with data on the [Ceramic network](https://ceramic.network/).
 
 The **nodes** in the graph can be **accounts** or **documents**, while the **edges** in the graph represent relations between **nodes**.

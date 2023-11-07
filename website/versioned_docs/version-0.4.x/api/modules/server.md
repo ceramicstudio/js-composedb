@@ -4,6 +4,11 @@ title: "Module: server"
 custom_edit_url: null
 ---
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 ComposeDB server for hybrid execution on the [`ComposeDB client`](client.md).
 
 ## Installation

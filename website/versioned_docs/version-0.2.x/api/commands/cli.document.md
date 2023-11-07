@@ -4,6 +4,11 @@ title: "CLI: document:* commands"
 custom_edit_url: null
 ---
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 The group of [CLI](../modules/cli.md) `document:*` commands enables the creation and interactions with [Documents](../../guides/concepts-overview.md#documents)
 
 ## Command List
