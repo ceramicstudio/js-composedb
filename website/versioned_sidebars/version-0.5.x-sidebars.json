@@ -58,9 +58,20 @@
       "label": "Community"
     },
     {
-      "type": "doc",
-      "id": "examples",
-      "label": "Starters & Tutorials"
+      "type": "category",
+      "collapsed": false,
+      "label": "Starters & Tutorials",
+      "link": {
+        "type": "doc",
+        "id": "examples"
+      },
+      "items": [
+        {
+          "type": "doc",
+          "id": "verifiable-credentials",
+          "label": "Verifiable Credentials"
+        }
+      ]
     }
   ],
   "guides": [

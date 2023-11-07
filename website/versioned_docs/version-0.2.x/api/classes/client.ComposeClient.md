@@ -4,6 +4,11 @@ title: "Class: ComposeClient"
 custom_edit_url: null
 ---
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 [client](../modules/client.md).ComposeClient
 
 The ComposeClient class provides APIs to execute queries on a GraphQL schema generated from a

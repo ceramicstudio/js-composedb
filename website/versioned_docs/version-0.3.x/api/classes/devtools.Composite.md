@@ -4,6 +4,11 @@ title: "Class: Composite"
 custom_edit_url: null
 ---
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 [devtools](../modules/devtools.md).Composite
 
 The Composite class provides APIs for managing composites (sets of Model streams) through their

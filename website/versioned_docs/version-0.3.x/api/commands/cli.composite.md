@@ -4,6 +4,11 @@ title: "CLI: composite:* commands"
 custom_edit_url: null
 ---
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 The group of [CLI](../modules/cli.md) `composite:*` commands enables the creation and interactions with [Composites](../../guides/concepts-overview.md#composites)
 
 ## Command List

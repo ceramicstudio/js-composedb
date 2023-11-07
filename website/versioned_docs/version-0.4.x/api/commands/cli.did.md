@@ -4,6 +4,11 @@ title: "CLI: did:* commands"
 custom_edit_url: null
 ---
 
+<head>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+</head>
+
 The group of [CLI](../modules/cli.md) `did:*` commands enables interactions with DIDs and private keys
 
 DIDs are identifiers for [Ceramic Accounts](../../core-concepts.mdx#accounts)
