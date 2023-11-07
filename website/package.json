@@ -1,6 +1,6 @@
 {
   "name": "website",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
@@ -16,10 +16,10 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@ceramicnetwork/cli": "^2.40.0",
-    "@ceramicnetwork/common": "^2.35.0",
-    "@ceramicnetwork/http-client": "^2.32.0",
-    "@composedb/client": "workspace:^0.5.0",
+    "@ceramicnetwork/cli": "^2.44.0-rc.1",
+    "@ceramicnetwork/common": "^2.39.0-rc.0",
+    "@ceramicnetwork/http-client": "^2.36.0-rc.1",
+    "@composedb/client": "workspace:^",
     "@docusaurus/core": "^2.4.3",
     "@docusaurus/plugin-content-docs": "^2.4.3",
     "@docusaurus/plugin-google-tag-manager": "^2.4.3",
@@ -37,7 +37,7 @@
     "react-scripts": "5.0.1"
   },
   "devDependencies": {
-    "@composedb/cli": "workspace:^0.5.0",
+    "@composedb/cli": "workspace:^",
     "@docusaurus/module-type-aliases": "^2.4.3",
     "@docusaurus/types": "^2.4.3",
     "@tsconfig/docusaurus": "^2.0.2",

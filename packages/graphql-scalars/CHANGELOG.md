@@ -1,5 +1,11 @@
 # @composedb/graphql-scalars
 
+## 0.6.0
+
+### Minor Changes
+
+- Add support for model interfaces
+
 ## 0.5.0
 
 ### Minor Changes

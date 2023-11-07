@@ -1,7 +1,7 @@
 {
   "name": "@composedb/test-schemas",
   "private": true,
-  "version": "0.5.1",
+  "version": "0.6.0-rc.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://composedb.js.org",
@@ -24,7 +24,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "sideEffects": false,
   "scripts": {

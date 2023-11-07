@@ -4,15 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@ceramicnetwork/cli': ^2.44.0-rc.1
-  '@ceramicnetwork/codecs': ^1.14.0-rc.0
-  '@ceramicnetwork/common': ^2.39.0-rc.0
-  '@ceramicnetwork/core': ^2.46.0-rc.1
-  '@ceramicnetwork/http-client': ^2.36.0-rc.1
-  '@ceramicnetwork/stream-model-instance': ^1.21.0-rc.0
-  '@ceramicnetwork/stream-model': ^1.21.0-rc.1
-
 importers:
 
   .:
@@ -78,8 +69,8 @@ importers:
   packages/cli:
     dependencies:
       '@ceramicnetwork/3id-did-resolver':
-        specifier: ^2.31.0
-        version: 2.31.0
+        specifier: ^2.32.0-rc.1
+        version: 2.32.0-rc.1
       '@ceramicnetwork/cli':
         specifier: ^2.44.0-rc.1
         version: 2.44.0-rc.1(@polkadot/util@7.9.2)(@types/express@4.17.21)(pg@8.11.3)
@@ -157,7 +148,7 @@ importers:
         specifier: ^2.39.0-rc.0
         version: 2.39.0-rc.0
       '@composedb/types':
-        specifier: workspace:^0.5.1
+        specifier: workspace:^
         version: link:../types
       '@swc-node/register':
         specifier: ^1.6.8
@@ -205,13 +196,13 @@ importers:
         specifier: ^1.21.0-rc.0
         version: 1.21.0-rc.0
       '@composedb/constants':
-        specifier: workspace:^0.5.0
+        specifier: workspace:^
         version: link:../constants
       '@composedb/graphql-scalars':
-        specifier: workspace:^0.5.0
+        specifier: workspace:^
         version: link:../graphql-scalars
       '@composedb/runtime':
-        specifier: workspace:^0.5.2
+        specifier: workspace:^
         version: link:../runtime
       '@graphql-tools/batch-execute':
         specifier: ^9.0.2
@@ -526,7 +517,7 @@ importers:
         specifier: ^2.36.0-rc.1
         version: 2.36.0-rc.1
       '@composedb/client':
-        specifier: workspace:^0.5.0
+        specifier: workspace:^
         version: link:../packages/client
       '@docusaurus/core':
         specifier: ^2.4.3
@@ -575,7 +566,7 @@ importers:
         version: 5.0.1(@babel/plugin-syntax-flow@7.22.5)(@babel/plugin-transform-react-jsx@7.22.15)(@swc/core@1.3.96)(eslint@8.53.0)(react@17.0.2)(typescript@5.2.2)
     devDependencies:
       '@composedb/cli':
-        specifier: workspace:^0.5.0
+        specifier: workspace:^
         version: link:../packages/cli
       '@docusaurus/module-type-aliases':
         specifier: ^2.4.3
@@ -3459,20 +3450,6 @@ packages:
   /@bcoe/v8-coverage@0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  /@ceramicnetwork/3id-did-resolver@2.31.0:
-    resolution: {integrity: sha512-DZ64ncmd2Ln2FfxdUWQ/GtaI2CvYT4nadNuwe6M5/qBnYea3KCN2Rj1sMdhDUgtPUY3pFGF3Lz+FYnQaNW5CPQ==}
-    dependencies:
-      '@ceramicnetwork/common': 2.39.0-rc.0
-      '@ceramicnetwork/stream-tile': 2.34.0
-      '@ceramicnetwork/streamid': 2.17.0
-      cross-fetch: 3.1.8
-      least-recent: 1.0.3
-      multiformats: 11.0.2
-      uint8arrays: 4.0.6
-    transitivePeerDependencies:
-      - encoding
-    dev: false
-
   /@ceramicnetwork/3id-did-resolver@2.32.0-rc.1:
     resolution: {integrity: sha512-6r/NQTFHqBYynt26oIeT3RMU6juVlqs8h5ZBYu2cJNjiyYZ+hWv1xsRIksBESqrcKABum6PjPm1SDibPDjK9rA==}
     dependencies:
@@ -3608,6 +3585,17 @@ packages:
       - utf-8-validate
     dev: false
 
+  /@ceramicnetwork/codecs@1.13.0:
+    resolution: {integrity: sha512-mgyphEDfJzy9JOCcEaBBbIaR+7uwrvW22tf2hGv6XH7Kv3zJOH9A2v6zH9XWuaYHH5oZy8mhcWraO4NNjxZKkg==}
+    dependencies:
+      '@ceramicnetwork/streamid': 2.17.0
+      cartonne: 2.2.0
+      codeco: 1.2.0
+      dag-jose: 4.0.0
+      multiformats: 11.0.2
+      uint8arrays: 4.0.6
+    dev: false
+
   /@ceramicnetwork/codecs@1.14.0-rc.0:
     resolution: {integrity: sha512-7kqQbZ1WTWIliWfFcogwkO+3g7IUESV6SwHpkozH6J7TD+9V+qYTVVhOMITXKgTtb3FPu+OLGWLGqTNV4QvWDw==}
     dependencies:
@@ -3617,6 +3605,31 @@ packages:
       dag-jose: 4.0.0
       multiformats: 11.0.2
       uint8arrays: 4.0.6
+
+  /@ceramicnetwork/common@2.38.0:
+    resolution: {integrity: sha512-39o6v2yZct0Hsk9XKRZemZojC6T/vtc6AHxD6rIJzudIvBEwWVHfYbFAsLmgcf1Zv/1I5/DuWjUYku6DLRrHXQ==}
+    dependencies:
+      '@ceramicnetwork/codecs': 1.13.0
+      '@ceramicnetwork/streamid': 2.17.0
+      '@didtools/cacao': 2.1.0
+      '@didtools/pkh-ethereum': 0.1.0
+      '@didtools/pkh-solana': 0.1.1
+      '@didtools/pkh-stacks': 0.1.0
+      '@didtools/pkh-tezos': 0.2.2
+      '@stablelib/random': 1.0.2
+      caip: 1.1.0
+      cross-fetch: 3.1.8
+      flat: 5.0.2
+      it-first: 1.0.7
+      jet-logger: 1.2.2
+      lodash.clonedeep: 4.5.0
+      logfmt: 1.3.2
+      multiformats: 11.0.2
+      rxjs: 7.8.1
+      uint8arrays: 4.0.6
+    transitivePeerDependencies:
+      - encoding
+    dev: false
 
   /@ceramicnetwork/common@2.39.0-rc.0:
     resolution: {integrity: sha512-QInNH5bdER4gyveQwT1iRL2BUazBle+FCfAliq9xIwXPZse9AgTCKpG3+vIWQnqUHVoYW+xjkMeUn59wsl60nA==}
@@ -3850,7 +3863,7 @@ packages:
   /@ceramicnetwork/stream-caip10-link@2.30.0:
     resolution: {integrity: sha512-co6M+gKp2ShsLa1pxJScLBY+ICenN0asuA3ZFlLqquLcYAdXTYuLs37NaLSxkuTr41sI0HLSwzJVN8OBwjhvQg==}
     dependencies:
-      '@ceramicnetwork/common': 2.39.0-rc.0
+      '@ceramicnetwork/common': 2.38.0
       '@ceramicnetwork/streamid': 2.17.0
       caip: 1.1.0
       did-resolver: 4.1.0
@@ -3960,21 +3973,6 @@ packages:
       ajv-formats: 2.1.1(ajv@8.12.0)
       fast-json-patch: 3.1.1
       least-recent: 1.0.3
-      lodash.clonedeep: 4.5.0
-      uint8arrays: 4.0.6
-    transitivePeerDependencies:
-      - encoding
-    dev: false
-
-  /@ceramicnetwork/stream-tile@2.34.0:
-    resolution: {integrity: sha512-Kcq8vQS1U3KXT6k7ECgB4YMLCoZfaRryHsOCpj8tlz4uKkJlvL+bfgsE7WxnhaW5B+ovjzVNagdQOMZ2Q/RPmQ==}
-    dependencies:
-      '@ceramicnetwork/common': 2.39.0-rc.0
-      '@ceramicnetwork/streamid': 2.17.0
-      '@ipld/dag-cbor': 7.0.3
-      '@stablelib/random': 1.0.2
-      dids: 4.0.4
-      fast-json-patch: 3.1.1
       lodash.clonedeep: 4.5.0
       uint8arrays: 4.0.6
     transitivePeerDependencies:
@@ -21164,7 +21162,7 @@ packages:
   /nft-did-resolver@3.0.0:
     resolution: {integrity: sha512-a1Piic1GU6qPY+qrx4qPW7JyjZlzfV3eHlhtwBMnAzSif3CWci/P5kI9wlo2YiPY5lHeCcRrIbExLGNj/Q64kA==}
     dependencies:
-      '@ceramicnetwork/common': 2.39.0-rc.0
+      '@ceramicnetwork/common': 2.38.0
       '@ceramicnetwork/stream-caip10-link': 2.30.0
       bignumber.js: 9.1.2
       caip: 1.1.0
@@ -25060,7 +25058,7 @@ packages:
   /safe-did-resolver@2.0.0:
     resolution: {integrity: sha512-mOi+x8sss1cXrAEsw4q/4H1RAU6/vydbEDklaWAdIGTwfTZcI9VabLHk4QFJd9Re3EQb9OqO3IVpv8jghSM3wQ==}
     dependencies:
-      '@ceramicnetwork/common': 2.39.0-rc.0
+      '@ceramicnetwork/common': 2.38.0
       '@ceramicnetwork/stream-caip10-link': 2.30.0
       caip: 1.1.0
       json-to-graphql-query: 2.2.5

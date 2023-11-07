@@ -1,6 +1,6 @@
 {
   "name": "@composedb/client",
-  "version": "0.5.2",
+  "version": "0.6.0-rc.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://composedb.js.org",
@@ -24,7 +24,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "sideEffects": false,
   "scripts": {
@@ -39,12 +39,12 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/http-client": "^2.32.0",
-    "@ceramicnetwork/stream-model": "^1.17.0",
-    "@ceramicnetwork/stream-model-instance": "^1.17.0",
-    "@composedb/constants": "workspace:^0.5.0",
-    "@composedb/graphql-scalars": "workspace:^0.5.0",
-    "@composedb/runtime": "workspace:^0.5.2",
+    "@ceramicnetwork/http-client": "^2.36.0-rc.1",
+    "@ceramicnetwork/stream-model": "^1.21.0-rc.1",
+    "@ceramicnetwork/stream-model-instance": "^1.21.0-rc.0",
+    "@composedb/constants": "workspace:^",
+    "@composedb/graphql-scalars": "workspace:^",
+    "@composedb/runtime": "workspace:^",
     "@graphql-tools/batch-execute": "^9.0.2",
     "@graphql-tools/stitch": "^9.0.3",
     "@graphql-tools/utils": "^10.0.8",
@@ -53,7 +53,7 @@
     "graphql-relay": "^0.10.0"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^2.35.0",
+    "@ceramicnetwork/common": "^2.39.0-rc.0",
     "@composedb/devtools": "workspace:^",
     "@composedb/test-schemas": "workspace:^",
     "@composedb/types": "workspace:^",
