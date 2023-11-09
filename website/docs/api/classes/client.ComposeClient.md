@@ -19,13 +19,17 @@ import { ComposeClient } from '@composedb/client'
 
 ### constructor
 
-• **new ComposeClient**(`params`)
+• **new ComposeClient**(`params`): [`ComposeClient`](client.ComposeClient.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `params` | [`ComposeClientParams`](../modules/client.md#composeclientparams) |
+
+#### Returns
+
+[`ComposeClient`](client.ComposeClient.md)
 
 ## Accessors
 
@@ -80,7 +84,7 @@ CACAO resources URLs for the models the client interacts with.
 
 ### execute
 
-▸ **execute**<`Data`\>(`document`, `variableValues?`): `Promise`<`ExecutionResult`<`Data`, `ObjMap`<`unknown`\>\>\>
+▸ **execute**\<`Data`\>(`document`, `variableValues?`): `Promise`\<`ExecutionResult`\<`Data`, `ObjMap`\<`unknown`\>\>\>
 
 Execute a GraphQL query from a DocumentNode and optional variables.
 
@@ -88,24 +92,24 @@ Execute a GraphQL query from a DocumentNode and optional variables.
 
 | Name | Type |
 | :------ | :------ |
-| `Data` | `Record`<`string`, `unknown`\> |
+| `Data` | `Record`\<`string`, `unknown`\> |
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `document` | `DocumentNode` |
-| `variableValues?` | `Record`<`string`, `unknown`\> |
+| `variableValues?` | `Record`\<`string`, `unknown`\> |
 
 #### Returns
 
-`Promise`<`ExecutionResult`<`Data`, `ObjMap`<`unknown`\>\>\>
+`Promise`\<`ExecutionResult`\<`Data`, `ObjMap`\<`unknown`\>\>\>
 
 ___
 
 ### executeQuery
 
-▸ **executeQuery**<`Data`\>(`source`, `variableValues?`): `Promise`<`ExecutionResult`<`Data`, `ObjMap`<`unknown`\>\>\>
+▸ **executeQuery**\<`Data`\>(`source`, `variableValues?`): `Promise`\<`ExecutionResult`\<`Data`, `ObjMap`\<`unknown`\>\>\>
 
 Execute a GraphQL query from its source and optional variables.
 
@@ -113,18 +117,18 @@ Execute a GraphQL query from its source and optional variables.
 
 | Name | Type |
 | :------ | :------ |
-| `Data` | `Record`<`string`, `unknown`\> |
+| `Data` | `Record`\<`string`, `unknown`\> |
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `source` | `string` \| `Source` |
-| `variableValues?` | `Record`<`string`, `unknown`\> |
+| `variableValues?` | `Record`\<`string`, `unknown`\> |
 
 #### Returns
 
-`Promise`<`ExecutionResult`<`Data`, `ObjMap`<`unknown`\>\>\>
+`Promise`\<`ExecutionResult`\<`Data`, `ObjMap`\<`unknown`\>\>\>
 
 ___
 

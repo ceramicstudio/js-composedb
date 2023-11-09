@@ -24,13 +24,13 @@ ___
 
 ### ServeDefinitionParams
 
-Ƭ **ServeDefinitionParams**: [`ServeParams`](devtools_node.md#serveparams) & { `path`: [`PathInput`](devtools_node.md#pathinput)  }
+Ƭ **ServeDefinitionParams**: [`ServeParams`](devtools_node.md#serveparams) & \{ `path`: [`PathInput`](devtools_node.md#pathinput)  }
 
 ___
 
 ### ServeGraphQLParams
 
-Ƭ **ServeGraphQLParams**: [`ServeParams`](devtools_node.md#serveparams) & { `definition`: `RuntimeCompositeDefinition` ; `readonly?`: `boolean`  }
+Ƭ **ServeGraphQLParams**: [`ServeParams`](devtools_node.md#serveparams) & \{ `definition`: `RuntimeCompositeDefinition` ; `readonly?`: `boolean`  }
 
 ___
 
@@ -57,14 +57,14 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `stop` | () => `Promise`<`void`\> | Stop the server. |
+| `stop` | () => `Promise`\<`void`\> | Stop the server. |
 | `url` | `string` | URL of the local GraphQL endpoint. |
 
 ## Functions
 
 ### createComposite
 
-▸ **createComposite**(`ceramic`, `path`): `Promise`<`Composite`\>
+▸ **createComposite**(`ceramic`, `path`): `Promise`\<`Composite`\>
 
 Create a Composite from a GraphQL schema path.
 
@@ -77,13 +77,13 @@ Create a Composite from a GraphQL schema path.
 
 #### Returns
 
-`Promise`<`Composite`\>
+`Promise`\<`Composite`\>
 
 ___
 
 ### mergeEncodedComposites
 
-▸ **mergeEncodedComposites**(`ceramic`, `source`, `destination`): `Promise`<`string`\>
+▸ **mergeEncodedComposites**(`ceramic`, `source`, `destination`): `Promise`\<`string`\>
 
 Merge the encoded `source` composite(s) to the `destination` path.
 
@@ -97,13 +97,13 @@ Merge the encoded `source` composite(s) to the `destination` path.
 
 #### Returns
 
-`Promise`<`string`\>
+`Promise`\<`string`\>
 
 ___
 
 ### readEncodedComposite
 
-▸ **readEncodedComposite**(`ceramic`, `path`, `index?`): `Promise`<`Composite`\>
+▸ **readEncodedComposite**(`ceramic`, `path`, `index?`): `Promise`\<`Composite`\>
 
 Create a Composite from a JSON-encoded definition path.
 
@@ -117,13 +117,13 @@ Create a Composite from a JSON-encoded definition path.
 
 #### Returns
 
-`Promise`<`Composite`\>
+`Promise`\<`Composite`\>
 
 ___
 
 ### serveEncodedDefinition
 
-▸ **serveEncodedDefinition**(`params`): `Promise`<`GraphQLServer`\>
+▸ **serveEncodedDefinition**(`params`): `Promise`\<`GraphQLServer`\>
 
 Create a local GraphQL server to interact with an encoded composite definition.
 
@@ -135,13 +135,13 @@ Create a local GraphQL server to interact with an encoded composite definition.
 
 #### Returns
 
-`Promise`<`GraphQLServer`\>
+`Promise`\<`GraphQLServer`\>
 
 ___
 
 ### serveGraphQL
 
-▸ **serveGraphQL**(`params`): `Promise`<`GraphQLServer`\>
+▸ **serveGraphQL**(`params`): `Promise`\<`GraphQLServer`\>
 
 Create a local GraphQL server to interact with a runtime composite definition.
 
@@ -153,13 +153,13 @@ Create a local GraphQL server to interact with a runtime composite definition.
 
 #### Returns
 
-`Promise`<`GraphQLServer`\>
+`Promise`\<`GraphQLServer`\>
 
 ___
 
 ### writeEncodedComposite
 
-▸ **writeEncodedComposite**(`composite`, `path`): `Promise`<`string`\>
+▸ **writeEncodedComposite**(`composite`, `path`): `Promise`\<`string`\>
 
 Write a JSON-encoded definition for the given composite to the given file path.
 
@@ -172,13 +172,13 @@ Write a JSON-encoded definition for the given composite to the given file path.
 
 #### Returns
 
-`Promise`<`string`\>
+`Promise`\<`string`\>
 
 ___
 
 ### writeEncodedCompositeRuntime
 
-▸ **writeEncodedCompositeRuntime**(`ceramic`, `definitionPath`, `runtimePath`, `schemaPath?`): `Promise`<`void`\>
+▸ **writeEncodedCompositeRuntime**(`ceramic`, `definitionPath`, `runtimePath`, `schemaPath?`): `Promise`\<`void`\>
 
 Write the runtime definition based on the encoded definition path.
 
@@ -193,13 +193,13 @@ Write the runtime definition based on the encoded definition path.
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 ___
 
 ### writeGraphQLSchema
 
-▸ **writeGraphQLSchema**(`definition`, `path`, `readonly?`): `Promise`<`string`\>
+▸ **writeGraphQLSchema**(`definition`, `path`, `readonly?`): `Promise`\<`string`\>
 
 Write the runtime GraphQL schema from the runtime composite definition.
 
@@ -213,13 +213,13 @@ Write the runtime GraphQL schema from the runtime composite definition.
 
 #### Returns
 
-`Promise`<`string`\>
+`Promise`\<`string`\>
 
 ___
 
 ### writeRuntimeDefinition
 
-▸ **writeRuntimeDefinition**(`definition`, `path`): `Promise`<`string`\>
+▸ **writeRuntimeDefinition**(`definition`, `path`): `Promise`\<`string`\>
 
 Write the runtime definition for a given path, based on the file extension. Supports `.json`,
 `.js` and `.ts` extensions.
@@ -233,4 +233,4 @@ Write the runtime definition for a given path, based on the file extension. Supp
 
 #### Returns
 
-`Promise`<`string`\>
+`Promise`\<`string`\>

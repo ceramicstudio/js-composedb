@@ -16,13 +16,13 @@ npm install @composedb/server
 
 ### GraphQLParams
 
-Ƭ **GraphQLParams**<`ServerContext`\>: [`HandlerParams`](server.md#handlerparams)<`ServerContext`\> & { `port?`: `number` \| `number`[]  }
+Ƭ **GraphQLParams**\<`ServerContext`\>: [`HandlerParams`](server.md#handlerparams)\<`ServerContext`\> & \{ `port?`: `number` \| `number`[]  }
 
 #### Type parameters
 
 | Name | Type |
 | :------ | :------ |
-| `ServerContext` | extends `Record`<`string`, `any`\> = `Record`<`string`, `any`\> |
+| `ServerContext` | extends `Record`\<`string`, `any`\> = `Record`\<`string`, `any`\> |
 
 ___
 
@@ -35,19 +35,19 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `port` | `number` |
-| `stop` | () => `Promise`<`void`\> |
+| `stop` | () => `Promise`\<`void`\> |
 
 ___
 
 ### HandlerParams
 
-Ƭ **HandlerParams**<`ServerContext`\>: `Object`
+Ƭ **HandlerParams**\<`ServerContext`\>: `Object`
 
 #### Type parameters
 
 | Name | Type |
 | :------ | :------ |
-| `ServerContext` | extends `Record`<`string`, `any`\> = `Record`<`string`, `any`\> |
+| `ServerContext` | extends `Record`\<`string`, `any`\> = `Record`\<`string`, `any`\> |
 
 #### Type declaration
 
@@ -56,14 +56,14 @@ ___
 | `cache?` | `DocumentCache` | Optional cache for documents. |
 | `ceramic` | `CeramicApi` \| `string` | Ceramic client instance or HTTP URL. |
 | `definition?` | `RuntimeCompositeDefinition` | Runtime composite definition, created using the [`Composite`](../classes/devtools.Composite.md) development tools. |
-| `options?` | `YogaServerOptions`<`ServerContext`, `Context`\> | [Yoga server](https://the-guild.dev/graphql/yoga-server/docs) options. |
+| `options?` | `YogaServerOptions`\<`ServerContext`, `Context`\> | [Yoga server](https://the-guild.dev/graphql/yoga-server/docs) options. |
 | `schema?` | `GraphQLSchema` | GraphQL Schema to use, ignores the `definition` parameter if provided. |
 
 ## Functions
 
 ### createHandler
 
-▸ **createHandler**<`ServerContext`\>(`params`): `YogaServerInstance`<`ServerContext`, `Context`\>
+▸ **createHandler**\<`ServerContext`\>(`params`): `YogaServerInstance`\<`ServerContext`, `Context`\>
 
 Create a [Yoga server](https://the-guild.dev/graphql/yoga-server/docs) handling GraphQL requests.
 
@@ -71,17 +71,17 @@ Create a [Yoga server](https://the-guild.dev/graphql/yoga-server/docs) handling 
 
 | Name | Type |
 | :------ | :------ |
-| `ServerContext` | extends `Record`<`string`, `any`\> = `Record`<`string`, `any`\> |
+| `ServerContext` | extends `Record`\<`string`, `any`\> = `Record`\<`string`, `any`\> |
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `params` | [`HandlerParams`](server.md#handlerparams)<`ServerContext`\> |
+| `params` | [`HandlerParams`](server.md#handlerparams)\<`ServerContext`\> |
 
 #### Returns
 
-`YogaServerInstance`<`ServerContext`, `Context`\>
+`YogaServerInstance`\<`ServerContext`, `Context`\>
 
 ___
 
@@ -105,7 +105,7 @@ ___
 
 ### startGraphQLServer
 
-▸ **startGraphQLServer**<`ServerContext`\>(`params`): `Promise`<[`GraphQLServer`](server.md#graphqlserver)\>
+▸ **startGraphQLServer**\<`ServerContext`\>(`params`): `Promise`\<[`GraphQLServer`](server.md#graphqlserver)\>
 
 Start a local GraphQL server.
 
@@ -113,14 +113,14 @@ Start a local GraphQL server.
 
 | Name | Type |
 | :------ | :------ |
-| `ServerContext` | extends `Record`<`string`, `any`\> = `Record`<`string`, `any`\> |
+| `ServerContext` | extends `Record`\<`string`, `any`\> = `Record`\<`string`, `any`\> |
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `params` | [`GraphQLParams`](server.md#graphqlparams)<`ServerContext`\> |
+| `params` | [`GraphQLParams`](server.md#graphqlparams)\<`ServerContext`\> |
 
 #### Returns
 
-`Promise`<[`GraphQLServer`](server.md#graphqlserver)\>
+`Promise`\<[`GraphQLServer`](server.md#graphqlserver)\>
