@@ -16,9 +16,9 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@ceramicnetwork/cli": "^2.44.0-rc.1",
-    "@ceramicnetwork/common": "^2.39.0-rc.0",
-    "@ceramicnetwork/http-client": "^2.36.0-rc.1",
+    "@ceramicnetwork/cli": "^3.0.0-rc.0",
+    "@ceramicnetwork/common": "^3.0.0-rc.0",
+    "@ceramicnetwork/http-client": "^3.0.0-rc.0",
     "@composedb/client": "workspace:^",
     "@docusaurus/core": "^2.4.3",
     "@docusaurus/plugin-content-docs": "^2.4.3",

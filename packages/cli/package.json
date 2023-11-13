@@ -69,12 +69,12 @@
     ]
   },
   "dependencies": {
-    "@ceramicnetwork/3id-did-resolver": "^2.32.0-rc.1",
-    "@ceramicnetwork/cli": "^2.44.0-rc.1",
-    "@ceramicnetwork/http-client": "^2.36.0-rc.1",
-    "@ceramicnetwork/stream-model": "^1.21.0-rc.1",
-    "@ceramicnetwork/stream-model-instance": "^1.21.0-rc.0",
-    "@ceramicnetwork/streamid": "^2.17.0",
+    "@ceramicnetwork/3id-did-resolver": "^3.0.0-rc.0",
+    "@ceramicnetwork/cli": "^3.0.0-rc.0",
+    "@ceramicnetwork/http-client": "^3.0.0-rc.0",
+    "@ceramicnetwork/stream-model": "^2.0.0-rc.0",
+    "@ceramicnetwork/stream-model-instance": "^2.0.0-rc.0",
+    "@ceramicnetwork/streamid": "^3.0.0-rc.0",
     "@composedb/client": "workspace:^",
     "@composedb/devtools": "workspace:^",
     "@composedb/devtools-node": "workspace:^",
@@ -96,7 +96,7 @@
     "uint8arrays": "^4.0.6"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^2.39.0-rc.0",
+    "@ceramicnetwork/common": "^3.0.0-rc.0",
     "@composedb/types": "workspace:^",
     "@swc-node/register": "^1.6.8",
     "@types/fs-extra": "^11.0.3",
