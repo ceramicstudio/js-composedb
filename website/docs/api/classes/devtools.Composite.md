@@ -36,7 +36,7 @@ import { Composite } from '@composedb/devtools'
 
 ### VERSION
 
-▪ `Static` **VERSION**: `string` = `'1.0'`
+▪ `Static` **VERSION**: `string` = `'1.1'`
 
 Current version of the composites format.
 

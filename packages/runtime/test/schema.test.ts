@@ -1,6 +1,12 @@
 import type { ModelDefinition } from '@ceramicnetwork/stream-model'
 import { createRuntimeDefinition, mockDefinitionFromSchema } from '@composedb/devtools'
-import { extraScalarsSchema, noteSchema, postSchema, profilesSchema } from '@composedb/test-schemas'
+import {
+  extraScalarsSchema,
+  mediaSchema,
+  noteSchema,
+  postSchema,
+  profilesSchema,
+} from '@composedb/test-schemas'
 import type { RuntimeCompositeDefinition } from '@composedb/types'
 
 import { printGraphQLSchema } from '../src'
@@ -13,19 +19,23 @@ function createSchemaDefinition(
 }
 
 describe('schema', () => {
-  test('extra scalars', () => {
+  test('supported scalars', () => {
     expect(printGraphQLSchema(createSchemaDefinition(extraScalarsSchema))).toMatchSnapshot()
   })
 
-  test('profile', () => {
+  test('profiles with SINGLE account relation', () => {
     expect(printGraphQLSchema(createSchemaDefinition(profilesSchema))).toMatchSnapshot()
   })
 
-  test('note', () => {
+  test('note with enum support', () => {
     expect(printGraphQLSchema(createSchemaDefinition(noteSchema))).toMatchSnapshot()
   })
 
-  test('post and comments', () => {
+  test('post and comments with relations', () => {
     expect(printGraphQLSchema(createSchemaDefinition(postSchema))).toMatchSnapshot()
+  })
+
+  test('media interfaces', () => {
+    expect(printGraphQLSchema(createSchemaDefinition(mediaSchema))).toMatchSnapshot()
   })
 })

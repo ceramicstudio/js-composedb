@@ -1,3 +1,7 @@
+/**
+ * SINGLE account relations schema
+ */
+
 import { ImageSourcesType } from './embeds.js'
 
 export const profilesSchema = `

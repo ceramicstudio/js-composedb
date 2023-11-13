@@ -32,7 +32,7 @@ import { NODE_INTERFACE_NAME } from '../constants.js'
 import type { ScalarSchema } from '../types.js'
 
 import { getScalarSchema } from './scalars.js'
-import { typeDefinitions } from './typeDefinitions.js'
+import { typeDefinitions } from './type-definitions.js'
 import type {
   Field,
   ItemDefinition,
@@ -133,7 +133,11 @@ export class SchemaParser {
       if (model.action === 'create') {
         for (const [key, relation] of Object.entries(model.relations)) {
           if (relation.type === 'document' && relation.model !== null) {
-            this._validateRelatedModel(key, relation.model)
+            if (relation.model === NODE_INTERFACE_NAME) {
+              relation.model = null
+            } else {
+              this._validateRelatedModel(key, relation.model)
+            }
           }
         }
       }
@@ -149,7 +153,11 @@ export class SchemaParser {
           field.viewType === 'relation' &&
           field.relation.model !== null
         ) {
-          this._validateRelatedModel(key, field.relation.model)
+          if (field.relation.model === NODE_INTERFACE_NAME) {
+            field.relation.model = null
+          } else {
+            this._validateRelatedModel(key, field.relation.model)
+          }
         }
       }
     }
@@ -384,7 +392,7 @@ export class SchemaParser {
           }
         }
         case 'relationFrom': {
-          if (!isListType(type) || !isObjectType(type.ofType)) {
+          if (!isListType(type) || !(isInterfaceType(type.ofType) || isObjectType(type.ofType))) {
             throw new Error(
               `Unsupported @relationFrom directive on field ${fieldName} of object ${objectName}, @relationFrom can only be set on a list of referenced object`,
             )

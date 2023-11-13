@@ -77,6 +77,12 @@ exports[`scalars support extra scalars 1`] = `
             "title": "GraphQLDateTime",
             "type": "string",
           },
+          "GraphQLDuration": {
+            "maxLength": 100,
+            "pattern": "^(-|\\+)?P(?!$)((-|\\+)?\\d+(?:(\\.|,)\\d+)?Y)?((-|\\+)?\\d+(?:(\\.|,)\\d+)?M)?((-|\\+)?\\d+(?:(\\.|,)\\d+)?W)?((-|\\+)?\\d+(?:(\\.|,)\\d+)?D)?(T(?=(-|\\+)?\\d)((-|\\+)?\\d+(?:(\\.|,)\\d+)?H)?((-|\\+)?\\d+(?:(\\.|,)\\d+)?M)?((-|\\+)?\\d+(?:(\\.|,)\\d+)?S)?)?$",
+            "title": "GraphQLDuration",
+            "type": "string",
+          },
           "GraphQLLatitude": {
             "maximum": 90,
             "minimum": -90,
@@ -163,6 +169,9 @@ exports[`scalars support extra scalars 1`] = `
           },
           "did": {
             "$ref": "#/$defs/GraphQLDID",
+          },
+          "duration": {
+            "$ref": "#/$defs/GraphQLDuration",
           },
           "latitude": {
             "$ref": "#/$defs/GraphQLLatitude",
@@ -261,6 +270,10 @@ exports[`scalars support extra scalars 2`] = `
       "did": {
         "required": false,
         "type": "did",
+      },
+      "duration": {
+        "required": false,
+        "type": "duration",
       },
       "latitude": {
         "required": false,

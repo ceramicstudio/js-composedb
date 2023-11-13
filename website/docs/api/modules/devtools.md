@@ -47,7 +47,7 @@ ___
 
 ### AbstractLoadModelDefinition
 
-Ƭ **AbstractLoadModelDefinition**: [`ParsedLoadModelDefinition`](devtools.md#parsedloadmodeldefinition) & { `indices?`: `FieldsIndex`[] ; `views`: `ModelViewsDefinition`  }
+Ƭ **AbstractLoadModelDefinition**: [`ParsedLoadModelDefinition`](devtools.md#parsedloadmodeldefinition) & { `indices?`: `FieldsIndex`[] ; `views`: `ModelViewsDefinitionV2`  }
 
 ___
 
@@ -183,7 +183,7 @@ ___
 | `indices` | `FieldsIndex`[] |
 | `properties` | [`ObjectFieldsDefinition`](devtools.md#objectfieldsdefinition) |
 | `references` | `string`[] |
-| `relations` | `ModelRelationsDefinition` |
+| `relations` | `ModelRelationsDefinitionV2` |
 
 ___
 
@@ -213,10 +213,12 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `accountRelation` | `ModelAccountRelation` |
+| `accountRelation` | `ModelAccountRelationV2` |
 | `action` | ``"create"`` |
 | `description` | `string` |
-| `relations` | `ModelRelationsDefinition` |
+| `implements` | `string`[] |
+| `interface` | `boolean` |
+| `relations` | `ModelRelationsDefinitionV2` |
 
 ___
 
@@ -230,6 +232,7 @@ ___
 | :------ | :------ |
 | `action` | ``"load"`` |
 | `id` | `string` |
+| `interface` | `boolean` |
 
 ___
 
@@ -272,7 +275,6 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `enums` | `Record`<`string`, `string`[]\> |
-| `interfaces` | `Record`<`string`, [`ObjectDefinition`](devtools.md#objectdefinition)\> |
 | `models` | `Record`<`string`, [`ParsedModelDefinition`](devtools.md#parsedmodeldefinition)\> |
 | `objects` | `Record`<`string`, [`ObjectDefinition`](devtools.md#objectdefinition)\> |
 

@@ -7,6 +7,7 @@ import { CommitID, StreamID } from '@ceramicnetwork/streamid'
 import { Composite } from '@composedb/devtools'
 import {
   extraScalarsSchema,
+  mediaSchema,
   noteSchema,
   postSchema,
   profilesSchema,
@@ -279,6 +280,7 @@ describe('runtime', () => {
             did {
               id
             }
+            duration
             latitude
             localDate
             locale
@@ -306,6 +308,7 @@ describe('runtime', () => {
             date: '2023-01-31',
             dateTime: '2023-01-31T16:04:16.475Z',
             did: 'did:test:123',
+            duration: 'P1Y2M22DT5H24M15S',
             latitude: 53.471,
             localDate: '2023-01-31',
             locale: 'en-gb',
@@ -430,4 +433,297 @@ describe('runtime', () => {
     `)
     expect(res).toMatchSnapshot()
   }, 20000)
+
+  test('interfaces queries', async () => {
+    const composite = await Composite.create({ ceramic, schema: mediaSchema })
+    const runtime = new ComposeRuntime({ ceramic, definition: composite.toRuntime() })
+
+    const createdMedia = await runtime.executeQuery<Record<string, { document: { id: string } }>>(
+      `
+      mutation CreateMedia(
+        $image1Input: CreateMyImageInput!,
+        $image2Input: CreateMyImageInput!,
+        $audio1Input: CreateMyAudioInput!,
+        $audio2Input: CreateMyAudioInput!,
+        $video1Input: CreateMyVideoInput!,
+        $video2Input: CreateMyVideoInput!) {
+        image1: createMyImage(input: $image1Input) {
+          document {
+            id
+          }
+        }
+        image2: createMyImage(input: $image2Input) {
+          document {
+            id
+          }
+        }
+        audio1: createMyAudio(input: $audio1Input) {
+          document {
+            id
+          }
+        }
+        audio2: createMyAudio(input: $audio2Input) {
+          document {
+            id
+          }
+        }
+        video1: createMyVideo(input: $video1Input) {
+          document {
+            id
+          }
+        }
+        video2: createMyVideo(input: $video2Input) {
+          document {
+            id
+          }
+        }
+      }
+      `,
+      {
+        image1Input: { content: { src: 'http://my/image1', width: 800, height: 600 } },
+        image2Input: { content: { src: 'http://my/image2', width: 1600, height: 800 } },
+        audio1Input: { content: { src: 'http://my/audio1', duration: 'PT2M36S' } },
+        audio2Input: { content: { src: 'http://my/audio2', duration: 'PT5M4S' } },
+        video1Input: {
+          content: { src: 'http://my/video1', duration: 'PT2H5M48S', width: 1920, height: 1080 },
+        },
+        video2Input: {
+          content: { src: 'http://my/video2', duration: 'PT1H34M15S', width: 4096, height: 2160 },
+        },
+      },
+    )
+
+    const res = await runtime.executeQuery(`
+      query {
+        mediaMetadataIndex(first: 10) {
+          edges {
+            node {
+              __typename
+              src
+              ...on TimeMedia {
+                duration
+              }
+              ...on VisualMedia {
+                width
+                height
+              }
+            }
+          }
+        }
+      }
+    `)
+    expect(res).toMatchSnapshot()
+
+    const visualRes = await runtime.executeQuery(`
+      query {
+        visualMediaIndex(first: 10, filters: { where: { width: { greaterThan: 1000 } } }, sorting: { width: DESC }) {
+          edges {
+            node {
+              __typename
+              width
+              height
+              ...on MediaMetadata {
+                src
+              }
+            }
+          }
+        }
+      }
+    `)
+    expect(visualRes).toMatchSnapshot()
+
+    const createdCollections = await runtime.executeQuery<
+      Record<string, { document: { id: string } }>
+    >(
+      `
+      mutation CreateCollections(
+        $collection1Input: CreateMyMediaCollectionInput!,
+        $collection2Input: CreateMyMediaCollectionInput!,
+      ) {
+        collection1: createMyMediaCollection(input: $collection1Input) {
+          document {
+            id
+          }
+        }
+        collection2: createMyMediaCollection(input: $collection2Input) {
+          document {
+            id
+          }
+        }
+      }
+      `,
+      {
+        collection1Input: {
+          content: { name: 'First collection', createdAt: '2023-11-01T10:26:04Z' },
+        },
+        collection2Input: {
+          content: { name: 'Second collection', createdAt: '2023-11-02T05:15:46Z' },
+        },
+      },
+    )
+
+    const image1ID = createdMedia.data!.image1.document.id
+    const image2ID = createdMedia.data!.image2.document.id
+    const audio1ID = createdMedia.data!.audio1.document.id
+    const audio2ID = createdMedia.data!.audio2.document.id
+    const video1ID = createdMedia.data!.video1.document.id
+    const video2ID = createdMedia.data!.video2.document.id
+    const collection1ID = createdCollections.data!.collection1.document.id
+    const collection2ID = createdCollections.data!.collection2.document.id
+
+    await runtime.executeQuery(
+      `
+      mutation CreateItems(
+        $item1Input: CreateMyMediaCollectionItemInput!,
+        $item2Input: CreateMyMediaCollectionItemInput!,
+        $item3Input: CreateMyMediaCollectionItemInput!,
+        $item4Input: CreateMyMediaCollectionItemInput!,
+        $item5Input: CreateMyMediaCollectionItemInput!,
+        $item6Input: CreateMyMediaCollectionItemInput!,
+        $item7Input: CreateMyMediaCollectionItemInput!,
+        $item8Input: CreateMyMediaCollectionItemInput!,
+      ) {
+        item1: createMyMediaCollectionItem(input: $item1Input) {
+          document {
+            id
+          }
+        }
+        item2: createMyMediaCollectionItem(input: $item2Input) {
+          document {
+            id
+          }
+        }
+        item3: createMyMediaCollectionItem(input: $item3Input) {
+          document {
+            id
+          }
+        }
+        item4: createMyMediaCollectionItem(input: $item4Input) {
+          document {
+            id
+          }
+        }
+        item5: createMyMediaCollectionItem(input: $item5Input) {
+          document {
+            id
+          }
+        }
+        item6: createMyMediaCollectionItem(input: $item6Input) {
+          document {
+            id
+          }
+        }
+        item7: createMyMediaCollectionItem(input: $item7Input) {
+          document {
+            id
+          }
+        }
+        item8: createMyMediaCollectionItem(input: $item8Input) {
+          document {
+            id
+          }
+        }
+      }
+      `,
+      {
+        item1Input: {
+          content: {
+            collectionID: collection1ID,
+            itemID: video1ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+        item2Input: {
+          content: {
+            collectionID: collection1ID,
+            itemID: video2ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+        item3Input: {
+          content: {
+            collectionID: collection2ID,
+            itemID: video2ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+        item4Input: {
+          content: {
+            collectionID: collection1ID,
+            itemID: image2ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+        item5Input: {
+          content: {
+            collectionID: collection2ID,
+            itemID: image2ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+        item6Input: {
+          content: {
+            collectionID: collection1ID,
+            itemID: image1ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+        item7Input: {
+          content: {
+            collectionID: collection1ID,
+            itemID: audio2ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+        item8Input: {
+          content: {
+            collectionID: collection2ID,
+            itemID: audio1ID,
+            createdAt: '2023-11-01T11:06:27Z',
+          },
+        },
+      },
+    )
+
+    const relationsRes = await runtime.executeQuery(
+      `
+      query {
+        collection1: node(id: "${collection1ID}") {
+          ...on Collection {
+            itemsCount
+            items(first: 10) {
+              edges {
+                node {
+                  item {
+                    __typename
+                    ...on MediaMetadata {
+                      src
+                    }
+                  } 
+                }
+              }
+            }
+          }
+        }
+        video2: node(id: "${video2ID}") {
+          ...on MediaMetadata {
+            collectionItemsCount
+            collectionItems(first: 10) {
+              edges {
+                node {
+                  collection {
+                    ...on Collection {
+                      name
+                    }
+                  } 
+                }
+              }
+            }
+          }
+        }
+      }
+      `,
+    )
+    expect(relationsRes).toMatchSnapshot()
+  }, 30000)
 })
