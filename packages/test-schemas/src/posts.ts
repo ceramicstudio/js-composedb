@@ -1,46 +1,23 @@
 export const postSchema = `
 type Post 
   @createModel(accountRelation: LIST, description: "Simple post") 
-  @createIndex(fields: [{path:["title"]}]) 
-{
+  @createIndex(fields: [{path:["title"]}]) {
   author: DID! @documentAccount
   version: CommitID! @documentVersion
   date: DateTime
   title: String! @string(minLength: 10, maxLength: 100)
   text: String! @string(maxLength: 2000)
-}
-`
-
-export function createCommentSchemaWithPost(postModelID: string, postModelName = 'Post'): string {
-  return `
-type ${postModelName} @loadModel(id: "${postModelID}") {
-  id: ID!
+  commentsCount: Int! @relationCountFrom(model: "Comment", property: "postID")
+  comments: [Comment]! @relationFrom(model: "Comment", property: "postID")
 }
 
-type Comment @createModel(accountRelation: LIST, description: "Comment on a Post") @createIndex(fields: [{path:["text"]}]) {
+type Comment
+  @createModel(accountRelation: LIST, description: "Comment on a Post")
+  @createIndex(fields: [{path:["text"]}]) {
   author: DID! @documentAccount
   version: CommitID! @documentVersion 
-  postID: StreamID! @documentReference(model: "${postModelName}")
-  post: ${postModelName} @relationDocument(property: "postID")
+  postID: StreamID! @documentReference(model: "Post")
+  post: Post! @relationDocument(property: "postID")
   text: String! @string(maxLength: 2000)
 }
 `
-}
-
-export function loadPostSchemaWithComments(
-  id: string,
-  commentModelID: string,
-  commentModelProperty = 'postID',
-  commentModelName = 'Comment',
-): string {
-  return `
-type ${commentModelName} @loadModel(id: "${commentModelID}") {
-  id: ID!
-}
-
-type Post @loadModel(id: ${id}) {
-  commentsCount: Int! @relationCountFrom(model: "${commentModelName}", property: "${commentModelProperty}")
-  comments: [${commentModelName}]! @relationFrom(model: "${commentModelName}", property: "${commentModelProperty}")
-}
-`
-}

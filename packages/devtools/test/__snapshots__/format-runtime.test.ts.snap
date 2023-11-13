@@ -21,6 +21,8 @@ exports[`Runtime format Note model definition with views 1`] = `
         "type": "list",
       },
       "id": "NoteID",
+      "implements": [],
+      "interface": false,
     },
   },
   "objects": {
@@ -56,51 +58,6 @@ exports[`Runtime format Note model definition with views 1`] = `
 exports[`Runtime format Post with comments relations 1`] = `
 {
   "accountData": {
-    "postList": {
-      "name": "Post",
-      "type": "connection",
-    },
-  },
-  "enums": {},
-  "models": {
-    "Post": {
-      "accountRelation": {
-        "type": "list",
-      },
-      "id": "PostID",
-    },
-  },
-  "objects": {
-    "Post": {
-      "author": {
-        "type": "view",
-        "viewType": "documentAccount",
-      },
-      "date": {
-        "required": false,
-        "type": "datetime",
-      },
-      "text": {
-        "required": true,
-        "type": "string",
-      },
-      "title": {
-        "indexed": true,
-        "required": true,
-        "type": "string",
-      },
-      "version": {
-        "type": "view",
-        "viewType": "documentVersion",
-      },
-    },
-  },
-}
-`;
-
-exports[`Runtime format Post with comments relations 2`] = `
-{
-  "accountData": {
     "commentList": {
       "name": "Comment",
       "type": "connection",
@@ -117,12 +74,16 @@ exports[`Runtime format Post with comments relations 2`] = `
         "type": "list",
       },
       "id": "CommentID",
+      "implements": [],
+      "interface": false,
     },
     "Post": {
       "accountRelation": {
         "type": "list",
       },
       "id": "PostID",
+      "implements": [],
+      "interface": false,
     },
   },
   "objects": {
@@ -146,87 +107,6 @@ exports[`Runtime format Post with comments relations 2`] = `
       },
       "text": {
         "indexed": true,
-        "required": true,
-        "type": "string",
-      },
-      "version": {
-        "type": "view",
-        "viewType": "documentVersion",
-      },
-    },
-    "Post": {
-      "author": {
-        "type": "view",
-        "viewType": "documentAccount",
-      },
-      "date": {
-        "required": false,
-        "type": "datetime",
-      },
-      "text": {
-        "required": true,
-        "type": "string",
-      },
-      "title": {
-        "required": true,
-        "type": "string",
-      },
-      "version": {
-        "type": "view",
-        "viewType": "documentVersion",
-      },
-    },
-  },
-}
-`;
-
-exports[`Runtime format Post with comments relations 3`] = `
-{
-  "accountData": {
-    "commentList": {
-      "name": "Comment",
-      "type": "connection",
-    },
-    "postList": {
-      "name": "Post",
-      "type": "connection",
-    },
-  },
-  "enums": {},
-  "models": {
-    "Comment": {
-      "accountRelation": {
-        "type": "list",
-      },
-      "id": "CommentID",
-    },
-    "Post": {
-      "accountRelation": {
-        "type": "list",
-      },
-      "id": "PostID",
-    },
-  },
-  "objects": {
-    "Comment": {
-      "author": {
-        "type": "view",
-        "viewType": "documentAccount",
-      },
-      "post": {
-        "relation": {
-          "model": "PostID",
-          "property": "postID",
-          "source": "document",
-        },
-        "type": "view",
-        "viewType": "relation",
-      },
-      "postID": {
-        "required": true,
-        "type": "streamid",
-      },
-      "text": {
         "required": true,
         "type": "string",
       },
@@ -267,6 +147,7 @@ exports[`Runtime format Post with comments relations 3`] = `
         "type": "string",
       },
       "title": {
+        "indexed": true,
         "required": true,
         "type": "string",
       },
@@ -302,18 +183,24 @@ exports[`Runtime format Profile - multiples models with common local references 
         "type": "single",
       },
       "id": "GenericProfileID",
+      "implements": [],
+      "interface": false,
     },
     "PersonProfile": {
       "accountRelation": {
         "type": "single",
       },
       "id": "PersonProfileID",
+      "implements": [],
+      "interface": false,
     },
     "SocialProfile": {
       "accountRelation": {
         "type": "single",
       },
       "id": "SocialProfileID",
+      "implements": [],
+      "interface": false,
     },
   },
   "objects": {
@@ -453,18 +340,24 @@ exports[`Runtime format Profile definition with added model view 1`] = `
         "type": "single",
       },
       "id": "GenericProfileID",
+      "implements": [],
+      "interface": false,
     },
     "PersonProfile": {
       "accountRelation": {
         "type": "single",
       },
       "id": "PersonProfileID",
+      "implements": [],
+      "interface": false,
     },
     "SocialProfile": {
       "accountRelation": {
         "type": "single",
       },
       "id": "SocialProfileID",
+      "implements": [],
+      "interface": false,
     },
   },
   "objects": {
@@ -605,6 +498,8 @@ exports[`Runtime format Social with account reference 1`] = `
         "type": "list",
       },
       "id": "PersonMetID",
+      "implements": [],
+      "interface": false,
     },
   },
   "objects": {

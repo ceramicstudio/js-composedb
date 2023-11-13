@@ -1,3 +1,5 @@
+import { DOC_ID_FIELD, NODE_INTERFACE_NAME } from '../constants.js'
+
 import { extraScalars } from './scalars.js'
 
 const scarlarDefinitions = Object.keys(extraScalars)
@@ -43,12 +45,13 @@ enum ModelAccountRelation {
   SINGLE # Account to single stream (IDX)
 }
 
-directive @createModel(
-  description: String!
-  accountRelation: ModelAccountRelation!
-) on OBJECT
+directive @createModel(description: String!, accountRelation: ModelAccountRelation) on OBJECT
+directive @createModel(description: String!, accountRelation: ModelAccountRelation) on INTERFACE
 
 directive @loadModel(id: StreamID!) on OBJECT
+directive @loadModel(id: StreamID!) on INTERFACE
+
+# Indices definition
 
 input IndexField {
   path: [String!]!
@@ -57,4 +60,10 @@ input IndexField {
 directive @createIndex(
   fields: [IndexField!]!
 ) repeatable on OBJECT
+
+# Interface reference
+
+interface ${NODE_INTERFACE_NAME} {
+  ${DOC_ID_FIELD}: ID!
+}
 `

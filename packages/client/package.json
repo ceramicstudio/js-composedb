@@ -47,18 +47,18 @@
     "@composedb/runtime": "workspace:^0.5.2",
     "@graphql-tools/batch-execute": "^9.0.2",
     "@graphql-tools/stitch": "^9.0.3",
-    "@graphql-tools/utils": "^10.0.6",
+    "@graphql-tools/utils": "^10.0.7",
     "dataloader": "^2.2.2",
     "graphql": "^16.8.1",
     "graphql-relay": "^0.10.0"
   },
   "devDependencies": {
     "@ceramicnetwork/common": "^2.35.0",
-    "@composedb/devtools": "workspace:^0.5.1",
-    "@composedb/test-schemas": "workspace:^0.5.1",
-    "@composedb/types": "workspace:^0.5.1",
+    "@composedb/devtools": "workspace:^",
+    "@composedb/test-schemas": "workspace:^",
+    "@composedb/types": "workspace:^",
     "dids": "^4.0.4",
-    "jest-environment-composedb": "workspace:^0.5.0"
+    "jest-environment-composedb": "workspace:^"
   },
   "jest": {
     "extensionsToTreatAsEsm": [

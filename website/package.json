@@ -40,7 +40,7 @@
     "@composedb/cli": "workspace:^0.5.0",
     "@docusaurus/module-type-aliases": "^2.4.3",
     "@docusaurus/types": "^2.4.3",
-    "@tsconfig/docusaurus": "^2.0.1",
+    "@tsconfig/docusaurus": "^2.0.2",
     "docusaurus-plugin-typedoc": "^0.20.2",
     "typescript": "^5.2.2"
   },

@@ -215,7 +215,7 @@ input UpdateOptionsInput {
 }
 
 """A Ceramic Commit ID"""
-scalar CeramicCommitID @specifiedBy(url: "https://github.com/ceramicnetwork/CIP/blob/main/CIPs/CIP-59/CIP-59.md#commitid")
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
 
 type CreatePicturePayload {
   """Fetches an object given its ID"""

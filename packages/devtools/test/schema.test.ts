@@ -32,25 +32,6 @@ describe('schema', () => {
     }).toThrow('GraphQL unions are not supported')
   })
 
-  it("createAbstractCompositeDefinition doesn't parse interfaces", () => {
-    expect(() => {
-      createAbstractCompositeDefinition(`
-      interface GenericProfile {
-        name: String @string(maxLength: 150)
-      }
-
-      type SocialProfile implements GenericProfile @createModel(
-        accountRelation: SINGLE,
-        description: "A model to store properties that accounts would like to share on social media"
-      ) {
-        description: String @string(maxLength: 420)
-        emoji: String @string(maxLength: 2)
-        url: String @string(maxLength: 240)
-      }
-      `)
-    }).toThrow('GraphQL interfaces are not supported')
-  })
-
   it('createAbstractCompositeDefinition creates an InternalCompositeDefinition for profiles from schema', () => {
     expect(createAbstractCompositeDefinition(profilesSchema)).toMatchSnapshot()
   })

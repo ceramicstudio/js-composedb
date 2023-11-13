@@ -6,9 +6,7 @@ import type { CeramicApi } from '@ceramicnetwork/common'
 import { CommitID, StreamID } from '@ceramicnetwork/streamid'
 import { Composite } from '@composedb/devtools'
 import {
-  createCommentSchemaWithPost,
   extraScalarsSchema,
-  loadPostSchemaWithComments,
   noteSchema,
   postSchema,
   profilesSchema,
@@ -54,19 +52,7 @@ describe('runtime', () => {
   }, 30000)
 
   test('create and query post with comments', async () => {
-    const postComposite = await Composite.create({ ceramic, schema: postSchema })
-    const postModelID = postComposite.modelIDs[0]
-
-    const commentComposite = await Composite.create({
-      ceramic,
-      schema: createCommentSchemaWithPost(postModelID),
-    })
-    const commentModelID = commentComposite.modelIDs.find((id) => id !== postModelID) as string
-
-    const composite = await Composite.create({
-      ceramic,
-      schema: loadPostSchemaWithComments(postModelID, commentModelID),
-    })
+    const composite = await Composite.create({ ceramic, schema: postSchema })
     const definition = composite.toRuntime()
 
     expect(printGraphQLSchema(definition)).toMatchSnapshot()

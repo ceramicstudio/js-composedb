@@ -1,13 +1,6 @@
 import type { ModelDefinition } from '@ceramicnetwork/stream-model'
 import { createRuntimeDefinition, mockDefinitionFromSchema } from '@composedb/devtools'
-import {
-  createCommentSchemaWithPost,
-  extraScalarsSchema,
-  loadPostSchemaWithComments,
-  noteSchema,
-  postSchema,
-  profilesSchema,
-} from '@composedb/test-schemas'
+import { extraScalarsSchema, noteSchema, postSchema, profilesSchema } from '@composedb/test-schemas'
 import type { RuntimeCompositeDefinition } from '@composedb/types'
 
 import { printGraphQLSchema } from '../src'
@@ -33,17 +26,6 @@ describe('schema', () => {
   })
 
   test('post and comments', () => {
-    const postDefinition = mockDefinitionFromSchema(postSchema)
-    const commentDefinition = mockDefinitionFromSchema(
-      createCommentSchemaWithPost('PostID'),
-      postDefinition.models,
-    )
-    const postWithCommentsDefinition = mockDefinitionFromSchema(
-      loadPostSchemaWithComments('PostID', 'CommentID'),
-      commentDefinition.models,
-    )
-    expect(
-      printGraphQLSchema(createRuntimeDefinition(postWithCommentsDefinition)),
-    ).toMatchSnapshot()
+    expect(printGraphQLSchema(createSchemaDefinition(postSchema))).toMatchSnapshot()
   })
 })

@@ -6,11 +6,10 @@ import type { CeramicApi } from '@ceramicnetwork/common'
 import { StreamID } from '@ceramicnetwork/streamid'
 import {
   ImageMetadataType,
-  createCommentSchemaWithPost,
-  loadPostSchemaWithComments,
+  mediaSchema,
+  noteSchema,
   postSchema,
   profilesSchema,
-  noteSchema,
   ratingSchema,
 } from '@composedb/test-schemas'
 import type { ModelDefinition } from '@composedb/types'
@@ -28,7 +27,7 @@ describe('composite', () => {
       test('throws if the version is not compatible', () => {
         expect(
           () => new Composite({ commits: {}, definition: { version: '2.0', models: {} } }),
-        ).toThrow('Unsupported Composite version 2.0, expected version 1.0')
+        ).toThrow(`Unsupported Composite version 2.0, expected version ${Composite.VERSION}`)
       })
 
       test('throws if commits do not match the definition models', () => {
@@ -555,13 +554,13 @@ describe('composite', () => {
       })
 
       test('with indices', async () => {
-        const postComposite = await Composite.create({ ceramic, schema: postSchema })
-        const ratingComposite = await Composite.create({ ceramic, schema: ratingSchema })
-        const noteComposite = await Composite.create({ ceramic, schema: noteSchema })
+        const [postComposite, ratingComposite, noteComposite] = await Promise.all([
+          Composite.create({ ceramic, schema: postSchema }),
+          Composite.create({ ceramic, schema: ratingSchema }),
+          Composite.create({ ceramic, schema: noteSchema }),
+        ])
         const mergedComposite = postComposite.merge([ratingComposite, noteComposite]).toJSON()
-        expect(mergedComposite).toHaveProperty('indices.Post')
-        expect(mergedComposite).toHaveProperty('indices.Rating')
-        expect(mergedComposite).toHaveProperty('indices.Note')
+        expect(mergedComposite.indices).toMatchSnapshot()
       })
     })
   })
@@ -739,21 +738,13 @@ describe('composite', () => {
   })
 
   test('Relations support', async () => {
-    const postComposite = await Composite.create({ ceramic, schema: postSchema })
-    const postID = postComposite.modelIDs[0]
-    expect(postID).toBeDefined()
+    const composite = await Composite.create({ ceramic, schema: postSchema })
+    // The post schema contains 2 models: Post and Comment
+    expect(composite.modelIDs).toHaveLength(2)
+  })
 
-    const postAndCommentComposite = await Composite.create({
-      ceramic,
-      schema: createCommentSchemaWithPost(postID),
-    })
-    const commentID = postAndCommentComposite.modelIDs.find((id) => id !== postID)
-    expect(commentID).toBeDefined()
-
-    const postWithCommentComposite = await Composite.create({
-      ceramic,
-      schema: loadPostSchemaWithComments(postID, commentID as string),
-    })
-    expect(postWithCommentComposite.modelIDs).toHaveLength(2)
-  }, 120000)
+  test('Interfaces support', async () => {
+    const composite = await Composite.create({ ceramic, schema: mediaSchema })
+    expect(composite.modelIDs).toHaveLength(6)
+  })
 })

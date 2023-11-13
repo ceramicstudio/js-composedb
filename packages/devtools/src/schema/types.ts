@@ -1,8 +1,8 @@
 import type {
-  ModelAccountRelation,
+  ModelAccountRelationV2,
   ModelDefinition,
-  ModelRelationsDefinition,
-  ModelViewsDefinition,
+  ModelRelationsDefinitionV2,
+  ModelViewsDefinitionV2,
 } from '@ceramicnetwork/stream-model'
 import type { RuntimeViewField, FieldsIndex } from '@composedb/types'
 
@@ -49,24 +49,24 @@ export type ObjectFieldDefinition = ItemDefinition | ListFieldDefinition | ViewF
 export type ObjectFieldsDefinition = Record<string, ObjectFieldDefinition>
 
 export type ObjectDefinition = {
-  // implements: Array<string> // Interface names
   properties: ObjectFieldsDefinition
   references: Array<string> // Embedded objects and enums
-  relations: ModelRelationsDefinition
+  relations: ModelRelationsDefinitionV2
   indices: Array<FieldsIndex>
 }
 
 export type ParsedCreateModelDefinition = {
   action: 'create'
-  // interface: boolean
-  // implements: Array<string>
+  interface: boolean
+  implements: Array<string>
   description: string
-  accountRelation: ModelAccountRelation
-  relations: ModelRelationsDefinition
+  accountRelation: ModelAccountRelationV2
+  relations: ModelRelationsDefinitionV2
 }
 
 export type ParsedLoadModelDefinition = {
   action: 'load'
+  interface: boolean
   id: string
 }
 
@@ -74,7 +74,6 @@ export type ParsedModelDefinition = ParsedCreateModelDefinition | ParsedLoadMode
 
 export type SchemaDefinition = {
   enums: Record<string, Array<string>>
-  interfaces: Record<string, ObjectDefinition>
   models: Record<string, ParsedModelDefinition>
   objects: Record<string, ObjectDefinition>
 }
@@ -86,7 +85,7 @@ export type AbstractCreateModelDefinition = {
 }
 
 export type AbstractLoadModelDefinition = ParsedLoadModelDefinition & {
-  views: ModelViewsDefinition
+  views: ModelViewsDefinitionV2
   indices?: Array<FieldsIndex>
 }
 

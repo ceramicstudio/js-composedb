@@ -1,4 +1,4 @@
-import type { ModelDefinition, ModelViewsDefinition } from '@ceramicnetwork/stream-model'
+import type { ModelDefinition, ModelViewsDefinitionV2 } from '@ceramicnetwork/stream-model'
 import type { InternalCompositeDefinition } from '@composedb/types'
 
 import { createAbstractCompositeDefinition } from './schema/compiler.js'
@@ -10,15 +10,25 @@ export function mockDefinition(
   providedModels: Record<string, ModelDefinition> = {},
 ): InternalCompositeDefinition {
   const models: Record<string, ModelDefinition> = {}
-  const modelsViews: Record<string, ModelViewsDefinition> = {}
+  const modelsViews: Record<string, ModelViewsDefinitionV2> = {}
   const modelsIndices: Record<string, any> = {}
 
   for (const abstractModel of Object.values(definition.models)) {
     if (abstractModel.action === 'create') {
       const definition = abstractModel.model
+      for (const view of Object.values(definition.views ?? {})) {
+        if (
+          (view.type === 'relationCountFrom' ||
+            view.type === 'relationDocument' ||
+            view.type === 'relationFrom') &&
+          view.model !== null
+        ) {
+          view.model = `${view.model}ID`
+        }
+      }
       models[`${definition.name}ID`] = definition
       if (abstractModel.indices) {
-        modelsIndices[abstractModel.model.name] = abstractModel.indices
+        modelsIndices[`${definition.name}ID`] = abstractModel.indices
       }
     } else {
       const definition = providedModels[abstractModel.id]
@@ -34,7 +44,7 @@ export function mockDefinition(
   }
 
   return {
-    version: '1.0',
+    version: '1.1',
     commonEmbeds: definition.commonEmbeds,
     models,
     views: { models: modelsViews },

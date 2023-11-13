@@ -1,8 +1,8 @@
 import type { FieldsIndex } from '@ceramicnetwork/common'
 import type {
   ModelDefinition,
-  ModelRelationsDefinition,
-  ModelViewsDefinition,
+  ModelRelationsDefinitionV2,
+  ModelViewsDefinitionV2,
 } from '@ceramicnetwork/stream-model'
 import type {
   CustomRuntimeScalarType,
@@ -13,8 +13,8 @@ import type {
   RuntimeObjectField,
   RuntimeObjectFields,
   RuntimeReference,
+  RuntimeReferenceType,
   RuntimeScalar,
-  RuntimeScalarCommon,
   RuntimeViewReference,
 } from '@composedb/types'
 import { camelCase, pascalCase } from 'change-case'
@@ -37,11 +37,15 @@ export function getStringScalarType(schema: JSONSchema.String): CustomRuntimeSca
   return SCALAR_RUNTIME_TYPES[schema.title as ScalarTitle] ?? 'string'
 }
 
+const NON_INDEXABLE_FIELD_TYPES: Array<RuntimeObjectField['type']> = ['list', 'reference', 'view']
+const INDEXABLE_REFERENCE_TYPES: Array<RuntimeReferenceType> = ['enum', 'object']
+
 type RuntimeModelBuilderParams = {
   name: string
   definition: ModelDefinition
   commonEmbeds?: Array<string>
-  views: ModelViewsDefinition
+  views: ModelViewsDefinitionV2
+  indices: Array<FieldsIndex>
 }
 
 type ExtractSchemaParams = {
@@ -63,9 +67,10 @@ export class RuntimeModelBuilder {
   #accountData: Record<string, RuntimeViewReference> = {}
   #commonEmbeds: Array<string>
   #modelName: string
-  #modelRelations: ModelRelationsDefinition
+  #modelRelations: ModelRelationsDefinitionV2
   #modelSchema: JSONSchema.Object
-  #modelViews: ModelViewsDefinition
+  #modelViews: ModelViewsDefinitionV2
+  #modelIndices: Array<FieldsIndex>
   #objects: Record<string, RuntimeObjectFields> = {}
   #enums: Record<string, Array<string>> = {}
   #unions: Record<string, Array<string>> = {}
@@ -76,14 +81,15 @@ export class RuntimeModelBuilder {
     this.#modelRelations = params.definition.relations ?? {}
     this.#modelSchema = params.definition.schema
     this.#modelViews = params.views
+    this.#modelIndices = params.indices
   }
 
   build(): RuntimeModelDefinition {
     const modelObject = this._buildObject(this.#modelSchema)
     this.#objects[this.#modelName] = modelObject
-    // TODO (post-MVP): build relations
     this._buildRelations(this.#modelRelations)
     this._buildViews(modelObject, this.#modelViews)
+    this._buildIndices(modelObject, this.#modelIndices)
     return {
       accountData: this.#accountData,
       objects: this.#objects,
@@ -255,7 +261,7 @@ export class RuntimeModelBuilder {
     }
   }
 
-  _buildRelations(relations: ModelRelationsDefinition = {}): void {
+  _buildRelations(relations: ModelRelationsDefinitionV2 = {}): void {
     for (const [key, relation] of Object.entries(relations)) {
       if (relation.type === 'account') {
         const relationKey = camelCase(`${key}Of${this.#modelName}List`)
@@ -264,37 +270,30 @@ export class RuntimeModelBuilder {
     }
   }
 
-  _buildViews(object: RuntimeObjectFields, views: ModelViewsDefinition = {}): void {
+  _buildViews(object: RuntimeObjectFields, views: ModelViewsDefinitionV2 = {}): void {
     for (const [key, view] of Object.entries(views)) {
       object[key] = viewDefinitionToRuntime(view)
     }
   }
-}
 
-function applyIndexingToObjects(
-  modelName: string,
-  idx: FieldsIndex,
-  objects: Record<string, RuntimeObjectFields>,
-) {
-  const modelFields = objects[modelName] ?? []
-  let currentObjectFields = modelFields
-  for (const field of idx.fields) {
-    currentObjectFields = modelFields
-    for (const path of field.path) {
-      const obj = currentObjectFields[path]
-      if (obj) {
-        if (obj.type === 'reference') {
-          const refObj = obj as RuntimeReference
-          refObj.indexed = true
-          currentObjectFields = objects[path] ?? {}
-        } else if ('required' in obj) {
-          const commonObj = obj as RuntimeScalarCommon
-          commonObj.indexed = true
-        } else {
+  _buildIndices(object: RuntimeObjectFields, indices: Array<FieldsIndex>): void {
+    for (const index of indices) {
+      for (const field of index.fields) {
+        const path = field.path[0]
+        const objectField = object[path]
+        if (objectField == null) {
+          throw new Error(`Could not resolve ${field.path.join('.')} as a valid path`)
+        }
+        if (objectField.type === 'reference') {
+          if (INDEXABLE_REFERENCE_TYPES.includes(objectField.refType)) {
+            objectField.indexed = true
+          } else {
+            throw new Error(`${field.path.join('.')} is not indexable`)
+          }
+        } else if (NON_INDEXABLE_FIELD_TYPES.includes(objectField.type)) {
           throw new Error(`${field.path.join('.')} is not indexable`)
         }
-      } else {
-        throw new Error(`Could not resolve ${field.path.join('.')} as a valid path`)
+        ;(objectField as RuntimeScalar).indexed = true
       }
     }
   }
@@ -313,8 +312,16 @@ export function createRuntimeDefinition(
 
   for (const [modelID, modelDefinition] of Object.entries(definition.models)) {
     const modelName = definition.aliases?.[modelID] ?? modelDefinition.name
+    const interfaceDefinition =
+      modelDefinition.version === '1.0'
+        ? { interface: false, implements: [] }
+        : { interface: modelDefinition.interface, implements: modelDefinition.implements }
     // Add name to model metadata mapping
-    runtime.models[modelName] = { id: modelID, accountRelation: modelDefinition.accountRelation }
+    runtime.models[modelName] = {
+      ...interfaceDefinition,
+      id: modelID,
+      accountRelation: modelDefinition.accountRelation,
+    }
     // Extract objects, enums, relations and views from model schema
     const modelViews = modelDefinition.views ?? {}
     const compositeModelViews = definition.views?.models?.[modelID] ?? {}
@@ -323,15 +330,13 @@ export function createRuntimeDefinition(
       name: modelName,
       definition: modelDefinition,
       views: { ...modelViews, ...compositeModelViews },
+      indices: definition.indices?.[modelID] ?? [],
     })
     const builtModel = modelBuilder.build()
     // Inject extracted types to runtime definition
     Object.assign(runtime.accountData, builtModel.accountData)
     Object.assign(runtime.objects, builtModel.objects)
     Object.assign(runtime.enums, builtModel.enums)
-    for (const idx of definition.indices?.[modelName] ?? []) {
-      applyIndexingToObjects(modelName, idx, runtime.objects)
-    }
     // Attach entry-point to account store based on relation type
     if (modelDefinition.accountRelation != null) {
       const key = camelCase(modelName)
