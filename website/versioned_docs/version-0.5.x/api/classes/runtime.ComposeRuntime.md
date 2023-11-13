@@ -1,6 +1,6 @@
 ---
-id: "runtime.ComposeRuntime"
-title: "Class: ComposeRuntime"
+id: 'runtime.ComposeRuntime'
+title: 'Class: ComposeRuntime'
 custom_edit_url: null
 ---
 
@@ -24,8 +24,8 @@ import { ComposeRuntime } from '@composedb/runtime'
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name     | Type                                                                 |
+| :------- | :------------------------------------------------------------------- |
 | `params` | [`ComposeRuntimeParams`](../modules/runtime.md#composeruntimeparams) |
 
 ## Accessors
@@ -44,48 +44,48 @@ Context object used internally.
 
 ### execute
 
-▸ **execute**<`Data`\>(`document`, `variableValues?`): `Promise`<`ExecutionResult`<`Data`, `ObjMap`<`unknown`\>\>\>
+▸ **execute**\<`Data`\>(`document`, `variableValues?`): `Promise`\<`ExecutionResult`\<`Data`, `ObjMap`\<`unknown`\>\>\>
 
 Execute a GraphQL query from a DocumentNode and optional variables.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `Data` | `Record`<`string`, `unknown`\> |
+| Name   | Type                            |
+| :----- | :------------------------------ |
+| `Data` | `Record`\<`string`, `unknown`\> |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `document` | `DocumentNode` |
-| `variableValues?` | `Record`<`string`, `unknown`\> |
+| Name              | Type                            |
+| :---------------- | :------------------------------ |
+| `document`        | `DocumentNode`                  |
+| `variableValues?` | `Record`\<`string`, `unknown`\> |
 
 #### Returns
 
-`Promise`<`ExecutionResult`<`Data`, `ObjMap`<`unknown`\>\>\>
+`Promise`\<`ExecutionResult`\<`Data`, `ObjMap`\<`unknown`\>\>\>
 
-___
+---
 
 ### executeQuery
 
-▸ **executeQuery**<`Data`\>(`source`, `variableValues?`): `Promise`<`ExecutionResult`<`Data`, `ObjMap`<`unknown`\>\>\>
+▸ **executeQuery**\<`Data`\>(`source`, `variableValues?`): `Promise`\<`ExecutionResult`\<`Data`, `ObjMap`\<`unknown`\>\>\>
 
 Execute a GraphQL query from its source and optional variables.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `Data` | `Record`<`string`, `unknown`\> |
+| Name   | Type                            |
+| :----- | :------------------------------ |
+| `Data` | `Record`\<`string`, `unknown`\> |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `source` | `string` \| `Source` |
-| `variableValues?` | `Record`<`string`, `unknown`\> |
+| Name              | Type                            |
+| :---------------- | :------------------------------ |
+| `source`          | `string` \| `Source`            |
+| `variableValues?` | `Record`\<`string`, `unknown`\> |
 
 #### Returns
 
-`Promise`<`ExecutionResult`<`Data`, `ObjMap`<`unknown`\>\>\>
+`Promise`\<`ExecutionResult`\<`Data`, `ObjMap`\<`unknown`\>\>\>

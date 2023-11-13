@@ -1,6 +1,6 @@
 ---
-id: "client"
-title: "Module: client"
+id: 'client'
+title: 'Module: client'
 custom_edit_url: null
 ---
 
@@ -30,13 +30,13 @@ npm install @composedb/client
 
 #### Type declaration
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `cache?` | [`DocumentCache`](client.md#documentcache) \| `boolean` | Optional cache for documents. |
-| `ceramic` | `CeramicApi` \| `string` | Ceramic client instance or HTTP URL. |
-| `definition` | `RuntimeCompositeDefinition` | Runtime composite definition, created using the [`Composite`](../classes/devtools.Composite.md) development tools. |
+| Name         | Type                                                    | Description                                                                                                        |
+| :----------- | :------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------- |
+| `cache?`     | [`DocumentCache`](client.md#documentcache) \| `boolean` | Optional cache for documents.                                                                                      |
+| `ceramic`    | `CeramicApi` \| `string`                                | Ceramic client instance or HTTP URL.                                                                               |
+| `definition` | `RuntimeCompositeDefinition`                            | Runtime composite definition, created using the [`Composite`](../classes/devtools.Composite.md) development tools. |
 
-___
+---
 
 ### ContextParams
 
@@ -44,12 +44,12 @@ ___
 
 #### Type declaration
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `cache?` | [`DocumentCache`](client.md#documentcache) \| `boolean` | Optional cache for documents. |
-| `ceramic` | `CeramicApi` | Ceramic client instance. |
+| Name      | Type                                                    | Description                   |
+| :-------- | :------------------------------------------------------ | :---------------------------- |
+| `cache?`  | [`DocumentCache`](client.md#documentcache) \| `boolean` | Optional cache for documents. |
+| `ceramic` | `CeramicApi`                                            | Ceramic client instance.      |
 
-___
+---
 
 ### DocumentCache
 
@@ -57,12 +57,12 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `clear` | () => `any` |
-| `delete` | (`id`: `string`) => `any` |
-| `get` | (`id`: `string`) => `void` \| `Promise`<`ModelInstanceDocument`<`Record`<`string`, `any`\>\>\> |
-| `set` | (`id`: `string`, `value`: `Promise`<`ModelInstanceDocument`<`Record`<`string`, `any`\>\>\>) => `any` |
+| Name     | Type                                                                                                    |
+| :------- | :------------------------------------------------------------------------------------------------------ |
+| `clear`  | () => `any`                                                                                             |
+| `delete` | (`id`: `string`) => `any`                                                                               |
+| `get`    | (`id`: `string`) => `void` \| `Promise`\<`ModelInstanceDocument`\<`Record`\<`string`, `any`\>\>\>       |
+| `set`    | (`id`: `string`, `value`: `Promise`\<`ModelInstanceDocument`\<`Record`\<`string`, `any`\>\>\>) => `any` |
 
 ## Functions
 
@@ -74,15 +74,15 @@ Create a GraphQL schema from a runtime composite definition
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name     | Type                 |
+| :------- | :------------------- |
 | `params` | `CreateSchemaParams` |
 
 #### Returns
 
 `GraphQLSchema`
 
-___
+---
 
 ### printGraphQLSchema
 
@@ -93,10 +93,10 @@ representation.
 
 #### Parameters
 
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `definition` | `RuntimeCompositeDefinition` | `undefined` |
-| `readonly` | `boolean` | `false` |
+| Name         | Type                         | Default value |
+| :----------- | :--------------------------- | :------------ |
+| `definition` | `RuntimeCompositeDefinition` | `undefined`   |
+| `readonly`   | `boolean`                    | `false`       |
 
 #### Returns
 
