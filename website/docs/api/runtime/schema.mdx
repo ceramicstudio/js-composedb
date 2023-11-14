@@ -325,6 +325,16 @@ ComposeDB implements [Relay's Connection specification](https://relay.dev/graphq
 
 Connection objects are generated for all models in the composite, supporting the [Connection arguments](https://relay.dev/graphql/connections.htm#sec-Arguments) and possibly additional arguments for [filtering](#filtering) and [sorting](#sorting) the associated documents.
 
+## Interfaces
+
+[GraphQL interfaces](https://graphql.org/learn/schema/#interfaces) are generated for all interface models present in a composite, along with entry points on the [`Query` object](#query-object) and related [inputs](#inputs). Querying these entry points returns documents for all the models implementing the given interface that are indexed by the Ceramic node.
+
+:::caution Indices creation
+
+Inputs for [filtering](#filtering) and [sorting](#sorting) are generated for all fields of the interface regardless of the created indices. When querying using these fields, the expected indices should have been [created on the matching models](../sdl/directives.mdx#indexing) first.
+
+:::
+
 ## Inputs
 
 GraphQL differentiates objects handled in queries from objects used to perform mutations and arguments, using [input types](https://graphql.org/learn/schema/#input-types).

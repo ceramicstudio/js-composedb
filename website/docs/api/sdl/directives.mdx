@@ -6,16 +6,17 @@ Directives provide extra metadata when declaring scalars, lists and shapes.
 
 ### `@createModel`
 
-The `@createModel` directive applies to shapes, indicating the shape needs to be
-created as a Model. A Composite must contain at least one Model to be valid,
-otherwise there would be nothing to interact with.
+The `@createModel` directive applies to shapes and interfaces, indicating they
+need to be created as a Model. A Composite must contain at least one Model to
+be valid, otherwise there would be nothing to interact with.
 
 When using the `@createModel` directive, two parameters must be provided:
 
 - `accountRelation`: the type of relation between documents created using the
   Model and the account controlling the document, which can be `SINGLE` for a
   single document of the given Model (for example profile information), or
-  `LIST` for a potentially infinite list of documents.
+  `LIST` (default) for a potentially infinite list of documents. When creating
+  interfaces, the `accountRelation` is ignored if provided.
 - `description`: a string describing the Model, to help with discovery.
 
 Example:
@@ -66,6 +67,8 @@ type MyModel @loadModel(id: "<existing model stream ID>") {
 The indexing directive can only be set on types **defined as model**,
 identified using the [`@createModel`](#createmodel) or
 [`@loadModel`](#loadmodel) directive.
+The indexing directive cannot be used when defining interfaces, as interfaces
+themselves are not indexed, only the models implementing them.
 
 :::
 
@@ -149,7 +152,7 @@ Example: `recipient: DID! @accountReference`.
 Defines a relation to a document, using a
 [`StreamID` scalar](./scalars.mdx#streamid) and a `model` argument containing the
 name of a model added in the schema using the [`@loadModel`](#loadmodel)
-directive.
+directive or `Node` to reference a document of any model.
 
 Example:
 
@@ -200,7 +203,8 @@ Example: `version: CommitID! @documentVersion`.
 
 Defines a field representing another document in the graph, that have its stream
 ID stored in another field of the current document, using a model identified by
-the `model` argument of the directive.
+the `model` argument of the directive. The value `"Node"` can be used for the
+`model` argument to accept documents using any model.
 
 Example where `post` fields allows to access the post document the comment is
 made on, based on the `postID` value stored in the comment document:

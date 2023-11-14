@@ -44,8 +44,8 @@ PostgreSQL installation and come back to it once you are ready to scale your pro
 
 If you don’t already have them installed, you will need to install at least:
 
-- [NodeJS v16](https://nodejs.org/en/)
-- npm v8 (installed automatically with NodeJS v16)
+- [NodeJS v20](https://nodejs.org/en/)
+- npm (installed automatically with NodeJS)
 
 Use this command to make sure you have the correct versions installed.
 
@@ -226,8 +226,8 @@ cd my-project #targets the created directory
 
 If you don’t already have them installed, you will need to install Node.js v16 and a package manager. We primarily use `pnpm`, but `npm` and `yarn` are supported as well.
 
-- [NodeJS v16](https://nodejs.org/en/)
-- [pnpm v7](https://pnpm.io/installation)
+- [NodeJS v20](https://nodejs.org/en/)
+- [pnpm v8](https://pnpm.io/installation)
 
 Use this command to make sure you have the correct versions installed.
 
@@ -238,13 +238,13 @@ pnpm -v
 
 :::tip
 
-**Node.js** We've seen best results with Node.js v16. If you are using a different version (e.g. v18+), you may run into issues. Please use `nvm` to install Node.js v16 for best results.
+**Node.js** We've seen best results with Node.js v20. If you are using a different version (e.g. v21+), you may run into issues. Please use `nvm` to install Node.js v20 for best results.
 
 :::
 
 #### Ceramic
 
-ComposeDB runs on Ceramic, so you will need to run a Ceramic node. To get started, we recommend running a local Ceramic node. If you're interested in running the production node, you can follow the [tutorial here](https://blog.ceramic.network/configuring-a-ceramic-node-using-aws/).
+ComposeDB runs on Ceramic v3.x, so you will need to run a Ceramic node. To get started, we recommend running a local Ceramic node. If you're interested in running the production node, you can follow the [tutorial here](https://blog.ceramic.network/configuring-a-ceramic-node-using-aws/).
 
 <!-- update link after Server Setup Guode  -->
 
@@ -252,7 +252,7 @@ The Ceramic CLI provides a set of commands that make it easier to run and manage
 
 <Tabs
   defaultValue="pnpm"
-  groupId="npm-or-pnpm-or-yarnr"
+  groupId="npm-or-pnpm-or-yarn"
   values={[
     {label: 'npm', value: 'npm'},
     {label: 'pnpm', value: 'pnpm'},
@@ -261,14 +261,14 @@ The Ceramic CLI provides a set of commands that make it easier to run and manage
   <TabItem value="npm">
 
 ```bash
-npm install --location=global @ceramicnetwork/cli
+npm install --location=global @ceramicnetwork/cli@next
 ```
 
   </TabItem>
   <TabItem value="pnpm">
 
 ```bash
-pnpm install -g @ceramicnetwork/cli
+pnpm install -g @ceramicnetwork/cli@next
 ```
 
   </TabItem>
@@ -281,7 +281,7 @@ Global packages are only supported for yarn 2.x and older. For yarn 3.x and newe
 :::
 
 ```bash
-yarn global add @ceramicnetwork/cli
+yarn global add @ceramicnetwork/cli@next
 ```
 
   </TabItem>
@@ -293,7 +293,7 @@ Next install the ComposeDB CLI, which enables you to interact with ComposeDB dat
 
 <Tabs
   defaultValue="pnpm"
-  groupId="npm-or-pnpm-or-yarnr"
+  groupId="npm-or-pnpm-or-yarn"
   values={[
     {label: 'npm', value: 'npm'},
     {label: 'pnpm', value: 'pnpm'},
@@ -302,14 +302,14 @@ Next install the ComposeDB CLI, which enables you to interact with ComposeDB dat
   <TabItem value="npm">
 
 ```bash
-npm install --location=global @composedb/cli@^0.5.0
+npm install --location=global @composedb/cli@next
 ```
 
   </TabItem>
   <TabItem value="pnpm">
 
 ```bash
-pnpm add -g @composedb/cli@^0.5.0
+pnpm add -g @composedb/cli@next
 ```
 
   </TabItem>
@@ -322,7 +322,7 @@ Global packages are only supported for yarn 2.x and older. For yarn 3.x and newe
 :::
 
 ```bash
-yarn global add @composedb/cli@^0.5.0
+yarn global add @composedb/cli@next
 ```
 
   </TabItem>
@@ -346,21 +346,21 @@ To install the development packages, run:
   <TabItem value="npm">
 
 ```bash
-npm install -D @composedb/devtools@^0.5.0 @composedb/devtools-node@^0.5.0
+npm install -D @composedb/devtools@next @composedb/devtools-node@next
 ```
 
   </TabItem>
   <TabItem value="pnpm">
 
 ```bash
-pnpm add -D @composedb/devtools@^0.5.0 @composedb/devtools-node@^0.5.0
+pnpm add -D @composedb/devtools@next @composedb/devtools-node@next
 ```
 
   </TabItem>
   <TabItem value="yarn">
 
 ```bash
-yarn add -D @composedb/devtools@^0.5.0 @composedb/devtools-node@^0.5.0
+yarn add -D @composedb/devtools@next @composedb/devtools-node@next
 ```
 
   </TabItem>

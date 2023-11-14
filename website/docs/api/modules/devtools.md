@@ -47,7 +47,7 @@ ___
 
 ### AbstractLoadModelDefinition
 
-Ƭ **AbstractLoadModelDefinition**: [`ParsedLoadModelDefinition`](devtools.md#parsedloadmodeldefinition) & { `indices?`: `FieldsIndex`[] ; `views`: `ModelViewsDefinitionV2`  }
+Ƭ **AbstractLoadModelDefinition**: [`ParsedLoadModelDefinition`](devtools.md#parsedloadmodeldefinition) & \{ `indices?`: `FieldsIndex`[] ; `views`: `ModelViewsDefinitionV2`  }
 
 
 ___
@@ -275,9 +275,9 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `enums` | `Record`<`string`, `string`[]\> |
-| `models` | `Record`<`string`, [`ParsedModelDefinition`](devtools.md#parsedmodeldefinition)\> |
-| `objects` | `Record`<`string`, [`ObjectDefinition`](devtools.md#objectdefinition)\> |
+| `enums` | `Record`\<`string`, `string`[]\> |
+| `models` | `Record`\<`string`, [`ParsedModelDefinition`](devtools.md#parsedmodeldefinition)\> |
+| `objects` | `Record`\<`string`, [`ObjectDefinition`](devtools.md#objectdefinition)\> |
 
 
 ___

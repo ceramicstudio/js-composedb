@@ -1,6 +1,6 @@
 {
   "name": "@composedb/cli",
-  "version": "0.5.2",
+  "version": "0.6.0-rc.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://composedb.js.org",
@@ -29,7 +29,7 @@
     "oclif.manifest.json"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "sideEffects": false,
   "scripts": {
@@ -69,12 +69,12 @@
     ]
   },
   "dependencies": {
-    "@ceramicnetwork/3id-did-resolver": "^2.31.0",
-    "@ceramicnetwork/cli": "^2.40.0",
-    "@ceramicnetwork/http-client": "^2.32.0",
-    "@ceramicnetwork/stream-model": "^1.17.0",
-    "@ceramicnetwork/stream-model-instance": "^1.17.0",
-    "@ceramicnetwork/streamid": "^2.17.0",
+    "@ceramicnetwork/3id-did-resolver": "^3.0.0-rc.0",
+    "@ceramicnetwork/cli": "^3.0.0-rc.0",
+    "@ceramicnetwork/http-client": "^3.0.0-rc.0",
+    "@ceramicnetwork/stream-model": "^2.0.0-rc.0",
+    "@ceramicnetwork/stream-model-instance": "^2.0.0-rc.0",
+    "@ceramicnetwork/streamid": "^3.0.0-rc.0",
     "@composedb/client": "workspace:^",
     "@composedb/devtools": "workspace:^",
     "@composedb/devtools-node": "workspace:^",
@@ -96,8 +96,8 @@
     "uint8arrays": "^4.0.6"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^2.35.0",
-    "@composedb/types": "workspace:^0.5.1",
+    "@ceramicnetwork/common": "^3.0.0-rc.0",
+    "@composedb/types": "workspace:^",
     "@swc-node/register": "^1.6.8",
     "@types/fs-extra": "^11.0.3",
     "@types/jest": "^29.5.7",
