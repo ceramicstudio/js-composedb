@@ -2,10 +2,7 @@
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 const sidebars = {
-  docs: [
-    { type: 'doc', id: 'introduction', label: 'Introduction' },
-    { type: 'doc', id: 'installation', label: 'Installation' }
-  ],
+  docs: [{ type: 'doc', id: 'introduction', label: 'Introduction' }],
   api: [
     {
       type: 'category',
