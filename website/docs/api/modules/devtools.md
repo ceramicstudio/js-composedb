@@ -27,7 +27,7 @@ npm install --dev @composedb/devtools
 | Name | Type |
 | :------ | :------ |
 | `commonEmbeds` | `string`[] |
-| `models` | `Record`<`string`, [`AbstractModelDefinition`](devtools.md#abstractmodeldefinition)\> |
+| `models` | `Record`\<`string`, [`AbstractModelDefinition`](devtools.md#abstractmodeldefinition)\> |
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 ### AbstractLoadModelDefinition
 
-Ƭ **AbstractLoadModelDefinition**: [`ParsedLoadModelDefinition`](devtools.md#parsedloadmodeldefinition) & { `indices?`: `FieldsIndex`[] ; `views`: `ModelViewsDefinitionV2`  }
+Ƭ **AbstractLoadModelDefinition**: [`ParsedLoadModelDefinition`](devtools.md#parsedloadmodeldefinition) & \{ `indices?`: `FieldsIndex`[] ; `views`: `ModelViewsDefinitionV2`  }
 
 ___
 
@@ -81,8 +81,8 @@ Supported options for merging composites.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `aliases?` | `Record`<`string`, `string`\> | Additional Models aliases merged in the composite in addition to the ones present in the source composites. |
-| `commonEmbeds?` | ``"all"`` \| ``"none"`` \| `Iterable`<`string`\> | Behavior to apply for merging common embeds: - `none` (default) will not set an common embed - `all` will merge all the common embeds found in any composite - explicit embed names to set as common embeds |
+| `aliases?` | `Record`\<`string`, `string`\> | Additional Models aliases merged in the composite in addition to the ones present in the source composites. |
+| `commonEmbeds?` | ``"all"`` \| ``"none"`` \| `Iterable`\<`string`\> | Behavior to apply for merging common embeds: - `none` (default) will not set an common embed - `all` will merge all the common embeds found in any composite - explicit embed names to set as common embeds |
 | `views?` | `CompositeViewsDefinition` | Additional views merged in the composite in addition to the ones present in the source composites. |
 
 ___
@@ -97,7 +97,7 @@ Composite instance creation parameters.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `commits` | `Record`<`string`, `StreamCommits`\> | Model streams commits, that can be pushed to any Ceramic node to ensure the Model streams used by a composite are available. |
+| `commits` | `Record`\<`string`, `StreamCommits`\> | Model streams commits, that can be pushed to any Ceramic node to ensure the Model streams used by a composite are available. |
 | `definition` | `InternalCompositeDefinition` | Internal metadata describing the composite. |
 
 ___
@@ -120,7 +120,7 @@ ___
 
 ### EnumFieldDefinition
 
-Ƭ **EnumFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & { `name`: `string` ; `type`: ``"enum"``  }
+Ƭ **EnumFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & \{ `name`: `string` ; `type`: ``"enum"``  }
 
 ___
 
@@ -154,7 +154,7 @@ ___
 
 ### FromModelsParams
 
-Ƭ **FromModelsParams**: [`CompositeOptions`](devtools.md#compositeoptions) & { `ceramic`: `CeramicApi` ; `index?`: `boolean` ; `models`: `string`[]  }
+Ƭ **FromModelsParams**: [`CompositeOptions`](devtools.md#compositeoptions) & \{ `ceramic`: `CeramicApi` ; `index?`: `boolean` ; `models`: `string`[]  }
 
 Composite creation parameters from existing models.
 
@@ -168,7 +168,7 @@ ___
 
 ### ListFieldDefinition
 
-Ƭ **ListFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & { `item`: [`ItemDefinition`](devtools.md#itemdefinition) ; `maxLength`: `number` ; `minLength?`: `number` ; `type`: ``"list"``  }
+Ƭ **ListFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & \{ `item`: [`ItemDefinition`](devtools.md#itemdefinition) ; `maxLength`: `number` ; `minLength?`: `number` ; `type`: ``"list"``  }
 
 ___
 
@@ -195,13 +195,13 @@ ___
 
 ### ObjectFieldsDefinition
 
-Ƭ **ObjectFieldsDefinition**: `Record`<`string`, [`ObjectFieldDefinition`](devtools.md#objectfielddefinition)\>
+Ƭ **ObjectFieldsDefinition**: `Record`\<`string`, [`ObjectFieldDefinition`](devtools.md#objectfielddefinition)\>
 
 ___
 
 ### ObjectReferenceFieldDefinition
 
-Ƭ **ObjectReferenceFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & { `name`: `string` ; `type`: ``"object"``  }
+Ƭ **ObjectReferenceFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & \{ `name`: `string` ; `type`: ``"object"``  }
 
 ___
 
@@ -256,7 +256,7 @@ ___
 
 ### ScalarFieldDefinition
 
-Ƭ **ScalarFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & { `schema`: [`ScalarSchema`](devtools.md#scalarschema) ; `type`: ``"scalar"``  }
+Ƭ **ScalarFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & \{ `schema`: [`ScalarSchema`](devtools.md#scalarschema) ; `type`: ``"scalar"``  }
 
 ___
 
@@ -274,9 +274,9 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `enums` | `Record`<`string`, `string`[]\> |
-| `models` | `Record`<`string`, [`ParsedModelDefinition`](devtools.md#parsedmodeldefinition)\> |
-| `objects` | `Record`<`string`, [`ObjectDefinition`](devtools.md#objectdefinition)\> |
+| `enums` | `Record`\<`string`, `string`[]\> |
+| `models` | `Record`\<`string`, [`ParsedModelDefinition`](devtools.md#parsedmodeldefinition)\> |
+| `objects` | `Record`\<`string`, [`ObjectDefinition`](devtools.md#objectdefinition)\> |
 
 ___
 

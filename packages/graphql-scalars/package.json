@@ -1,6 +1,6 @@
 {
   "name": "@composedb/graphql-scalars",
-  "version": "0.5.1",
+  "version": "0.6.0-rc.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://composedb.js.org",
@@ -24,7 +24,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "sideEffects": false,
   "scripts": {
@@ -37,7 +37,7 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/streamid": "^2.17.0",
+    "@ceramicnetwork/streamid": "^3.0.0-rc.0",
     "@composedb/types": "workspace:^",
     "caip": "^1.1.0",
     "graphql": "^16.8.1",
