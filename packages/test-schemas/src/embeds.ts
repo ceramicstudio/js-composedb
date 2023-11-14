@@ -1,3 +1,7 @@
+/**
+ * Embedded objects schema
+ */
+
 export const ImageMetadataType = `
 type ImageMetadata {
   src: String! @string(maxLength: 150)

@@ -745,6 +745,6 @@ describe('composite', () => {
 
   test('Interfaces support', async () => {
     const composite = await Composite.create({ ceramic, schema: mediaSchema })
-    expect(composite.modelIDs).toHaveLength(6)
+    expect(composite.modelIDs).toHaveLength(13)
   })
 })

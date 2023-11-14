@@ -5,6 +5,7 @@ import {
   type ModelDefinition,
   type ModelDefinitionV2,
   type ModelViewsDefinitionV2,
+  loadAllModelInterfaces,
 } from '@ceramicnetwork/stream-model'
 import type { StreamID } from '@ceramicnetwork/streamid'
 import type { FieldsIndex } from '@composedb/types'
@@ -68,6 +69,7 @@ function executeCreateFactory(
   return async function executeCreate(executing: ExecutingRecord): Promise<ResolvedModel> {
     assertAuthenticatedDID(ceramic)
 
+    // Resolve a named dependency to its stream ID
     async function getDependencyID(name: string): Promise<string> {
       const existing = executing[name]
       if (existing == null) {
@@ -80,16 +82,21 @@ function executeCreateFactory(
     const sourceDefinition = definition.model
     const isV1 = sourceDefinition.version === '1.0'
 
+    // Flatten the implemented interfaces tree to provide them all in the definition
     const implementsPromise = isV1
       ? []
-      : Promise.all(sourceDefinition.implements.map(getDependencyID))
+      : Promise.all(sourceDefinition.implements.map(getDependencyID)).then((ids) => {
+          return loadAllModelInterfaces(ceramic, ids)
+        })
 
+    // Resolve named dependencies in relations to their stream ID
     const relationsPromise = promiseMap(sourceDefinition.relations ?? {}, async (relation) => {
       return relation.type === 'document' && relation.model !== null
         ? { ...relation, model: await getDependencyID(relation.model) }
         : relation
     })
 
+    // Resolve named dependencies in views to their stream ID when possible, or move the view to the composite
     const compositeViews: ModelViewsDefinitionV2 = {}
     const viewsPromises: Record<string, Promise<ModelViewDefinitionV2>> = {}
     for (const [name, view] of Object.entries(sourceDefinition.views ?? {})) {
@@ -117,6 +124,7 @@ function executeCreateFactory(
       relationsPromise,
       promiseMap(viewsPromises, (viewPromise) => viewPromise),
     ])
+    // Always convert to a v2 definition
     const newDefinition: ModelDefinitionV2 = {
       version: '2.0',
       name: sourceDefinition.name,
@@ -170,6 +178,7 @@ function assertNoCircularDependency(
   models: Record<string, ResolveModel>,
   targetModel: string,
   currentModel = targetModel,
+  visited: Array<string> = [],
 ): void {
   const dependencies = models[currentModel]?.requiredDependencies ?? []
   if (dependencies.includes(targetModel)) {
@@ -179,8 +188,13 @@ function assertNoCircularDependency(
       throw new Error(`Circular dependency of model ${targetModel} in model ${currentModel}`)
     }
   }
+  if (visited.includes(currentModel)) {
+    throw new Error(
+      `Circular dependency of model ${currentModel} in visited models: ${visited.join(', ')}`,
+    )
+  }
   for (const model of dependencies) {
-    assertNoCircularDependency(models, targetModel, model)
+    assertNoCircularDependency(models, targetModel, model, [...visited, currentModel])
   }
 }
 
@@ -198,11 +212,14 @@ export async function createIntermediaryCompositeDefinition(
         execute: executeLoadFactory(ceramic, modelName, definition),
       }
     } else if (definition.action === 'create') {
-      let requiredDependencies: Array<string> = []
-      const viewDependencies: Array<string> = []
+      const isInterface = definition.model.version !== '1.0' && definition.model.interface
+      const requiredDependencies = new Set<string>()
+      const viewDependencies = new Set<string>()
 
       if (definition.model.version !== '1.0') {
-        requiredDependencies = [...definition.model.implements]
+        for (const dependency of definition.model.implements) {
+          requiredDependencies.add(dependency)
+        }
       }
 
       for (const relation of Object.values(definition.model.relations ?? {})) {
@@ -210,7 +227,7 @@ export async function createIntermediaryCompositeDefinition(
           if (relation.model === modelName) {
             throw new Error(`Unsupported self-reference relation on model ${modelName}`)
           }
-          requiredDependencies.push(relation.model)
+          requiredDependencies.add(relation.model)
         }
       }
 
@@ -221,13 +238,18 @@ export async function createIntermediaryCompositeDefinition(
             view.type === 'relationDocument') &&
           view.model !== null
         ) {
-          viewDependencies.push(view.model)
+          if (isInterface) {
+            // Views must be present in the model definition of interfaces
+            requiredDependencies.add(view.model)
+          } else {
+            viewDependencies.add(view.model)
+          }
         }
       }
 
       toResolve[modelName] = {
-        requiredDependencies,
-        viewDependencies,
+        requiredDependencies: Array.from(requiredDependencies),
+        viewDependencies: Array.from(viewDependencies),
         name: modelName,
         execute: executeCreateFactory(ceramic, modelName, definition),
       }
@@ -240,7 +262,7 @@ export async function createIntermediaryCompositeDefinition(
   const steps: Array<Array<ResolveModel>> = [[]]
   const remainingModels = new Set<string>()
 
-  // First pass, check for circular dependencies and add models with no dependencies to the first execution step
+  // In the first pass, check for circular dependencies and add models with no dependencies to the first execution step
   for (const [name, resolve] of Object.entries(toResolve)) {
     assertNoCircularDependency(toResolve, name)
     if (resolve.requiredDependencies.length === 0) {
@@ -269,6 +291,7 @@ export async function createIntermediaryCompositeDefinition(
     }
   }
 
+  // Run all the execution steps with injected dependencies
   const executing: ExecutingRecord = {}
   for (const step of steps) {
     for (const model of step) {
@@ -284,7 +307,7 @@ export async function createIntermediaryCompositeDefinition(
     views: {},
   }
   const modelIDs: Record<string, string> = {}
-
+  // Fill the composite definition with the models execution results
   await Promise.all(
     Object.values(executing).map(async (executedPromise) => {
       const res = await executedPromise
@@ -296,7 +319,7 @@ export async function createIntermediaryCompositeDefinition(
       modelIDs[res.name] = res.id
     }),
   )
-  // Replace referenced models in composite views by their ID
+  // Replace referenced models in composite views by their ID after all models are resolved
   for (const modelViews of Object.values(definition.views)) {
     for (const view of Object.values(modelViews)) {
       if (

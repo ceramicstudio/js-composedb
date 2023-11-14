@@ -1,3 +1,7 @@
+/**
+ * Relations and views schema
+ */
+
 export const postSchema = `
 type Post 
   @createModel(accountRelation: LIST, description: "Simple post") 

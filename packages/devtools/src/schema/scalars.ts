@@ -85,6 +85,7 @@ export const extraScalars: Record<string, ScalarWithTitle> = {
   Date: { ...getGraphQLScalarSchema<JSONSchema.String>('date'), maxLength: 100 },
   DateTime: { ...getGraphQLScalarSchema<JSONSchema.String>('datetime'), maxLength: 100 },
   DID: { ...getGraphQLScalarSchema<JSONSchema.String>('did'), maxLength: 100 },
+  Duration: { ...getGraphQLScalarSchema<JSONSchema.String>('duration'), maxLength: 100 },
   Latitude: getGraphQLScalarSchema('latitude'),
   LocalDate: { ...getGraphQLScalarSchema<JSONSchema.String>('localdate'), maxLength: 100 },
   Locale: { ...getGraphQLScalarSchema<JSONSchema.String>('locale'), maxLength: 100 },

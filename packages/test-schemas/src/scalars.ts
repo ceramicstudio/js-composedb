@@ -1,3 +1,7 @@
+/**
+ * Scalars schema
+ */
+
 export const extraScalarsSchema = `
 type ExtraScalars 
   @createModel(accountRelation: LIST, description: "Kitchen sink of added scalar types") 
@@ -11,6 +15,7 @@ type ExtraScalars
   date: Date
   dateTime: DateTime
   did: DID
+  duration: Duration
   latitude: Latitude
   localDate: LocalDate
   locale: Locale

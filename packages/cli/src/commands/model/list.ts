@@ -3,7 +3,7 @@ import { Flags, ux } from '@oclif/core'
 import { Model } from '@ceramicnetwork/stream-model'
 import Table, { Cell } from 'cli-table3'
 import { Edge, Page, PageInfo, StreamState } from '@ceramicnetwork/common'
-import terminalSize from 'term-size'
+import terminalSize from 'terminal-size'
 import { CeramicClient } from '@ceramicnetwork/http-client'
 
 type PartialModelDefinition = {
