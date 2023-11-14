@@ -1,6 +1,6 @@
 ---
-id: "devtools"
-title: "Module: devtools"
+id: 'devtools'
+title: 'Module: devtools'
 custom_edit_url: null
 ---
 
@@ -24,12 +24,12 @@ npm install --dev @composedb/devtools
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `commonEmbeds` | `string`[] |
-| `models` | `Record`\<`string`, [`AbstractModelDefinition`](devtools.md#abstractmodeldefinition)\> |
+| Name           | Type                                                                                   |
+| :------------- | :------------------------------------------------------------------------------------- |
+| `commonEmbeds` | `string`[]                                                                             |
+| `models`       | `Record`\<`string`, [`AbstractModelDefinition`](devtools.md#abstractmodeldefinition)\> |
 
-___
+---
 
 ### AbstractCreateModelDefinition
 
@@ -37,31 +37,31 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `action` | ``"create"`` |
-| `indices?` | `FieldsIndex`[] |
-| `model` | `ModelDefinition` |
+| Name       | Type              |
+| :--------- | :---------------- |
+| `action`   | `"create"`        |
+| `indices?` | `FieldsIndex`[]   |
+| `model`    | `ModelDefinition` |
 
-___
+---
 
 ### AbstractLoadModelDefinition
 
-Ƭ **AbstractLoadModelDefinition**: [`ParsedLoadModelDefinition`](devtools.md#parsedloadmodeldefinition) & \{ `indices?`: `FieldsIndex`[] ; `views`: `ModelViewsDefinitionV2`  }
+Ƭ **AbstractLoadModelDefinition**: [`ParsedLoadModelDefinition`](devtools.md#parsedloadmodeldefinition) & \{ `indices?`: `FieldsIndex`[] ; `views`: `ModelViewsDefinitionV2` }
 
-___
+---
 
 ### AbstractModelDefinition
 
 Ƭ **AbstractModelDefinition**: [`AbstractCreateModelDefinition`](devtools.md#abstractcreatemodeldefinition) \| [`AbstractLoadModelDefinition`](devtools.md#abstractloadmodeldefinition)
 
-___
+---
 
 ### AnySchema
 
 Ƭ **AnySchema**: [`ScalarSchema`](devtools.md#scalarschema) \| `JSONSchema.Array` \| `JSONSchema.Object`
 
-___
+---
 
 ### CompositeInput
 
@@ -69,7 +69,7 @@ ___
 
 Supported composite input when comparing or merging composites.
 
-___
+---
 
 ### CompositeOptions
 
@@ -79,13 +79,13 @@ Supported options for merging composites.
 
 #### Type declaration
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `aliases?` | `Record`\<`string`, `string`\> | Additional Models aliases merged in the composite in addition to the ones present in the source composites. |
-| `commonEmbeds?` | ``"all"`` \| ``"none"`` \| `Iterable`\<`string`\> | Behavior to apply for merging common embeds: - `none` (default) will not set an common embed - `all` will merge all the common embeds found in any composite - explicit embed names to set as common embeds |
-| `views?` | `CompositeViewsDefinition` | Additional views merged in the composite in addition to the ones present in the source composites. |
+| Name            | Type                                          | Description                                                                                                                                                                                                 |
+| :-------------- | :-------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `aliases?`      | `Record`\<`string`, `string`\>                | Additional Models aliases merged in the composite in addition to the ones present in the source composites.                                                                                                 |
+| `commonEmbeds?` | `"all"` \| `"none"` \| `Iterable`\<`string`\> | Behavior to apply for merging common embeds: - `none` (default) will not set an common embed - `all` will merge all the common embeds found in any composite - explicit embed names to set as common embeds |
+| `views?`        | `CompositeViewsDefinition`                    | Additional views merged in the composite in addition to the ones present in the source composites.                                                                                                          |
 
-___
+---
 
 ### CompositeParams
 
@@ -95,12 +95,12 @@ Composite instance creation parameters.
 
 #### Type declaration
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `commits` | `Record`\<`string`, `StreamCommits`\> | Model streams commits, that can be pushed to any Ceramic node to ensure the Model streams used by a composite are available. |
-| `definition` | `InternalCompositeDefinition` | Internal metadata describing the composite. |
+| Name         | Type                                  | Description                                                                                                                  |
+| :----------- | :------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------- |
+| `commits`    | `Record`\<`string`, `StreamCommits`\> | Model streams commits, that can be pushed to any Ceramic node to ensure the Model streams used by a composite are available. |
+| `definition` | `InternalCompositeDefinition`         | Internal metadata describing the composite.                                                                                  |
 
-___
+---
 
 ### CreateParams
 
@@ -110,19 +110,19 @@ Composite creation parameters from a schema.
 
 #### Type declaration
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
+| Name      | Type         | Description                                                                                                                                                                                                    |
+| :-------- | :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ceramic` | `CeramicApi` | Ceramic instance connected to the node the new Model streams must be created on. The Ceramic instance **must have an authenticated DID attached to it** in order to create Models, using the `did:key` method. |
-| `index?` | `boolean` | Whether to add the Models to the index or not. If `true` (default), the Ceramic instance must be authenticated with an admin DID. |
-| `schema` | `string` | Composite schema string. |
+| `index?`  | `boolean`    | Whether to add the Models to the index or not. If `true` (default), the Ceramic instance must be authenticated with an admin DID.                                                                              |
+| `schema`  | `string`     | Composite schema string.                                                                                                                                                                                       |
 
-___
+---
 
 ### EnumFieldDefinition
 
-Ƭ **EnumFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & \{ `name`: `string` ; `type`: ``"enum"``  }
+Ƭ **EnumFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & \{ `name`: `string` ; `type`: `"enum"` }
 
-___
+---
 
 ### FieldCommonDefinition
 
@@ -130,11 +130,11 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
+| Name       | Type      |
+| :--------- | :-------- |
 | `required` | `boolean` |
 
-___
+---
 
 ### FromJSONParams
 
@@ -144,33 +144,33 @@ Composite creation parameters from a JSON-encoded definition.
 
 #### Type declaration
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `ceramic` | `CeramicApi` | Ceramic instance connected to the node where the Model stream will be pushed. |
-| `definition` | `EncodedCompositeDefinition` | JSON-encoded composite definition. |
-| `index?` | `boolean` | Whether to add the Models to the index or not. If `true`, the Ceramic instance must be authenticated with an admin DID. Defaults to `false`. |
+| Name         | Type                         | Description                                                                                                                                  |
+| :----------- | :--------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ceramic`    | `CeramicApi`                 | Ceramic instance connected to the node where the Model stream will be pushed.                                                                |
+| `definition` | `EncodedCompositeDefinition` | JSON-encoded composite definition.                                                                                                           |
+| `index?`     | `boolean`                    | Whether to add the Models to the index or not. If `true`, the Ceramic instance must be authenticated with an admin DID. Defaults to `false`. |
 
-___
+---
 
 ### FromModelsParams
 
-Ƭ **FromModelsParams**: [`CompositeOptions`](devtools.md#compositeoptions) & \{ `ceramic`: `CeramicApi` ; `index?`: `boolean` ; `models`: `string`[]  }
+Ƭ **FromModelsParams**: [`CompositeOptions`](devtools.md#compositeoptions) & \{ `ceramic`: `CeramicApi` ; `index?`: `boolean` ; `models`: `string`[] }
 
 Composite creation parameters from existing models.
 
-___
+---
 
 ### ItemDefinition
 
 Ƭ **ItemDefinition**: [`ReferenceFieldDefinition`](devtools.md#referencefielddefinition) \| [`ScalarFieldDefinition`](devtools.md#scalarfielddefinition)
 
-___
+---
 
 ### ListFieldDefinition
 
-Ƭ **ListFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & \{ `item`: [`ItemDefinition`](devtools.md#itemdefinition) ; `maxLength`: `number` ; `minLength?`: `number` ; `type`: ``"list"``  }
+Ƭ **ListFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & \{ `item`: [`ItemDefinition`](devtools.md#itemdefinition) ; `maxLength`: `number` ; `minLength?`: `number` ; `type`: `"list"` }
 
-___
+---
 
 ### ObjectDefinition
 
@@ -178,32 +178,32 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `indices` | `FieldsIndex`[] |
+| Name         | Type                                                           |
+| :----------- | :------------------------------------------------------------- |
+| `indices`    | `FieldsIndex`[]                                                |
 | `properties` | [`ObjectFieldsDefinition`](devtools.md#objectfieldsdefinition) |
-| `references` | `string`[] |
-| `relations` | `ModelRelationsDefinitionV2` |
+| `references` | `string`[]                                                     |
+| `relations`  | `ModelRelationsDefinitionV2`                                   |
 
-___
+---
 
 ### ObjectFieldDefinition
 
 Ƭ **ObjectFieldDefinition**: [`ItemDefinition`](devtools.md#itemdefinition) \| [`ListFieldDefinition`](devtools.md#listfielddefinition) \| [`ViewFieldDefinition`](devtools.md#viewfielddefinition)
 
-___
+---
 
 ### ObjectFieldsDefinition
 
 Ƭ **ObjectFieldsDefinition**: `Record`\<`string`, [`ObjectFieldDefinition`](devtools.md#objectfielddefinition)\>
 
-___
+---
 
 ### ObjectReferenceFieldDefinition
 
-Ƭ **ObjectReferenceFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & \{ `name`: `string` ; `type`: ``"object"``  }
+Ƭ **ObjectReferenceFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & \{ `name`: `string` ; `type`: `"object"` }
 
-___
+---
 
 ### ParsedCreateModelDefinition
 
@@ -211,16 +211,16 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `accountRelation` | `ModelAccountRelationV2` |
-| `action` | ``"create"`` |
-| `description` | `string` |
-| `implements` | `string`[] |
-| `interface` | `boolean` |
-| `relations` | `ModelRelationsDefinitionV2` |
+| Name              | Type                         |
+| :---------------- | :--------------------------- |
+| `accountRelation` | `ModelAccountRelationV2`     |
+| `action`          | `"create"`                   |
+| `description`     | `string`                     |
+| `implements`      | `string`[]                   |
+| `interface`       | `boolean`                    |
+| `relations`       | `ModelRelationsDefinitionV2` |
 
-___
+---
 
 ### ParsedLoadModelDefinition
 
@@ -228,43 +228,43 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `action` | ``"load"`` |
-| `id` | `string` |
+| Name        | Type      |
+| :---------- | :-------- |
+| `action`    | `"load"`  |
+| `id`        | `string`  |
 | `interface` | `boolean` |
 
-___
+---
 
 ### ParsedModelDefinition
 
 Ƭ **ParsedModelDefinition**: [`ParsedCreateModelDefinition`](devtools.md#parsedcreatemodeldefinition) \| [`ParsedLoadModelDefinition`](devtools.md#parsedloadmodeldefinition)
 
-___
+---
 
 ### ReferenceFieldDefinition
 
 Ƭ **ReferenceFieldDefinition**: [`EnumFieldDefinition`](devtools.md#enumfielddefinition) \| [`ObjectReferenceFieldDefinition`](devtools.md#objectreferencefielddefinition)
 
-___
+---
 
 ### ReferenceFieldType
 
 Ƭ **ReferenceFieldType**: [`ReferenceFieldDefinition`](devtools.md#referencefielddefinition)[``"type"``]
 
-___
+---
 
 ### ScalarFieldDefinition
 
-Ƭ **ScalarFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & \{ `schema`: [`ScalarSchema`](devtools.md#scalarschema) ; `type`: ``"scalar"``  }
+Ƭ **ScalarFieldDefinition**: [`FieldCommonDefinition`](devtools.md#fieldcommondefinition) & \{ `schema`: [`ScalarSchema`](devtools.md#scalarschema) ; `type`: `"scalar"` }
 
-___
+---
 
 ### ScalarSchema
 
 Ƭ **ScalarSchema**: `JSONSchema.Boolean` \| `JSONSchema.Integer` \| `JSONSchema.Number` \| `JSONSchema.String`
 
-___
+---
 
 ### SchemaDefinition
 
@@ -272,13 +272,13 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `enums` | `Record`\<`string`, `string`[]\> |
-| `models` | `Record`\<`string`, [`ParsedModelDefinition`](devtools.md#parsedmodeldefinition)\> |
-| `objects` | `Record`\<`string`, [`ObjectDefinition`](devtools.md#objectdefinition)\> |
+| Name      | Type                                                                               |
+| :-------- | :--------------------------------------------------------------------------------- |
+| `enums`   | `Record`\<`string`, `string`[]\>                                                   |
+| `models`  | `Record`\<`string`, [`ParsedModelDefinition`](devtools.md#parsedmodeldefinition)\> |
+| `objects` | `Record`\<`string`, [`ObjectDefinition`](devtools.md#objectdefinition)\>           |
 
-___
+---
 
 ### ViewFieldDefinition
 
@@ -292,8 +292,8 @@ ___
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name     | Type     |
+| :------- | :------- |
 | `schema` | `string` |
 
 #### Returns

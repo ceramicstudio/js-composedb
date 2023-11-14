@@ -69,7 +69,6 @@ type IntermediaryObjectDefinition = DefinitionWithReferences<ObjectFieldsDefinit
 export class SchemaParser {
   #def: SchemaDefinition = {
     enums: {},
-    // interfaces: {},
     models: {},
     objects: {},
   }
