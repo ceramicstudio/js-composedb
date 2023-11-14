@@ -24,7 +24,7 @@ import { Composite } from '@composedb/devtools'
 
 ### constructor
 
-• **new Composite**(`params`)
+• **new Composite**(`params`): [`Composite`](devtools.Composite.md)
 
 #### Parameters
 
@@ -32,11 +32,15 @@ import { Composite } from '@composedb/devtools'
 | :------ | :------ |
 | `params` | [`CompositeParams`](../modules/devtools.md#compositeparams) |
 
+#### Returns
+
+[`Composite`](devtools.Composite.md)
+
 ## Properties
 
 ### VERSION
 
-▪ `Static` **VERSION**: `string` = `'1.0'`
+▪ `Static` **VERSION**: `string` = `'1.1'`
 
 Current version of the composites format.
 
@@ -132,7 +136,7 @@ Set aliases for the Models in the composite, merging with existing ones unless `
 
 | Name | Type | Default value |
 | :------ | :------ | :------ |
-| `aliases` | `Record`<`string`, `string`\> | `undefined` |
+| `aliases` | `Record`\<`string`, `string`\> | `undefined` |
 | `replace` | `boolean` | `false` |
 
 #### Returns
@@ -152,7 +156,7 @@ is `true`, and return a new Composite.
 
 | Name | Type | Default value |
 | :------ | :------ | :------ |
-| `names` | `Iterable`<`string`\> | `undefined` |
+| `names` | `Iterable`\<`string`\> | `undefined` |
 | `replace` | `boolean` | `false` |
 
 #### Returns
@@ -183,7 +187,7 @@ ___
 
 ### startIndexingOn
 
-▸ **startIndexingOn**(`ceramic`): `Promise`<`void`\>
+▸ **startIndexingOn**(`ceramic`): `Promise`\<`void`\>
 
 Configure the Ceramic node to index the models defined in the composite. An authenticated DID
 set as admin in the Ceramic node configuration must be attached to the Ceramic instance.
@@ -196,7 +200,7 @@ set as admin in the Ceramic node configuration must be attached to the Ceramic i
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 ___
 
@@ -239,7 +243,7 @@ ___
 
 ### create
 
-▸ `Static` **create**(`params`): `Promise`<[`Composite`](devtools.Composite.md)\>
+▸ **create**(`params`): `Promise`\<[`Composite`](devtools.Composite.md)\>
 
 Create new model streams based on the provided `schema` and group them in a composite
 wrapped in a Composite instance.
@@ -252,13 +256,13 @@ wrapped in a Composite instance.
 
 #### Returns
 
-`Promise`<[`Composite`](devtools.Composite.md)\>
+`Promise`\<[`Composite`](devtools.Composite.md)\>
 
 ___
 
 ### from
 
-▸ `Static` **from**(`composites`, `options?`): [`Composite`](devtools.Composite.md)
+▸ **from**(`composites`, `options?`): [`Composite`](devtools.Composite.md)
 
 Create a Composite instance by merging existing composites.
 
@@ -266,7 +270,7 @@ Create a Composite instance by merging existing composites.
 
 | Name | Type |
 | :------ | :------ |
-| `composites` | `Iterable`<[`CompositeInput`](../modules/devtools.md#compositeinput)\> |
+| `composites` | `Iterable`\<[`CompositeInput`](../modules/devtools.md#compositeinput)\> |
 | `options?` | [`CompositeOptions`](../modules/devtools.md#compositeoptions) |
 
 #### Returns
@@ -277,7 +281,7 @@ ___
 
 ### fromJSON
 
-▸ `Static` **fromJSON**(`params`): `Promise`<[`Composite`](devtools.Composite.md)\>
+▸ **fromJSON**(`params`): `Promise`\<[`Composite`](devtools.Composite.md)\>
 
 Create a Composite instance from a JSON-encoded `CompositeDefinition`.
 
@@ -289,13 +293,13 @@ Create a Composite instance from a JSON-encoded `CompositeDefinition`.
 
 #### Returns
 
-`Promise`<[`Composite`](devtools.Composite.md)\>
+`Promise`\<[`Composite`](devtools.Composite.md)\>
 
 ___
 
 ### fromModels
 
-▸ `Static` **fromModels**(`params`): `Promise`<[`Composite`](devtools.Composite.md)\>
+▸ **fromModels**(`params`): `Promise`\<[`Composite`](devtools.Composite.md)\>
 
 Create a Composite instance from a set of Model streams already present on a Ceramic node.
 
@@ -307,4 +311,4 @@ Create a Composite instance from a set of Model streams already present on a Cer
 
 #### Returns
 
-`Promise`<[`Composite`](devtools.Composite.md)\>
+`Promise`\<[`Composite`](devtools.Composite.md)\>

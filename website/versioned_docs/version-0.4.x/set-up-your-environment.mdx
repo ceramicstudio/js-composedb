@@ -3,11 +3,6 @@ import TabItem from '@theme/TabItem'
 
 # Set up your environment
 
-<head>
-  <meta name="robots" content="noindex" />
-  <meta name="googlebot" content="noindex" />
-</head>
-
 The first step to build with ComposeDB is setting up your development environment. Currently, there are two ways of how you can configure your working environment:
 
 - [Using the Wheel](#installation-using-wheel) - the recommended and the easiest way to configure your working environment and install the necessary dependencies.
@@ -119,12 +114,12 @@ Moreover, this option will give you an option to set up an example web3 social a
 
 :::caution
 
-**Important:** [Ceramic Anchor Service (CAS)](https://composedb.js.org/docs/0.4.x/guides/composedb-server/access-mainnet) is used to anchor Ceramic streams on a blockchain.
+**Important:** [Ceramic Anchor Service (CAS)](https://developers.ceramic.network/docs-docusaurus/docs/composedb/guides/composedb-server/access-mainnet) is used to anchor Ceramic streams on a blockchain.
 CAS is require for `dev`, `testnet-clay` and `mainnet` networks. Since `InMemory` option doesn’t use CAS, data generated for your project will not be persisted.
 
 :::
 
-If you are ready to dive into a more advanced configuration, head to [**Wheel reference page→**](./wheel-reference.mdx) to learn more details about each parameter you can configure.
+If you are ready to dive into a more advanced configuration, head to [**Wheel reference page→**](https://developers.ceramic.network/docs-docusaurus/docs/wheel/wheel-reference) to learn more details about each parameter you can configure.
 
 ### Interact with the example web3 social app
 
@@ -211,7 +206,7 @@ After you interact with the application you can dive deeper into the underlying 
 Familiarise yourself with the actual implementations of specific features, e.g. - check out the `composites` directory to see the implementation
 of data models used for this application.
 
-Check out this tutorial for a more advanced explanations on how you can interact with this example app.
+Check out [this video tutorial](https://www.youtube.com/watch?v=r68FXBTCBZ4) for a more advanced explanations on how you can interact with this example app.
 
 ## Installation using JavaScript package managers
 
@@ -307,14 +302,14 @@ Next install the ComposeDB CLI, which enables you to interact with ComposeDB dat
   <TabItem value="npm">
 
 ```bash
-npm install --location=global @composedb/cli@^0.4.0
+npm install --location=global @composedb/cli@^0.5.0
 ```
 
   </TabItem>
   <TabItem value="pnpm">
 
 ```bash
-pnpm add -g @composedb/cli@^0.4.0
+pnpm add -g @composedb/cli@^0.5.0
 ```
 
   </TabItem>
@@ -327,7 +322,7 @@ Global packages are only supported for yarn 2.x and older. For yarn 3.x and newe
 :::
 
 ```bash
-yarn global add @composedb/cli@^0.4.0
+yarn global add @composedb/cli@^0.5.0
 ```
 
   </TabItem>
@@ -351,21 +346,21 @@ To install the development packages, run:
   <TabItem value="npm">
 
 ```bash
-npm install -D @composedb/devtools@^0.4.0 @composedb/devtools-node@^0.4.0
+npm install -D @composedb/devtools@^0.5.0 @composedb/devtools-node@^0.5.0
 ```
 
   </TabItem>
   <TabItem value="pnpm">
 
 ```bash
-pnpm add -D @composedb/devtools@^0.4.0 @composedb/devtools-node@^0.4.0
+pnpm add -D @composedb/devtools@^0.5.0 @composedb/devtools-node@^0.5.0
 ```
 
   </TabItem>
   <TabItem value="yarn">
 
 ```bash
-yarn add -D @composedb/devtools@^0.4.0 @composedb/devtools-node@^0.4.0
+yarn add -D @composedb/devtools@^0.5.0 @composedb/devtools-node@^0.5.0
 ```
 
   </TabItem>
@@ -643,14 +638,3 @@ Some questions and issues come up more often than others. We've compiled a list 
   </div>
 </details>
 
-## Next Steps
-
----
-
-After setting up your environment, the next step is to [**Create your composite →**](./create-your-composite.mdx)
-
-## Related Guides
-
----
-
-Ready to upgrade from a local node to production? Learn how to deploy your app: [Server configuration](./guides/composedb-server/running-in-the-cloud.mdx).

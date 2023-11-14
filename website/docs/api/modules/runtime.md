@@ -20,7 +20,7 @@ npm install @composedb/runtime
 
 ### ComposeRuntimeParams
 
-Ƭ **ComposeRuntimeParams**: [`GetSchemaParams`](runtime.md#getschemaparams) & { `cache?`: [`DocumentCache`](runtime.md#documentcache) \| `boolean` ; `ceramic`: `CeramicApi` \| `string` ; `context?`: [`Context`](runtime.md#context)  }
+Ƭ **ComposeRuntimeParams**: [`GetSchemaParams`](runtime.md#getschemaparams) & \{ `cache?`: [`DocumentCache`](runtime.md#documentcache) \| `boolean` ; `ceramic`: `CeramicApi` \| `string` ; `context?`: [`Context`](runtime.md#context)  }
 
 ___
 
@@ -33,16 +33,16 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `ceramic` | `CeramicApi` | Ceramic client instance used internally. |
-| `createDoc` | <Content\>(`model`: `string`, `content`: `Content`) => `Promise`<`ModelInstanceDocument`<`Content`\>\> | Create a new document with the given model and content. |
-| `createSingle` | <Content\>(`model`: `string`, `content`: `Content`, `options?`: `CreateOpts`) => `Promise`<`ModelInstanceDocument`<`Content`\>\> | Create a new single document with the given model and content. |
+| `createDoc` | \<Content\>(`model`: `string`, `content`: `Content`) => `Promise`\<`ModelInstanceDocument`\<`Content`\>\> | Create a new document with the given model and content. |
+| `createSingle` | \<Content\>(`model`: `string`, `content`: `Content`, `options?`: `CreateOpts`) => `Promise`\<`ModelInstanceDocument`\<`Content`\>\> | Create a new single document with the given model and content. |
 | `getViewerID` | () => `string` \| ``null`` | ID of the current viewer (authenticated DID), if set. |
 | `isAuthenticated` | () => `boolean` | Returns whether the Ceramic client instance used internally is authenticated or not. When not authenticated, mutations will fail. |
-| `loadDoc` | <Content\>(`id`: `string` \| `CommitID` \| `StreamID`, `fresh?`: `boolean`) => `Promise`<`ModelInstanceDocument`<`Content`\>\> | Load a document by ID, using the cache if possible. |
+| `loadDoc` | \<Content\>(`id`: `string` \| `CommitID` \| `StreamID`, `fresh?`: `boolean`) => `Promise`\<`ModelInstanceDocument`\<`Content`\>\> | Load a document by ID, using the cache if possible. |
 | `loader` | `DocumentLoader` | Document loader instance used internally. |
-| `queryConnection` | (`query`: `ConnectionQuery`) => `Promise`<`Connection`<`ModelInstanceDocument` \| ``null``\>\> | Query the index for a connection of documents. |
-| `queryCount` | (`query`: `BaseQuery`) => `Promise`<`number`\> | Query the index for the total number of documents matching the query parameters. |
-| `querySingle` | (`query`: `BaseQuery`) => `Promise`<`ModelInstanceDocument` \| ``null``\> | Query the index for a single document. |
-| `updateDoc` | <Content\>(`id`: `string` \| `StreamID`, `content`: `Content`, `options?`: `UpdateDocOptions`) => `Promise`<`ModelInstanceDocument`<`Content`\>\> | Update an existing document. |
+| `queryConnection` | (`query`: `ConnectionQuery`) => `Promise`\<`Connection`\<`ModelInstanceDocument` \| ``null``\>\> | Query the index for a connection of documents. |
+| `queryCount` | (`query`: `BaseQuery`) => `Promise`\<`number`\> | Query the index for the total number of documents matching the query parameters. |
+| `querySingle` | (`query`: `BaseQuery`) => `Promise`\<`ModelInstanceDocument` \| ``null``\> | Query the index for a single document. |
+| `updateDoc` | \<Content\>(`id`: `string` \| `StreamID`, `content`: `Content`, `options?`: `UpdateDocOptions`) => `Promise`\<`ModelInstanceDocument`\<`Content`\>\> | Update an existing document. |
 
 ___
 
@@ -70,8 +70,8 @@ ___
 | :------ | :------ |
 | `clear` | () => `any` |
 | `delete` | (`id`: `string`) => `any` |
-| `get` | (`id`: `string`) => `void` \| `Promise`<`ModelInstanceDocument`<`Record`<`string`, `any`\>\>\> |
-| `set` | (`id`: `string`, `value`: `Promise`<`ModelInstanceDocument`<`Record`<`string`, `any`\>\>\>) => `any` |
+| `get` | (`id`: `string`) => `void` \| `Promise`\<`ModelInstanceDocument`\<`Record`\<`string`, `any`\>\>\> |
+| `set` | (`id`: `string`, `value`: `Promise`\<`ModelInstanceDocument`\<`Record`\<`string`, `any`\>\>\>) => `any` |
 
 ___
 
