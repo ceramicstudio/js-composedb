@@ -11,7 +11,7 @@ custom_edit_url: null
 
 ComposeDB CLI - the Command Line Interface that enables interactions with a Ceramic Node
 
-You can check the [Getting Started](https://developers.ceramic.network/docs-docusaurus/docs/composedb/create-your-composite) Section for some examples (remember to switch to the 'Using the CLI' tab!)
+You can check the [Getting Started](https://developers.ceramic.network/docs/composedb/create-your-composite) Section for some examples (remember to switch to the 'Using the CLI' tab!)
 
 You can also check documentation for particular commands to see more detailed usage explanations and links to examples
 

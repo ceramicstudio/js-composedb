@@ -5,7 +5,7 @@ custom_edit_url: null
 ---
 
 The group of [CLI](../modules/cli.md) `composite:*` commands enables the
-creation and interactions with [Composites](https://developers.ceramic.network/docs-docusaurus/docs/composedb/guides/data-modeling/composites)
+creation and interactions with [Composites](https://developers.ceramic.network/docs/composedb/guides/data-modeling/composites)
 
 ## Command List
 
@@ -22,10 +22,10 @@ creation and interactions with [Composites](https://developers.ceramic.network/d
 ### `composedb composite:from-model`
 
 Create an encoded composite definition from a list of already existing model
-stream ids (usually found within [Model Catalog](https://ceramicnetwork.github.io/docs-docusaurus/docs/composedb/core-concepts#model-catalog)
+stream ids (usually found within [Model Catalog](https://developers.ceramic.network/docs/composedb/core-concepts#model-catalog)
 
 You can find a detailed guide on using an existing model to create your
-composite [here](https://ceramicnetwork.github.io/docs-docusaurus/docs/composedb/guides/data-modeling/composites)
+composite [here](https://developers.ceramic.network/docs/composedb/guides/data-modeling/composites)
 
 ```
 USAGE
@@ -42,9 +42,9 @@ OPTIONS
 
 ### `composedb composite:create`
 
-Create an encoded composite definition from GraphQL [Composite Schema](https://ceramicnetwork.github.io/docs-docusaurus/docs/composedb/guides/data-modeling/composites#creating-composites)
+Create an encoded composite definition from GraphQL [Composite Schema](https://developers.ceramic.network/docs/composedb/guides/data-modeling/composites#creating-composites)
 
-You can find a detailed guide on the creation of Composites [here](https://ceramicnetwork.github.io/docs-docusaurus/docs/composedb/guides/data-modeling/composites)
+You can find a detailed guide on the creation of Composites [here](https://developers.ceramic.network/docs/composedb/guides/data-modeling/composites)
 
 ```
 USAGE
@@ -115,7 +115,7 @@ Deploy models included in the composite on connected ceramic node
 You will need to use this command to make sure that your DApp's Composite is
 available on the Ceramic Node that yor DApp connects to. You can find a detailed
 guide on Composites' deployment
-[here](https://ceramicnetwork.github.io/docs-docusaurus/docs/composedb/guides/data-modeling/composites#deploying-composites)
+[here](https://developers.ceramic.network/docs/composedb/guides/data-modeling/composites#deploying-composites)
 
 ```
 USAGE

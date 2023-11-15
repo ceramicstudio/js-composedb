@@ -4,7 +4,7 @@ title: "CLI: model:* commands"
 custom_edit_url: null
 ---
 
-The group of [CLI](../modules/cli.md) `model:*` commands enables discovery of [Models](https://developers.ceramic.network/docs-docusaurus/docs/composedb/core-concepts#models), as well as their creation and interactions with them.
+The group of [CLI](../modules/cli.md) `model:*` commands enables discovery of [Models](https://developers.ceramic.network/docs/composedb/core-concepts#models), as well as their creation and interactions with them.
 
 ## Command List
 
@@ -19,7 +19,7 @@ The group of [CLI](../modules/cli.md) `model:*` commands enables discovery of [M
 
 Display a paginated list of models indexed on the connected ceramic node, which needs to be indexing model streams.
 
-This currently is the main entry path to the [Model Catalog](https://developers.ceramic.network/docs-docusaurus/docs/composedb/core-concepts#model-catalog) 
+This currently is the main entry path to the [Model Catalog](https://developers.ceramic.network/docs/composedb/core-concepts#model-catalog) 
 
 ```
 USAGE
@@ -34,7 +34,7 @@ OPTIONS
 
 Load the contents of a model stream with a given ID.
 
-You should use this command to check if an existing model found through [Model Catalog](https://developers.ceramic.network/docs-docusaurus/docs/composedb/core-concepts#model-catalog) has the fields you need.
+You should use this command to check if an existing model found through [Model Catalog](https://developers.ceramic.network/docs/composedb/core-concepts#model-catalog) has the fields you need.
 
 ```
 USAGE
@@ -50,7 +50,7 @@ OPTIONS
 
 ### `composedb model:controller`
 
-Load the model stream with a given ID and display its controller DID (identifier for the [Ceramic Account](https://developers.ceramic.network/docs-docusaurus/docs/composedb/core-concepts#accounts) that owns the model)
+Load the model stream with a given ID and display its controller DID (identifier for the [Ceramic Account](https://developers.ceramic.network/docs/composedb/core-concepts#accounts) that owns the model)
 
 ```
 USAGE
@@ -68,8 +68,8 @@ OPTIONS
 Create a model stream with given content.
 
 Most of the time you shouldn't be using this command directly. Instead, you should first check if a model you need
-already exists, using the [Model Catalog](https://developers.ceramic.network/docs-docusaurus/docs/composedb/core-concepts#model-catalog) and only if you can't
-find a model that you need, you should create one indirectly by [creating a Composite](https://developers.ceramic.network/docs-docusaurus/docs/composedb/core-concepts#composites) from a GraphQL Composite Schema.
+already exists, using the [Model Catalog](https://developers.ceramic.network/docs/composedb/core-concepts#model-catalog) and only if you can't
+find a model that you need, you should create one indirectly by [creating a Composite](https://developers.ceramic.network/docs/composedb/core-concepts#composites) from a GraphQL Composite Schema.
 
 ```
 USAGE

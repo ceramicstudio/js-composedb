@@ -9,7 +9,7 @@ custom_edit_url: null
   <meta name="googlebot" content="noindex" />
 </head>
 
-The group of [CLI](../modules/cli.md) `composite:*` commands enables the creation and interactions with [Composites](https://developers.ceramic.network/docs-docusaurus/docs/composedb/core-concepts#composites)
+The group of [CLI](../modules/cli.md) `composite:*` commands enables the creation and interactions with [Composites](https://developers.ceramic.network/docs/composedb/core-concepts#composites)
 
 ## Command List
 
@@ -25,9 +25,9 @@ The group of [CLI](../modules/cli.md) `composite:*` commands enables the creatio
 
 ### `composedb composite:from-model`
 
-Create an encoded composite definition from a list of already existing model stream ids (usually found by [Composites Discovery](https://developers.ceramic.network/docs-docusaurus/docs/composedb/core-concepts#model-catalog))
+Create an encoded composite definition from a list of already existing model stream ids (usually found by [Composites Discovery](https://developers.ceramic.network/docs/composedb/core-concepts#model-catalog))
 
-You can find a detailed guide on using an existing model to create your composite [here](https://developers.ceramic.network/docs-docusaurus/docs/composedb/create-your-composite)
+You can find a detailed guide on using an existing model to create your composite [here](https://developers.ceramic.network/docs/composedb/create-your-composite)
 
 ```
 USAGE
@@ -44,9 +44,9 @@ OPTIONS
 
 ### `composedb composite:create`
 
-Create an encoded composite definition from GraphQL [Composite Schema](https://developers.ceramic.network/docs-docusaurus/docs/composedb/guides/data-modeling/composites#creating-composites)
+Create an encoded composite definition from GraphQL [Composite Schema](https://developers.ceramic.network/docs/composedb/guides/data-modeling/composites#creating-composites)
 
-You can find a detailed guide on the creation of Composites [here](https://developers.ceramic.network/docs-docusaurus/docs/composedb/guides/data-modeling/composites#overview)
+You can find a detailed guide on the creation of Composites [here](https://developers.ceramic.network/docs/composedb/guides/data-modeling/composites#overview)
 
 ```
 USAGE
@@ -115,7 +115,7 @@ OPTIONS
 Deploy models included in the composite on connected ceramic node
 
 You will need to use this command to make sure that your DApp's Composite is available on the Ceramic Node that yor DApp
-connects to. You can find a detailed guide on Composites' deployment [here](https://developers.ceramic.network/docs-docusaurus/docs/composedb/guides/data-modeling/composites#deploying-composites)
+connects to. You can find a detailed guide on Composites' deployment [here](https://developers.ceramic.network/docs/composedb/guides/data-modeling/composites#deploying-composites)
 
 ```
 USAGE
@@ -132,7 +132,7 @@ OPTIONS
 
 Creates a runtime definition of the composite and saves it in given path(s).
 
-You will need the runtime definition to configure your ComposeDB Client. You can find a detailed guide on how to configure a ComposeDB Client [here](https://developers.ceramic.network/docs-docusaurus/docs/composedb/interact-with-data)
+You will need the runtime definition to configure your ComposeDB Client. You can find a detailed guide on how to configure a ComposeDB Client [here](https://developers.ceramic.network/docs/composedb/interact-with-data)
 
 ```
 USAGE

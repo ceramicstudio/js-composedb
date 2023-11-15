@@ -8,9 +8,9 @@ ComposeDB automatically generates the runtime GraphQL schema used by application
 
 Documents are uniquely identifiable objects in the graph using [GraphQL's Global Object Identification](https://graphql.org/learn/global-object-identification/) specification with the `Node` interface. All document objects contain an `id: ID!` field representing their unique stream ID.
 
-The other fields present in document objects are generated based on the [model's definition](https://developers.ceramic.network/docs-docusaurus/docs/composedb/guides/data-modeling/writing-models) and possibly added [views](../sdl/directives.mdx#views).
+The other fields present in document objects are generated based on the [model's definition](https://developers.ceramic.network/docs/composedb/guides/data-modeling/writing-models) and possibly added [views](../sdl/directives.mdx#views).
 
-For example, using the following [Schema definition](https://developers.ceramic.network/docs-docusaurus/docs/composedb/guides/data-modeling/schemas):
+For example, using the following [Schema definition](https://developers.ceramic.network/docs/composedb/guides/data-modeling/schemas):
 
 ```graphql
 enum PostStatus {
@@ -74,7 +74,7 @@ type PostEdge {
 
 Embedded objects can only be accessed from the document storing them.
 
-Example [Schema definition](https://developers.ceramic.network/docs-docusaurus/docs/composedb/guides/data-modeling/schemas):
+Example [Schema definition](https://developers.ceramic.network/docs/composedb/guides/data-modeling/schemas):
 
 ```graphql
 type ImageSource {
@@ -184,7 +184,7 @@ In addition to the `id: ID!` field, the `isViewer: Boolean!` field representing 
 
 Relations to all documents controlled by the given DID for the models present in the composite are automatically generated, while relations from documents using a `DID` scalar field can be explicitly added using the [`@accountReference` directive](../sdl/directives.mdx#accountreference).
 
-Example [Schema definition](https://developers.ceramic.network/docs-docusaurus/docs/composedb/guides/data-modeling/schemas):
+Example [Schema definition](https://developers.ceramic.network/docs/composedb/guides/data-modeling/schemas):
 
 ```graphql
 type Profile @createModel(accountRelation: SINGLE, description: "A basic profile") {
@@ -253,7 +253,7 @@ The `Query` object represents the root object to perform GraphQL queries, it alw
 
 In addition to these fields, the ComposeDB runtime will generate connections for all models defined in the composite.
 
-Example [Schema definition](https://developers.ceramic.network/docs-docusaurus/docs/composedb/guides/data-modeling/schemas):
+Example [Schema definition](https://developers.ceramic.network/docs/composedb/guides/data-modeling/schemas):
 
 ```graphql
 type Profile @createModel(accountRelation: SINGLE, description: "A basic profile") {
@@ -337,7 +337,7 @@ Filtering inputs can be used as arguments to [Connection](#connections) queries 
 
 Filters support two types of conditions: [value conditions](#value-conditions) that apply to a single field in a document and [logical conditions](#logical-conditions) that combine multiple conditions to create more complex filters.
 
-For example, using the following [Schema definition](https://developers.ceramic.network/docs-docusaurus/docs/composedb/guides/data-modeling/schemas):
+For example, using the following [Schema definition](https://developers.ceramic.network/docs/composedb/guides/data-modeling/schemas):
 
 ```graphql
 enum PostStatus {
@@ -539,7 +539,7 @@ Only one key/value pair can be provided per object, filters such as the followin
 
 Similar to [filtering inputs](#filtering), sorting inputs can be used as arguments to [Connection](#connections) queries in order to order the documents returned by the query based on the value of fields present in the document identified using the [`@createIndex` directive](../sdl/directives.mdx#createindex).
 
-For example, using the following [Schema definition](https://developers.ceramic.network/docs-docusaurus/docs/composedb/guides/data-modeling/schemas):
+For example, using the following [Schema definition](https://developers.ceramic.network/docs/composedb/guides/data-modeling/schemas):
 
 ```graphql
 enum PostStatus {
@@ -619,7 +619,7 @@ Multiple fields can be set in the `sorting` input, for example:
 
 Document creation uses two input objects: one for the content fields and another one wrapping it.
 
-For example, using the following [Schema definition](https://developers.ceramic.network/docs-docusaurus/docs/composedb/guides/data-modeling/schemas):
+For example, using the following [Schema definition](https://developers.ceramic.network/docs/composedb/guides/data-modeling/schemas):
 
 ```graphql
 enum PostStatus {
@@ -678,7 +678,7 @@ type Mutation {
 
 Similart to document creation, document update uses two input objects for the content fields and another one wrapping it, as well as an options object.
 
-For example, using the following [Schema definition](https://developers.ceramic.network/docs-docusaurus/docs/composedb/guides/data-modeling/schemas):
+For example, using the following [Schema definition](https://developers.ceramic.network/docs/composedb/guides/data-modeling/schemas):
 
 ```graphql
 enum PostStatus {

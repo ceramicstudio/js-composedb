@@ -11,7 +11,7 @@ custom_edit_url: null
 
 The group of [CLI](../modules/cli.md) `did:*` commands enables interactions with DIDs and private keys
 
-DIDs are identifiers for [Ceramic Accounts](https://developers.ceramic.network/docs-docusaurus/docs/composedb/core-concepts#accounts)
+DIDs are identifiers for [Ceramic Accounts](https://developers.ceramic.network/docs/composedb/core-concepts#accounts)
 
 ## Command List
 

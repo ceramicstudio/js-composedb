@@ -9,7 +9,7 @@ custom_edit_url: null
   <meta name="googlebot" content="noindex" />
 </head>
 
-The group of [CLI](../modules/cli.md) `graphql:*` commands makes it possible to generate GraphQL Schemas from [runtime definitions](./cli.composite.md#composedb-compositecompile) of your [Composites](https://developers.ceramic.network/docs-docusaurus/docs/composedb/core-concepts#composites) and run a local GraphQL HTTP server
+The group of [CLI](../modules/cli.md) `graphql:*` commands makes it possible to generate GraphQL Schemas from [runtime definitions](./cli.composite.md#composedb-compositecompile) of your [Composites](https://developers.ceramic.network/docs/composedb/core-concepts#composites) and run a local GraphQL HTTP server
 
 ## Command List
 
@@ -23,7 +23,7 @@ The group of [CLI](../modules/cli.md) `graphql:*` commands makes it possible to 
 Load the runtime graphql schema for the composite with given runtime definition
 
 You can use this command to see the ComposeDB GraphQL Execution Schema for your composite.
-You will be using this schema in your DApp to perform [Queries](https://developers.ceramic.network/docs-docusaurus/docs/composedb/guides/data-interactions/queriess/composedb/guides/data-interactions/mutations)
+You will be using this schema in your DApp to perform [Queries](https://developers.ceramic.network/docs/composedb/guides/data-interactions/queriess/composedb/guides/data-interactions/mutations)
 
 ```
 USAGE
