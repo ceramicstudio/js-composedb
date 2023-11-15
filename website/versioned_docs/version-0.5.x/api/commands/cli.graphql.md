@@ -4,7 +4,7 @@ title: "CLI: graphql:* commands"
 custom_edit_url: null
 ---
 
-The group of [CLI](../modules/cli.md) `graphql:*` commands makes it possible to generate GraphQL Schemas from compiled [Composites](../../guides/data-modeling/composites.mdx) and run a local GraphQL HTTP server
+The group of [CLI](../modules/cli.md) `graphql:*` commands makes it possible to generate GraphQL Schemas from compiled [Composites](https://developers.ceramic.network/docs/composedb/guides/data-modeling/composites) and run a local GraphQL HTTP server
 
 ## Command List
 
@@ -19,7 +19,7 @@ Load the runtime graphql schema for the composite with given runtime definition
 
 You can use this command to see the ComposeDB GraphQL Execution Schema for your composite.
 
-You will be using this schema in your app to perform [Queries](../../guides/data-interactions/queries.mdx) and [Mutations](../../guides/data-interactions/mutations.mdx).
+You will be using this schema in your app to perform [Queries](https://developers.ceramic.network/docs/composedb/guides/data-interactions/queries) and [Mutations](https://developers.ceramic.network/docs/composedb/guides/data-interactions/mutations).
 
 ```
 USAGE
