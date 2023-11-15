@@ -46,6 +46,10 @@ Create an encoded composite definition from GraphQL [Composite Schema](https://d
 
 You can find a detailed guide on the creation of Composites [here](https://developers.ceramic.network/docs/composedb/guides/data-modeling/composites)
 
+If updating your composite, run this command with `--no-deploy`. Your GraphQL 
+definition will still be updated, but Ceramic will not attempt to re-index
+your composite.
+
 ```
 USAGE
   $ composedb composite:create INPUT
@@ -57,6 +61,8 @@ OPTIONS
   -c, --ceramic-url        Ceramic API URL
   -k, --did-private-key    DID Private Key (you can generate a fresh private key using composedb did:generate-private-key)
   -o, --output             a path to file where the resulting encoded composite definition should be saved
+  -d, --deploy             Deploy the composite to the ceramic node, which will start indexing on the composite
+  --no-deploy              Do not deploy the composite to the ceramic node
 ```
 
 ### `composedb composite:models`
@@ -117,6 +123,12 @@ available on the Ceramic Node that yor DApp connects to. You can find a detailed
 guide on Composites' deployment
 [here](https://developers.ceramic.network/docs/composedb/guides/data-modeling/composites#deploying-composites)
 
+If updating your composite to add additional query fields, do not run this command.
+It should only be run _the first time_ you add your composite to the Ceramic node.
+
+If you are reusing a model multiple times in different composites, you can also
+skip this command.
+
 ```
 USAGE
   $ composedb composite:deploy PATH
@@ -126,6 +138,7 @@ ARGUMENTS
   
 OPTIONS
   -c, --ceramic-url        Ceramic API URL
+  -k, --did-private-key    DID Private Key (you can generate a fresh private key using composedb did:generate-private-key)
 ```
 
 ### `composedb composite:compile`

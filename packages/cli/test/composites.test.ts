@@ -8,7 +8,8 @@ import fs from 'fs-extra'
 import stripAnsi from 'strip-ansi'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { TEST_OUTPUT_DIR_PATH } from '../globalConsts.js' // not a module
+import { TEST_OUTPUT_DIR_PATH } from '../globalConsts.js'
+import { StreamID } from '@ceramicnetwork/streamid'
 
 const { readFile, readJSON } = fs
 
@@ -17,6 +18,11 @@ const MODEL1_JSON =
 
 const MODEL2_JSON =
   '{"version": "1.0","name":"Model2","accountRelation":{"type":"list"},"schema":{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","properties":{"stringPropName":{"type":"string","maxLength":80}},"additionalProperties":false,"required":["stringPropName"]}}'
+
+async function checkIfModelIndexed(ceramic: CeramicClient, streamId: string): Promise<boolean> {
+  const models = await ceramic.admin.getIndexedModels()
+  return models.includes(StreamID.fromString(streamId))
+}
 
 describe('composites', () => {
   const seed = '3a6de55a5ef33d110a5a37438704b0f0cb77ca5977131775a70ffd1c23779c8c'
@@ -56,17 +62,37 @@ describe('composites', () => {
       ).toBe(true)
     }, 60000)
 
-    test('composite creation succeeds', async () => {
+    test('composite creation succeeds but model is not deployed', async () => {
+      const ceramic = new CeramicClient()
       const create = await execa('bin/run.js', [
         'composite:create',
         'test/mocks/composite.profile.post.schema',
         `--did-private-key=${seed}`,
       ])
       const output = create.stdout.toString()
-      expect(output.includes('"version":"1.1"')).toBe(true)
-      expect(output.includes('"indices":{"')).toBe(true)
-      expect(output.includes('"aliases":')).toBe(true)
-      expect(output.includes('"views":')).toBe(true)
+      const def = JSON.parse(output) as EncodedCompositeDefinition
+      expect(def.version).toBe('1.1')
+      expect(Object.keys(def.version).length).not.toBe(0)
+      expect(def.aliases).toBeNull()
+      expect(def.views).toBeNull()
+      await expect(checkIfModelIndexed(ceramic, Object.keys(def.models)[0])).resolves.toBeFalsy()
+    }, 60000)
+
+    test('composite creation succeeds and model is deployed', async () => {
+      const ceramic = new CeramicClient()
+      const create = await execa('bin/run.js', [
+        'composite:create',
+        'test/mocks/composite.profile.post.schema',
+        `--did-private-key=${seed}`,
+        '--deploy',
+      ])
+      const output = create.stdout.toString()
+      const def = JSON.parse(output) as EncodedCompositeDefinition
+      expect(def.version).toBe('1.1')
+      expect(Object.keys(def.version).length).not.toBe(0)
+      expect(def.aliases).toBeNull()
+      expect(def.views).toBeNull()
+      await expect(checkIfModelIndexed(ceramic, Object.keys(def.models)[0])).resolves.toBeTruthy()
     }, 60000)
   })
 
@@ -91,6 +117,7 @@ describe('composites', () => {
           return model
         }),
       ])
+
       return wasModelLoaded
     }
 
@@ -105,7 +132,7 @@ describe('composites', () => {
       ).toBe(true)
     }, 60000)
 
-    test('composite deployment succeeds', async () => {
+    test('composite deployment succeeds and is indexed by default', async () => {
       const nonExistentModelStreamID = Object.keys(
         (undeployedComposite as EncodedCompositeDefinition).models,
       )[0]
@@ -125,6 +152,7 @@ describe('composites', () => {
 
       const doesModelExistNow = await checkIfModelExist(ceramic, nonExistentModelStreamID)
       expect(doesModelExistNow).toBeTruthy()
+      await expect(checkIfModelIndexed(ceramic, nonExistentModelStreamID)).resolves.toBeTruthy()
     }, 60000)
   })
 
