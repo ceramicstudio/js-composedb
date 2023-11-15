@@ -720,6 +720,10 @@ describe('composite', () => {
       })
       const fromJSONCompositeParams = fromJSONComposite.toParams()
       expect(Object.keys(fromJSONCompositeParams.commits)).toHaveLength(3)
+      expect(fromJSONCompositeParams.definition.commonEmbeds).toEqual([
+        'ImageMetadata',
+        'ImageSources',
+      ])
     })
   })
 

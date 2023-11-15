@@ -486,6 +486,7 @@ type MediaMetadataEdge {
 interface MediaMetadata {
   src: String!
   size: Int
+  info: MediaInfo
   collectionItems(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -509,6 +510,11 @@ interface MediaMetadata {
     account: ID
     filters: CollectionItemFiltersInput
   ): Int!
+}
+
+type MediaInfo {
+  title: String!
+  tag: String
 }
 
 """A connection to a list of items."""
@@ -768,6 +774,7 @@ interface ImageMedia implements MediaMetadata & VisualMedia {
   size: Int
   width: Int!
   height: Int!
+  info: MediaInfo
   collectionItems(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -836,6 +843,7 @@ interface AudioMedia implements MediaMetadata & TimeMedia {
   src: String!
   size: Int
   duration: Duration!
+  info: MediaInfo
   collectionItems(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -904,6 +912,7 @@ interface VideoMedia implements MediaMetadata & VisualMedia & TimeMedia {
   duration: Duration!
   width: Int!
   height: Int!
+  info: MediaInfo
   collectionItems(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -976,6 +985,7 @@ type MyImage implements Node & ImageMedia & MediaMetadata & VisualMedia {
   size: Int
   width: Int!
   height: Int!
+  info: MediaInfo
   collectionItems(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -1043,6 +1053,7 @@ type MyAudio implements Node & AudioMedia & MediaMetadata & TimeMedia {
   src: String!
   size: Int
   duration: Duration!
+  info: MediaInfo
   collectionItems(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -1108,6 +1119,7 @@ type MyVideo implements Node & VideoMedia & MediaMetadata & VisualMedia & TimeMe
   duration: Duration!
   width: Int!
   height: Int!
+  info: MediaInfo
   collectionItems(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -1300,6 +1312,12 @@ input MyImageInput {
   size: Int
   width: Int!
   height: Int!
+  info: MediaInfoInput
+}
+
+input MediaInfoInput {
+  title: String!
+  tag: String
 }
 
 type UpdateMyImagePayload {
@@ -1327,6 +1345,7 @@ input PartialMyImageInput {
   size: Int
   width: Int
   height: Int
+  info: MediaInfoInput
 }
 
 input UpdateOptionsInput {
@@ -1364,6 +1383,7 @@ input MyAudioInput {
   src: String!
   size: Int
   duration: Duration!
+  info: MediaInfoInput
 }
 
 type UpdateMyAudioPayload {
@@ -1390,6 +1410,7 @@ input PartialMyAudioInput {
   src: String
   size: Int
   duration: Duration
+  info: MediaInfoInput
 }
 
 type CreateMyVideoPayload {
@@ -1416,6 +1437,7 @@ input MyVideoInput {
   duration: Duration!
   width: Int!
   height: Int!
+  info: MediaInfoInput
 }
 
 type UpdateMyVideoPayload {
@@ -1444,6 +1466,7 @@ input PartialMyVideoInput {
   duration: Duration
   width: Int
   height: Int
+  info: MediaInfoInput
 }
 
 type CreateMyMediaCollectionItemPayload {

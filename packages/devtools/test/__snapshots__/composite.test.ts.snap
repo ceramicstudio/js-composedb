@@ -70,6 +70,7 @@ exports[`composite Composite instance merge() merges composites into the instanc
 exports[`composite Composite instance toJSON() returns a JSON-encoded composite 1`] = `
 {
   "aliases": {},
+  "commonEmbeds": [],
   "indices": {},
   "models": {},
   "version": "1.0",

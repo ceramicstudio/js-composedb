@@ -83,7 +83,7 @@ export async function writeRuntimeDefinition(
   await ensureDir(getDirPath(file))
   if (file.endsWith('.json')) {
     await writeJSON(file, definition)
-  } else if (file.endsWith('.js')) {
+  } else if (file.endsWith('.js') || file.endsWith('.mjs')) {
     await writeFile(
       file,
       `// This is an auto-generated file, do not edit manually
@@ -97,7 +97,7 @@ import type { RuntimeCompositeDefinition } from '@composedb/types'
 export const definition: RuntimeCompositeDefinition = ${JSON.stringify(definition)}`,
     )
   } else {
-    throw new Error('Unsupported file type: only .json, .js and .ts extensions are supported')
+    throw new Error('Unsupported file type: only .json, .js, .mjs and .ts extensions are supported')
   }
 
   return file

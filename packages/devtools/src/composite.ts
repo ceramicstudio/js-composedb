@@ -565,6 +565,7 @@ export class Composite {
       indices: this.#definition.indices,
       aliases: this.#definition.aliases,
       views: this.#definition.views,
+      commonEmbeds: this.#definition.commonEmbeds,
     }
   }
 
