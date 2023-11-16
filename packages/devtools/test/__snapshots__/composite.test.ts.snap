@@ -1,8 +1,76 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`composite Composite instance merge() merges composites into the instance with indices 1`] = `
+{
+  "kjzl6hvfrbw6c73rp8imlzu30z24u3ojkdw1bxm32ymoj0mbkxa41sdt6b90gtx": [
+    {
+      "fields": [
+        {
+          "path": [
+            "text",
+          ],
+        },
+      ],
+    },
+  ],
+  "kjzl6hvfrbw6c9u8sp41biu3r0ghk8mw34od8jrjmpf2sw298dtgm49mcr0bzrl": [
+    {
+      "fields": [
+        {
+          "path": [
+            "title",
+          ],
+        },
+      ],
+    },
+  ],
+  "kjzl6hvfrbw6camgytf2iuwiq3yir9o1eyxsl45jm699k8d68bs85r61bfhove1": [
+    {
+      "fields": [
+        {
+          "path": [
+            "title",
+          ],
+        },
+      ],
+    },
+  ],
+  "kjzl6hvfrbw6caw7znzf9mv822sxddqxb3fzv0jbu51mr6vz3nkz51e29vek5xd": [
+    {
+      "fields": [
+        {
+          "path": [
+            "source",
+          ],
+        },
+      ],
+    },
+    {
+      "fields": [
+        {
+          "path": [
+            "title",
+          ],
+        },
+      ],
+    },
+    {
+      "fields": [
+        {
+          "path": [
+            "value",
+          ],
+        },
+      ],
+    },
+  ],
+}
+`;
+
 exports[`composite Composite instance toJSON() returns a JSON-encoded composite 1`] = `
 {
   "aliases": {},
+  "commonEmbeds": [],
   "indices": {},
   "models": {},
   "version": "1.0",

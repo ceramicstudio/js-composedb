@@ -95,14 +95,7 @@ const config: Config = {
           type: 'doc',
           docId: 'introduction',
           position: 'left',
-          label: 'Docs',
-        },
-        {
-          type: 'doc',
-          docId: 'guides/index',
-          activeBasePath: 'docs/guides',
-          position: 'left',
-          label: 'Guides',
+          label: 'Introduction',
         },
         {
           type: 'doc',
@@ -110,11 +103,6 @@ const config: Config = {
           activeBasePath: 'docs/api',
           position: 'left',
           label: 'Reference',
-        },
-        {
-          to: 'sandbox',
-          label: 'ComposeDB Sandbox',
-          position: 'left',
         },
         {
           type: 'docsVersionDropdown',
@@ -134,12 +122,8 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
-              label: 'Getting Started',
-              to: '/docs/0.5.x/getting-started',
-            },
-            {
-              label: 'Guides',
-              to: '/docs/0.5.x/guides',
+              label: 'Introduction',
+              to: '/docs/0.5.x/introduction',
             },
             {
               label: 'API',

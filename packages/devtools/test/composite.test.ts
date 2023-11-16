@@ -560,7 +560,7 @@ describe('composite', () => {
           Composite.create({ ceramic, schema: noteSchema }),
         ])
         const mergedComposite = postComposite.merge([ratingComposite, noteComposite]).toJSON()
-        expect(Object.keys(mergedComposite.indices ?? {})).toHaveLength(4)
+        expect(mergedComposite.indices).toMatchSnapshot()
       })
     })
   })
@@ -720,6 +720,10 @@ describe('composite', () => {
       })
       const fromJSONCompositeParams = fromJSONComposite.toParams()
       expect(Object.keys(fromJSONCompositeParams.commits)).toHaveLength(3)
+      expect(fromJSONCompositeParams.definition.commonEmbeds).toEqual([
+        'ImageMetadata',
+        'ImageSources',
+      ])
     })
   })
 
@@ -739,6 +743,7 @@ describe('composite', () => {
 
   test('Relations support', async () => {
     const composite = await Composite.create({ ceramic, schema: postSchema })
+    // The post schema contains 2 models: Post and Comment
     expect(composite.modelIDs).toHaveLength(2)
   })
 

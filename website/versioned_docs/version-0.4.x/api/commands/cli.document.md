@@ -9,7 +9,7 @@ custom_edit_url: null
   <meta name="googlebot" content="noindex" />
 </head>
 
-The group of [CLI](../modules/cli.md) `document:*` commands enables the creation and interactions with [Documents](../../core-concepts.mdx#documents)
+The group of [CLI](../modules/cli.md) `document:*` commands enables the creation and interactions with [Documents](https://developers.ceramic.network/docs/composedb/core-concepts#documents)
 
 ## Command List
 
@@ -23,7 +23,7 @@ The group of [CLI](../modules/cli.md) `document:*` commands enables the creation
 
 Create a document with given content
 
-You can use this command to test how document creation works, but in your live app you will use ComposeDB GraphQL [Mutations](../../guides/data-interactions/mutations.mdx) instead.
+You can use this command to test how document creation works, but in your live app you will use ComposeDB GraphQL [Mutations](https://developers.ceramic.network/docs/composedb/guides/data-interactions/mutations) instead.
 
 ```
 USAGE
@@ -42,7 +42,7 @@ OPTIONS
 
 Replace content in a document with a given streamID
 
-You can use this command to test how document updates work, but in your live app you will use ComposeDB GraphQL [Mutations](../../guides/data-interactions/mutations.mdx).
+You can use this command to test how document updates work, but in your live app you will use ComposeDB GraphQL [Mutations](https://developers.ceramic.network/docs/composedb/guides/data-interactions/mutations).
 
 ```
 USAGE
@@ -61,7 +61,7 @@ OPTIONS
 
 Load and display the contents of a document with a given ID
 
-You can use this command to manually check the contents of a given document, but in your DApp you will use ComposeDB GraphQL [Queries](../../guides/data-interactions/queries.mdx).
+You can use this command to manually check the contents of a given document, but in your DApp you will use ComposeDB GraphQL [Queries](https://developers.ceramic.network/docs/composedb/guides/data-interactions/queries).
 
 ```
 USAGE

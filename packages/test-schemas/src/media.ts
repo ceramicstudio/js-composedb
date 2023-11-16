@@ -3,11 +3,17 @@
  */
 
 export const mediaSchema = `
+type MediaInfo {
+  title: String! @string(maxLength: 100)
+  tag: String @string(maxLength: 20)
+}
+
 interface MediaMetadata @createModel(description: "An interface for media metadata") {
   src: String! @string(maxLength: 500)
   size: Int
   collectionItems: [CollectionItem] @relationFrom(model: "CollectionItem", property: "itemID")
   collectionItemsCount: Int! @relationCountFrom(model: "CollectionItem", property: "itemID")
+  info: MediaInfo
 }
 
 interface CollectionItem @createModel(description: "An interface for an item in a collection") {
@@ -40,6 +46,7 @@ interface ImageMedia implements MediaMetadata & VisualMedia @createModel(descrip
   height: Int! @int(min: 1)
   collectionItems: [CollectionItem] @relationFrom(model: "CollectionItem", property: "itemID")
   collectionItemsCount: Int! @relationCountFrom(model: "CollectionItem", property: "itemID")
+  info: MediaInfo
 }
 
 interface AudioMedia implements MediaMetadata & TimeMedia @createModel(description: "An interface for audio objects") {
@@ -48,6 +55,7 @@ interface AudioMedia implements MediaMetadata & TimeMedia @createModel(descripti
   duration: Duration!
   collectionItems: [CollectionItem] @relationFrom(model: "CollectionItem", property: "itemID")
   collectionItemsCount: Int! @relationCountFrom(model: "CollectionItem", property: "itemID")
+  info: MediaInfo
 }
 
 interface VideoMedia implements MediaMetadata & VisualMedia & TimeMedia @createModel(description: "An interface for video objects") {
@@ -58,6 +66,7 @@ interface VideoMedia implements MediaMetadata & VisualMedia & TimeMedia @createM
   height: Int! @int(min: 1)
   collectionItems: [CollectionItem] @relationFrom(model: "CollectionItem", property: "itemID")
   collectionItemsCount: Int! @relationCountFrom(model: "CollectionItem", property: "itemID")
+  info: MediaInfo
 }
 
 type MyImage implements ImageMedia
@@ -71,6 +80,7 @@ type MyImage implements ImageMedia
   height: Int! @int(min: 1)
   collectionItems: [CollectionItem] @relationFrom(model: "CollectionItem", property: "itemID")
   collectionItemsCount: Int! @relationCountFrom(model: "CollectionItem", property: "itemID")
+  info: MediaInfo
 }
 
 type MyAudio implements AudioMedia
@@ -81,6 +91,7 @@ type MyAudio implements AudioMedia
   duration: Duration!
   collectionItems: [CollectionItem] @relationFrom(model: "CollectionItem", property: "itemID")
   collectionItemsCount: Int! @relationCountFrom(model: "CollectionItem", property: "itemID")
+  info: MediaInfo
 }
 
 type MyVideo implements VideoMedia
@@ -96,6 +107,7 @@ type MyVideo implements VideoMedia
   height: Int! @int(min: 1)
   collectionItems: [CollectionItem] @relationFrom(model: "CollectionItem", property: "itemID")
   collectionItemsCount: Int! @relationCountFrom(model: "CollectionItem", property: "itemID")
+  info: MediaInfo
 }
 
 type MyMediaCollectionItem implements CollectionItem

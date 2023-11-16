@@ -49,7 +49,6 @@ export type ObjectFieldDefinition = ItemDefinition | ListFieldDefinition | ViewF
 export type ObjectFieldsDefinition = Record<string, ObjectFieldDefinition>
 
 export type ObjectDefinition = {
-  // implements: Array<string> // Interface names
   properties: ObjectFieldsDefinition
   references: Array<string> // Embedded objects and enums
   relations: ModelRelationsDefinitionV2
@@ -75,7 +74,6 @@ export type ParsedModelDefinition = ParsedCreateModelDefinition | ParsedLoadMode
 
 export type SchemaDefinition = {
   enums: Record<string, Array<string>>
-  // interfaces: Record<string, ObjectDefinition>
   models: Record<string, ParsedModelDefinition>
   objects: Record<string, ObjectDefinition>
 }

@@ -362,7 +362,8 @@ class SchemaBuilder {
     const allInterfaces = ids.flatMap((id) => {
       const name = this.#modelAliases[id]
       if (name == null) {
-        throw new Error(`Missing alias for interface ID ${id} used by ${modelName}`)
+        // Interface is not part of the definition
+        return []
       }
       const type = this.#types[name]
       if (type == null) {
