@@ -1,6 +1,6 @@
 ---
-id: "client.Context"
-title: "Class: Context"
+id: 'client.Context'
+title: 'Class: Context'
 custom_edit_url: null
 ---
 
@@ -25,8 +25,8 @@ import { Context } from '@composedb/client'
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name     | Type                                                  |
+| :------- | :---------------------------------------------------- |
 | `params` | [`ContextParams`](../modules/client.md#contextparams) |
 
 ## Accessors
@@ -42,7 +42,7 @@ authenticated, mutations will fail.
 
 `boolean`
 
-___
+---
 
 ### ceramic
 
@@ -54,7 +54,7 @@ Ceramic client instance used internally.
 
 `CeramicApi`
 
-___
+---
 
 ### loader
 
@@ -66,126 +66,126 @@ Document loader instance used internally.
 
 `DocumentLoader`
 
-___
+---
 
 ### viewerID
 
-• `get` **viewerID**(): ``null`` \| `string`
+• `get` **viewerID**(): `null` \| `string`
 
 ID of the current viewer (authenticated DID), if set.
 
 #### Returns
 
-``null`` \| `string`
+`null` \| `string`
 
 ## Methods
 
 ### createDoc
 
-▸ **createDoc**<`Content`\>(`model`, `content`): `Promise`<`ModelInstanceDocument`<`Content`\>\>
+▸ **createDoc**\<`Content`\>(`model`, `content`): `Promise`\<`ModelInstanceDocument`\<`Content`\>\>
 
 Create a new document with the given model and content.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `Content` | `Record`<`string`, `any`\> |
+| Name      | Type                        |
+| :-------- | :-------------------------- |
+| `Content` | `Record`\<`string`, `any`\> |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `model` | `string` |
+| Name      | Type      |
+| :-------- | :-------- |
+| `model`   | `string`  |
 | `content` | `Content` |
 
 #### Returns
 
-`Promise`<`ModelInstanceDocument`<`Content`\>\>
+`Promise`\<`ModelInstanceDocument`\<`Content`\>\>
 
-___
+---
 
 ### loadDoc
 
-▸ **loadDoc**<`Content`\>(`id`, `fresh?`): `Promise`<`ModelInstanceDocument`<`Content`\>\>
+▸ **loadDoc**\<`Content`\>(`id`, `fresh?`): `Promise`\<`ModelInstanceDocument`\<`Content`\>\>
 
 Load a document by ID, using the cache if possible.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `Content` | `Record`<`string`, `any`\> |
+| Name      | Type                        |
+| :-------- | :-------------------------- |
+| `Content` | `Record`\<`string`, `any`\> |
 
 #### Parameters
 
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `id` | `string` \| `StreamID` \| `CommitID` | `undefined` |
-| `fresh` | `boolean` | `false` |
+| Name    | Type                                 | Default value |
+| :------ | :----------------------------------- | :------------ |
+| `id`    | `string` \| `StreamID` \| `CommitID` | `undefined`   |
+| `fresh` | `boolean`                            | `false`       |
 
 #### Returns
 
-`Promise`<`ModelInstanceDocument`<`Content`\>\>
+`Promise`\<`ModelInstanceDocument`\<`Content`\>\>
 
-___
+---
 
 ### queryConnection
 
-▸ **queryConnection**(`query`): `Promise`<`Connection`<`ModelInstanceDocument`<`Record`<`string`, `any`\>\>\>\>
+▸ **queryConnection**(`query`): `Promise`\<`Connection`\<`ModelInstanceDocument`\<`Record`\<`string`, `any`\>\>\>\>
 
 Query the index for a connection of documents.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name    | Type              |
+| :------ | :---------------- |
 | `query` | `ConnectionQuery` |
 
 #### Returns
 
-`Promise`<`Connection`<`ModelInstanceDocument`<`Record`<`string`, `any`\>\>\>\>
+`Promise`\<`Connection`\<`ModelInstanceDocument`\<`Record`\<`string`, `any`\>\>\>\>
 
-___
+---
 
 ### querySingle
 
-▸ **querySingle**(`query`): `Promise`<``null`` \| `ModelInstanceDocument`<`Record`<`string`, `any`\>\>\>
+▸ **querySingle**(`query`): `Promise`\<`null` \| `ModelInstanceDocument`\<`Record`\<`string`, `any`\>\>\>
 
 Query the index for a single document.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name    | Type        |
+| :------ | :---------- |
 | `query` | `BaseQuery` |
 
 #### Returns
 
-`Promise`<``null`` \| `ModelInstanceDocument`<`Record`<`string`, `any`\>\>\>
+`Promise`\<`null` \| `ModelInstanceDocument`\<`Record`\<`string`, `any`\>\>\>
 
-___
+---
 
 ### updateDoc
 
-▸ **updateDoc**<`Content`\>(`id`, `content`, `options?`): `Promise`<`ModelInstanceDocument`<`Content`\>\>
+▸ **updateDoc**\<`Content`\>(`id`, `content`, `options?`): `Promise`\<`ModelInstanceDocument`\<`Content`\>\>
 
 Update an existing document.
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `Content` | `Record`<`string`, `any`\> |
+| Name      | Type                        |
+| :-------- | :-------------------------- |
+| `Content` | `Record`\<`string`, `any`\> |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `id` | `string` \| `StreamID` |
-| `content` | `Content` |
-| `options?` | `UpdateDocOptions` |
+| Name       | Type                   |
+| :--------- | :--------------------- |
+| `id`       | `string` \| `StreamID` |
+| `content`  | `Content`              |
+| `options?` | `UpdateDocOptions`     |
 
 #### Returns
 
-`Promise`<`ModelInstanceDocument`<`Content`\>\>
+`Promise`\<`ModelInstanceDocument`\<`Content`\>\>

@@ -457,10 +457,10 @@ The following table describes all the available conditions and the matching SQL 
 | notEqualTo: `(value)`           | != `(value)`          |
 | in: `[...values]`               | IN (`...values`)      |
 | notIn: `[...values]`            | NOT IN (`...values`)  |
-| lessThan: `(value)`             | < `(value)`           |
-| lessThanOrEqualTo: `(value)`    | <= `(value)`          |
-| greaterThan: `(value)`          | > `(value)`           |
-| greaterThanOrEqualTo: `(value)` | >= `(value)`          |
+| lessThan: `(value)`             | \< `(value)`          |
+| lessThanOrEqualTo: `(value)`    | \<= `(value)`         |
+| greaterThan: `(value)`          | \> `(value)`          |
+| greaterThanOrEqualTo: `(value)` | \>= `(value)`         |
 
 Even though the generated GraphQL input types support multiple condition fields, **ComposeDB does not support ambiguous conditions**.
 

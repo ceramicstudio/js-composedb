@@ -1,6 +1,6 @@
 ---
-id: "client.ComposeClient"
-title: "Class: ComposeClient"
+id: 'client.ComposeClient'
+title: 'Class: ComposeClient'
 custom_edit_url: null
 ---
 
@@ -29,8 +29,8 @@ import { ComposeClient } from '@composedb/client'
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name     | Type                                                              |
+| :------- | :---------------------------------------------------------------- |
 | `params` | [`ComposeClientParams`](../modules/client.md#composeclientparams) |
 
 ## Accessors
@@ -45,7 +45,7 @@ Context instance used internally.
 
 [`Context`](client.Context.md)
 
-___
+---
 
 ### did
 
@@ -57,20 +57,20 @@ DID instance used internally by the Ceramic client instance.
 
 `undefined` \| `DID`
 
-___
+---
 
 ### id
 
-• `get` **id**(): ``null`` \| `string`
+• `get` **id**(): `null` \| `string`
 
 ID of the DID attached to the Ceramic client instance used internally. If `null`, the
 Ceramic instance is not authenticated and mutations will fail.
 
 #### Returns
 
-``null`` \| `string`
+`null` \| `string`
 
-___
+---
 
 ### resources
 
@@ -86,41 +86,41 @@ CACAO resources URLs for the models the client interacts with.
 
 ### execute
 
-▸ **execute**(`document`, `variableValues?`): `Promise`<`ExecutionResult`<`ObjMap`<`unknown`\>, `ObjMap`<`unknown`\>\>\>
+▸ **execute**(`document`, `variableValues?`): `Promise`\<`ExecutionResult`\<`ObjMap`\<`unknown`\>, `ObjMap`\<`unknown`\>\>\>
 
 Execute a GraphQL query from a DocumentNode and optional variables.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `document` | `DocumentNode` |
-| `variableValues?` | `Record`<`string`, `unknown`\> |
+| Name              | Type                            |
+| :---------------- | :------------------------------ |
+| `document`        | `DocumentNode`                  |
+| `variableValues?` | `Record`\<`string`, `unknown`\> |
 
 #### Returns
 
-`Promise`<`ExecutionResult`<`ObjMap`<`unknown`\>, `ObjMap`<`unknown`\>\>\>
+`Promise`\<`ExecutionResult`\<`ObjMap`\<`unknown`\>, `ObjMap`\<`unknown`\>\>\>
 
-___
+---
 
 ### executeQuery
 
-▸ **executeQuery**(`source`, `variableValues?`): `Promise`<`ExecutionResult`<`ObjMap`<`unknown`\>, `ObjMap`<`unknown`\>\>\>
+▸ **executeQuery**(`source`, `variableValues?`): `Promise`\<`ExecutionResult`\<`ObjMap`\<`unknown`\>, `ObjMap`\<`unknown`\>\>\>
 
 Execute a GraphQL query from its source and optional variables.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `source` | `string` \| `Source` |
-| `variableValues?` | `Record`<`string`, `unknown`\> |
+| Name              | Type                            |
+| :---------------- | :------------------------------ |
+| `source`          | `string` \| `Source`            |
+| `variableValues?` | `Record`\<`string`, `unknown`\> |
 
 #### Returns
 
-`Promise`<`ExecutionResult`<`ObjMap`<`unknown`\>, `ObjMap`<`unknown`\>\>\>
+`Promise`\<`ExecutionResult`\<`ObjMap`\<`unknown`\>, `ObjMap`\<`unknown`\>\>\>
 
-___
+---
 
 ### setDID
 
@@ -131,8 +131,8 @@ DID instance is necessary to perform GraphQL mutations.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name  | Type  |
+| :---- | :---- |
 | `did` | `DID` |
 
 #### Returns

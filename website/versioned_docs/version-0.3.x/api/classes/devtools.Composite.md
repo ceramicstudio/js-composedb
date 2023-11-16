@@ -1,6 +1,6 @@
 ---
-id: "devtools.Composite"
-title: "Class: Composite"
+id: 'devtools.Composite'
+title: 'Class: Composite'
 custom_edit_url: null
 ---
 
@@ -33,8 +33,8 @@ import { Composite } from '@composedb/devtools'
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name     | Type                                                        |
+| :------- | :---------------------------------------------------------- |
 | `params` | [`CompositeParams`](../modules/devtools.md#compositeparams) |
 
 ## Properties
@@ -57,7 +57,7 @@ Stable hash of the internal definition, mostly used for comparisons.
 
 `string`
 
-___
+---
 
 ### modelIDs
 
@@ -79,15 +79,15 @@ Copy a given set of Models identified by their stream ID, name or alias into a n
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name     | Type       |
+| :------- | :--------- |
 | `models` | `string`[] |
 
 #### Returns
 
 [`Composite`](devtools.Composite.md)
 
-___
+---
 
 ### equals
 
@@ -97,15 +97,15 @@ Check if the composite is equal to the other one provided as input.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name    | Type                                                      |
+| :------ | :-------------------------------------------------------- |
 | `other` | [`CompositeInput`](../modules/devtools.md#compositeinput) |
 
 #### Returns
 
 `boolean`
 
-___
+---
 
 ### merge
 
@@ -115,16 +115,16 @@ Merge the composite with the other one(s) into a new Composite.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `other` | [`CompositeInput`](../modules/devtools.md#compositeinput) \| [`CompositeInput`](../modules/devtools.md#compositeinput)[] |
-| `options` | [`CompositeOptions`](../modules/devtools.md#compositeoptions) |
+| Name      | Type                                                                                                                     |
+| :-------- | :----------------------------------------------------------------------------------------------------------------------- |
+| `other`   | [`CompositeInput`](../modules/devtools.md#compositeinput) \| [`CompositeInput`](../modules/devtools.md#compositeinput)[] |
+| `options` | [`CompositeOptions`](../modules/devtools.md#compositeoptions)                                                            |
 
 #### Returns
 
 [`Composite`](devtools.Composite.md)
 
-___
+---
 
 ### setAliases
 
@@ -135,16 +135,16 @@ Set aliases for the Models in the composite, merging with existing ones unless `
 
 #### Parameters
 
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `aliases` | `Record`<`string`, `string`\> | `undefined` |
-| `replace` | `boolean` | `false` |
+| Name      | Type                           | Default value |
+| :-------- | :----------------------------- | :------------ |
+| `aliases` | `Record`\<`string`, `string`\> | `undefined`   |
+| `replace` | `boolean`                      | `false`       |
 
 #### Returns
 
 [`Composite`](devtools.Composite.md)
 
-___
+---
 
 ### setCommonEmbeds
 
@@ -155,16 +155,16 @@ is `true`, and return a new Composite.
 
 #### Parameters
 
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `names` | `Iterable`<`string`\> | `undefined` |
-| `replace` | `boolean` | `false` |
+| Name      | Type                   | Default value |
+| :-------- | :--------------------- | :------------ |
+| `names`   | `Iterable`\<`string`\> | `undefined`   |
+| `replace` | `boolean`              | `false`       |
 
 #### Returns
 
 [`Composite`](devtools.Composite.md)
 
-___
+---
 
 ### setViews
 
@@ -175,35 +175,35 @@ Set views for the Models in the composite, merging with existing ones unless `re
 
 #### Parameters
 
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `views` | `CompositeViewsDefinition` | `undefined` |
-| `replace` | `boolean` | `false` |
+| Name      | Type                       | Default value |
+| :-------- | :------------------------- | :------------ |
+| `views`   | `CompositeViewsDefinition` | `undefined`   |
+| `replace` | `boolean`                  | `false`       |
 
 #### Returns
 
 [`Composite`](devtools.Composite.md)
 
-___
+---
 
 ### startIndexingOn
 
-▸ **startIndexingOn**(`ceramic`): `Promise`<`void`\>
+▸ **startIndexingOn**(`ceramic`): `Promise`\<`void`\>
 
 Configure the Ceramic node to index the models defined in the composite. An authenticated DID
 set as admin in the Ceramic node configuration must be attached to the Ceramic instance.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name      | Type         |
+| :-------- | :----------- |
 | `ceramic` | `CeramicApi` |
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
-___
+---
 
 ### toJSON
 
@@ -215,7 +215,7 @@ Return a JSON-encoded `CompositeDefinition` structure that can be shared and reu
 
 `EncodedCompositeDefinition`
 
-___
+---
 
 ### toParams
 
@@ -227,7 +227,7 @@ Return a deep clone of the internal [`CompositeParams`](../modules/devtools.md#c
 
 [`CompositeParams`](../modules/devtools.md#compositeparams)
 
-___
+---
 
 ### toRuntime
 
@@ -240,26 +240,26 @@ Return a `RuntimeCompositeDefinition` to be used at runtime by the
 
 `RuntimeCompositeDefinition`
 
-___
+---
 
 ### create
 
-▸ `Static` **create**(`params`): `Promise`<[`Composite`](devtools.Composite.md)\>
+▸ `Static` **create**(`params`): `Promise`\<[`Composite`](devtools.Composite.md)\>
 
 Create new model streams based on the provided `schema` and group them in a composite
 wrapped in a Composite instance.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name     | Type                                                  |
+| :------- | :---------------------------------------------------- |
 | `params` | [`CreateParams`](../modules/devtools.md#createparams) |
 
 #### Returns
 
-`Promise`<[`Composite`](devtools.Composite.md)\>
+`Promise`\<[`Composite`](devtools.Composite.md)\>
 
-___
+---
 
 ### from
 
@@ -269,47 +269,47 @@ Create a Composite instance by merging existing composites.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `composites` | `Iterable`<[`CompositeInput`](../modules/devtools.md#compositeinput)\> |
-| `options?` | [`CompositeOptions`](../modules/devtools.md#compositeoptions) |
+| Name         | Type                                                                    |
+| :----------- | :---------------------------------------------------------------------- |
+| `composites` | `Iterable`\<[`CompositeInput`](../modules/devtools.md#compositeinput)\> |
+| `options?`   | [`CompositeOptions`](../modules/devtools.md#compositeoptions)           |
 
 #### Returns
 
 [`Composite`](devtools.Composite.md)
 
-___
+---
 
 ### fromJSON
 
-▸ `Static` **fromJSON**(`params`): `Promise`<[`Composite`](devtools.Composite.md)\>
+▸ `Static` **fromJSON**(`params`): `Promise`\<[`Composite`](devtools.Composite.md)\>
 
 Create a Composite instance from a JSON-encoded `CompositeDefinition`.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name     | Type                                                      |
+| :------- | :-------------------------------------------------------- |
 | `params` | [`FromJSONParams`](../modules/devtools.md#fromjsonparams) |
 
 #### Returns
 
-`Promise`<[`Composite`](devtools.Composite.md)\>
+`Promise`\<[`Composite`](devtools.Composite.md)\>
 
-___
+---
 
 ### fromModels
 
-▸ `Static` **fromModels**(`params`): `Promise`<[`Composite`](devtools.Composite.md)\>
+▸ `Static` **fromModels**(`params`): `Promise`\<[`Composite`](devtools.Composite.md)\>
 
 Create a Composite instance from a set of Model streams already present on a Ceramic node.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name     | Type                                                          |
+| :------- | :------------------------------------------------------------ |
 | `params` | [`FromModelsParams`](../modules/devtools.md#frommodelsparams) |
 
 #### Returns
 
-`Promise`<[`Composite`](devtools.Composite.md)\>
+`Promise`\<[`Composite`](devtools.Composite.md)\>

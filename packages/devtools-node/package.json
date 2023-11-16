@@ -49,7 +49,7 @@
   "devDependencies": {
     "@composedb/devtools": "workspace:^",
     "@composedb/types": "workspace:^",
-    "@types/fs-extra": "^11.0.3",
+    "@types/fs-extra": "^11.0.4",
     "dids": "^4.0.4"
   },
   "jest": {
