@@ -4,11 +4,6 @@
       "type": "doc",
       "id": "introduction",
       "label": "Introduction"
-    },
-    {
-      "type": "doc",
-      "id": "set-up-your-environment",
-      "label": "Installation"
     }
   ],
   "api": [
