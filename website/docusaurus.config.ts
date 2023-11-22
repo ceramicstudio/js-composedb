@@ -55,11 +55,8 @@ const config: Config = {
           },
         },
         gtag: {
-          trackingID: 'G-V2Y8T342EX',
+          trackingID: 'G-TN90ML4SJS',
           anonymizeIP: true,
-        },
-        googleTagManager: {
-          containerId: 'GTM-TFSMT4ZD',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
