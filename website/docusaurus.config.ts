@@ -55,7 +55,7 @@ const config: Config = {
           },
         },
         gtag: {
-          trackingID: 'G-TN90ML4SJS',
+          trackingID: 'G-V2Y8T342EX',
           anonymizeIP: true,
         },
         theme: {
