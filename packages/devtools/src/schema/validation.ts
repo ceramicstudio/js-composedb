@@ -28,7 +28,7 @@ export function assertValidModelInterfaceType(
   }
   if (!expectInterface && definition.version !== '1.0' && definition.interface) {
     throw new Error(
-      `Model ${definition.name} is expected to be an interface model but is a regular model`,
+      `Model ${definition.name} is expected to be an non-interface model but is an interface model`,
     )
   }
 }

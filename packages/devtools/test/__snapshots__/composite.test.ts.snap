@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`composite Composite instance merge() merges composites into the instance with indices 1`] = `
+exports[`composite class Composite instance merge() merges composites into the instance with indices 1`] = `
 {
   "kjzl6hvfrbw6c73rp8imlzu30z24u3ojkdw1bxm32ymoj0mbkxa41sdt6b90gtx": [
     {
@@ -67,7 +67,7 @@ exports[`composite Composite instance merge() merges composites into the instanc
 }
 `;
 
-exports[`composite Composite instance toJSON() returns a JSON-encoded composite 1`] = `
+exports[`composite class Composite instance toJSON() returns a JSON-encoded composite 1`] = `
 {
   "aliases": {},
   "commonEmbeds": [],
@@ -82,7 +82,7 @@ exports[`composite Composite instance toJSON() returns a JSON-encoded composite 
 }
 `;
 
-exports[`composite Composite instance toRuntime() returns the runtime definition for the Composite 1`] = `
+exports[`composite class Composite instance toRuntime() returns the runtime definition for the Composite 1`] = `
 {
   "accountData": {},
   "enums": {},
