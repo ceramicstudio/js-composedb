@@ -1,16 +1,76 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
+import type { ModelDefinition } from '@ceramicnetwork/stream-model'
 import { ImageMetadataType, profilesSchema } from '@composedb/test-schemas'
 import Ajv from 'ajv/dist/2020'
 
 import { createAbstractCompositeDefinition } from '../src'
 import type { AbstractCreateModelDefinition, AbstractModelDefinition } from '../src/schema/types'
+import { assertValidModelInterfaceType } from '../src/schema/validation'
 
 function getSchema(modelDefinition: AbstractModelDefinition) {
   return (modelDefinition as AbstractCreateModelDefinition).model.schema
 }
 
-describe('schema', () => {
+describe('validation', () => {
+  describe('assertValidModelInterfaceType()', () => {
+    test('expect interface with v1.0 model', () => {
+      expect(() => {
+        assertValidModelInterfaceType(
+          { version: '1.0', name: 'Test' } as unknown as ModelDefinition,
+          true,
+        )
+      }).toThrow('Model Test is not an interface model')
+    })
+
+    test('expect non-interface with v1.0 model', () => {
+      expect(() => {
+        assertValidModelInterfaceType(
+          { version: '1.0', name: 'Test' } as unknown as ModelDefinition,
+          false,
+        )
+      }).not.toThrow()
+    })
+
+    test('expect interface with non-interface v2.0 model', () => {
+      expect(() => {
+        assertValidModelInterfaceType(
+          { version: '2.0', name: 'Test', interface: false } as unknown as ModelDefinition,
+          true,
+        )
+      }).toThrow('Model Test is not an interface model')
+    })
+
+    test('expect interface with interface v2.0 model', () => {
+      expect(() => {
+        assertValidModelInterfaceType(
+          { version: '2.0', name: 'Test', interface: true } as unknown as ModelDefinition,
+          true,
+        )
+      }).not.toThrow()
+    })
+
+    test('expect non-interface with non-interface v2.0 model', () => {
+      expect(() => {
+        assertValidModelInterfaceType(
+          { version: '2.0', name: 'Test', interface: false } as unknown as ModelDefinition,
+          false,
+        )
+      }).not.toThrow()
+    })
+
+    test('expect non-interface with interface v2.0 model', () => {
+      expect(() => {
+        assertValidModelInterfaceType(
+          { version: '2.0', name: 'Test', interface: true } as unknown as ModelDefinition,
+          false,
+        )
+      }).toThrow('Model Test is expected to be an non-interface model but is an interface model')
+    })
+  })
+})
+
+describe('schema parsing and compilation', () => {
   it("createAbstractCompositeDefinition throws when there's no top-level model object", () => {
     expect(() => {
       createAbstractCompositeDefinition(ImageMetadataType)
@@ -785,6 +845,90 @@ describe('schema', () => {
           },
         },
       },
+    })
+  })
+
+  test('interfaces require @createModel or @loadModel directive', () => {
+    expect(() => {
+      createAbstractCompositeDefinition(`
+        interface TestInterface {
+          test: String! @string(maxLength: 50)
+        }
+      `)
+    }).toThrow('Missing @createModel or @loadModel directive for interface TestInterface')
+
+    expect(() => {
+      createAbstractCompositeDefinition(`
+        interface TestInterface @createModel(description: "Test interface") {
+          test: String! @string(maxLength: 50)
+        }
+      `)
+    }).not.toThrow()
+
+    expect(() => {
+      createAbstractCompositeDefinition(`
+        interface TestInterface @loadModel(id: "interface ID") {
+          id: ID!
+        }
+      `)
+    }).not.toThrow()
+  })
+
+  test('@createIndex directive is not supported on interfaces', () => {
+    expect(() => {
+      createAbstractCompositeDefinition(`
+        interface TestInterface
+          @createModel(description: "Test interface")
+          @createIndex(fields: [{ path: ["test"] }]) {
+          test: String! @string(maxLength: 50)
+        }
+      `)
+    }).toThrow('Directive "@createIndex" may not be used on INTERFACE.')
+  })
+
+  test('enums support', () => {
+    const def = createAbstractCompositeDefinition(`
+      enum TestEnum {
+        ONE
+        TWO
+        THREE
+      }
+
+      type TestModel @createModel(description: "Test model") {
+        enum: TestEnum
+      }
+    `)
+
+    expect(def).toMatchObject({
+      models: {
+        TestModel: {
+          action: 'create',
+          indices: [],
+          model: {
+            name: 'TestModel',
+            accountRelation: { type: 'list' },
+            description: 'Test model',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: {
+                enum: {
+                  $ref: '#/$defs/TestEnum',
+                },
+              },
+              additionalProperties: false,
+              $defs: {
+                TestEnum: {
+                  type: 'string',
+                  title: 'TestEnum',
+                  enum: ['ONE', 'TWO', 'THREE'],
+                },
+              },
+            },
+          },
+        },
+      },
+      commonEmbeds: ['TestEnum'],
     })
   })
 })

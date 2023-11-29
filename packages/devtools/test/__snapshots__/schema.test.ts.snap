@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`schema createAbstractCompositeDefinition creates an InternalCompositeDefinition for profiles from schema 1`] = `
+exports[`schema parsing and compilation createAbstractCompositeDefinition creates an InternalCompositeDefinition for profiles from schema 1`] = `
 {
   "commonEmbeds": [
     "ImageMetadata",

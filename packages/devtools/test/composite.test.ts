@@ -21,7 +21,7 @@ declare global {
   const ceramic: CeramicApi
 }
 
-describe('composite', () => {
+describe('composite class', () => {
   describe('Composite instance', () => {
     describe('constructor()', () => {
       test('throws if the version is not compatible', () => {
@@ -740,15 +740,45 @@ describe('composite', () => {
       expect(Object.keys(fromModelsCompositeParams.commits)).toHaveLength(3)
     })
   })
+})
 
+describe('composite lifecycle', () => {
   test('Relations support', async () => {
     const composite = await Composite.create({ ceramic, schema: postSchema })
     // The post schema contains 2 models: Post and Comment
     expect(composite.modelIDs).toHaveLength(2)
   })
 
-  test('Interfaces support', async () => {
-    const composite = await Composite.create({ ceramic, schema: mediaSchema })
-    expect(composite.modelIDs).toHaveLength(13)
+  describe('Interfaces support', () => {
+    test('creation only', async () => {
+      const composite = await Composite.create({ ceramic, schema: mediaSchema })
+      expect(composite.modelIDs).toHaveLength(13)
+    })
+
+    test('creating and loading', async () => {
+      const interfaceComposite = await Composite.create({
+        ceramic,
+        schema: `
+          interface TestInterface @createModel(description: "Test interface") {
+            text: String @string(maxLength: 20)
+          }
+        `,
+      })
+      const interfaceID = interfaceComposite.modelIDs[0]
+
+      const modelComposite = await Composite.create({
+        ceramic,
+        schema: `
+          interface TestInterface @loadModel(id: "${interfaceID}") {
+            id: ID!
+          }
+
+          type TestModel @createModel(description: "Test model") {
+            text: String! @string(maxLength: 10)
+          }
+        `,
+      })
+      expect(modelComposite.modelIDs).toHaveLength(2)
+    })
   })
 })
