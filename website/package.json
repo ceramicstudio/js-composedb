@@ -16,9 +16,9 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@ceramicnetwork/cli": "^3.0.0-rc.0",
-    "@ceramicnetwork/common": "^3.0.0-rc.0",
-    "@ceramicnetwork/http-client": "^3.0.0-rc.0",
+    "@ceramicnetwork/cli": "^3.0.5",
+    "@ceramicnetwork/common": "^3.0.5",
+    "@ceramicnetwork/http-client": "^3.0.5",
     "@composedb/client": "workspace:^",
     "@docusaurus/core": "^3.0.0",
     "@docusaurus/plugin-content-docs": "^3.0.0",
@@ -28,9 +28,9 @@
     "@graphiql/toolkit": "^0.9.1",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
-    "graphiql": "^3.0.9",
+    "graphiql": "^3.0.10",
     "graphql": "^16.8.1",
-    "prism-react-renderer": "^2.2.0",
+    "prism-react-renderer": "^2.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-ga4": "^2.1.0",
@@ -42,7 +42,7 @@
     "@docusaurus/tsconfig": "^3.0.0",
     "@docusaurus/types": "^3.0.0",
     "docusaurus-plugin-typedoc": "^0.21.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.2"
   },
   "browserslist": {
     "production": [

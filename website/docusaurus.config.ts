@@ -25,15 +25,20 @@ const config: Config = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          includeCurrentVersion: true,
-          lastVersion: '0.5.x',
+          includeCurrentVersion: false,
+          lastVersion: '0.6.x',
           versions: {
-            current: {
-              banner: 'unreleased',
-              label: 'Preview',
-              path: 'preview',
+            // current: {
+            //   banner: 'unreleased',
+            //   label: 'Preview',
+            //   path: 'preview',
+            // },
+            '0.6.x': {
+              label: '0.6.x',
+              path: '0.6.x',
             },
             '0.5.x': {
+              banner: 'unmaintained',
               label: '0.5.x',
               path: '0.5.x',
             },
@@ -123,11 +128,11 @@ const config: Config = {
           items: [
             {
               label: 'Introduction',
-              to: '/docs/0.5.x/introduction',
+              to: '/docs/0.6.x/introduction',
             },
             {
               label: 'API',
-              to: '/docs/0.5.x/api/modules/client',
+              to: '/docs/0.6.x/api/modules/client',
             },
           ],
         },
