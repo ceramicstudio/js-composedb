@@ -68,6 +68,7 @@ describe('composites', () => {
         'composite:create',
         'test/mocks/composite.profile.post.schema',
         `--did-private-key=${seed}`,
+        `--no-deploy`,
       ])
       const output = create.stdout.toString()
       const def = JSON.parse(output) as EncodedCompositeDefinition

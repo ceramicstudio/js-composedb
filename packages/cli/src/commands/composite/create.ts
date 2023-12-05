@@ -29,6 +29,7 @@ export default class CreateComposite extends Command<Flags, { schemaFilePath: st
       description:
         'Deploy the composite to the ceramic node, which will start indexing on the composite',
       default: true,
+      allowNo: true,
     }),
   }
 

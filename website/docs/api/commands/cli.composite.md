@@ -46,9 +46,9 @@ Create an encoded composite definition from GraphQL [Composite Schema](https://d
 
 You can find a detailed guide on the creation of Composites [here](https://developers.ceramic.network/docs/composedb/guides/data-modeling/composites)
 
-If updating your composite, run this command with `--no-deploy`. Your GraphQL 
-definition will still be updated, but Ceramic will not attempt to re-index
-your composite.
+If updating your composite by specifying additional fields to filter on using the `createIndex` directive, run this 
+command with `--no-deploy`. Your GraphQL definition will still be updated, but Ceramic will not attempt to re-index your 
+composite. For other updates to your composite, such as adding new models, run with `--deploy`.
 
 ```
 USAGE
@@ -61,7 +61,8 @@ OPTIONS
   -c, --ceramic-url        Ceramic API URL
   -k, --did-private-key    DID Private Key (you can generate a fresh private key using composedb did:generate-private-key)
   -o, --output             a path to file where the resulting encoded composite definition should be saved
-  -d, --deploy             Deploy the composite to the ceramic node, which will start indexing on the composite
+  -d, --deploy             Deploy the composite to the ceramic node, which will cause the node to start indexing the 
+models contained within the composite
   --no-deploy              Do not deploy the composite to the ceramic node
 ```
 

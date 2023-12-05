@@ -236,7 +236,7 @@ export type FromModelsParams = CompositeOptions & {
    * Whether to add the Models to the index or not. If `true`, the Ceramic instance must be
    * authenticated with an admin DID. Defaults to `false`.
    */
-  index?: boolean
+  index: boolean
 }
 
 /**

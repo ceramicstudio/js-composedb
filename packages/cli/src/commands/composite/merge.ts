@@ -43,7 +43,7 @@ export default class CompositeMerge extends Command<Flags> {
     try {
       this.spinner.start('Merging composites...')
       const composites = await Promise.all(
-        compositePaths.map(async (path) => await readEncodedComposite(this.ceramic, path)),
+        compositePaths.map(async (path) => await readEncodedComposite(this.ceramic, path, false)),
       )
 
       const commonEmbedsFlag = this.flags['common-embeds'] as string | undefined

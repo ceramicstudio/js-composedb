@@ -45,7 +45,7 @@ export default class CompositeModels extends Command<
         const definition = JSON.parse(this.stdin) as EncodedCompositeDefinition
         composite = await Composite.fromJSON({ ceramic: this.ceramic, definition })
       } else if (this.args.compositePath !== undefined) {
-        composite = await readEncodedComposite(this.ceramic, this.args.compositePath)
+        composite = await readEncodedComposite(this.ceramic, this.args.compositePath, false)
       } else {
         this.spinner.fail(
           'You need to pass a path to encoded composite either via an arg or through stdin',

@@ -31,7 +31,7 @@ export async function createComposite(
   deploy: boolean,
 ): Promise<Composite> {
   const file = await readFile(getFilePath(path))
-  return await Composite.create({ ceramic, schema: file.toString(), index: !deploy })
+  return await Composite.create({ ceramic, schema: file.toString(), index: deploy })
 }
 
 /**
@@ -40,12 +40,12 @@ export async function createComposite(
 export async function readEncodedComposite(
   ceramic: CeramicClient | string,
   path: PathInput,
-  index?: boolean,
+  deploy: boolean,
 ): Promise<Composite> {
   const client = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
   const file = getFilePath(path)
   const definition = (await readJSON(file)) as EncodedCompositeDefinition
-  return Composite.fromJSON({ ceramic: client, definition: definition, index: index })
+  return Composite.fromJSON({ ceramic: client, definition: definition, index: deploy })
 }
 
 /**
@@ -116,7 +116,7 @@ export async function writeEncodedCompositeRuntime(
   runtimePath: PathInput,
   schemaPath?: PathInput,
 ): Promise<void> {
-  const definition = await readEncodedComposite(ceramic, definitionPath)
+  const definition = await readEncodedComposite(ceramic, definitionPath, false)
   const runtime = definition.toRuntime()
   await writeRuntimeDefinition(runtime, runtimePath)
   if (schemaPath != null) {
@@ -134,7 +134,7 @@ export async function mergeEncodedComposites(
 ): Promise<string> {
   const sources = Array.isArray(source) ? source : [source]
   const composites = await Promise.all(
-    sources.map(async (path) => await readEncodedComposite(ceramic, path)),
+    sources.map(async (path) => await readEncodedComposite(ceramic, path, false)),
   )
   const file = getFilePath(destination)
   await writeEncodedComposite(Composite.from(composites), file)

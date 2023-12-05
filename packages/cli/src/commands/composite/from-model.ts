@@ -5,6 +5,7 @@ import { writeEncodedComposite } from '@composedb/devtools-node'
 
 type Flags = CommandFlags & {
   output?: string
+  deploy: boolean
 }
 
 export default class CompositeFromModel extends Command<Flags> {
@@ -17,6 +18,12 @@ export default class CompositeFromModel extends Command<Flags> {
     output: Flags.string({
       char: 'o',
       description: 'path to the file where the composite representation should be saved',
+    }),
+    deploy: Flags.boolean({
+      char: 'd',
+      description:
+        'Deploy the composite to the ceramic node, which will start indexing on the composite',
+      default: true,
     }),
   }
 
@@ -44,6 +51,7 @@ export default class CompositeFromModel extends Command<Flags> {
       const composite = await Composite.fromModels({
         ceramic: this.ceramic,
         models: allModelStreamIDs,
+        index: this.flags.deploy,
       })
       if (this.flags.output != null) {
         const output = this.flags.output
