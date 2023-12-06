@@ -559,7 +559,16 @@ describe('composite class', () => {
           Composite.create({ ceramic, schema: ratingSchema }),
           Composite.create({ ceramic, schema: noteSchema }),
         ])
-        const mergedComposite = postComposite.merge([ratingComposite, noteComposite]).toJSON()
+
+        const noteID = noteComposite.modelIDs[0]
+        const { commits, definition } = noteComposite.toParams()
+        definition.indices ??= {}
+        // set different index on the Note model to ensure it's added to the merged composite
+        definition.indices[noteID] = [{ fields: [{ path: ['status'] }] }]
+
+        const mergedComposite = postComposite
+          .merge([ratingComposite, noteComposite, { commits, definition }])
+          .toJSON()
         expect(mergedComposite.indices).toMatchSnapshot()
       })
     })

@@ -931,4 +931,15 @@ describe('schema parsing and compilation', () => {
       commonEmbeds: ['TestEnum'],
     })
   })
+
+  test('Models must contain at least one content field', () => {
+    expect(() => {
+      createAbstractCompositeDefinition(`
+      type MyModel @createModel(description: "Test model without content"
+      ) {
+        account: DID! @documentAccount
+      }
+    `)
+    }).toThrow('Invalid model MyModel: at least one content property must be defined')
+  })
 })

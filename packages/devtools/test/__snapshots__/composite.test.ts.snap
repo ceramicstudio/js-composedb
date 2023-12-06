@@ -23,6 +23,15 @@ exports[`composite class Composite instance merge() merges composites into the i
         },
       ],
     },
+    {
+      "fields": [
+        {
+          "path": [
+            "status",
+          ],
+        },
+      ],
+    },
   ],
   "kjzl6hvfrbw6camgytf2iuwiq3yir9o1eyxsl45jm699k8d68bs85r61bfhove1": [
     {

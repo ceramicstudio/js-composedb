@@ -315,6 +315,10 @@ export class SchemaCompiler {
       }
     }
 
+    if (Object.keys(object.properties).length === 0) {
+      throw new Error(`Invalid model ${name}: at least one content property must be defined`)
+    }
+
     if (required.length !== 0) {
       object.required = required
     }

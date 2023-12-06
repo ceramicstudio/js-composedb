@@ -477,11 +477,17 @@ export class Composite {
       assertModelsHaveCommits(definition.models, commits)
 
       const def = toStrictDefinition(definition)
+      // Shallow merges
       Object.assign(nextParams.commits, commits)
       Object.assign(nextDefinition.models, definition.models)
       Object.assign(nextDefinition.aliases, def.aliases)
-      Object.assign(nextDefinition.indices, def.indices)
+      // Deep merge of views
       merge(nextDefinition.views, def.views)
+      // Concatenation of indices
+      for (const [id, indices] of Object.entries(def.indices)) {
+        nextDefinition.indices[id] = (nextDefinition.indices[id] ?? []).concat(indices)
+      }
+      // Union set of common embeds
       for (const name of def.commonEmbeds) {
         collectedEmbeds.add(name)
       }
