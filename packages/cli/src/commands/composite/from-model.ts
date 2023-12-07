@@ -23,7 +23,7 @@ export default class CompositeFromModel extends Command<Flags> {
       char: 'd',
       description:
         'Deploy the composite to the ceramic node, which will start indexing on the composite',
-      default: true,
+      default: false,
     }),
   }
 

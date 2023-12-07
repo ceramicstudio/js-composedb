@@ -47,8 +47,8 @@ Create an encoded composite definition from GraphQL [Composite Schema](https://d
 You can find a detailed guide on the creation of Composites [here](https://developers.ceramic.network/docs/composedb/guides/data-modeling/composites)
 
 If updating your composite by specifying additional fields to filter on using the `createIndex` directive, run this 
-command with `--no-deploy`. Your GraphQL definition will still be updated, but Ceramic will not attempt to re-index your 
-composite. For other updates to your composite, such as adding new models, run with `--deploy`.
+command with `--no-deploy`. Your GraphQL definition will still be updated, but Ceramic will not attempt to re-index the
+models in your composite. For other updates to your composite, such as adding new models, run with `--deploy`.
 
 ```
 USAGE
@@ -124,11 +124,9 @@ available on the Ceramic Node that yor DApp connects to. You can find a detailed
 guide on Composites' deployment
 [here](https://developers.ceramic.network/docs/composedb/guides/data-modeling/composites#deploying-composites)
 
-If updating your composite to add additional query fields, do not run this command.
-It should only be run _the first time_ you add your composite to the Ceramic node.
-
-If you are reusing a model multiple times in different composites, you can also
-skip this command.
+If updating your composite by specifying additional fields to filter on using the `createIndex` directive, do not run
+this command. Your GraphQL definition will still be updated, but Ceramic will not attempt to re-index the
+models in your composite. For other updates to your composite, such as adding new models, run with `--deploy`.
 
 ```
 USAGE
