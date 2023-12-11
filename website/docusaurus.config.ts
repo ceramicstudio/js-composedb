@@ -89,145 +89,270 @@ const config: Config = {
         redirects: [
           {
             to: 'https://developers.ceramic.network/docs/composedb/set-up-your-environment',
-            from: ['/docs/0.5.x/set-up-your-environment', '/docs/0.4.x/set-up-your-environment'],
+            from: [
+              '/docs/0.5.x/set-up-your-environment', 
+              '/docs/0.4.x/set-up-your-environment'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/getting-started',
-            from: ['/docs/0.5.x/getting-started', '/docs/0.4.x/getting-started'],
+            from: [
+              '/docs/0.5.x/getting-started', 
+              '/docs/0.4.x/getting-started'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/wheel/wheel-reference',
-            from: ['/docs/0.5.x/wheel-reference', '/docs/0.4.x/wheel-reference'],
+            from: [
+              '/docs/0.5.x/wheel-reference', 
+              '/docs/0.4.x/wheel-reference'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/create-your-composite',
-            from: ['/docs/0.5.x/create-your-composite', '/docs/0.4.x/create-your-composite', '/docs/0.3.x/first-composite', '/docs/0.2.x/first-composite'],
+            from: [
+              '/docs/0.5.x/create-your-composite', 
+              '/docs/0.4.x/create-your-composite', 
+              '/docs/0.3.x/first-composite', 
+              '/docs/0.2.x/first-composite'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/interact-with-data',
-            from: ['/docs/0.5.x/interact-with-data', '/docs/0.4.x/interact-with-data', '/docs/0.3.x/client-setup', '/docs/0.2.x/client-setup', '/docs/0.3.x/configuration'],
+            from: [
+              '/docs/0.5.x/interact-with-data', 
+              '/docs/0.4.x/interact-with-data', 
+              '/docs/0.3.x/client-setup', 
+              '/docs/0.2.x/client-setup', 
+              '/docs/0.3.x/configuration'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/next-steps',
-            from: ['/docs/0.5.x/next-steps', '/docs/0.4.x/next-steps'],
+            from: [
+              '/docs/0.5.x/next-steps', 
+              '/docs/0.4.x/next-steps'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/core-concepts',
-            from: ['/docs/0.5.x/core-concepts', '/docs/0.4.x/core-concepts', '/docs/0.3.x/guides/concepts-overview', '/docs/0.2.x/guides/concepts-overview'],
+            from: [
+              '/docs/0.5.x/core-concepts', 
+              '/docs/0.4.x/core-concepts', 
+              '/docs/0.3.x/guides/concepts-overview', 
+              '/docs/0.2.x/guides/concepts-overview'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/introduction/ceramic-roadmap',
-            from: ['/docs/0.4.x/ceramic-roadmap'],
+            from: '/docs/0.4.x/ceramic-roadmap',
           },
           {
             to: 'https://developers.ceramic.network/docs/ecosystem/community',
-            from: ['/docs/0.5.x/community', '/docs/0.4.x/community'],
+            from: [
+              '/docs/0.5.x/community', 
+              '/docs/0.4.x/community'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/examples',
-            from: ['/docs/0.5.x/examples'],
+            from: '/docs/0.5.x/examples',
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/examples/verifiable-credentials',
-            from: ['/docs/0.5.x/verifiable-credentials'],
+            from: '/docs/0.5.x/verifiable-credentials',
           },
           {
             to: 'https://developers.ceramic.network/sandbox',
-            from: ['/sandbox'],
+            from: '/sandbox',
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides',
-            from: ['/docs/0.5.x/guides', '/docs/0.4.x/guides', '/docs/0.3.x/guides', '/docs/0.2.x/guides'],
+            from: [
+              '/docs/0.5.x/guides', 
+              '/docs/0.4.x/guides', 
+              '/docs/0.3.x/guides', 
+              '/docs/0.2.x/guides'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/data-modeling',
-            from: ['/docs/0.5.x/guides/data-modeling/data-modeling', '/docs/0.4.x/guides/data-modeling/data-modeling', '/docs/0.3.x/guides/data-composition', '/docs/0.2.x/guides/data-composition'],
+            from: [
+              '/docs/0.5.x/guides/data-modeling/data-modeling', 
+              '/docs/0.4.x/guides/data-modeling/data-modeling', 
+              '/docs/0.3.x/guides/data-composition', 
+              '/docs/0.2.x/guides/data-composition'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/data-modeling/model-catalog',
-            from: ['/docs/0.5.x/guides/data-modeling/model-catalog', '/docs/0.4.x/guides/data-modeling/model-catalog', '/docs/0.3.x/guides/using-composites/discovery', '/docs/0.2.x/guides/using-composites/discovery'],
+            from: [
+              '/docs/0.5.x/guides/data-modeling/model-catalog', 
+              '/docs/0.4.x/guides/data-modeling/model-catalog', 
+              '/docs/0.3.x/guides/using-composites/discovery',
+              '/docs/0.2.x/guides/using-composites/discovery'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/data-modeling/writing-models',
-            from: ['/docs/0.5.x/guides/data-modeling/writing-models', '/docs/0.4.x/guides/data-modeling/writing-models'],
+            from: [
+              '/docs/0.5.x/guides/data-modeling/writing-models', 
+              '/docs/0.4.x/guides/data-modeling/writing-models'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/data-modeling/introduction-to-modeling',
-            from: ['/docs/0.5.x/guides/data-modeling/introduction-to-modeling', '/docs/0.4.x/guides/data-modeling/introduction-to-modeling'],
+            from: [
+              '/docs/0.5.x/guides/data-modeling/introduction-to-modeling', 
+              '/docs/0.4.x/guides/data-modeling/introduction-to-modeling'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/data-modeling/schemas',
-            from: ['/docs/0.5.x/guides/data-modeling/schemas', '/docs/0.4.x/guides/data-modeling/schemas', '/docs/0.3.x/guides/creating-composites/schema', '/docs/0.2.x/guides/creating-composites/schema', '/docs/0.3.x/guides/creating-composites/scalars', '/docs/0.3.x/guides/creating-composites/directives', '/docs/0.2.x/guides/creating-composites/scalars', '/docs/0.2.x/guides/creating-composites/directives'],
+            from: [
+              '/docs/0.5.x/guides/data-modeling/schemas', 
+              '/docs/0.4.x/guides/data-modeling/schemas', 
+              '/docs/0.3.x/guides/creating-composites/schema', 
+              '/docs/0.2.x/guides/creating-composites/schema', 
+              '/docs/0.3.x/guides/creating-composites/scalars', 
+              '/docs/0.3.x/guides/creating-composites/directives',
+              '/docs/0.2.x/guides/creating-composites/scalars', 
+              '/docs/0.2.x/guides/creating-composites/directives'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/data-modeling/relations',
-            from: ['/docs/0.5.x/guides/data-modeling/relations', '/docs/0.4.x/guides/data-modeling/relations'],
+            from: [
+              '/docs/0.5.x/guides/data-modeling/relations', 
+              '/docs/0.4.x/guides/data-modeling/relations'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/data-modeling/relations',
-            from: ['/docs/0.5.x/guides/data-modeling/composites', '/docs/0.4.x/guides/data-modeling/composites', '/docs/0.3.x/guides/using-composites/deployment', '/docs/0.3.x/guides/using-composites/customization', '/docs/0.3.x/guides/creating-composites/overview', '/docs/0.2.x/guides/using-composites/deployment', '/docs/0.2.x/guides/using-composites/customization', '/docs/0.2.x/guides/creating-composites/overview'],
+            from: [
+              '/docs/0.5.x/guides/data-modeling/composites', 
+              '/docs/0.4.x/guides/data-modeling/composites', 
+              '/docs/0.3.x/guides/using-composites/deployment', 
+              '/docs/0.3.x/guides/using-composites/customization', 
+              '/docs/0.3.x/guides/creating-composites/overview', 
+              '/docs/0.2.x/guides/using-composites/deployment',
+              '/docs/0.2.x/guides/using-composites/customization', 
+              '/docs/0.2.x/guides/creating-composites/overview'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/data-interactions/queries',
-            from: ['/docs/0.5.x/guides/data-interactions/queries', '/docs/0.4.x/guides/data-interactions/queries', '/docs/0.3.x/guides/interacting/queries', '/docs/0.2.x/guides/interacting/queries'],
+            from: [
+              '/docs/0.5.x/guides/data-interactions/queries', 
+              '/docs/0.4.x/guides/data-interactions/queries', 
+              '/docs/0.3.x/guides/interacting/queries',
+              '/docs/0.2.x/guides/interacting/queries'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/data-interactions/mutations',
-            from: ['/docs/0.5.x/guides/data-interactions/mutations', '/docs/0.4.x/guides/data-interactions/mutations', '/docs/0.3.x/guides/interacting/mutations', '/docs/0.2.x/guides/interacting/mutations'],
+            from: [
+              '/docs/0.5.x/guides/data-interactions/mutations', 
+              '/docs/0.4.x/guides/data-interactions/mutations', 
+              '/docs/0.3.x/guides/interacting/mutations',
+              '/docs/0.2.x/guides/interacting/mutations'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/composedb-client/using-apollo',
-            from: ['/docs/0.5.x/guides/composedb-client/using-apollo', '/docs/0.3.x/guides/interacting/using-apollo', '/docs/0.2.x/guides/interacting/using-apollo', '/docs/0.4.x/guides/composedb-client/using-apollo'],
+            from: [
+              '/docs/0.5.x/guides/composedb-client/using-apollo', 
+              '/docs/0.3.x/guides/interacting/using-apollo', 
+              '/docs/0.2.x/guides/interacting/using-apollo',
+              '/docs/0.4.x/guides/composedb-client/using-apollo'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/composedb-client/using-relay',
-            from: ['/docs/0.5.x/guides/composedb-client/using-relay', '/docs/0.4.x/guides/composedb-client/using-relay', '/docs/0.3.x/guides/interacting/using-relay', '/docs/0.2.x/guides/interacting/using-relay'],
+            from: [
+              '/docs/0.5.x/guides/composedb-client/using-relay', 
+              '/docs/0.4.x/guides/composedb-client/using-relay', 
+              '/docs/0.3.x/guides/interacting/using-relay',
+              '/docs/0.2.x/guides/interacting/using-relay'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/composedb-client',
-            from: ['/docs/0.5.x/guides/composedb-client/composedb-client', '/docs/0.4.x/guides/composedb-client/composedb-client'],
+            from: [
+              '/docs/0.5.x/guides/composedb-client/composedb-client', 
+              '/docs/0.4.x/guides/composedb-client/composedb-client'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/composedb-client/javascript-client',
-            from: ['/docs/0.5.x/guides/composedb-client/javascript-client', '/docs/0.4.x/guides/composedb-client/javascript-client'],
+            from: [
+              '/docs/0.5.x/guides/composedb-client/javascript-client', 
+              '/docs/0.4.x/guides/composedb-client/javascript-client'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/composedb-client/authenticate-users',
-            from: ['/docs/0.5.x/guides/composedb-client/authenticate-users', '/docs/0.4.x/guides/composedb-client/authenticate-users'],
+            from: [
+              '/docs/0.5.x/guides/composedb-client/authenticate-users', 
+              '/docs/0.4.x/guides/composedb-client/authenticate-users'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/composedb-client/user-sessions',
-            from: ['/docs/0.5.x/guides/composedb-client/user-sessions', '/docs/0.4.x/guides/composedb-client/user-sessions'],
+            from: [
+              '/docs/0.5.x/guides/composedb-client/user-sessions', 
+              '/docs/0.4.x/guides/composedb-client/user-sessions'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/composedb-server',
-            from: ['/docs/0.5.x/guides/composedb-server/composedb-server', '/docs/0.4.x/guides/composedb-server/composedb-server'],
+            from: [
+              '/docs/0.5.x/guides/composedb-server/composedb-server', 
+              '/docs/0.4.x/guides/composedb-server/composedb-server'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/composedb-server/running-locally',
-            from: ['/docs/0.5.x/guides/composedb-server/running-locally', '/docs/0.4.x/guides/composedb-server/running-locally'],
+            from: [
+              '/docs/0.5.x/guides/composedb-server/running-locally', 
+              '/docs/0.4.x/guides/composedb-server/running-locally'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/composedb-server/running-in-the-cloud',
-            from: ['/docs/0.5.x/guides/composedb-server/running-in-the-cloud', '/docs/0.4.x/guides/composedb-server/running-in-the-cloud'],
+            from: [
+              '/docs/0.5.x/guides/composedb-server/running-in-the-cloud', 
+              '/docs/0.4.x/guides/composedb-server/running-in-the-cloud'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/composedb-server/server-configurations',
-            from: ['/docs/0.5.x/guides/composedb-server/server-configurations', '/docs/0.4.x/guides/composedb-server/server-configurations'],
+            from: [
+              '/docs/0.5.x/guides/composedb-server/server-configurations', 
+              '/docs/0.4.x/guides/composedb-server/server-configurations'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/composedb-server/access-mainnet',
-            from: ['/docs/0.5.x/guides/composedb-server/access-mainnet', '/docs/0.4.x/guides/composedb-server/access-mainnet'],
+            from: [
+              '/docs/0.5.x/guides/composedb-server/access-mainnet', 
+              '/docs/0.4.x/guides/composedb-server/access-mainnet'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/composedb-server/data-storage',
-            from: ['/docs/0.5.x/guides/composedb-server/data-storage', '/docs/0.4.x/guides/composedb-server/data-storage'],
+            from: [
+              '/docs/0.5.x/guides/composedb-server/data-storage', 
+              '/docs/0.4.x/guides/composedb-server/data-storage'
+            ],
           },
           {
             to: 'https://developers.ceramic.network/docs/composedb/guides/data-interactions',
-            from: ['/docs/0.5.x/guides/data-interactions/data-interactions', '/docs/0.4.x/guides/data-interactions/data-interactions'],
+            from: [
+              '/docs/0.5.x/guides/data-interactions/data-interactions', 
+              '/docs/0.4.x/guides/data-interactions/data-interactions'
+            ],
           },
-
         ],
       },
     ],
