@@ -40,7 +40,7 @@ export async function createComposite(
 export async function readEncodedComposite(
   ceramic: CeramicClient | string,
   path: PathInput,
-  deploy: boolean,
+  deploy?: boolean,
 ): Promise<Composite> {
   const client = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
   const file = getFilePath(path)
