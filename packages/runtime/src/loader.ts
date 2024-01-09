@@ -68,9 +68,9 @@ export function removeNullValues(content: Record<string, unknown>): Record<strin
     if (value == null) {
       delete copy[key]
     } else if (Array.isArray(value)) {
-      copy[key] = value.map((item) => {
+      copy[key] = value.map((item: unknown) => {
         return typeof item === 'object' && !Array.isArray(item) && item != null
-          ? removeNullValues(item)
+          ? removeNullValues(item as Record<string, unknown>)
           : item
       })
     } else if (typeof value === 'object') {

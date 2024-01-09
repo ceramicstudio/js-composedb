@@ -111,9 +111,9 @@ async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
         MODEL_GENESIS_OPTS,
       )
 
-      modelCommitsValues.filter(isSignedCommitContainer).map(async (commit: StreamCommits) => {
+      for await (const commit of modelCommitsValues.filter(isSignedCommitContainer)) {
         await assertSupportedReadModelController(model, commit as unknown as SignedCommitContainer)
-      })
+      }
       for (const commit of updates) {
         await ceramic.applyCommit(model.id, commit as unknown as CeramicCommit)
       }

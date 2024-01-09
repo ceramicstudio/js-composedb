@@ -37,7 +37,7 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/http-client": "^3.0.5",
+    "@ceramicnetwork/http-client": "^3.2.0",
     "@composedb/client": "workspace:^",
     "@composedb/runtime": "workspace:^",
     "@composedb/server": "workspace:^",
@@ -50,7 +50,7 @@
     "@composedb/devtools": "workspace:^",
     "@composedb/types": "workspace:^",
     "@types/fs-extra": "^11.0.4",
-    "dids": "^4.0.4"
+    "dids": "^5.0.2"
   },
   "jest": {
     "extensionsToTreatAsEsm": [
