@@ -3,6 +3,10 @@
 exports[`Runtime format Note model definition with views 1`] = `
 {
   "accountData": {
+    "noteBookList": {
+      "name": "NoteBook",
+      "type": "connection",
+    },
     "noteList": {
       "name": "Note",
       "type": "connection",
@@ -24,12 +28,33 @@ exports[`Runtime format Note model definition with views 1`] = `
       "implements": [],
       "interface": false,
     },
+    "NoteBook": {
+      "accountRelation": {
+        "type": "list",
+      },
+      "id": "NoteBookID",
+      "implements": [],
+      "interface": false,
+    },
   },
   "objects": {
     "Note": {
       "author": {
         "type": "view",
         "viewType": "documentAccount",
+      },
+      "noteBook": {
+        "relation": {
+          "model": "NoteBookID",
+          "property": "noteBookID",
+          "source": "document",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "noteBookID": {
+        "required": false,
+        "type": "streamid",
       },
       "status": {
         "refName": "NoteStatus",
@@ -40,6 +65,39 @@ exports[`Runtime format Note model definition with views 1`] = `
       "text": {
         "required": true,
         "type": "string",
+      },
+      "title": {
+        "indexed": true,
+        "required": true,
+        "type": "string",
+      },
+      "version": {
+        "type": "view",
+        "viewType": "documentVersion",
+      },
+    },
+    "NoteBook": {
+      "author": {
+        "type": "view",
+        "viewType": "documentAccount",
+      },
+      "notes": {
+        "relation": {
+          "model": "NoteID",
+          "property": "noteBookID",
+          "source": "queryConnection",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "notesCount": {
+        "relation": {
+          "model": "NoteID",
+          "property": "noteBookID",
+          "source": "queryCount",
+        },
+        "type": "view",
+        "viewType": "relation",
       },
       "title": {
         "indexed": true,

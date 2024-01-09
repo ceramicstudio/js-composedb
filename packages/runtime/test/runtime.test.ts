@@ -329,14 +329,15 @@ describe('runtime', () => {
     expect(res.data?.createExtraScalars.document).toMatchSnapshot()
   }, 20000)
 
-  test('create a document with enum', async () => {
+  test('create and update a document with enum', async () => {
     const composite = await Composite.create({ ceramic, schema: noteSchema })
     const runtime = new ComposeRuntime({ ceramic, definition: composite.toRuntime() })
-    const res = await runtime.executeQuery<{ createNote: { document: { id: string } } }>(
+    const created = await runtime.executeQuery<{ createNote: { document: { id: string } } }>(
       `
       mutation CreateNote($input: CreateNoteInput!) {
         createNote(input: $input) {
           document {
+            id
             status
             title
             text
@@ -354,7 +355,35 @@ describe('runtime', () => {
         },
       },
     )
-    expect(res.data?.createNote.document).toMatchSnapshot()
+    const { id, ...content } = created.data?.createNote.document ?? {}
+    expect(content).toMatchSnapshot()
+
+    const updated = await runtime.executeQuery<{
+      updateNote: { document: Record<string, unknown> }
+    }>(
+      `
+      mutation UpdateNote($input: UpdateNoteInput!) {
+        updateNote(input: $input) {
+          document {
+            status
+            title
+            text
+          }
+        }
+      }
+      `,
+      {
+        input: {
+          id,
+          content: {
+            status: null,
+            title: 'A test note',
+            text: 'New note contents',
+          },
+        },
+      },
+    )
+    expect(updated.data?.updateNote.document).toMatchSnapshot()
   }, 20000)
 
   test('relation to account reference', async () => {

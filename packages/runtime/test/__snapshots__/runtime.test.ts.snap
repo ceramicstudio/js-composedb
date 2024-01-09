@@ -26,14 +26,6 @@ exports[`runtime can create a document using extra scalars 1`] = `
 }
 `;
 
-exports[`runtime create a document with enum 1`] = `
-{
-  "status": "DEFAULT",
-  "text": "Test node contents",
-  "title": "A test note",
-}
-`;
-
 exports[`runtime create and query post with comments 1`] = `
 "type Query {
   """Fetches objects given their IDs"""
@@ -544,6 +536,22 @@ exports[`runtime create and query ratings with filters and ordering 3`] = `
       },
     },
   },
+}
+`;
+
+exports[`runtime create and update a document with enum 1`] = `
+{
+  "status": "DEFAULT",
+  "text": "Test node contents",
+  "title": "A test note",
+}
+`;
+
+exports[`runtime create and update a document with enum 2`] = `
+{
+  "status": null,
+  "text": "New note contents",
+  "title": "A test note",
 }
 `;
 

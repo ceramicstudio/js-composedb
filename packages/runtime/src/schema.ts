@@ -583,12 +583,13 @@ class SchemaBuilder {
           type,
           args: connectionArgs,
           resolve: async (doc, _, ctx): Promise<ModelInstanceDocument | null> => {
-            return await ctx.loadDoc(doc.content[key] as string)
+            const id = doc.content?.[key] as string | undefined
+            return id ? await ctx.loadDoc(id) : null
           },
         }
       case 'enum':
       case 'object':
-        return { type, resolve: (doc) => doc.content[key] as unknown }
+        return { type, resolve: (doc) => doc.content?.[key] as unknown }
       default:
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         throw new Error(`Unsupported reference type on document object: ${field.refType}`)

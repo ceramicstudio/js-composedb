@@ -13,7 +13,27 @@ exports[`composite class Composite instance merge() merges composites into the i
       ],
     },
   ],
-  "kjzl6hvfrbw6c9u8sp41biu3r0ghk8mw34od8jrjmpf2sw298dtgm49mcr0bzrl": [
+  "kjzl6hvfrbw6c85zxgdsynde91d2nq24dnpgy0fv8p5oopyzy401yrbip8debwb": [
+    {
+      "fields": [
+        {
+          "path": [
+            "title",
+          ],
+        },
+      ],
+    },
+    {
+      "fields": [
+        {
+          "path": [
+            "title",
+          ],
+        },
+      ],
+    },
+  ],
+  "kjzl6hvfrbw6c8vrx18erjixmhj6a1u0jxl4x2pl6wlcif8enjavftoizd0edp3": [
     {
       "fields": [
         {
