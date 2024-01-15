@@ -1,0 +1,72 @@
+{
+  "name": "@composedb/core",
+  "version": "0.6.0",
+  "author": "3Box Labs",
+  "license": "(Apache-2.0 OR MIT)",
+  "homepage": "https://composedb.js.org",
+  "keywords": [
+    "ceramic",
+    "composedb"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ceramicstudio/js-composedb",
+    "directory": "packages/core"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build:clean": "del dist",
+    "build:js": "swc src -d ./dist --config-file ../../.swcrc",
+    "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
+    "build": "pnpm build:clean && pnpm build:types && pnpm build:js",
+    "lint": "eslint src --fix",
+    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test:ci": "pnpm run test --ci --coverage",
+    "prepare": "pnpm build",
+    "prepublishOnly": "package-check"
+  },
+  "dependencies": {
+    "@ceramicnetwork/common": "^3.0.5",
+    "@ceramicnetwork/core": "^3.0.5",
+    "ipfs-http-client": "^60.0.1",
+    "knex": "^3.1.0",
+    "merge-options": "^3.0.4",
+    "pg": "^8.11.3",
+    "rxjs": "^7.8.1",
+    "sqlite3": "^5.1.7"
+  },
+  "jest": {
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.(t|j)s$": [
+        "@swc/jest",
+        {
+          "root": "../.."
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "ipfs-core": "^0.18.1",
+    "ipfs-core-types": "^0.14.1",
+    "tmp-promise": "^3.0.3",
+    "ts-node": "^10.9.2"
+  }
+}

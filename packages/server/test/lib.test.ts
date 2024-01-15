@@ -1,4 +1,3 @@
-import { VIEWER_ID_HEADER } from '@composedb/constants'
 import { type Context, getSchema } from '@composedb/runtime'
 import { jest } from '@jest/globals'
 import { GraphQLID, GraphQLObjectType, GraphQLSchema } from 'graphql'
@@ -42,7 +41,7 @@ describe('server', () => {
       const { createHandler } = await import('../src')
 
       expect(createHandler({ ceramic: 'http://localhost:7007', schema })).toBe(
-        mockYogaServerInstance
+        mockYogaServerInstance,
       )
       expect(createYoga).toHaveBeenCalledWith({
         context: expect.any(Function),
