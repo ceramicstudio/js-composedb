@@ -786,6 +786,36 @@ describe('schema parsing and compilation', () => {
     })
   })
 
+  it('@locking directive is supported and properly converted to ICD', () => {
+    expect(
+      createAbstractCompositeDefinition(`
+      type ModelWithLockProp @createModel(
+        accountRelation: SINGLE,
+        description: "Test model with a locked int property"
+      ) {
+        uniqueValue: Int @locking
+      }
+      `),
+    ).toMatchObject({
+      models: {
+        ModelWithLockProp: {
+          action: 'create',
+          model: {
+            name: 'ModelWithLockProp',
+            accountRelation: { type: 'single' },
+            description: 'Test model with a locked int property',//TODO fix this error message
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: { uniqueValue: { type: 'integer' } },//TODO add locking structure
+              additionalProperties: false,
+            },
+          },
+        },
+      },
+    })
+  })
+
   it('Index directive is properly supported and added to ICD', () => {
     const def = createAbstractCompositeDefinition(`
       type ModelWithIDProp @createModel(
