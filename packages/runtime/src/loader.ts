@@ -61,6 +61,17 @@ export function idToString(id: DocID): string {
   return typeof id === 'string' ? StreamRef.from(id).toString() : id.toString()
 }
 
+/** @internal */
+export function toMetadata(
+  model: StreamID | string,
+  controller?: string,
+): ModelInstanceDocumentMetadataArgs {
+  return {
+    controller,
+    model: model instanceof StreamID ? model : StreamID.fromString(model),
+  }
+}
+
 const tempBatchLoadFn: BatchLoadFn<DocID, ModelInstanceDocument> = () => Promise.resolve([])
 
 export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
@@ -120,10 +131,7 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
     content: T,
     { controller, ...options }: CreateOptions = {},
   ): Promise<ModelInstanceDocument<T>> {
-    const metadata: ModelInstanceDocumentMetadataArgs = {
-      controller,
-      model: model instanceof StreamID ? model : StreamID.fromString(model),
-    }
+    const metadata = toMetadata(model, controller)
     const stream = await ModelInstanceDocument.create<T>(this.#ceramic, content, metadata, options)
     this.cache(stream)
     return stream
@@ -141,15 +149,29 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
   /**
    * Create or load a deterministic ModelInstanceDocument and cache it.
    */
-  async single<T extends Record<string, any> = Record<string, any>>(
+  async loadSingle<T extends Record<string, any> = Record<string, any>>(
     controller: string,
     model: string | StreamID,
     options?: CreateOpts,
   ): Promise<ModelInstanceDocument<T>> {
-    const metadata: ModelInstanceDocumentMetadataArgs = {
-      controller,
-      model: model instanceof StreamID ? model : StreamID.fromString(model),
-    }
+    const metadata = toMetadata(model, controller)
+    const stream = await ModelInstanceDocument.single<T>(this.#ceramic, metadata, options)
+    this.cache(stream)
+    return stream
+  }
+
+  /**
+   * Create or load a deterministic ModelInstanceDocument using the SET account
+   * relation and cache it.
+   */
+  async loadSet<T extends Record<string, any> = Record<string, any>>(
+    controller: string,
+    model: string | StreamID,
+    _unique: Array<string>,
+    options?: CreateOpts,
+  ): Promise<ModelInstanceDocument<T>> {
+    throw new Error('Must be implemented')
+    const metadata = toMetadata(model, controller)
     const stream = await ModelInstanceDocument.single<T>(this.#ceramic, metadata, options)
     this.cache(stream)
     return stream

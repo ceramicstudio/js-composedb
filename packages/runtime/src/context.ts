@@ -58,10 +58,21 @@ export type Context = {
     content: Content,
   ) => Promise<ModelInstanceDocument<Content>>
   /**
-   * Create a new single document with the given model and content.
+   * Create or update a document using the SINGLE account relation with the
+   * given model and content.
    */
-  createSingle: <Content extends Record<string, any>>(
+  upsertSingle: <Content extends Record<string, any>>(
     model: string,
+    content: Content,
+    options?: CreateOpts,
+  ) => Promise<ModelInstanceDocument<Content>>
+  /**
+   * Create or update a document using the SET account relation with the given
+   * model, content and unique fields value.
+   */
+  upsertSet: <Content extends Record<string, any>>(
+    model: string,
+    unique: Array<string>,
     content: Content,
     options?: CreateOpts,
   ) => Promise<ModelInstanceDocument<Content>>
@@ -116,7 +127,7 @@ export function createContext(params: ContextParams): Context {
     ): Promise<ModelInstanceDocument<Content>> => {
       return await loader.create(model, content)
     },
-    createSingle: async <Content extends Record<string, any> = Record<string, any>>(
+    upsertSingle: async <Content extends Record<string, any> = Record<string, any>>(
       model: string,
       content: Content,
       options?: CreateOpts,
@@ -125,7 +136,21 @@ export function createContext(params: ContextParams): Context {
       if (controller == null) {
         throw new Error('Document can only be created with an authenticated account')
       }
-      const doc = await loader.single<Content>(controller, model, options)
+      const doc = await loader.loadSingle<Content>(controller, model, options)
+      await doc.replace(content)
+      return doc
+    },
+    upsertSet: async <Content extends Record<string, any> = Record<string, any>>(
+      model: string,
+      unique: Array<string>,
+      content: Content,
+      options?: CreateOpts,
+    ): Promise<ModelInstanceDocument<Content>> => {
+      const controller = getViewerID()
+      if (controller == null) {
+        throw new Error('Document can only be created with an authenticated account')
+      }
+      const doc = await loader.loadSet<Content>(controller, model, unique, options)
       await doc.replace(content)
       return doc
     },

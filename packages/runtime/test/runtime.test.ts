@@ -25,17 +25,17 @@ declare global {
 }
 
 describe('runtime', () => {
-  test('create profile with custom sync timeout', async () => {
+  test('set profile with custom sync timeout', async () => {
     const composite = await Composite.create({ ceramic, schema: profilesSchema })
 
     const context = createContext({ ceramic })
-    const spy = jest.spyOn(context, 'createSingle')
+    const spy = jest.spyOn(context, 'upsertSingle')
 
     const runtime = new ComposeRuntime({ ceramic, context, definition: composite.toRuntime() })
-    const res = await runtime.executeQuery<{ createGenericProfile: { document: { id: string } } }>(
+    const res = await runtime.executeQuery<{ setGenericProfile: { document: { id: string } } }>(
       `
-      mutation CreateProfile($input: CreateGenericProfileInput!) {
-        createGenericProfile(input: $input) {
+      mutation SetProfile($input: SetGenericProfileInput!) {
+        setGenericProfile(input: $input) {
           document {
             id
           }
@@ -44,7 +44,7 @@ describe('runtime', () => {
       `,
       { input: { content: { name: 'Alice' }, options: { syncTimeout: 1 } } },
     )
-    expect(res.data?.createGenericProfile.document.id).toBeDefined()
+    expect(res.data?.setGenericProfile.document.id).toBeDefined()
     expect(spy).toHaveBeenCalledWith(
       expect.any(String),
       { name: 'Alice' },
@@ -726,4 +726,6 @@ describe('runtime', () => {
     )
     expect(relationsRes).toMatchSnapshot()
   }, 30000)
+
+  test.todo('SET account relation support')
 })

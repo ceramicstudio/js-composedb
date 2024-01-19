@@ -48,6 +48,7 @@ import type {
 const ACCOUNT_RELATIONS: Record<string, ModelAccountRelationV2> = {
   LIST: { type: 'list' },
   NONE: { type: 'none' },
+  SET: { type: 'set', fields: [] },
   SINGLE: { type: 'single' },
 }
 
@@ -208,13 +209,12 @@ export class SchemaParser {
 
     if (createModel != null) {
       const isInterface = isInterfaceType(type)
-      const args = (createModel.args ?? {}) as { accountRelation?: string; description?: string }
-      const accountRelation = args.accountRelation ?? 'LIST'
-      if (accountRelation === 'SET') {
-        throw new Error(
-          `Unsupported SET accountRelation value for @createModel directive on object ${type.name}`,
-        )
+      const args = (createModel.args ?? {}) as {
+        accountRelation?: string
+        accountRelationFields?: Array<string>
+        description?: string
       }
+      const accountRelation = args.accountRelation ?? 'LIST'
 
       const accountRelationValue = ACCOUNT_RELATIONS[isInterface ? 'NONE' : accountRelation]
       if (accountRelationValue == null) {
@@ -223,29 +223,43 @@ export class SchemaParser {
         )
       }
 
-      // Future: handle account relation of type set
-      // if (accountRelationValue === ModelAccountRelation.SET) {
-      //   if (accountRelationProperty == null) {
-      //     throw new Error(
-      //       `Missing accountRelationProperty value for @createModel directive on object ${type.name}`
-      //     )
-      //   }
-      //   const object = this.#def.objects[type.name]
-      //   if (object == null) {
-      //     throw new Error(`Missing object definition for ${type.name}`)
-      //   }
-      //   const property = object.properties[accountRelationProperty]
-      //   if (property == null) {
-      //     throw new Error(
-      //       `Missing property ${accountRelationProperty} defined as accountRelationProperty value for @createModel directive on object ${type.name}`
-      //     )
-      //   }
-      //   if (property.type !== 'scalar') {
-      //     throw new Error(
-      //       `Property ${accountRelationProperty} defined as accountRelationProperty value for @createModel directive on object ${type.name} must use a scalar type`
-      //     )
-      //   }
-      // }
+      if (accountRelationValue.type === 'set') {
+        const accountRelationFields = args.accountRelationFields
+        if (accountRelationFields == null) {
+          throw new Error(
+            `Missing accountRelationFields argument for @createModel directive on object ${type.name}`,
+          )
+        }
+        if (accountRelationFields.length === 0) {
+          throw new Error(
+            `The accountRelationFields argument must specify at least one field for @createModel directive on object ${type.name}`,
+          )
+        }
+        const object = this.#def.objects[type.name]
+        if (object == null) {
+          throw new Error(`Missing object definition for ${type.name}`)
+        }
+        // Check properties are defined and valid in the JSON schema for the specified fields
+        for (const field of accountRelationFields) {
+          const property = object.properties[field]
+          if (property == null) {
+            throw new Error(
+              `Missing property ${field} defined in accountRelationFields argument for @createModel directive on object ${type.name}`,
+            )
+          }
+          if (!property.required) {
+            throw new Error(
+              `Property ${field} defined in accountRelationFields argument for @createModel directive on object ${type.name} must have a required value`,
+            )
+          }
+          if (property.type !== 'enum' && property.type !== 'scalar') {
+            throw new Error(
+              `Property ${field} defined in accountRelationFields argument for @createModel directive on object ${type.name} must use an enum or scalar type`,
+            )
+          }
+        }
+        accountRelationValue.fields = accountRelationFields
+      }
 
       if (args.description == null || args.description === '') {
         throw new Error(

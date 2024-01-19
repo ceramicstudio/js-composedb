@@ -1,5 +1,194 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`schema favorite schema with SET account relation 1`] = `
+"type Query {
+  """Fetches objects given their IDs"""
+  nodes(
+    """The IDs of objects"""
+    ids: [ID!]!
+  ): [Node]!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  favoriteIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): FavoriteConnection
+  favoriteCount: Int!
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+type CeramicAccount implements Node {
+  """Globally unique identifier of the account (DID string)"""
+  id: ID!
+
+  """
+  Whether the Ceramic instance is currently authenticated with this account or not
+  """
+  isViewer: Boolean!
+  favorite(set: SetFavorite!): Favorite
+  favoriteList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): FavoriteConnection
+  favoriteListCount: Int!
+}
+
+type Favorite implements Node {
+  id: ID!
+  docID: CeramicStreamID!
+  tag: String!
+  note: String
+  doc: Node
+}
+
+"""A Ceramic Stream ID"""
+scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
+
+input SetFavorite {
+  docID: CeramicStreamID!
+  tag: String!
+}
+
+"""A connection to a list of items."""
+type FavoriteConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [FavoriteEdge]
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""An edge in a connection."""
+type FavoriteEdge {
+  """The item at the end of the edge"""
+  node: Favorite
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Mutation {
+  setFavorite(input: SetFavoriteInput!): SetFavoritePayload
+  updateFavorite(input: UpdateFavoriteInput!): UpdateFavoritePayload
+}
+
+type SetFavoritePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Favorite!
+  clientMutationId: String
+}
+
+input SetFavoriteInput {
+  content: FavoriteInput!
+  options: SetOptionsInput
+  clientMutationId: String
+}
+
+input FavoriteInput {
+  docID: CeramicStreamID!
+  tag: String!
+  note: String
+}
+
+input SetOptionsInput {
+  """
+  Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds
+  """
+  syncTimeout: Int
+}
+
+type UpdateFavoritePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Favorite!
+  clientMutationId: String
+}
+
+input UpdateFavoriteInput {
+  id: ID!
+  content: PartialFavoriteInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialFavoriteInput {
+  docID: CeramicStreamID
+  tag: String
+  note: String
+}
+
+input UpdateOptionsInput {
+  """
+  Fully replace the document contents instead of performing a shallow merge
+  """
+  replace: Boolean = false
+
+  """Only perform mutation if the document matches the provided version"""
+  version: CeramicCommitID
+}
+
+"""A Ceramic Commit ID"""
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")"
+`;
+
 exports[`schema media interfaces 1`] = `
 "type Query {
   """Fetches objects given their IDs"""
@@ -2423,15 +2612,18 @@ input PersonProfileSortingInput {
 }
 
 type Mutation {
-  createGenericProfile(input: CreateGenericProfileInput!): CreateGenericProfilePayload
+  setGenericProfile(input: SetGenericProfileInput!): SetGenericProfilePayload
+  createGenericProfile(input: CreateGenericProfileInput!): CreateGenericProfilePayload @deprecated(reason: "Replaced by the setGenericProfile mutation, createGenericProfile will be removed in a future version of ComposeDB.")
   updateGenericProfile(input: UpdateGenericProfileInput!): UpdateGenericProfilePayload
-  createSocialProfile(input: CreateSocialProfileInput!): CreateSocialProfilePayload
+  setSocialProfile(input: SetSocialProfileInput!): SetSocialProfilePayload
+  createSocialProfile(input: CreateSocialProfileInput!): CreateSocialProfilePayload @deprecated(reason: "Replaced by the setSocialProfile mutation, createSocialProfile will be removed in a future version of ComposeDB.")
   updateSocialProfile(input: UpdateSocialProfileInput!): UpdateSocialProfilePayload
-  createPersonProfile(input: CreatePersonProfileInput!): CreatePersonProfilePayload
+  setPersonProfile(input: SetPersonProfileInput!): SetPersonProfilePayload
+  createPersonProfile(input: CreatePersonProfileInput!): CreatePersonProfilePayload @deprecated(reason: "Replaced by the setPersonProfile mutation, createPersonProfile will be removed in a future version of ComposeDB.")
   updatePersonProfile(input: UpdatePersonProfileInput!): UpdatePersonProfilePayload
 }
 
-type CreateGenericProfilePayload {
+type SetGenericProfilePayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -2444,7 +2636,7 @@ type CreateGenericProfilePayload {
   clientMutationId: String
 }
 
-input CreateGenericProfileInput {
+input SetGenericProfileInput {
   content: GenericProfileInput!
   options: SetOptionsInput
   clientMutationId: String
@@ -2473,6 +2665,25 @@ input SetOptionsInput {
   Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds
   """
   syncTimeout: Int
+}
+
+type CreateGenericProfilePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: GenericProfile!
+  clientMutationId: String
+}
+
+input CreateGenericProfileInput {
+  content: GenericProfileInput!
+  options: SetOptionsInput
+  clientMutationId: String
 }
 
 type UpdateGenericProfilePayload {
@@ -2513,6 +2724,32 @@ input UpdateOptionsInput {
 """A Ceramic Commit ID"""
 scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
 
+type SetSocialProfilePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: SocialProfile!
+  clientMutationId: String
+}
+
+input SetSocialProfileInput {
+  content: SocialProfileInput!
+  options: SetOptionsInput
+  clientMutationId: String
+}
+
+input SocialProfileInput {
+  description: String
+  emoji: String
+  background: ImageSourcesInput
+  url: String
+}
+
 type CreateSocialProfilePayload {
   """Fetches an object given its ID"""
   node(
@@ -2530,13 +2767,6 @@ input CreateSocialProfileInput {
   content: SocialProfileInput!
   options: SetOptionsInput
   clientMutationId: String
-}
-
-input SocialProfileInput {
-  description: String
-  emoji: String
-  background: ImageSourcesInput
-  url: String
 }
 
 type UpdateSocialProfilePayload {
@@ -2566,6 +2796,34 @@ input PartialSocialProfileInput {
   url: String
 }
 
+type SetPersonProfilePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: PersonProfile!
+  clientMutationId: String
+}
+
+input SetPersonProfileInput {
+  content: PersonProfileInput!
+  options: SetOptionsInput
+  clientMutationId: String
+}
+
+input PersonProfileInput {
+  birthDate: Date
+  gender: String
+  homeLocation: String
+  residenceCountry: CountryCode
+  nationalities: [CountryCode]
+  affiliations: [String]
+}
+
 type CreatePersonProfilePayload {
   """Fetches an object given its ID"""
   node(
@@ -2583,15 +2841,6 @@ input CreatePersonProfileInput {
   content: PersonProfileInput!
   options: SetOptionsInput
   clientMutationId: String
-}
-
-input PersonProfileInput {
-  birthDate: Date
-  gender: String
-  homeLocation: String
-  residenceCountry: CountryCode
-  nationalities: [CountryCode]
-  affiliations: [String]
 }
 
 type UpdatePersonProfilePayload {

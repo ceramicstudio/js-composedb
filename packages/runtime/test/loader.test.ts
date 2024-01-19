@@ -187,7 +187,7 @@ describe('loader', () => {
       expect(multiQuery).not.toHaveBeenCalled()
     })
 
-    test('single() method calls ModelInstanceDocument.single() and adds the stream to the cache', async () => {
+    test('loadSingle() method calls ModelInstanceDocument.single() and adds the stream to the cache', async () => {
       const single = jest.fn((_ceramic, metadata: ModelInstanceDocumentMetadataArgs) => ({
         id: testStreamID,
         metadata,
@@ -200,13 +200,15 @@ describe('loader', () => {
 
       const metadata = { controller: 'did:test:123', model: testStreamID }
       const options = {}
-      await loader.single('did:test:123', testStreamID, options)
+      await loader.loadSingle('did:test:123', testStreamID, options)
       expect(single).toHaveBeenCalledTimes(1)
       expect(single).toHaveBeenCalledWith(ceramic, metadata, options)
 
       await expect(loader.load(testStreamID)).resolves.toEqual({ id: testStreamID, metadata })
       expect(multiQuery).not.toHaveBeenCalled()
     })
+
+    test.todo('loadSet() method calls ModelInstanceDocument.set() and adds the stream to the cache')
 
     describe('update() method', () => {
       test('removes the stream from the cache before loading and updating', async () => {
@@ -239,8 +241,8 @@ describe('loader', () => {
         expect(cacheMap.has(testID1)).toBe(true)
         expect(cacheSet).toHaveBeenCalledTimes(1)
 
-        await loader.update(testID1, { test: true }, { pin: true })
-        expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, { pin: true })
+        await loader.update(testID1, { test: true }, { publish: true })
+        expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, { publish: true })
         expect(cacheDelete).toHaveBeenCalledWith(testID1)
         expect(cacheMap.has(testID1)).toBe(true)
         expect(cacheSet).toHaveBeenCalledTimes(2)

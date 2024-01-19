@@ -79,52 +79,54 @@ describe('context', () => {
     expect(create).toHaveBeenCalledWith('testID', content)
   })
 
-  describe('createSingle', () => {
+  describe('upsertSingle', () => {
     test('throws an error if the viewerID is not set', async () => {
       const replace = jest.fn()
       const expectedDoc = { replace }
-      const single = jest.fn(() => expectedDoc)
-      const loader = { single } as unknown as DocumentLoader
+      const loadSingle = jest.fn(() => expectedDoc)
+      const loader = { loadSingle } as unknown as DocumentLoader
       const ceramic = {} as unknown as CeramicApi
       const context = createContext({ ceramic, loader })
 
       const content = {}
-      await expect(context.createSingle('testID', content)).rejects.toThrow(
+      await expect(context.upsertSingle('testID', content)).rejects.toThrow(
         'Document can only be created with an authenticated account',
       )
-      expect(single).not.toHaveBeenCalled()
+      expect(loadSingle).not.toHaveBeenCalled()
       expect(replace).not.toHaveBeenCalled()
     })
 
-    test('uses the single() method of the loader and sets contents', async () => {
+    test('uses the loadSingle() method of the loader and sets contents', async () => {
       const replace = jest.fn()
       const expectedDoc = { replace }
-      const single = jest.fn(() => expectedDoc)
-      const loader = { single } as unknown as DocumentLoader
+      const loadSingle = jest.fn(() => expectedDoc)
+      const loader = { loadSingle } as unknown as DocumentLoader
       const ceramic = { did: { id: 'did:test:123' } } as unknown as CeramicApi
       const context = createContext({ ceramic, loader })
 
       const content = {}
-      await expect(context.createSingle('testID', content)).resolves.toBe(expectedDoc)
-      expect(single).toHaveBeenCalledWith('did:test:123', 'testID', undefined)
+      await expect(context.upsertSingle('testID', content)).resolves.toBe(expectedDoc)
+      expect(loadSingle).toHaveBeenCalledWith('did:test:123', 'testID', undefined)
       expect(replace).toHaveBeenCalledWith(content)
     })
 
-    test('uses the single() method of the loader with options', async () => {
+    test('uses the loadSingle() method of the loader with options', async () => {
       const replace = jest.fn()
       const expectedDoc = { replace }
-      const single = jest.fn(() => expectedDoc)
-      const loader = { single } as unknown as DocumentLoader
+      const loadSingle = jest.fn(() => expectedDoc)
+      const loader = { loadSingle } as unknown as DocumentLoader
       const ceramic = { did: { id: 'did:test:123' } } as unknown as CeramicApi
       const context = createContext({ ceramic, loader })
 
       const content = {}
       await expect(
-        context.createSingle('testID', content, { syncTimeoutSeconds: 30 }),
+        context.upsertSingle('testID', content, { syncTimeoutSeconds: 30 }),
       ).resolves.toBe(expectedDoc)
-      expect(single).toHaveBeenCalledWith('did:test:123', 'testID', { syncTimeoutSeconds: 30 })
+      expect(loadSingle).toHaveBeenCalledWith('did:test:123', 'testID', { syncTimeoutSeconds: 30 })
     })
   })
+
+  test.todo('upsertSet')
 
   test('updateDoc()', async () => {
     const expectedDoc = {}
