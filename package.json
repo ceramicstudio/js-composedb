@@ -32,6 +32,15 @@
     "typescript": "^5.3.3"
   },
   "pnpm": {
-    "overrides": {}
+    "overrides": {
+      "@ceramicnetwork/cli": "^3.3.0-rc.0",
+      "@ceramicnetwork/codecs": "^2.3.0-rc.0",
+      "@ceramicnetwork/common": "^3.3.0-rc.0",
+      "@ceramicnetwork/core": "^3.3.0-rc.0",
+      "@ceramicnetwork/http-client": "^3.3.0-rc.0",
+      "@ceramicnetwork/stream-model-instance": "^2.3.0-rc.0",
+      "@ceramicnetwork/stream-model": "^2.3.0-rc.0",
+      "@ceramicnetwork/streamid": "^3.3.0-rc.0"
+    }
   }
 }
