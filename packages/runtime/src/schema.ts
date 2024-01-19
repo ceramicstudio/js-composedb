@@ -380,8 +380,9 @@ class SchemaBuilder {
             }
 
             default:
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore reference type
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
               throw new Error(`Unsupported reference type: ${reference.type}`)
           }
         }

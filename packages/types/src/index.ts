@@ -204,6 +204,7 @@ export type RuntimeViewReferenceType = 'connection' | 'node'
 export type RuntimeViewReference =
   | { type: 'account'; name: string; property: string }
   | { type: RuntimeViewReferenceType; name: string }
+  | { type: 'set'; name: string }
 
 /** Runtime model information. */
 export type RuntimeModel = {
