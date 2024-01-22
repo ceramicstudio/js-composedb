@@ -339,7 +339,7 @@ class SchemaBuilder {
               config[alias] = {
                 type: this.#types[reference.name],
                 resolve: async (account, _, ctx): Promise<ModelInstanceDocument | null> => {
-                  return await ctx.querySingle({ account, models: [model.id] })
+                  return await ctx.queryOne({ account, models: [model.id] })
                 },
               }
               break
@@ -369,7 +369,7 @@ class SchemaBuilder {
                     filter[field] = { equalTo: args.set[field] }
                     return filter
                   }, {} as ObjectFilter)
-                  return await ctx.querySingle({
+                  return await ctx.queryOne({
                     account,
                     models: [model.id],
                     queryFilters: { where },

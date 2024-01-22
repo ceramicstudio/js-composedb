@@ -170,7 +170,7 @@ describe('context', () => {
     expect(query).toHaveBeenCalledWith({ model: 'test', first: 3, after: undefined })
   })
 
-  test('querySingle()', async () => {
+  test('queryOne()', async () => {
     const expectedNode = {}
     const buildStreamFromState = jest.fn(() => expectedNode)
     const query = jest.fn(() => ({
@@ -180,7 +180,7 @@ describe('context', () => {
     const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicApi
     const context = createContext({ ceramic })
 
-    await expect(context.querySingle({ model: 'test' })).resolves.toBe(expectedNode)
+    await expect(context.queryOne({ model: 'test' })).resolves.toBe(expectedNode)
     expect(query).toHaveBeenCalledWith({ model: 'test', last: 1 })
   })
 

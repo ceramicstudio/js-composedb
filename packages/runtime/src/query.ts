@@ -64,7 +64,7 @@ export async function queryConnection(
   return toRelayConnection(ceramic, page)
 }
 
-export async function querySingle(
+export async function queryOne(
   ceramic: CeramicApi,
   query: BaseQuery,
 ): Promise<ModelInstanceDocument | null> {

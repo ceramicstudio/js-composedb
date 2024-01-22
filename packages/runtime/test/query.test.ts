@@ -8,7 +8,7 @@ import {
   assertValidQueryFilters,
   createRelationQueryFilters,
   queryConnection,
-  querySingle,
+  queryOne,
   toPaginationQuery,
   toRelayConnection,
 } from '../src/query'
@@ -96,7 +96,7 @@ describe('query', () => {
     expect(query).toHaveBeenCalledWith({ model: 'test', first: 3, after: undefined })
   })
 
-  describe('querySingle()', () => {
+  describe('queryOne()', () => {
     test('with result', async () => {
       const expectedNode = {}
       const buildStreamFromState = jest.fn(() => expectedNode)
@@ -106,7 +106,7 @@ describe('query', () => {
       }))
       const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicApi
 
-      await expect(querySingle(ceramic, { model: 'test' })).resolves.toBe(expectedNode)
+      await expect(queryOne(ceramic, { model: 'test' })).resolves.toBe(expectedNode)
       expect(query).toHaveBeenCalledWith({ model: 'test', last: 1 })
     })
 
@@ -116,7 +116,7 @@ describe('query', () => {
         pageInfo: { hasNextPage: false, hasPreviousPage: false },
       }))
       const ceramic = { index: { query } } as unknown as CeramicApi
-      await expect(querySingle(ceramic, { model: 'test' })).resolves.toBeNull()
+      await expect(queryOne(ceramic, { model: 'test' })).resolves.toBeNull()
     })
   })
 
