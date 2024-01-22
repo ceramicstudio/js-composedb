@@ -786,28 +786,30 @@ describe('schema parsing and compilation', () => {
     })
   })
 
-  it('@locking directive is supported and properly converted to ICD', () => {
+  it('@immutable directive is supported and properly converted to ICD', () => {
     expect(
       createAbstractCompositeDefinition(`
-      type ModelWithLockProp @createModel(
+      type ModelWithImmutableProp @createModel(
         accountRelation: SINGLE,
-        description: "Test model with a locked int property"
+        description: "Test model with an immutable int property"
       ) {
-        uniqueValue: Int @locking
+        uniqueValue: Int @immutable
+        tag: String! @string(minLength: 1, maxLength: 100)
       }
       `),
     ).toMatchObject({
       models: {
-        ModelWithLockProp: {
+        ModelWithImmutableProp: {
           action: 'create',
           model: {
-            name: 'ModelWithLockProp',
+            name: 'ModelWithImmutableProp',
+            immutableFields: ['uniqueValue'],
             accountRelation: { type: 'single' },
-            description: 'Test model with a locked int property',//TODO fix this error message
+            description: 'Test model with an immutable int property', //TODO fix this error message
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
               type: 'object',
-              properties: { uniqueValue: { type: 'integer' } },//TODO add locking structure
+              properties: { uniqueValue: { type: 'integer' } }, //TODO add immutable structure
               additionalProperties: false,
             },
           },

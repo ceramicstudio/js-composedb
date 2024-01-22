@@ -272,6 +272,9 @@ export class SchemaParser {
         action: 'create',
         interface: isInterfaceType(type),
         implements: type.getInterfaces().map((i) => i.name),
+        immutableFields: Object.keys(object.properties).filter(
+          (key) => object.properties[key].immutable === true,
+        ),
         description: args.description,
         accountRelation: accountRelationValue,
         relations: object.relations,
@@ -370,14 +373,14 @@ export class SchemaParser {
               `Unsupported @documentAccount directive on field ${fieldName} of object ${objectName}, @documentAccount can only be set on a DID scalar`,
             )
           }
-          return { type: 'view', required: true, viewType: 'documentAccount' }
+          return { type: 'view', required: true, immutable: false, viewType: 'documentAccount' }
         case 'documentVersion':
           if (!isScalarType(type) || type.name !== 'CommitID') {
             throw new Error(
               `Unsupported @documentVersion directive on field ${fieldName} of object ${objectName}, @documentVersion can only be set on a CommitID scalar`,
             )
           }
-          return { type: 'view', required: true, viewType: 'documentVersion' }
+          return { type: 'view', required: true, immutable: false, viewType: 'documentVersion' }
         case 'relationDocument': {
           if (!isInterfaceType(type) && !isObjectType(type)) {
             throw new Error(
@@ -398,6 +401,7 @@ export class SchemaParser {
           return {
             type: 'view',
             required: false,
+            immutable: false,
             viewType: 'relation',
             relation: {
               source: 'document',
@@ -422,6 +426,7 @@ export class SchemaParser {
           return {
             type: 'view',
             required: true,
+            immutable: false,
             viewType: 'relation',
             relation: { source: 'queryConnection', model, property },
           }
@@ -447,6 +452,7 @@ export class SchemaParser {
           return {
             type: 'view',
             required: true,
+            immutable: false,
             viewType: 'relation',
             relation: { source: 'queryCount', model, property },
           }
@@ -511,6 +517,7 @@ export class SchemaParser {
     directives: Array<DirectiveAnnotation>,
   ): DefinitionWithReferences<ItemDefinition> {
     const required = isNonNullType(type)
+    const immutable = directives.some((item) => item.name === 'immutable')
     const innerType = required ? type.ofType : type
     if (isListType(innerType)) {
       throw new Error(`Unsupported nested list on field ${fieldName} of object ${objectName}`)
@@ -519,7 +526,7 @@ export class SchemaParser {
     const referenceType = this._getReferenceFieldType(innerType)
     if (referenceType != null) {
       return {
-        definition: { type: referenceType, required, name: innerType.name },
+        definition: { type: referenceType, required, immutable, name: innerType.name },
         references: [innerType.name],
       }
     }
@@ -529,6 +536,7 @@ export class SchemaParser {
         definition: {
           type: 'scalar',
           required,
+          immutable,
           schema: this._parseScalarSchema(objectName, fieldName, innerType, directives),
         },
         references: [],

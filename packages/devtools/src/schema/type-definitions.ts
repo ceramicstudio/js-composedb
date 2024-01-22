@@ -26,7 +26,7 @@ directive @list(minLength: Int, maxLength: Int!) on FIELD_DEFINITION
 
 directive @documentAccount on FIELD_DEFINITION
 directive @documentVersion on FIELD_DEFINITION
-directive @locking on FIELD_DEFINITION
+directive @immutable on FIELD_DEFINITION
 
 # Relation definitions
 
