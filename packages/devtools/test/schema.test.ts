@@ -719,7 +719,7 @@ describe('schema parsing and compilation', () => {
       createAbstractCompositeDefinition(`
       type ModelWithIntProp @createModel(
         accountRelation: SINGLE,
-        description: "Test model with a constreained int property"
+        description: "Test model with a constrained int property"
       ) {
         intValue: Int @int(min: 5, max: 10)
       }
@@ -731,7 +731,7 @@ describe('schema parsing and compilation', () => {
           model: {
             name: 'ModelWithIntProp',
             accountRelation: { type: 'single' },
-            description: 'Test model with a constreained int property',
+            description: 'Test model with a constrained int property',
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
               type: 'object',
@@ -805,11 +805,44 @@ describe('schema parsing and compilation', () => {
             name: 'ModelWithImmutableProp',
             immutableFields: ['uniqueValue'],
             accountRelation: { type: 'single' },
-            description: 'Test model with an immutable int property', //TODO fix this error message
+            description: 'Test model with an immutable int property',
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
               type: 'object',
-              properties: { uniqueValue: { type: 'integer' } }, //TODO add immutable structure
+              properties: { uniqueValue: { type: 'integer' } },
+              additionalProperties: false,
+            },
+          },
+        },
+      },
+    })
+  })
+
+  it('@immutable directive can be set for multiple fields and is supported and properly converted to ICD', () => {
+    expect(
+      createAbstractCompositeDefinition(`
+      type ModelWithImmutableProp @createModel(
+        accountRelation: SINGLE,
+        description: "Test model with an immutable int property"
+      ) {
+        uniqueValue: Int @immutable
+        tag: String! @string(minLength: 1, maxLength: 100)
+        uniqueValue2: Int @immutable
+      }
+      `),
+    ).toMatchObject({
+      models: {
+        ModelWithImmutableProp: {
+          action: 'create',
+          model: {
+            name: 'ModelWithImmutableProp',
+            immutableFields: ['uniqueValue', 'uniqueValue2'],
+            accountRelation: { type: 'single' },
+            description: 'Test model with an immutable int property',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: { uniqueValue: { type: 'integer' } },
               additionalProperties: false,
             },
           },

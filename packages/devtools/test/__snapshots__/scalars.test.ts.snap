@@ -27,6 +27,7 @@ exports[`scalars support extra scalars 1`] = `
         "type": "list",
       },
       "description": "Kitchen sink of added scalar types",
+      "immutableFields": [],
       "implements": [],
       "interface": false,
       "name": "ExtraScalars",
