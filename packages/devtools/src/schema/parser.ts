@@ -92,7 +92,7 @@ export class SchemaParser {
           return type
         }
         const directives = getDirectives(this.#schema, type)
-        const object = this._parseObject(type)
+        const object = this._parseObject(type, directives)
         this.#def.objects[type.name] = object
         const model = this._parseModelDirective(type, directives, object)
         if (model == null) {
@@ -106,7 +106,7 @@ export class SchemaParser {
       [MapperKind.OBJECT_TYPE]: (type: GraphQLObjectType) => {
         const directives = getDirectives(this.#schema, type)
         const indices = this._parseIndices(directives)
-        const object = this._parseObject(type)
+        const object = this._parseObject(type, directives)
         object.indices = indices
         this.#def.objects[type.name] = object
         const model = this._parseModelDirective(type, directives, object)
@@ -282,8 +282,11 @@ export class SchemaParser {
     }
   }
 
-  _parseObject(type: GraphQLInterfaceType | GraphQLObjectType): ObjectDefinition {
-    const { definition, references, relations } = this._parseObjectFields(type)
+  _parseObject(
+    type: GraphQLInterfaceType | GraphQLObjectType,
+    directives: Array<DirectiveAnnotation>,
+  ): ObjectDefinition {
+    const { definition, references, relations } = this._parseObjectFields(type, directives)
     return {
       // implements: type.getInterfaces().map((i) => i.name),
       properties: definition,
@@ -293,11 +296,15 @@ export class SchemaParser {
     }
   }
 
-  _parseObjectFields(type: GraphQLInterfaceType | GraphQLObjectType): IntermediaryObjectDefinition {
+  _parseObjectFields(
+    type: GraphQLInterfaceType | GraphQLObjectType,
+    directives: Array<DirectiveAnnotation>,
+  ): IntermediaryObjectDefinition {
     const objectFields = type.getFields()
     const fields: ObjectFieldsDefinition = {}
     let references: Array<string> = []
     const relations: ModelRelationsDefinition = {}
+    const hasCreateModel = directives.some((directive) => directive.name === 'createModel') ?? false
 
     for (const [key, value] of Object.entries(objectFields)) {
       const directives = getDirectives(this.#schema, value)
@@ -315,7 +322,14 @@ export class SchemaParser {
       if (view != null) {
         fields[key] = view
       } else if (isListType(innerType)) {
-        const list = this._parseListType(type.name, key, innerType, required, directives)
+        const list = this._parseListType(
+          type.name,
+          key,
+          innerType,
+          required,
+          directives,
+          hasCreateModel,
+        )
         fields[key] = list.definition
         references = [...references, ...list.references]
       } else {
@@ -323,7 +337,8 @@ export class SchemaParser {
         if (listDirective != null) {
           throw new Error(`Unexpected @list directive on field ${key} of object ${type.name}`)
         }
-        const item = this._parseItemType(type.name, key, value.type, directives)
+
+        const item = this._parseItemType(type.name, key, value.type, directives, hasCreateModel)
         fields[key] = item.definition
         references = [...references, ...item.references]
       }
@@ -486,6 +501,7 @@ export class SchemaParser {
     type: GraphQLList<GraphQLType>,
     required: boolean,
     directives: Array<DirectiveAnnotation>,
+    hasCreateModel: boolean,
   ): DefinitionWithReferences<ListFieldDefinition> {
     const list = directives.find((d) => d.name === 'list')
     if (list == null) {
@@ -497,7 +513,7 @@ export class SchemaParser {
       )
     }
 
-    const item = this._parseItemType(objectName, fieldName, type.ofType, directives)
+    const item = this._parseItemType(objectName, fieldName, type.ofType, directives, hasCreateModel)
     const definition: ListFieldDefinition = {
       type: 'list',
       required,
@@ -515,9 +531,15 @@ export class SchemaParser {
     fieldName: string,
     type: GraphQLType,
     directives: Array<DirectiveAnnotation>,
+    hasCreateModel: boolean,
   ): DefinitionWithReferences<ItemDefinition> {
     const required = isNonNullType(type)
     const immutable = directives.some((item) => item.name === 'immutable')
+    if (immutable && !hasCreateModel) {
+      throw new Error(
+        `Unsupported immutable directive for ${fieldName} on nested object ${objectName}`,
+      )
+    }
     const innerType = required ? type.ofType : type
     if (isListType(innerType)) {
       throw new Error(`Unsupported nested list on field ${fieldName} of object ${objectName}`)
