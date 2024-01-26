@@ -9,16 +9,17 @@ export function up(knex: Knex) {
       // Postgres doesn't support JSON arrays so we use a text column here instead
       // cf https://knexjs.org/guide/schema-builder.html#json
       table.text('commonEmbeds').notNullable().defaultTo('[]')
-      table.jsonb('graph').notNullable()
+      // JSON-encoded object
+      table.text('definition').notNullable()
       table.boolean('enableQueries').notNullable().defaultTo(true)
       table.boolean('enableMutations').notNullable().defaultTo(true)
       table.boolean('enableSubscriptions').notNullable().defaultTo(false)
-      table.timestamps()
+      table.timestamps({ useCamelCase: true })
     })
     .createTable('composedb_composite_model', (table) => {
-      table.string('composite_id').notNullable()
-      table.string('model_id').notNullable()
-      table.primary(['composite_id', 'model_id'])
+      table.string('compositeID').notNullable()
+      table.string('modelID').notNullable()
+      table.primary(['compositeID', 'modelID'])
     })
 }
 

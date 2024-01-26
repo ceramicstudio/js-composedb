@@ -40,12 +40,29 @@
   "dependencies": {
     "@ceramicnetwork/common": "^3.0.5",
     "@ceramicnetwork/core": "^3.0.5",
+    "@ceramicnetwork/stream-model": "^2.0.5",
+    "@composedb/graphql-scalars": "workspace:^",
+    "@composedb/runtime": "workspace:^",
+    "dids": "^4.0.4",
+    "graphql": "^16.8.1",
+    "graphql-relay": "^0.10.0",
+    "graphql-scalars": "^1.22.4",
     "ipfs-http-client": "^60.0.1",
+    "key-did-resolver": "^3.0.0",
     "knex": "^3.1.0",
     "merge-options": "^3.0.4",
+    "nanoid": "^5.0.4",
     "pg": "^8.11.3",
+    "pkh-did-resolver": "^2.0.0",
     "rxjs": "^7.8.1",
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@composedb/signing": "workspace:^",
+    "@composedb/types": "workspace:^",
+    "ipfs-core": "^0.18.1",
+    "ipfs-core-types": "^0.14.1",
+    "tmp-promise": "^3.0.3"
   },
   "jest": {
     "extensionsToTreatAsEsm": [
@@ -62,11 +79,5 @@
         }
       ]
     }
-  },
-  "devDependencies": {
-    "ipfs-core": "^0.18.1",
-    "ipfs-core-types": "^0.14.1",
-    "tmp-promise": "^3.0.3",
-    "ts-node": "^10.9.2"
   }
 }
