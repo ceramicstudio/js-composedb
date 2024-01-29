@@ -354,21 +354,21 @@ class SchemaBuilder {
               const relationFields = model.accountRelation.fields
 
               // The SET reference requires a dedicated input object to specify the set fields values
-              const setInput = this._buildSetInputObjectType(reference.name, relationFields)
+              const withInput = this._buildSetInputObjectType(reference.name, relationFields)
               config[alias] = {
                 type: this.#types[reference.name],
                 args: {
-                  set: { type: new GraphQLNonNull(setInput) },
+                  with: { type: new GraphQLNonNull(withInput) },
                 },
                 resolve: async (
                   account,
-                  args: { set: Record<string, string | number> },
+                  args: { with: Record<string, string | number> },
                   ctx,
                 ): Promise<ModelInstanceDocument | null> => {
-                  const where: ObjectFilter = relationFields.reduce((filter, field) => {
-                    filter[field] = { equalTo: args.set[field] }
-                    return filter
-                  }, {} as ObjectFilter)
+                  const where: ObjectFilter = {}
+                  for (const field of relationFields) {
+                    where[field] = { equalTo: args.with[field] }
+                  }
                   return await ctx.queryOne({
                     account,
                     models: [model.id],
@@ -627,12 +627,13 @@ class SchemaBuilder {
           type,
           args: connectionArgs,
           resolve: async (doc, _, ctx): Promise<ModelInstanceDocument | null> => {
-            return await ctx.loadDoc(doc.content[key] as string)
+            const id = doc.content?.[key] as string | undefined
+            return id ? await ctx.loadDoc(id) : null
           },
         }
       case 'enum':
       case 'object':
-        return { type, resolve: (doc) => doc.content[key] as unknown }
+        return { type, resolve: (doc) => doc.content?.[key] as unknown }
       default:
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         throw new Error(`Unsupported reference type on document object: ${field.refType}`)
@@ -985,8 +986,9 @@ class SchemaBuilder {
       throw new Error(`Object fields not found for model ${name}`)
     }
 
-    this.#inputObjects[`Set${name}`] = new GraphQLInputObjectType({
-      name: `Set${name}`,
+    const inputName = `With${name}Input`
+    this.#inputObjects[inputName] = new GraphQLInputObjectType({
+      name: inputName,
       fields: () => {
         const fields: GraphQLInputFieldConfigMap = {}
         for (const fieldName of relationFields) {
@@ -1038,7 +1040,7 @@ class SchemaBuilder {
       },
     })
 
-    return this.#inputObjects[`Set${name}`]
+    return this.#inputObjects[inputName]
   }
 
   _buildNodeMutations(

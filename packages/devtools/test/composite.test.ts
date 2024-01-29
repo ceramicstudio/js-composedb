@@ -2,7 +2,6 @@
  * @jest-environment composedb
  */
 
-import type { CeramicApi } from '@ceramicnetwork/common'
 import { StreamID } from '@ceramicnetwork/streamid'
 import {
   ImageMetadataType,
@@ -12,13 +11,13 @@ import {
   profilesSchema,
   ratingSchema,
 } from '@composedb/test-schemas'
-import type { ModelDefinition } from '@composedb/types'
+import type { CeramicAPI, ModelDefinition } from '@composedb/types'
 import { jest } from '@jest/globals'
 
 import { Composite, type CompositeParams } from '../src'
 
 declare global {
-  const ceramic: CeramicApi
+  const ceramic: CeramicAPI
 }
 
 describe('composite class', () => {
@@ -596,7 +595,7 @@ describe('composite class', () => {
       const mockCeramic = {
         admin: { startIndexingModelData },
         did: { authenticated: true },
-      } as unknown as CeramicApi
+      } as unknown as CeramicAPI
 
       await composite.startIndexingOn(mockCeramic)
       expect(startIndexingModelData).toHaveBeenCalledWith([
@@ -608,7 +607,7 @@ describe('composite class', () => {
       const startIndexingModelData = jest.fn()
       const mockCeramic = {
         admin: { startIndexingModelData },
-      } as unknown as CeramicApi
+      } as unknown as CeramicAPI
 
       await expect(() => composite.startIndexingOn(mockCeramic)).rejects.toThrow(
         'An authenticated DID must be attached to the Ceramic instance',
@@ -621,7 +620,7 @@ describe('composite class', () => {
       const mockCeramic = {
         admin: { startIndexingModelData },
         did: { authenticated: false },
-      } as unknown as CeramicApi
+      } as unknown as CeramicAPI
 
       await expect(() => composite.startIndexingOn(mockCeramic)).rejects.toThrow(
         'An authenticated DID must be attached to the Ceramic instance',
@@ -707,7 +706,10 @@ describe('composite class', () => {
 
     test('throws an error when trying to create models without an authenticated DID', async () => {
       await expect(() => {
-        return Composite.create({ ceramic: {} as unknown as CeramicApi, schema: profilesSchema })
+        return Composite.create({
+          ceramic: {} as unknown as CeramicAPI,
+          schema: profilesSchema,
+        })
       }).rejects.toThrow('An authenticated DID must be attached to the Ceramic instance')
     })
 

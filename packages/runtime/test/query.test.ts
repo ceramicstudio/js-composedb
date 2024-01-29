@@ -1,4 +1,5 @@
-import type { CeramicApi, StreamState } from '@ceramicnetwork/common'
+import type { StreamState } from '@ceramicnetwork/common'
+import type { CeramicAPI } from '@composedb/types'
 import { jest } from '@jest/globals'
 
 import {
@@ -45,7 +46,7 @@ describe('query', () => {
     const expectedNode = {}
     const buildStreamFromState = jest.fn(() => expectedNode)
     expect(
-      toRelayConnection({ buildStreamFromState } as unknown as CeramicApi, {
+      toRelayConnection({ buildStreamFromState } as unknown as CeramicAPI, {
         edges: [
           { cursor: 'cursor1', node: testState },
           { cursor: 'cursor2', node: testState },
@@ -78,7 +79,7 @@ describe('query', () => {
       ],
       pageInfo: { hasNextPage: true, hasPreviousPage: false },
     }))
-    const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicApi
+    const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicAPI
 
     await expect(queryConnection(ceramic, { model: 'test', first: 3 })).resolves.toEqual({
       edges: [
@@ -104,7 +105,7 @@ describe('query', () => {
         edges: [{ cursor: 'cursor1', node: testState }],
         pageInfo: { hasNextPage: false, hasPreviousPage: false },
       }))
-      const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicApi
+      const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicAPI
 
       await expect(queryOne(ceramic, { model: 'test' })).resolves.toBe(expectedNode)
       expect(query).toHaveBeenCalledWith({ model: 'test', last: 1 })
@@ -115,7 +116,7 @@ describe('query', () => {
         edges: [],
         pageInfo: { hasNextPage: false, hasPreviousPage: false },
       }))
-      const ceramic = { index: { query } } as unknown as CeramicApi
+      const ceramic = { index: { query } } as unknown as CeramicAPI
       await expect(queryOne(ceramic, { model: 'test' })).resolves.toBeNull()
     })
   })

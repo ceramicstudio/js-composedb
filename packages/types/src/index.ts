@@ -4,18 +4,22 @@
  * @module types
  */
 
+import type { FieldsIndex } from '@ceramicnetwork/common'
+import type { Ceramic } from '@ceramicnetwork/core'
+import type { CeramicClient } from '@ceramicnetwork/http-client'
 import type {
   ModelAccountRelationV2,
   ModelDefinition,
   ModelViewsDefinitionV2,
 } from '@ceramicnetwork/stream-model'
-import type { FieldsIndex } from '@ceramicnetwork/common'
 import type { DagJWSResult, JWSSignature } from 'dids'
 
 export type { FieldsIndex } from '@ceramicnetwork/common'
 export type { Model, ModelDefinition } from '@ceramicnetwork/stream-model'
 export type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 export type { JSONSchema } from 'json-schema-typed/draft-2020-12'
+
+export type CeramicAPI = Ceramic | CeramicClient
 
 /** JSON-encoded DAG-JWS. */
 export type EncodedDagJWS = {

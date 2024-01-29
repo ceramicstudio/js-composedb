@@ -2,7 +2,6 @@
  * @jest-environment composedb
  */
 
-import type { CeramicApi } from '@ceramicnetwork/common'
 import { CommitID, StreamID } from '@ceramicnetwork/streamid'
 import { Composite } from '@composedb/devtools'
 import {
@@ -14,6 +13,7 @@ import {
   ratingSchema,
   socialSchema,
 } from '@composedb/test-schemas'
+import type { CeramicAPI } from '@composedb/types'
 import { jest } from '@jest/globals'
 import { AccountId, ChainId } from 'caip'
 import { CID } from 'multiformats/cid'
@@ -21,7 +21,7 @@ import { CID } from 'multiformats/cid'
 import { ComposeRuntime, createContext, printGraphQLSchema } from '../src'
 
 declare global {
-  const ceramic: CeramicApi
+  const ceramic: CeramicAPI
 }
 
 describe('runtime', () => {

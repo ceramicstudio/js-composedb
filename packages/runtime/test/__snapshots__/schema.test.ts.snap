@@ -46,7 +46,7 @@ type CeramicAccount implements Node {
   Whether the Ceramic instance is currently authenticated with this account or not
   """
   isViewer: Boolean!
-  favorite(set: SetFavorite!): Favorite
+  favorite(with: WithFavoriteInput!): Favorite
   favoriteList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -74,7 +74,7 @@ type Favorite implements Node {
 """A Ceramic Stream ID"""
 scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
 
-input SetFavorite {
+input WithFavoriteInput {
   docID: CeramicStreamID!
   tag: String!
 }

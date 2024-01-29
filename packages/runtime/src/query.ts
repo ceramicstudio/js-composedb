@@ -1,7 +1,6 @@
 import type {
   AnyValueFilter,
   BaseQuery,
-  CeramicApi,
   ObjectFilter,
   Page,
   Pagination,
@@ -10,6 +9,7 @@ import type {
   StreamState,
 } from '@ceramicnetwork/common'
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
+import type { CeramicAPI } from '@composedb/types'
 import type { Connection, ConnectionArguments } from 'graphql-relay'
 
 export type ConnectionQuery = BaseQuery & ConnectionArguments
@@ -37,7 +37,7 @@ export function toPaginationQuery(source: ConnectionQuery): PaginationQuery {
 }
 
 export function toRelayConnection(
-  ceramic: CeramicApi,
+  ceramic: CeramicAPI,
   page: Page<StreamState | null>,
 ): Connection<ModelInstanceDocument | null> {
   return {
@@ -56,7 +56,7 @@ export function toRelayConnection(
 }
 
 export async function queryConnection(
-  ceramic: CeramicApi,
+  ceramic: CeramicAPI,
   query: ConnectionQuery,
 ): Promise<Connection<ModelInstanceDocument | null>> {
   const indexQuery = toPaginationQuery(query)
@@ -65,7 +65,7 @@ export async function queryConnection(
 }
 
 export async function queryOne(
-  ceramic: CeramicApi,
+  ceramic: CeramicAPI,
   query: BaseQuery,
 ): Promise<ModelInstanceDocument | null> {
   const indexQuery = { ...query, last: 1 }

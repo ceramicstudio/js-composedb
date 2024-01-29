@@ -1,6 +1,7 @@
-import type { BaseQuery, CeramicApi, CreateOpts } from '@ceramicnetwork/common'
+import type { BaseQuery, CreateOpts } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import type { CommitID, StreamID } from '@ceramicnetwork/streamid'
+import type { CeramicAPI } from '@composedb/types'
 import type { Connection } from 'graphql-relay'
 
 import { type ConnectionQuery, queryConnection, queryOne } from './query.js'
@@ -14,7 +15,7 @@ export type ContextParams = {
   /**
    * Ceramic client instance.
    */
-  ceramic: CeramicApi
+  ceramic: CeramicAPI
   /**
    * Fallback viewer ID to use when the Ceramic instance is not authenticated.
    */
@@ -34,7 +35,7 @@ export type Context = {
   /**
    * Ceramic client instance used internally.
    */
-  ceramic: CeramicApi
+  ceramic: CeramicAPI
   /**
    * Document loader instance used internally.
    */

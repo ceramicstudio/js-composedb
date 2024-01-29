@@ -1,5 +1,6 @@
-import type { CeramicApi, StreamState } from '@ceramicnetwork/common'
+import type { StreamState } from '@ceramicnetwork/common'
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
+import type { CeramicAPI } from '@composedb/types'
 import { jest } from '@jest/globals'
 import type { DID } from 'dids'
 
@@ -13,7 +14,7 @@ describe('context', () => {
   } as unknown as StreamState
 
   test('isAuthenticated()', () => {
-    const ceramic = {} as unknown as CeramicApi
+    const ceramic = {} as unknown as CeramicAPI
     const context = createContext({ ceramic })
     expect(context.isAuthenticated()).toBe(false)
 
@@ -22,19 +23,19 @@ describe('context', () => {
   })
 
   test('ceramic field', () => {
-    const ceramic = {} as unknown as CeramicApi
+    const ceramic = {} as unknown as CeramicAPI
     const context = createContext({ ceramic })
     expect(context.ceramic).toBe(ceramic)
   })
 
   test('loader field', () => {
-    const ceramic = {} as unknown as CeramicApi
+    const ceramic = {} as unknown as CeramicAPI
     const context = createContext({ ceramic })
     expect(context.loader).toBeInstanceOf(DocumentLoader)
   })
 
   test('getViewerID()', () => {
-    const ceramic = {} as unknown as CeramicApi
+    const ceramic = {} as unknown as CeramicAPI
     const context = createContext({ ceramic })
     expect(context.getViewerID()).toBeNull()
 
@@ -43,7 +44,7 @@ describe('context', () => {
   })
 
   describe('loadDoc()', () => {
-    const ceramic = {} as unknown as CeramicApi
+    const ceramic = {} as unknown as CeramicAPI
 
     test('calls the load() method of the loader', async () => {
       const expectedDoc = {}
@@ -71,7 +72,7 @@ describe('context', () => {
     const expectedDoc = {}
     const create = jest.fn(() => expectedDoc)
     const loader = { create } as unknown as DocumentLoader
-    const ceramic = {} as unknown as CeramicApi
+    const ceramic = {} as unknown as CeramicAPI
     const context = createContext({ ceramic, loader })
 
     const content = {}
@@ -85,7 +86,7 @@ describe('context', () => {
       const expectedDoc = { replace }
       const loadSingle = jest.fn(() => expectedDoc)
       const loader = { loadSingle } as unknown as DocumentLoader
-      const ceramic = {} as unknown as CeramicApi
+      const ceramic = {} as unknown as CeramicAPI
       const context = createContext({ ceramic, loader })
 
       const content = {}
@@ -101,7 +102,7 @@ describe('context', () => {
       const expectedDoc = { replace }
       const loadSingle = jest.fn(() => expectedDoc)
       const loader = { loadSingle } as unknown as DocumentLoader
-      const ceramic = { did: { id: 'did:test:123' } } as unknown as CeramicApi
+      const ceramic = { did: { id: 'did:test:123' } } as unknown as CeramicAPI
       const context = createContext({ ceramic, loader })
 
       const content = {}
@@ -115,7 +116,7 @@ describe('context', () => {
       const expectedDoc = { replace }
       const loadSingle = jest.fn(() => expectedDoc)
       const loader = { loadSingle } as unknown as DocumentLoader
-      const ceramic = { did: { id: 'did:test:123' } } as unknown as CeramicApi
+      const ceramic = { did: { id: 'did:test:123' } } as unknown as CeramicAPI
       const context = createContext({ ceramic, loader })
 
       const content = {}
@@ -132,7 +133,7 @@ describe('context', () => {
     const expectedDoc = {}
     const update = jest.fn(() => expectedDoc)
     const loader = { update } as unknown as DocumentLoader
-    const ceramic = {} as unknown as CeramicApi
+    const ceramic = {} as unknown as CeramicAPI
     const context = createContext({ ceramic, loader })
 
     const content = {}
@@ -151,7 +152,7 @@ describe('context', () => {
       ],
       pageInfo: { hasNextPage: true, hasPreviousPage: false },
     }))
-    const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicApi
+    const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicAPI
     const context = createContext({ ceramic })
 
     await expect(context.queryConnection({ model: 'test', first: 3 })).resolves.toEqual({
@@ -177,7 +178,7 @@ describe('context', () => {
       edges: [{ cursor: 'cursor1', node: testState }],
       pageInfo: { hasNextPage: false, hasPreviousPage: false },
     }))
-    const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicApi
+    const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicAPI
     const context = createContext({ ceramic })
 
     await expect(context.queryOne({ model: 'test' })).resolves.toBe(expectedNode)
@@ -186,7 +187,7 @@ describe('context', () => {
 
   test('queryCount()', async () => {
     const count = jest.fn(() => 10)
-    const ceramic = { index: { count } } as unknown as CeramicApi
+    const ceramic = { index: { count } } as unknown as CeramicAPI
     const context = createContext({ ceramic })
     await expect(context.queryCount({ model: 'test' })).resolves.toBe(10)
     expect(count).toHaveBeenCalledWith({ model: 'test' })

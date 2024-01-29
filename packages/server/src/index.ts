@@ -11,11 +11,10 @@
  */
 
 import { createServer } from 'node:http'
-import type { CeramicApi } from '@ceramicnetwork/common'
 import { CeramicClient } from '@ceramicnetwork/http-client'
 import { VIEWER_ID_HEADER } from '@composedb/constants'
 import { type Context, type DocumentCache, createContext, getSchema } from '@composedb/runtime'
-import type { RuntimeCompositeDefinition } from '@composedb/types'
+import type { CeramicAPI, RuntimeCompositeDefinition } from '@composedb/types'
 import getPort from 'get-port'
 import type { GraphQLSchema } from 'graphql'
 import {
@@ -40,7 +39,7 @@ export type HandlerParams<ServerContext extends Record<string, any> = Record<str
   /**
    * Ceramic client instance or HTTP URL.
    */
-  ceramic: CeramicApi | string
+  ceramic: CeramicAPI | string
   /**
    * Runtime composite definition, created using the {@linkcode devtools.Composite Composite}
    * development tools.

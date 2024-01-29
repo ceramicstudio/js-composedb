@@ -43,9 +43,11 @@ export default class CompositeCompile extends Command<Flags> {
         return
       }
       const runtimeDefinition = composite.toRuntime()
-      outputPaths.map(async (outputPath) => {
-        await writeRuntimeDefinition(runtimeDefinition, outputPath)
-      })
+      await Promise.all(
+        outputPaths.map(async (outputPath) => {
+          await writeRuntimeDefinition(runtimeDefinition, outputPath)
+        }),
+      )
       this.spinner.succeed('Compiling the composite... Done!')
       for (const path of outputPaths) {
         if (path.endsWith('.json')) {

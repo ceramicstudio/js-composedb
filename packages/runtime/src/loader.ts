@@ -1,9 +1,10 @@
-import type { CeramicApi, CreateOpts, UpdateOpts } from '@ceramicnetwork/common'
+import type { CreateOpts, UpdateOpts } from '@ceramicnetwork/common'
 import {
   ModelInstanceDocument,
   type ModelInstanceDocumentMetadataArgs,
 } from '@ceramicnetwork/stream-model-instance'
 import { type CommitID, StreamID, StreamRef } from '@ceramicnetwork/streamid'
+import type { CeramicAPI } from '@composedb/types'
 import DataLoader from 'dataloader'
 import type { BatchLoadFn } from 'dataloader'
 
@@ -44,7 +45,7 @@ export type DocumentLoaderParams = {
   /**
    * A Ceramic client instance
    */
-  ceramic: CeramicApi
+  ceramic: CeramicAPI
   /**
    * A supported cache implementation, `true` to use the default implementation or `false` to
    * disable the cache (default)
@@ -75,7 +76,7 @@ export function toMetadata(
 const tempBatchLoadFn: BatchLoadFn<DocID, ModelInstanceDocument> = () => Promise.resolve([])
 
 export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
-  #ceramic: CeramicApi
+  #ceramic: CeramicAPI
   #useCache: boolean
 
   constructor(params: DocumentLoaderParams) {
