@@ -39,7 +39,7 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/http-client": "^3.4.0-rc.0",
+    "@ceramicnetwork/http-client": "^4.0.1-nightly.0",
     "@composedb/constants": "workspace:^",
     "@composedb/runtime": "workspace:^",
     "get-port": "^7.0.0",
@@ -47,9 +47,9 @@
     "graphql-yoga": "^5.1.1"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^3.4.0-rc.0",
+    "@ceramicnetwork/common": "^4.0.1-nightly.0",
     "@composedb/types": "workspace:^",
-    "@types/node": "^20.11.10"
+    "@types/node": "^20.11.15"
   },
   "jest": {
     "extensionsToTreatAsEsm": [

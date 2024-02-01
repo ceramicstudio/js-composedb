@@ -127,7 +127,56 @@ describe('context', () => {
     })
   })
 
-  test.todo('upsertSet')
+  describe('upsertSet', () => {
+    test('throws an error if the viewerID is not set', async () => {
+      const replace = jest.fn()
+      const expectedDoc = { replace }
+      const loadSet = jest.fn(() => expectedDoc)
+      const loader = { loadSet } as unknown as DocumentLoader
+      const ceramic = {} as unknown as CeramicAPI
+      const context = createContext({ ceramic, loader })
+
+      const content = {}
+      await expect(context.upsertSet('testID', ['test'], content)).rejects.toThrow(
+        'Document can only be created with an authenticated account',
+      )
+      expect(loadSet).not.toHaveBeenCalled()
+      expect(replace).not.toHaveBeenCalled()
+    })
+
+    test('uses the loadSet() method of the loader and sets contents', async () => {
+      const replace = jest.fn()
+      const expectedDoc = { replace }
+      const loadSet = jest.fn(() => expectedDoc)
+      const loader = { loadSet } as unknown as DocumentLoader
+      const ceramic = { did: { id: 'did:test:123' } } as unknown as CeramicAPI
+      const context = createContext({ ceramic, loader })
+
+      const unique = ['test']
+      const content = {}
+      await expect(context.upsertSet('testID', unique, content)).resolves.toBe(expectedDoc)
+      expect(loadSet).toHaveBeenCalledWith('did:test:123', 'testID', unique, undefined)
+      expect(replace).toHaveBeenCalledWith(content)
+    })
+
+    test('uses the loadSet() method of the loader with options', async () => {
+      const replace = jest.fn()
+      const expectedDoc = { replace }
+      const loadSet = jest.fn(() => expectedDoc)
+      const loader = { loadSet } as unknown as DocumentLoader
+      const ceramic = { did: { id: 'did:test:123' } } as unknown as CeramicAPI
+      const context = createContext({ ceramic, loader })
+
+      const unique = ['test']
+      const content = {}
+      await expect(
+        context.upsertSet('testID', unique, content, { syncTimeoutSeconds: 30 }),
+      ).resolves.toBe(expectedDoc)
+      expect(loadSet).toHaveBeenCalledWith('did:test:123', 'testID', unique, {
+        syncTimeoutSeconds: 30,
+      })
+    })
+  })
 
   test('updateDoc()', async () => {
     const expectedDoc = {}

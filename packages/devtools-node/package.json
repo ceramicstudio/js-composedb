@@ -37,7 +37,7 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/http-client": "^3.4.0-rc.0",
+    "@ceramicnetwork/http-client": "^4.0.1-nightly.0",
     "@composedb/client": "workspace:^",
     "@composedb/runtime": "workspace:^",
     "@composedb/server": "workspace:^",

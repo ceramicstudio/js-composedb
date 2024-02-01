@@ -214,7 +214,27 @@ describe('loader', () => {
       expect(multiQuery).not.toHaveBeenCalled()
     })
 
-    test.todo('loadSet() method calls ModelInstanceDocument.set() and adds the stream to the cache')
+    test('loadSet() method calls ModelInstanceDocument.set() and adds the stream to the cache', async () => {
+      const set = jest.fn((_ceramic, metadata: ModelInstanceDocumentMetadataArgs) => ({
+        id: testStreamID,
+        metadata,
+      }))
+      ModelInstanceDocument.set = set as unknown as typeof ModelInstanceDocument.set
+
+      const multiQuery = jest.fn(() => ({}))
+      const ceramic = { multiQuery } as unknown as CeramicAPI
+      const loader = new DocumentLoader({ cache: true, ceramic })
+
+      const metadata = { controller: 'did:test:123', model: testStreamID }
+      const unique = ['foo']
+      const options = {}
+      await loader.loadSet('did:test:123', testStreamID, unique, options)
+      expect(set).toHaveBeenCalledTimes(1)
+      expect(set).toHaveBeenCalledWith(ceramic, metadata, unique, options)
+
+      await expect(loader.load(testStreamID)).resolves.toEqual({ id: testStreamID, metadata })
+      expect(multiQuery).not.toHaveBeenCalled()
+    })
 
     describe('update() method', () => {
       test('removes the stream from the cache before loading and updating', async () => {

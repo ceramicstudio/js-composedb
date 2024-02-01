@@ -168,12 +168,11 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
   async loadSet<T extends Record<string, any> = Record<string, any>>(
     controller: string,
     model: string | StreamID,
-    _unique: Array<string>,
+    unique: Array<string>,
     options?: CreateOpts,
   ): Promise<ModelInstanceDocument<T>> {
-    throw new Error('Must be implemented')
     const metadata = toMetadata(model, controller)
-    const stream = await ModelInstanceDocument.single<T>(this.#ceramic, metadata, options)
+    const stream = await ModelInstanceDocument.set<T>(this.#ceramic, metadata, unique, options)
     this.cache(stream)
     return stream
   }

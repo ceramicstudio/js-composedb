@@ -392,6 +392,18 @@ export class Composite {
   }
 
   /**
+   * Get the StreamID of the given model `alias` if present in the Composite.
+   */
+  getModelID(alias: string): string | null {
+    for (const [modelID, modelAlias] of Object.entries(this.#definition.aliases)) {
+      if (modelAlias == alias) {
+        return modelID
+      }
+    }
+    return null
+  }
+
+  /**
    * Copy a given set of Models identified by their stream ID, name or alias into a new Composite.
    */
   copy(models: Array<string>): Composite {

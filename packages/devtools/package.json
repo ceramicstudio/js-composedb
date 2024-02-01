@@ -39,9 +39,9 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/common": "^3.4.0-rc.0",
-    "@ceramicnetwork/stream-model": "^2.4.0-rc.0",
-    "@ceramicnetwork/streamid": "^3.4.0-rc.0",
+    "@ceramicnetwork/common": "^4.0.1-nightly.0",
+    "@ceramicnetwork/stream-model": "^2.4.1-nightly.0",
+    "@ceramicnetwork/streamid": "^3.4.1-nightly.0",
     "@composedb/graphql-scalars": "workspace:^",
     "@didtools/cacao": "^3.0.1",
     "@graphql-tools/schema": "^10.0.2",
@@ -59,7 +59,7 @@
     "@composedb/types": "workspace:^",
     "@types/jest": "^29.5.11",
     "@types/lodash-es": "^4.17.12",
-    "@types/node": "^20.11.10",
+    "@types/node": "^20.11.15",
     "@types/object-hash": "^3.0.6",
     "ajv": "^8.12.0",
     "dids": "^5.0.2",
