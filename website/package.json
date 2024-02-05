@@ -1,6 +1,6 @@
 {
   "name": "website",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
@@ -16,9 +16,9 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@ceramicnetwork/cli": "^3.4.1-nightly.0",
-    "@ceramicnetwork/common": "^4.0.1-nightly.0",
-    "@ceramicnetwork/http-client": "^4.0.1-nightly.0",
+    "@ceramicnetwork/cli": "^4.1.0",
+    "@ceramicnetwork/common": "^4.1.0",
+    "@ceramicnetwork/http-client": "^4.1.0",
     "@composedb/client": "workspace:^",
     "@docusaurus/core": "^3.1.1",
     "@docusaurus/plugin-client-redirects": "3.1.1",
@@ -29,7 +29,7 @@
     "@graphiql/toolkit": "^0.9.1",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.1.0",
-    "graphiql": "^3.1.0",
+    "graphiql": "^3.1.1",
     "graphql": "^16.8.1",
     "prism-react-renderer": "^2.3.1",
     "react": "^18.2.0",

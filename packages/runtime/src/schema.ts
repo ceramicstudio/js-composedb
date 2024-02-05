@@ -117,6 +117,21 @@ function createAccountReferenceQuery(
   return query
 }
 
+function getReferencedAccount(
+  account: string,
+  doc: ModelInstanceDocument,
+  context: Context,
+): string | null {
+  switch (account) {
+    case 'documentAccount':
+      return doc.metadata.controller
+    case 'viewer':
+      return context.getViewerID()
+    default:
+      return account
+  }
+}
+
 const connectionArgsWithAccount = {
   ...connectionArgs,
   account: {
@@ -766,8 +781,15 @@ class SchemaBuilder {
             args: ConnectionRelationArguments,
             ctx,
           ): Promise<Connection<unknown> | null> => {
-            const account =
-              args.account === 'documentAccount' ? doc.metadata.controller : args.account
+            let account: string | undefined
+            if (args.account != null) {
+              const refAccount = getReferencedAccount(args.account, doc, ctx)
+              // If the referenced account is not set (viewer not authenticated), return null
+              if (refAccount == null) {
+                return null
+              }
+              account = refAccount
+            }
             const queryFilters = createRelationQueryFilters(
               relation.property,
               doc.id.toString(),
@@ -797,8 +819,15 @@ class SchemaBuilder {
           type: new GraphQLNonNull(GraphQLInt),
           args,
           resolve: async (doc, args: ConnectionRelationCountArguments, ctx): Promise<number> => {
-            const account =
-              args.account === 'documentAccount' ? doc.metadata.controller : args.account
+            let account: string | undefined
+            if (args.account != null) {
+              const refAccount = getReferencedAccount(args.account, doc, ctx)
+              // If the referenced account is not set (viewer not authenticated), return 0
+              if (refAccount == null) {
+                return 0
+              }
+              account = refAccount
+            }
             const queryFilters = createRelationQueryFilters(
               relation.property,
               doc.id.toString(),

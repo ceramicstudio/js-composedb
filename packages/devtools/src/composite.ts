@@ -395,12 +395,10 @@ export class Composite {
    * Get the StreamID of the given model `alias` if present in the Composite.
    */
   getModelID(alias: string): string | null {
-    for (const [modelID, modelAlias] of Object.entries(this.#definition.aliases)) {
-      if (modelAlias == alias) {
-        return modelID
-      }
-    }
-    return null
+    const found = Object.entries(this.#definition.aliases).find(
+      ([_, modelAlias]) => modelAlias === alias,
+    )
+    return found ? found[0] : null
   }
 
   /**

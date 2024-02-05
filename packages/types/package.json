@@ -1,6 +1,6 @@
 {
   "name": "@composedb/types",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://composedb.js.org",
@@ -36,11 +36,11 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/common": "^4.0.1-nightly.0",
-    "@ceramicnetwork/core": "^4.0.1-nightly.0",
-    "@ceramicnetwork/http-client": "^4.0.1-nightly.0",
-    "@ceramicnetwork/stream-model": "^2.4.1-nightly.0",
-    "@ceramicnetwork/stream-model-instance": "^2.4.1-nightly.0",
+    "@ceramicnetwork/common": "^4.1.0",
+    "@ceramicnetwork/core": "^4.1.0",
+    "@ceramicnetwork/http-client": "^4.1.0",
+    "@ceramicnetwork/stream-model": "^3.1.0",
+    "@ceramicnetwork/stream-model-instance": "^3.1.0",
     "dids": "^5.0.2",
     "json-schema-typed": "^8.0.1"
   }

@@ -411,12 +411,7 @@ export class SchemaParser {
               `Unsupported @relationFrom directive on field ${fieldName} of object ${objectName}, @relationFrom can only be set on a list of referenced object`,
             )
           }
-          const model = directive.args?.model as string | void
-          if (model == null) {
-            throw new Error(
-              `Missing model argument for @relationFrom directive on field ${fieldName} of object ${objectName}`,
-            )
-          }
+          const model = type.ofType.name === NODE_INTERFACE_NAME ? null : type.ofType.name
           const property = directive.args?.property as string | void
           if (property == null) {
             throw new Error(
