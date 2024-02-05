@@ -106,6 +106,24 @@ Check if the composite is equal to the other one provided as input.
 
 ___
 
+### getModelID
+
+▸ **getModelID**(`alias`): ``null`` \| `string`
+
+Get the StreamID of the given model `alias` if present in the Composite.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `alias` | `string` |
+
+#### Returns
+
+``null`` \| `string`
+
+___
+
 ### merge
 
 ▸ **merge**(`other`, `options?`): [`Composite`](devtools.Composite.md)
@@ -196,7 +214,7 @@ set as admin in the Ceramic node configuration must be attached to the Ceramic i
 
 | Name | Type |
 | :------ | :------ |
-| `ceramic` | `CeramicApi` |
+| `ceramic` | `CeramicAPI` |
 
 #### Returns
 

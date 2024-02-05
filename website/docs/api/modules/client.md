@@ -27,7 +27,7 @@ npm install @composedb/client
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `cache?` | `DocumentCache` | Optional cache for documents. |
-| `ceramic` | `CeramicApi` \| `string` | Ceramic client instance or HTTP URL. |
+| `ceramic` | `CeramicAPI` \| `string` | Ceramic client instance or HTTP URL. |
 | `definition` | `RuntimeCompositeDefinition` | Runtime composite definition, created using the [`Composite`](../classes/devtools.Composite.md) development tools. |
 | `remoteExecutor?` | `Executor` | Optional remote query executor. |
 | `serverURL?` | `string` | Optional [`query server`](server.md) URL. |

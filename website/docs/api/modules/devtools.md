@@ -112,7 +112,7 @@ Composite creation parameters from a schema.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `ceramic` | `CeramicApi` | Ceramic instance connected to the node the new Model streams must be created on. The Ceramic instance **must have an authenticated DID attached to it** in order to create Models, using the `did:key` method. |
+| `ceramic` | `CeramicAPI` | Ceramic instance connected to the node the new Model streams must be created on. The Ceramic instance **must have an authenticated DID attached to it** in order to create Models, using the `did:key` method. |
 | `index?` | `boolean` | Whether to add the Models to the index or not. If `true` (default), the Ceramic instance must be authenticated with an admin DID. |
 | `schema` | `string` | Composite schema string. |
 
@@ -146,7 +146,7 @@ Composite creation parameters from a JSON-encoded definition.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `ceramic` | `CeramicApi` | Ceramic instance connected to the node where the Model stream will be pushed. |
+| `ceramic` | `CeramicAPI` | Ceramic instance connected to the node where the Model stream will be pushed. |
 | `definition` | `EncodedCompositeDefinition` | JSON-encoded composite definition. |
 | `index?` | `boolean` | Whether to add the Models to the index or not. If `true`, the Ceramic instance must be authenticated with an admin DID. Defaults to `false`. |
 
@@ -154,7 +154,7 @@ ___
 
 ### FromModelsParams
 
-Ƭ **FromModelsParams**: [`CompositeOptions`](devtools.md#compositeoptions) & \{ `ceramic`: `CeramicApi` ; `index?`: `boolean` ; `models`: `string`[]  }
+Ƭ **FromModelsParams**: [`CompositeOptions`](devtools.md#compositeoptions) & \{ `ceramic`: `CeramicAPI` ; `index?`: `boolean` ; `models`: `string`[]  }
 
 Composite creation parameters from existing models.
 

@@ -2,6 +2,7 @@ import type { ModelDefinition } from '@ceramicnetwork/stream-model'
 import { createRuntimeDefinition, mockDefinitionFromSchema } from '@composedb/devtools'
 import {
   extraScalarsSchema,
+  favoriteSchema,
   mediaSchema,
   noteSchema,
   postSchema,
@@ -37,5 +38,9 @@ describe('schema', () => {
 
   test('media interfaces', () => {
     expect(printGraphQLSchema(createSchemaDefinition(mediaSchema))).toMatchSnapshot()
+  })
+
+  test('favorite schema with SET account relation', () => {
+    expect(printGraphQLSchema(createSchemaDefinition(favoriteSchema))).toMatchSnapshot()
   })
 })

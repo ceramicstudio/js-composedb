@@ -1,9 +1,10 @@
-import type { BaseQuery, CeramicApi, CreateOpts } from '@ceramicnetwork/common'
+import type { BaseQuery, CreateOpts } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import type { CommitID, StreamID } from '@ceramicnetwork/streamid'
+import type { CeramicAPI } from '@composedb/types'
 import type { Connection } from 'graphql-relay'
 
-import { type ConnectionQuery, queryConnection, querySingle } from './query.js'
+import { type ConnectionQuery, queryConnection, queryOne } from './query.js'
 import { type DocumentCache, DocumentLoader, type UpdateDocOptions } from './loader.js'
 
 export type ContextParams = {
@@ -14,7 +15,7 @@ export type ContextParams = {
   /**
    * Ceramic client instance.
    */
-  ceramic: CeramicApi
+  ceramic: CeramicAPI
   /**
    * Fallback viewer ID to use when the Ceramic instance is not authenticated.
    */
@@ -34,7 +35,7 @@ export type Context = {
   /**
    * Ceramic client instance used internally.
    */
-  ceramic: CeramicApi
+  ceramic: CeramicAPI
   /**
    * Document loader instance used internally.
    */
@@ -58,10 +59,21 @@ export type Context = {
     content: Content,
   ) => Promise<ModelInstanceDocument<Content>>
   /**
-   * Create a new single document with the given model and content.
+   * Create or update a document using the SINGLE account relation with the
+   * given model and content.
    */
-  createSingle: <Content extends Record<string, any>>(
+  upsertSingle: <Content extends Record<string, any>>(
     model: string,
+    content: Content,
+    options?: CreateOpts,
+  ) => Promise<ModelInstanceDocument<Content>>
+  /**
+   * Create or update a document using the SET account relation with the given
+   * model, content and unique fields value.
+   */
+  upsertSet: <Content extends Record<string, any>>(
+    model: string,
+    unique: Array<string>,
     content: Content,
     options?: CreateOpts,
   ) => Promise<ModelInstanceDocument<Content>>
@@ -84,7 +96,7 @@ export type Context = {
   /**
    * Query the index for a single document.
    */
-  querySingle: (query: BaseQuery) => Promise<ModelInstanceDocument | null>
+  queryOne: (query: BaseQuery) => Promise<ModelInstanceDocument | null>
 }
 
 export function createContext(params: ContextParams): Context {
@@ -116,7 +128,7 @@ export function createContext(params: ContextParams): Context {
     ): Promise<ModelInstanceDocument<Content>> => {
       return await loader.create(model, content)
     },
-    createSingle: async <Content extends Record<string, any> = Record<string, any>>(
+    upsertSingle: async <Content extends Record<string, any> = Record<string, any>>(
       model: string,
       content: Content,
       options?: CreateOpts,
@@ -125,7 +137,21 @@ export function createContext(params: ContextParams): Context {
       if (controller == null) {
         throw new Error('Document can only be created with an authenticated account')
       }
-      const doc = await loader.single<Content>(controller, model, options)
+      const doc = await loader.loadSingle<Content>(controller, model, options)
+      await doc.replace(content)
+      return doc
+    },
+    upsertSet: async <Content extends Record<string, any> = Record<string, any>>(
+      model: string,
+      unique: Array<string>,
+      content: Content,
+      options?: CreateOpts,
+    ): Promise<ModelInstanceDocument<Content>> => {
+      const controller = getViewerID()
+      if (controller == null) {
+        throw new Error('Document can only be created with an authenticated account')
+      }
+      const doc = await loader.loadSet<Content>(controller, model, unique, options)
       await doc.replace(content)
       return doc
     },
@@ -144,8 +170,8 @@ export function createContext(params: ContextParams): Context {
     queryCount: async (query: BaseQuery): Promise<number> => {
       return await ceramic.index.count(query)
     },
-    querySingle: async (query: BaseQuery): Promise<ModelInstanceDocument | null> => {
-      return await querySingle(ceramic, query)
+    queryOne: async (query: BaseQuery): Promise<ModelInstanceDocument | null> => {
+      return await queryOne(ceramic, query)
     },
   }
 }

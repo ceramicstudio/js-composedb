@@ -1,4 +1,3 @@
-import type { CeramicApi } from '@ceramicnetwork/common'
 import { CeramicClient } from '@ceramicnetwork/http-client'
 import {
   ComposeRuntime,
@@ -7,7 +6,7 @@ import {
   type DocumentCache,
   createContext,
 } from '@composedb/runtime'
-import type { RuntimeCompositeDefinition } from '@composedb/types'
+import type { CeramicAPI, RuntimeCompositeDefinition } from '@composedb/types'
 import type { Executor } from '@graphql-tools/utils'
 import type { DID } from 'dids'
 import type { DocumentNode, ExecutionResult, Source } from 'graphql'
@@ -22,7 +21,7 @@ export type ComposeClientParams = {
   /**
    * Ceramic client instance or HTTP URL.
    */
-  ceramic: CeramicApi | string
+  ceramic: CeramicAPI | string
   /**
    * Runtime composite definition, created using the {@linkcode devtools.Composite Composite}
    * development tools.

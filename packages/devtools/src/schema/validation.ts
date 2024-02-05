@@ -1,5 +1,6 @@
-import type { CeramicApi, Context, SignedCommitContainer } from '@ceramicnetwork/common'
+import type { SignedCommitContainer } from '@ceramicnetwork/common'
 import { Model, type ModelDefinition } from '@ceramicnetwork/stream-model'
+import type { CeramicAPI } from '@composedb/types'
 import { Cacao } from '@didtools/cacao'
 
 // The hardcoded "model" StreamID that all Model streams have in their metadata. This provides
@@ -13,7 +14,7 @@ export function isSignedCommitContainer(
   return Object.keys(input).includes('jws') && Object.keys(input).includes('linkedBlock')
 }
 
-export function assertAuthenticatedDID(ceramic: CeramicApi): void {
+export function assertAuthenticatedDID(ceramic: CeramicAPI): void {
   if (!ceramic.did?.authenticated) {
     throw new Error(`An authenticated DID must be attached to the Ceramic instance`)
   }
@@ -63,21 +64,17 @@ export async function assertSupportedReadModelController(
   }
 }
 
-export function assertSupportedWriteModelController(model: Model, ceramic: CeramicApi): void {
+export function assertSupportedWriteModelController(model: Model, ceramic: CeramicAPI): void {
   const controller = model.metadata.controller as string
   const unsupported = `Unsupported model controller ${controller}`
   if (controller.startsWith('did:pkh:')) {
-    if (ceramic.context == null) {
-      throw new Error(`${unsupported}, missing ceramic context`)
-    }
-    const context = ceramic.context as Context
-    if (context.did == null) {
+    if (ceramic.did == null) {
       throw new Error(`${unsupported}, did missing from ceramic context`)
     }
-    if (!context.did.hasCapability) {
+    if (!ceramic.did.hasCapability) {
       throw new Error(`${unsupported}, only did:pkh with CACAO is supported`)
     }
-    const cacao: Cacao = context.did.capability
+    const cacao: Cacao = ceramic.did.capability
     if (cacao.p.exp != null) {
       throw new Error(`${unsupported}, only did:pkh CACAO without expiry is supported`)
     }

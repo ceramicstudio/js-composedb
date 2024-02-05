@@ -1,5 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Runtime format Favorite with SET account relation 1`] = `
+{
+  "accountData": {
+    "favorite": {
+      "name": "Favorite",
+      "type": "set",
+    },
+    "favoriteList": {
+      "name": "Favorite",
+      "type": "connection",
+    },
+  },
+  "enums": {},
+  "models": {
+    "Favorite": {
+      "accountRelation": {
+        "fields": [
+          "docID",
+          "tag",
+        ],
+        "type": "set",
+      },
+      "id": "FavoriteID",
+      "implements": [],
+      "interface": false,
+    },
+  },
+  "objects": {
+    "Favorite": {
+      "doc": {
+        "relation": {
+          "model": null,
+          "property": "docID",
+          "source": "document",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "docID": {
+        "required": true,
+        "type": "streamid",
+      },
+      "note": {
+        "required": false,
+        "type": "string",
+      },
+      "tag": {
+        "required": true,
+        "type": "string",
+      },
+    },
+  },
+}
+`;
+
 exports[`Runtime format Note model definition with views 1`] = `
 {
   "accountData": {

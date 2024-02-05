@@ -54,7 +54,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `cache?` | `DocumentCache` | Optional cache for documents. |
-| `ceramic` | `CeramicApi` \| `string` | Ceramic client instance or HTTP URL. |
+| `ceramic` | `CeramicAPI` \| `string` | Ceramic client instance or HTTP URL. |
 | `definition?` | `RuntimeCompositeDefinition` | Runtime composite definition, created using the [`Composite`](../classes/devtools.Composite.md) development tools. |
 | `options?` | `YogaServerOptions`\<`ServerContext`, `Context`\> | [Yoga server](https://the-guild.dev/graphql/yoga-server/docs) options. |
 | `schema?` | `GraphQLSchema` | GraphQL Schema to use, ignores the `definition` parameter if provided. |

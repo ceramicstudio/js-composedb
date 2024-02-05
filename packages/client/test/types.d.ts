@@ -1,5 +1,5 @@
-import type { CeramicApi } from '@ceramicnetwork/common'
+import type { CeramicAPI } from '@composedb/types'
 
 declare global {
-  const ceramic: CeramicApi
+  const ceramic: CeramicAPI
 }

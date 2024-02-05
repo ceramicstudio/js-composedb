@@ -1,9 +1,9 @@
-import type { CeramicApi } from '@ceramicnetwork/common'
 import {
   ModelInstanceDocument,
   type ModelInstanceDocumentMetadataArgs,
 } from '@ceramicnetwork/stream-model-instance'
 import { CommitID, StreamID } from '@ceramicnetwork/streamid'
+import type { CeramicAPI } from '@composedb/types'
 import { jest } from '@jest/globals'
 
 import { type DocumentCache, DocumentLoader, idToString } from '../src/loader'
@@ -39,7 +39,7 @@ describe('loader', () => {
     test('provides batching', async () => {
       const multiQuery = jest.fn(() => ({ [testID1]: {}, [testID2]: {} }))
       const loader = new DocumentLoader({
-        ceramic: { multiQuery } as unknown as CeramicApi,
+        ceramic: { multiQuery } as unknown as CeramicAPI,
         multiqueryTimeout,
       })
       await Promise.all([loader.load(testID1), loader.load(testID2)])
@@ -52,7 +52,9 @@ describe('loader', () => {
 
     test('throws if one of the streams is not found', async () => {
       const multiQuery = jest.fn(() => ({ [testID1]: {} }))
-      const loader = new DocumentLoader({ ceramic: { multiQuery } as unknown as CeramicApi })
+      const loader = new DocumentLoader({
+        ceramic: { multiQuery } as unknown as CeramicAPI,
+      })
       await expect(Promise.all([loader.load(testID1), loader.load(testID2)])).rejects.toThrow(
         `Failed to load document: ${testID2}`,
       )
@@ -60,7 +62,9 @@ describe('loader', () => {
 
     test('does not throw when using the loadMany() method', async () => {
       const multiQuery = jest.fn(() => ({ [testID1]: {} }))
-      const loader = new DocumentLoader({ ceramic: { multiQuery } as unknown as CeramicApi })
+      const loader = new DocumentLoader({
+        ceramic: { multiQuery } as unknown as CeramicAPI,
+      })
       await expect(loader.loadMany([testID1, testID2])).resolves.toEqual([
         {},
         new Error(`Failed to load document: ${testID2}`),
@@ -70,7 +74,7 @@ describe('loader', () => {
     test('does not cache by default', async () => {
       const multiQuery = jest.fn(() => ({ [testID1]: {}, [testID2]: {} }))
       const loader = new DocumentLoader({
-        ceramic: { multiQuery } as unknown as CeramicApi,
+        ceramic: { multiQuery } as unknown as CeramicAPI,
         multiqueryTimeout,
       })
 
@@ -89,7 +93,7 @@ describe('loader', () => {
       const multiQuery = jest.fn(() => ({ [testID1]: {}, [testID2]: {} }))
       const loader = new DocumentLoader({
         cache: true,
-        ceramic: { multiQuery } as unknown as CeramicApi,
+        ceramic: { multiQuery } as unknown as CeramicAPI,
         multiqueryTimeout,
       })
 
@@ -106,7 +110,7 @@ describe('loader', () => {
       const multiQuery = jest.fn(() => ({ [testID1]: {}, [testID2]: {} }))
       const loader = new DocumentLoader({
         cache,
-        ceramic: { multiQuery } as unknown as CeramicApi,
+        ceramic: { multiQuery } as unknown as CeramicAPI,
         multiqueryTimeout,
       })
 
@@ -129,7 +133,9 @@ describe('loader', () => {
       test('returns false and does not affect the cache unless enabled', async () => {
         const stream = { id: testStreamID } as ModelInstanceDocument
         const multiQuery = jest.fn(() => ({}))
-        const loader = new DocumentLoader({ ceramic: { multiQuery } as unknown as CeramicApi })
+        const loader = new DocumentLoader({
+          ceramic: { multiQuery } as unknown as CeramicAPI,
+        })
 
         expect(loader.cache(stream)).toBe(false)
         await expect(loader.load(testStreamID)).rejects.toThrow(
@@ -150,7 +156,7 @@ describe('loader', () => {
         const multiQuery = jest.fn(() => ({}))
         const loader = new DocumentLoader({
           cache: true,
-          ceramic: { multiQuery } as unknown as CeramicApi,
+          ceramic: { multiQuery } as unknown as CeramicAPI,
         })
 
         expect(loader.cache(stream1)).toBe(true)
@@ -170,7 +176,7 @@ describe('loader', () => {
       ModelInstanceDocument.create = create as unknown as typeof ModelInstanceDocument.create
 
       const multiQuery = jest.fn(() => ({}))
-      const ceramic = { multiQuery } as unknown as CeramicApi
+      const ceramic = { multiQuery } as unknown as CeramicAPI
       const loader = new DocumentLoader({ cache: true, ceramic })
 
       const content = { foo: 'bar' }
@@ -187,7 +193,7 @@ describe('loader', () => {
       expect(multiQuery).not.toHaveBeenCalled()
     })
 
-    test('single() method calls ModelInstanceDocument.single() and adds the stream to the cache', async () => {
+    test('loadSingle() method calls ModelInstanceDocument.single() and adds the stream to the cache', async () => {
       const single = jest.fn((_ceramic, metadata: ModelInstanceDocumentMetadataArgs) => ({
         id: testStreamID,
         metadata,
@@ -195,14 +201,36 @@ describe('loader', () => {
       ModelInstanceDocument.single = single as unknown as typeof ModelInstanceDocument.single
 
       const multiQuery = jest.fn(() => ({}))
-      const ceramic = { multiQuery } as unknown as CeramicApi
+      const ceramic = { multiQuery } as unknown as CeramicAPI
       const loader = new DocumentLoader({ cache: true, ceramic })
 
       const metadata = { controller: 'did:test:123', model: testStreamID }
       const options = {}
-      await loader.single('did:test:123', testStreamID, options)
+      await loader.loadSingle('did:test:123', testStreamID, options)
       expect(single).toHaveBeenCalledTimes(1)
       expect(single).toHaveBeenCalledWith(ceramic, metadata, options)
+
+      await expect(loader.load(testStreamID)).resolves.toEqual({ id: testStreamID, metadata })
+      expect(multiQuery).not.toHaveBeenCalled()
+    })
+
+    test('loadSet() method calls ModelInstanceDocument.set() and adds the stream to the cache', async () => {
+      const set = jest.fn((_ceramic, metadata: ModelInstanceDocumentMetadataArgs) => ({
+        id: testStreamID,
+        metadata,
+      }))
+      ModelInstanceDocument.set = set as unknown as typeof ModelInstanceDocument.set
+
+      const multiQuery = jest.fn(() => ({}))
+      const ceramic = { multiQuery } as unknown as CeramicAPI
+      const loader = new DocumentLoader({ cache: true, ceramic })
+
+      const metadata = { controller: 'did:test:123', model: testStreamID }
+      const unique = ['foo']
+      const options = {}
+      await loader.loadSet('did:test:123', testStreamID, unique, options)
+      expect(set).toHaveBeenCalledTimes(1)
+      expect(set).toHaveBeenCalledWith(ceramic, metadata, unique, options)
 
       await expect(loader.load(testStreamID)).resolves.toEqual({ id: testStreamID, metadata })
       expect(multiQuery).not.toHaveBeenCalled()
@@ -231,7 +259,7 @@ describe('loader', () => {
 
         const loader = new DocumentLoader({
           cache,
-          ceramic: { multiQuery } as unknown as CeramicApi,
+          ceramic: { multiQuery } as unknown as CeramicAPI,
         })
 
         await loader.load(testID1)
@@ -239,8 +267,8 @@ describe('loader', () => {
         expect(cacheMap.has(testID1)).toBe(true)
         expect(cacheSet).toHaveBeenCalledTimes(1)
 
-        await loader.update(testID1, { test: true }, { pin: true })
-        expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, { pin: true })
+        await loader.update(testID1, { test: true }, { publish: true })
+        expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, { publish: true })
         expect(cacheDelete).toHaveBeenCalledWith(testID1)
         expect(cacheMap.has(testID1)).toBe(true)
         expect(cacheSet).toHaveBeenCalledTimes(2)
@@ -252,7 +280,9 @@ describe('loader', () => {
           [testID1]: { commitId: testCommitID, replace },
         }))
 
-        const loader = new DocumentLoader({ ceramic: { multiQuery } as unknown as CeramicApi })
+        const loader = new DocumentLoader({
+          ceramic: { multiQuery } as unknown as CeramicAPI,
+        })
         await expect(loader.update(testID1, { test: true }, { version: 'test' })).rejects.toThrow(
           'Stream version mismatch',
         )
@@ -265,7 +295,9 @@ describe('loader', () => {
           [testID1]: { commitId: testCommitID, content: { foo: 'bar', test: false }, replace },
         }))
 
-        const loader = new DocumentLoader({ ceramic: { multiQuery } as unknown as CeramicApi })
+        const loader = new DocumentLoader({
+          ceramic: { multiQuery } as unknown as CeramicAPI,
+        })
         await loader.update(testID1, { test: true }, { version: testCommitID.toString() })
         expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, {})
       })
@@ -276,7 +308,9 @@ describe('loader', () => {
           [testID1]: { commitId: testCommitID, content: { foo: 'bar', test: false }, replace },
         }))
 
-        const loader = new DocumentLoader({ ceramic: { multiQuery } as unknown as CeramicApi })
+        const loader = new DocumentLoader({
+          ceramic: { multiQuery } as unknown as CeramicAPI,
+        })
         await loader.update(testID1, { test: true }, { replace: true })
         expect(replace).toHaveBeenCalledWith({ test: true }, {})
       })
