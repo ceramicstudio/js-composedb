@@ -85,11 +85,11 @@ ___
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `genesis?` | `GenesisCommit` |
-| `id` | [`DocID`](loader.md#docid) |
-| `opts?` | `LoadOpts` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `genesis?` | `GenesisCommit` | Optional genesis commit for deterministic streams |
+| `id` | [`DocID`](loader.md#docid) | Document ID |
+| `opts?` | `LoadOpts` | Stream load options |
 
 ___
 

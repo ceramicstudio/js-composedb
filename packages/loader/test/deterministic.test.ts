@@ -21,8 +21,8 @@ describe('deterministic', () => {
 
   beforeAll(async () => {
     const [favoriteComposite, profileComposite] = await Promise.all([
-      await Composite.create({ ceramic, schema: favoriteSchema }),
-      await Composite.create({ ceramic, schema: profilesSchema }),
+      Composite.create({ ceramic, schema: favoriteSchema }),
+      Composite.create({ ceramic, schema: profilesSchema }),
     ])
     favoriteModelID = favoriteComposite.getModelID('Favorite')!
     profileModelID = profileComposite.getModelID('PersonProfile')!

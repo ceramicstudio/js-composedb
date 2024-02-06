@@ -5,8 +5,17 @@ import type { CommitID, StreamID } from '@ceramicnetwork/streamid'
 export type DocID = CommitID | StreamID | string
 
 export type LoadKey = {
+  /**
+   * Document ID
+   */
   id: DocID
+  /**
+   * Optional genesis commit for deterministic streams
+   */
   genesis?: GenesisCommit
+  /**
+   * Stream load options
+   */
   opts?: LoadOpts
 }
 
