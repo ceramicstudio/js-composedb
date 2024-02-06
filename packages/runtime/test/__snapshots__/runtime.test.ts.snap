@@ -1705,7 +1705,6 @@ type Post implements Node {
   id: ID!
   date: DateTime
   text: String!
-  title: String!
 
   """Account controlling the document"""
   author: CeramicAccount!

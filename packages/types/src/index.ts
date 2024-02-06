@@ -219,7 +219,6 @@ export type RuntimeModel = {
   implements: Array<string>
   accountRelation: ModelAccountRelationV2
   immutableFields?: Array<string>
-
 }
 
 /**

@@ -589,10 +589,10 @@ class SchemaBuilder {
           },
         }
         for (const [key, field] of Object.entries(fields)) {
+          // Don't show meta or immutable fields in schema
+          if (field.type == 'meta' || (field as any).immutable) continue
+
           switch (field.type) {
-            case 'meta':
-              // Don't show meta fields in schema
-              continue
             case 'reference':
               config[key] = this._buildDocumentObjectReferenceField(key, field)
               break
@@ -1052,7 +1052,7 @@ class SchemaBuilder {
       const inputPrefix = isDocument || required ? '' : 'Partial'
 
       for (const [key, field] of Object.entries(fields)) {
-        let type
+        let type//TODO should it also go here?
         switch (field.type) {
           case 'meta':
           case 'view':
@@ -1194,6 +1194,7 @@ class SchemaBuilder {
     name: string,
     model: RuntimeModel,
   ) {
+    console.trace("i came here")
     switch (model.accountRelation.type) {
       case 'list':
         this.#mutations[`create${name}`] = mutationWithClientMutationId({
