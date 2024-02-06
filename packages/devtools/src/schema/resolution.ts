@@ -119,12 +119,14 @@ function executeCreateFactory(
       relationsPromise,
       promiseMap(viewsPromises, (viewPromise) => viewPromise),
     ])
+
     // Always convert to a v2 definition
     const newDefinition: ModelDefinitionV2 = {
       version: '2.0',
       name: sourceDefinition.name,
       description: sourceDefinition.description,
       accountRelation: sourceDefinition.accountRelation,
+      immutableFields: !isV1 ? (sourceDefinition as ModelDefinitionV2).immutableFields: [],
       interface: isV1 ? false : sourceDefinition.interface,
       implements: implementIDs,
       schema: sourceDefinition.schema,

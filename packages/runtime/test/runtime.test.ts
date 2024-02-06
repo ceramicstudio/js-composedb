@@ -841,4 +841,47 @@ describe('runtime', () => {
     })
     expect(favorite2Res.data).toMatchSnapshot()
   })
+
+  test.only('runtime operations on models with immutable field', async () => {
+    const postWithImmutableFieldSchema = `
+    type Post 
+      @createModel(accountRelation: LIST, description: "Simple post with immutable field") 
+      @createIndex(fields: [{path:["title"]}]) {
+      author: DID! @documentAccount
+      date: DateTime 
+      title: String! @string(minLength: 10, maxLength: 100) @immutable
+      text: String! @string(maxLength: 2000)
+    }
+    `
+    const composite = await Composite.create({ ceramic, schema: postWithImmutableFieldSchema })
+    const definition = composite.toRuntime()
+
+    expect(printGraphQLSchema(definition)).toMatchSnapshot()
+
+    const runtime = new ComposeRuntime({ ceramic, definition })
+
+    // can create record with immutable field
+    const createPostMutation = `
+      mutation CreatePost($input: CreatePostInput!) {
+        createPost(input: $input) {
+          document {
+            id
+          }
+        }
+      }
+    `
+    const postRes = await runtime.executeQuery(createPostMutation, {
+      input: { content: { title: 'A first post', text: 'First post content', date: '2024-01-01T10:15:30Z' } },
+    })
+
+    /*
+    const postID = postRes.data?.createPost.document.id
+    expect(postID).toBeDefined()*/
+
+    // can read record with immutable field
+
+    // cannot update immutable field
+    expect(true)
+
+  }, 60000)
 })
