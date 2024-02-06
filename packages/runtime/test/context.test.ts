@@ -1,11 +1,11 @@
 import type { StreamState } from '@ceramicnetwork/common'
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
+import { DocumentLoader } from '@composedb/loader'
 import type { CeramicAPI } from '@composedb/types'
 import { jest } from '@jest/globals'
 import type { DID } from 'dids'
 
 import { createContext } from '../src'
-import { DocumentLoader } from '../src/loader'
 
 describe('context', () => {
   const testState = {
@@ -53,7 +53,7 @@ describe('context', () => {
       const context = createContext({ ceramic, loader })
 
       await expect(context.loadDoc('testID')).resolves.toBe(expectedDoc)
-      expect(load).toHaveBeenCalledWith('testID')
+      expect(load).toHaveBeenCalledWith({ id: 'testID' })
     })
 
     test('calls the clear() method of the loader if the fresh parameter is set', async () => {
@@ -63,8 +63,8 @@ describe('context', () => {
       const context = createContext({ ceramic, loader })
 
       await context.loadDoc('testID', true)
-      expect(clear).toHaveBeenCalledWith('testID')
-      expect(load).toHaveBeenCalledWith('testID')
+      expect(clear).toHaveBeenCalledWith({ id: 'testID' })
+      expect(load).toHaveBeenCalledWith({ id: 'testID' })
     })
   })
 

@@ -1,6 +1,7 @@
-import type { BaseQuery, ObjectFilter, QueryFilters, Sorting } from '@ceramicnetwork/common'
+import type { BaseQuery, QueryFilters, Sorting } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { CeramicCommitID, getScalar } from '@composedb/graphql-scalars'
+import type { UpdateDocOptions } from '@composedb/loader'
 import type {
   RuntimeCompositeDefinition,
   RuntimeList,
@@ -16,6 +17,7 @@ import type {
   RuntimeViewReference,
 } from '@composedb/types'
 import {
+  type GraphQLArgumentConfig,
   GraphQLBoolean,
   GraphQLEnumType,
   type GraphQLEnumValueConfigMap,
@@ -35,9 +37,9 @@ import {
   GraphQLSchema,
   GraphQLString,
   assertValidSchema,
-  GraphQLArgumentConfig,
   isInterfaceType,
 } from 'graphql'
+import type { ObjMap } from 'graphql/jsutils/ObjMap'
 import {
   type Connection,
   type ConnectionArguments,
@@ -48,9 +50,7 @@ import {
 } from 'graphql-relay'
 
 import type { Context } from './context.js'
-import type { UpdateDocOptions } from './loader.js'
 import { assertValidQueryFilters, createRelationQueryFilters } from './query.js'
-import { ObjMap } from 'graphql/jsutils/ObjMap'
 
 const NON_SCALAR_FIELD_TYPES: Array<RuntimeObjectField['type']> = [
   'meta',
@@ -354,7 +354,7 @@ class SchemaBuilder {
               config[alias] = {
                 type: this.#types[reference.name],
                 resolve: async (account, _, ctx): Promise<ModelInstanceDocument | null> => {
-                  return await ctx.queryOne({ account, models: [model.id] })
+                  return await ctx.loader.loadSingle(account, model.id)
                 },
               }
               break
@@ -380,15 +380,11 @@ class SchemaBuilder {
                   args: { with: Record<string, string | number> },
                   ctx,
                 ): Promise<ModelInstanceDocument | null> => {
-                  const where: ObjectFilter = {}
-                  for (const field of relationFields) {
-                    where[field] = { equalTo: args.with[field] }
-                  }
-                  return await ctx.queryOne({
-                    account,
-                    models: [model.id],
-                    queryFilters: { where },
+                  const unique = relationFields.map((field) => {
+                    const value = args.with[field]
+                    return value ? String(value) : ''
                   })
+                  return await ctx.loader.loadSet(account, model.id, unique)
                 },
               }
               break

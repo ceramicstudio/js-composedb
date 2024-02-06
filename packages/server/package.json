@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "@ceramicnetwork/common": "^4.1.0",
+    "@composedb/loader": "workspace:^",
     "@composedb/types": "workspace:^",
     "@types/node": "^20.11.16"
   },

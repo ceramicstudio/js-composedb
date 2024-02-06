@@ -1,11 +1,11 @@
 import type { BaseQuery, CreateOpts } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import type { CommitID, StreamID } from '@ceramicnetwork/streamid'
+import { type DocumentCache, DocumentLoader, type UpdateDocOptions } from '@composedb/loader'
 import type { CeramicAPI } from '@composedb/types'
 import type { Connection } from 'graphql-relay'
 
 import { type ConnectionQuery, queryConnection, queryOne } from './query.js'
-import { type DocumentCache, DocumentLoader, type UpdateDocOptions } from './loader.js'
 
 export type ContextParams = {
   /**
@@ -117,10 +117,11 @@ export function createContext(params: ContextParams): Context {
       id: string | CommitID | StreamID,
       fresh = false,
     ): Promise<ModelInstanceDocument<Content>> => {
+      const key = { id }
       if (fresh) {
-        loader.clear(id)
+        loader.clear(key)
       }
-      return await loader.load<Content>(id)
+      return await loader.load<Content>(key)
     },
     createDoc: async <Content extends Record<string, any> = Record<string, any>>(
       model: string,

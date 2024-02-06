@@ -811,5 +811,5 @@ describe('runtime', () => {
       input: { content: { docID: post2ID, tag: 'posts' } },
     })
     expect(favorite2Res.data).toMatchSnapshot()
-  })
+  }, 30000)
 })

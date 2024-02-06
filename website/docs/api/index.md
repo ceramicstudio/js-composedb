@@ -10,5 +10,6 @@ custom_edit_url: null
 - [client](modules/client.md)
 - [devtools](modules/devtools.md)
 - [devtools-node](modules/devtools_node.md)
+- [loader](modules/loader.md)
 - [runtime](modules/runtime.md)
 - [server](modules/server.md)

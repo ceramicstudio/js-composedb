@@ -1,14 +1,22 @@
-import type { CreateOpts, UpdateOpts } from '@ceramicnetwork/common'
 import {
-  ModelInstanceDocument,
-  type ModelInstanceDocumentMetadataArgs,
-} from '@ceramicnetwork/stream-model-instance'
-import { type CommitID, StreamID, StreamRef } from '@ceramicnetwork/streamid'
+  type CreateOpts,
+  type LoadOpts,
+  SyncOptions,
+  type UpdateOpts,
+} from '@ceramicnetwork/common'
+import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
+import { StreamID, StreamRef } from '@ceramicnetwork/streamid'
 import type { CeramicAPI } from '@composedb/types'
-import DataLoader from 'dataloader'
-import type { BatchLoadFn } from 'dataloader'
+import DataLoader, { type BatchLoadFn } from 'dataloader'
 
-export type DocID = CommitID | StreamID | string
+import {
+  type GenesisMetadata,
+  createDeterministicKey,
+  getDeterministicCacheKey,
+} from './deterministic.js'
+import type { DeterministicKeysCache, DocumentCache, LoadKey } from './types.js'
+
+export const DEFAULT_DETERMINISTIC_OPTIONS: LoadOpts = { sync: SyncOptions.NEVER_SYNC }
 
 export type CreateOptions = CreateOpts & {
   controller?: string
@@ -21,26 +29,6 @@ export type UpdateDocOptions = {
 
 export type UpdateOptions = UpdateOpts & UpdateDocOptions
 
-// Implements CacheMap from dataloader, copied here to generate docs
-export type DocumentCache = {
-  /**
-   * Get a Promise of a ModelInstanceDocument by its stream ID
-   */
-  get(id: string): Promise<ModelInstanceDocument> | void
-  /**
-   * Set a Promise of a ModelInstanceDocument by its stream ID
-   */
-  set(id: string, value: Promise<ModelInstanceDocument>): any
-  /**
-   * Remove a specific entry from the cache
-   */
-  delete(id: string): any
-  /**
-   * Remove all entries from the cache
-   */
-  clear(): any
-}
-
 export type DocumentLoaderParams = {
   /**
    * A Ceramic client instance
@@ -52,54 +40,58 @@ export type DocumentLoaderParams = {
    */
   cache?: DocumentCache | boolean
   /**
+   * Optional cache for deterministic streams keys
+   */
+  deterministicKeysCache?: DeterministicKeysCache
+  /**
    * MultiQuery request timeout in milliseconds
    */
   multiqueryTimeout?: number
 }
 
-/** @internal */
-export function idToString(id: DocID): string {
-  return typeof id === 'string' ? StreamRef.from(id).toString() : id.toString()
+export function getKeyID(key: LoadKey): string {
+  return typeof key.id === 'string' ? StreamRef.from(key.id).toString() : key.id.toString()
 }
 
-/** @internal */
-export function toMetadata(
-  model: StreamID | string,
-  controller?: string,
-): ModelInstanceDocumentMetadataArgs {
-  return {
-    controller,
-    model: model instanceof StreamID ? model : StreamID.fromString(model),
-  }
-}
+const tempBatchLoadFn: BatchLoadFn<LoadKey, ModelInstanceDocument> = () => Promise.resolve([])
 
-const tempBatchLoadFn: BatchLoadFn<DocID, ModelInstanceDocument> = () => Promise.resolve([])
-
-export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
+/**
+ * The DocumentLoader class provides APIs to batch load and cache ModelInstanceDocument streams.
+ *
+ * It is exported by the {@linkcode loader} module.
+ *
+ * ```sh
+ * import { DocumentLoader } from '@composedb/loader'
+ * ```
+ */
+export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, string> {
   #ceramic: CeramicAPI
+  #deterministicKeys: DeterministicKeysCache
   #useCache: boolean
 
   constructor(params: DocumentLoaderParams) {
     super(tempBatchLoadFn, {
       cache: true, // Cache needs to be enabled for batching
-      cacheKeyFn: idToString,
+      cacheKeyFn: getKeyID,
       cacheMap:
         params.cache != null && typeof params.cache !== 'boolean' ? params.cache : undefined,
     })
 
+    this.#deterministicKeys = params.deterministicKeysCache ?? new Map()
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore internal method
-    this._batchLoadFn = async (keys: ReadonlyArray<DocID>) => {
+    this._batchLoadFn = async (keys: ReadonlyArray<LoadKey>) => {
       if (!params.cache) {
         // Disable cache but keep batching behavior - from https://github.com/graphql/dataloader#disabling-cache
         this.clearAll()
       }
       const results = await params.ceramic.multiQuery(
-        keys.map(idToString).map((streamId) => ({ streamId })),
+        keys.map(({ id, ...rest }) => ({ streamId: id, ...rest })),
         params.multiqueryTimeout,
       )
       return keys.map((key) => {
-        const id = idToString(key)
+        const id = getKeyID(key)
         const doc = results[id]
         return doc
           ? (doc as unknown as ModelInstanceDocument)
@@ -119,9 +111,24 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
       return false
     }
 
-    const id = stream.id.toString()
-    this.clear(id).prime(id, stream)
+    const key = { id: stream.id.toString() }
+    this.clear(key).prime(key, stream)
     return true
+  }
+
+  /**
+   * Get or create the LoadKey for a deterministic stream.
+   */
+  _getDeterministicKey(meta: GenesisMetadata): Promise<LoadKey> {
+    const cacheKey = getDeterministicCacheKey(meta)
+    const existing = this.#deterministicKeys.get(cacheKey)
+    if (existing != null) {
+      return existing
+    }
+
+    const loadKeyPromise = createDeterministicKey(meta)
+    this.#deterministicKeys.set(cacheKey, loadKeyPromise)
+    return loadKeyPromise
   }
 
   /**
@@ -132,7 +139,10 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
     content: T,
     { controller, ...options }: CreateOptions = {},
   ): Promise<ModelInstanceDocument<T>> {
-    const metadata = toMetadata(model, controller)
+    const metadata = {
+      controller,
+      model: model instanceof StreamID ? model : StreamID.fromString(model),
+    }
     const stream = await ModelInstanceDocument.create<T>(this.#ceramic, content, metadata, options)
     this.cache(stream)
     return stream
@@ -142,9 +152,23 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
    * Load a ModelInstanceDocument from the cache (if enabled) or remotely.
    */
   async load<T extends Record<string, any> = Record<string, any>>(
-    id: DocID,
+    key: LoadKey,
   ): Promise<ModelInstanceDocument<T>> {
-    return (await super.load(id)) as ModelInstanceDocument<T>
+    return (await super.load(key)) as ModelInstanceDocument<T>
+  }
+
+  /**
+   * Load a deterministic stream and add it to the cache.
+   */
+  async _loadDeterministic<T extends Record<string, any> = Record<string, any>>(
+    meta: GenesisMetadata,
+    options: CreateOpts = {},
+  ): Promise<ModelInstanceDocument<T>> {
+    const opts = { ...DEFAULT_DETERMINISTIC_OPTIONS, ...options }
+    const key = await this._getDeterministicKey(meta)
+    const stream = await this.load<T>({ ...key, opts })
+    this.cache(stream)
+    return stream
   }
 
   /**
@@ -155,10 +179,7 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
     model: string | StreamID,
     options?: CreateOpts,
   ): Promise<ModelInstanceDocument<T>> {
-    const metadata = toMetadata(model, controller)
-    const stream = await ModelInstanceDocument.single<T>(this.#ceramic, metadata, options)
-    this.cache(stream)
-    return stream
+    return await this._loadDeterministic({ controller, model }, options)
   }
 
   /**
@@ -171,10 +192,7 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
     unique: Array<string>,
     options?: CreateOpts,
   ): Promise<ModelInstanceDocument<T>> {
-    const metadata = toMetadata(model, controller)
-    const stream = await ModelInstanceDocument.set<T>(this.#ceramic, metadata, unique, options)
-    this.cache(stream)
-    return stream
+    return await this._loadDeterministic({ controller, model, unique }, options)
   }
 
   /**
@@ -185,9 +203,9 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
     content: T,
     { replace, version, ...options }: UpdateOptions = {},
   ): Promise<ModelInstanceDocument<T>> {
-    const id = idToString(streamID)
-    this.clear(id)
-    const stream = await this.load<T>(id)
+    const key = { id: streamID }
+    this.clear(key)
+    const stream = await this.load<T>(key)
     if (version != null && stream.commitId.toString() !== version) {
       throw new Error('Stream version mismatch')
     }

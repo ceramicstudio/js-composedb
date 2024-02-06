@@ -20,7 +20,7 @@ npm install @composedb/runtime
 
 ### ComposeRuntimeParams
 
-Ƭ **ComposeRuntimeParams**: [`GetSchemaParams`](runtime.md#getschemaparams) & \{ `cache?`: [`DocumentCache`](runtime.md#documentcache) \| `boolean` ; `ceramic`: `CeramicAPI` \| `string` ; `context?`: [`Context`](runtime.md#context)  }
+Ƭ **ComposeRuntimeParams**: [`GetSchemaParams`](runtime.md#getschemaparams) & \{ `cache?`: `DocumentCache` \| `boolean` ; `ceramic`: `CeramicAPI` \| `string` ; `context?`: [`Context`](runtime.md#context) ; `loader?`: `DocumentLoader`  }
 
 ___
 
@@ -55,24 +55,9 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `cache?` | [`DocumentCache`](runtime.md#documentcache) \| `boolean` | Optional cache for documents. |
+| `cache?` | `DocumentCache` \| `boolean` | Optional cache for documents. |
 | `ceramic` | `CeramicAPI` | Ceramic client instance. |
 | `fallbackViewerID?` | `string` \| ``null`` | Fallback viewer ID to use when the Ceramic instance is not authenticated. |
-
-___
-
-### DocumentCache
-
-Ƭ **DocumentCache**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `clear` | () => `any` |
-| `delete` | (`id`: `string`) => `any` |
-| `get` | (`id`: `string`) => `void` \| `Promise`\<`ModelInstanceDocument`\<`Record`\<`string`, `any`\>\>\> |
-| `set` | (`id`: `string`, `value`: `Promise`\<`ModelInstanceDocument`\<`Record`\<`string`, `any`\>\>\>) => `any` |
 
 ___
 
