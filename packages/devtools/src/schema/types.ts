@@ -82,7 +82,7 @@ export type SchemaDefinition = {
 
 export type AbstractCreateModelDefinition = {
   action: 'create'
-  model: ModelDefinition
+  model: ModelDefinition //todo this needs to include the immutable fields
   indices?: Array<FieldsIndex>
 }
 
