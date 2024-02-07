@@ -6,7 +6,7 @@ import { CommitID, StreamID } from '@ceramicnetwork/streamid'
 import type { CeramicAPI } from '@composedb/types'
 import { jest } from '@jest/globals'
 
-import { type DocumentCache, DocumentLoader, idToString } from '../src/loader'
+import { type DocumentCache, DocumentLoader, idToString, removeNullValues } from '../src/loader'
 
 const multiqueryTimeout = 2000
 
@@ -32,6 +32,24 @@ describe('loader', () => {
 
     test('with StreamID key', () => {
       expect(idToString(testStreamID)).toBe(testID1)
+    })
+  })
+
+  describe('removeNullValues()', () => {
+    test('returns a copy of the object', () => {
+      const source = { foo: 'foo', bar: null }
+      expect(removeNullValues(source)).toStrictEqual({ foo: 'foo' })
+      expect(source).toEqual({ foo: 'foo', bar: null })
+    })
+
+    test('does not remove null values from arrays', () => {
+      const source = { foo: 'foo', bar: ['bar', null, 'baz'] }
+      expect(removeNullValues(source)).toStrictEqual(source)
+    })
+
+    test('recursively removes null values', () => {
+      const source = { foo: 'foo', bar: { bar: 'bar', foo: null } }
+      expect(removeNullValues(source)).toStrictEqual({ foo: 'foo', bar: { bar: 'bar' } })
     })
   })
 

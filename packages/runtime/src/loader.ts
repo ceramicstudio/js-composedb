@@ -63,6 +63,25 @@ export function idToString(id: DocID): string {
 }
 
 /** @internal */
+export function removeNullValues(content: Record<string, unknown>): Record<string, unknown> {
+  const copy = { ...content }
+  for (const [key, value] of Object.entries(copy)) {
+    if (value == null) {
+      delete copy[key]
+    } else if (Array.isArray(value)) {
+      copy[key] = value.map((item: unknown) => {
+        return typeof item === 'object' && !Array.isArray(item) && item != null
+          ? removeNullValues(item as Record<string, unknown>)
+          : item
+      })
+    } else if (typeof value === 'object') {
+      copy[key] = removeNullValues(value as Record<string, unknown>)
+    }
+  }
+  return copy
+}
+
+/** @internal */
 export function toMetadata(
   model: StreamID | string,
   controller?: string,
@@ -132,8 +151,12 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
     content: T,
     { controller, ...options }: CreateOptions = {},
   ): Promise<ModelInstanceDocument<T>> {
-    const metadata = toMetadata(model, controller)
-    const stream = await ModelInstanceDocument.create<T>(this.#ceramic, content, metadata, options)
+    const stream = await ModelInstanceDocument.create<T>(
+      this.#ceramic,
+      removeNullValues(content) as T,
+      toMetadata(model, controller),
+      options,
+    )
     this.cache(stream)
     return stream
   }
@@ -191,8 +214,8 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
     if (version != null && stream.commitId.toString() !== version) {
       throw new Error('Stream version mismatch')
     }
-    const newContent = replace ? content : { ...stream.content, ...content }
-    await stream.replace(newContent, options)
+    const newContent = replace ? content : { ...(stream.content ?? {}), ...content }
+    await stream.replace(removeNullValues(newContent) as T, options)
     return stream
   }
 }

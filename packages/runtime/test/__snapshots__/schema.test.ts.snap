@@ -1775,6 +1775,22 @@ exports[`schema note with enum support 1`] = `
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
+  noteBookIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: NoteBookFiltersInput
+    sorting: NoteBookSortingInput
+  ): NoteBookConnection
+  noteBookCount(filters: NoteBookFiltersInput): Int!
   noteIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -1807,6 +1823,22 @@ type CeramicAccount implements Node {
   Whether the Ceramic instance is currently authenticated with this account or not
   """
   isViewer: Boolean!
+  noteBookList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: NoteBookFiltersInput
+    sorting: NoteBookSortingInput
+  ): NoteBookConnection
+  noteBookListCount(filters: NoteBookFiltersInput): Int!
   noteList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -1826,12 +1858,12 @@ type CeramicAccount implements Node {
 }
 
 """A connection to a list of items."""
-type NoteConnection {
+type NoteBookConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [NoteEdge]
+  edges: [NoteBookEdge]
 }
 
 """Information about pagination in a connection."""
@@ -1850,6 +1882,61 @@ type PageInfo {
 }
 
 """An edge in a connection."""
+type NoteBookEdge {
+  """The item at the end of the edge"""
+  node: NoteBook
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type NoteBook implements Node {
+  id: ID!
+  title: String!
+
+  """Account controlling the document"""
+  author: CeramicAccount!
+
+  """Current version of the document"""
+  version: CeramicCommitID!
+  notes(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: NoteFiltersInput
+    sorting: NoteSortingInput
+  ): NoteConnection!
+  notesCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: NoteFiltersInput
+  ): Int!
+}
+
+"""A Ceramic Commit ID"""
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
+
+"""A connection to a list of items."""
+type NoteConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [NoteEdge]
+}
+
+"""An edge in a connection."""
 type NoteEdge {
   """The item at the end of the edge"""
   node: Note
@@ -1860,6 +1947,7 @@ type NoteEdge {
 
 type Note implements Node {
   id: ID!
+  noteBookID: CeramicStreamID
   status: NoteStatus
   title: String!
   text: String!
@@ -1869,16 +1957,17 @@ type Note implements Node {
 
   """Current version of the document"""
   version: CeramicCommitID!
+  noteBook: NoteBook
 }
+
+"""A Ceramic Stream ID"""
+scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
 
 enum NoteStatus {
   DEFAULT
   IMPORTANT
   ARCHIVE
 }
-
-"""A Ceramic Commit ID"""
-scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
 
 input NoteFiltersInput {
   where: NoteObjectFilterInput
@@ -1912,9 +2001,82 @@ enum SortOrder {
   DESC
 }
 
+input NoteBookFiltersInput {
+  where: NoteBookObjectFilterInput
+  and: [NoteBookFiltersInput!]
+  or: [NoteBookFiltersInput!]
+  not: NoteBookFiltersInput
+}
+
+input NoteBookObjectFilterInput {
+  title: StringValueFilterInput
+}
+
+input NoteBookSortingInput {
+  title: SortOrder
+}
+
 type Mutation {
+  createNoteBook(input: CreateNoteBookInput!): CreateNoteBookPayload
+  updateNoteBook(input: UpdateNoteBookInput!): UpdateNoteBookPayload
   createNote(input: CreateNoteInput!): CreateNotePayload
   updateNote(input: UpdateNoteInput!): UpdateNotePayload
+}
+
+type CreateNoteBookPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: NoteBook!
+  clientMutationId: String
+}
+
+input CreateNoteBookInput {
+  content: NoteBookInput!
+  clientMutationId: String
+}
+
+input NoteBookInput {
+  title: String!
+}
+
+type UpdateNoteBookPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: NoteBook!
+  clientMutationId: String
+}
+
+input UpdateNoteBookInput {
+  id: ID!
+  content: PartialNoteBookInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialNoteBookInput {
+  title: String
+}
+
+input UpdateOptionsInput {
+  """
+  Fully replace the document contents instead of performing a shallow merge
+  """
+  replace: Boolean = false
+
+  """Only perform mutation if the document matches the provided version"""
+  version: CeramicCommitID
 }
 
 type CreateNotePayload {
@@ -1936,6 +2098,7 @@ input CreateNoteInput {
 }
 
 input NoteInput {
+  noteBookID: CeramicStreamID
   status: NoteStatus
   title: String!
   text: String!
@@ -1962,19 +2125,10 @@ input UpdateNoteInput {
 }
 
 input PartialNoteInput {
+  noteBookID: CeramicStreamID
   status: NoteStatus
   title: String
   text: String
-}
-
-input UpdateOptionsInput {
-  """
-  Fully replace the document contents instead of performing a shallow merge
-  """
-  replace: Boolean = false
-
-  """Only perform mutation if the document matches the provided version"""
-  version: CeramicCommitID
 }"
 `;
 
