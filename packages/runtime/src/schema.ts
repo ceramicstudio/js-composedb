@@ -1,4 +1,4 @@
-import type { BaseQuery, QueryFilters, Sorting } from '@ceramicnetwork/common'
+import type { BaseQuery, ObjectFilter, QueryFilters, Sorting } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { CeramicCommitID, getScalar } from '@composedb/graphql-scalars'
 import type {
@@ -115,6 +115,21 @@ function createAccountReferenceQuery(
     }
   }
   return query
+}
+
+function getReferencedAccount(
+  account: string,
+  doc: ModelInstanceDocument,
+  context: Context,
+): string | null {
+  switch (account) {
+    case 'documentAccount':
+      return doc.metadata.controller
+    case 'viewer':
+      return context.getViewerID()
+    default:
+      return account
+  }
 }
 
 const connectionArgsWithAccount = {
@@ -296,50 +311,94 @@ class SchemaBuilder {
             throw new Error(`Missing model for reference name: ${reference.name}`)
           }
 
-          if (reference.type === 'node') {
-            config[alias] = {
-              type: this.#types[reference.name],
-              resolve: async (account, _, ctx): Promise<ModelInstanceDocument | null> => {
-                return await ctx.querySingle({ account, models: [model.id] })
-              },
+          switch (reference.type) {
+            case 'account':
+            case 'connection': {
+              const filtersObj = this.#inputObjects[`${reference.name}Filters`]
+              const sortingObj = this.#inputObjects[`${reference.name}Sorting`]
+              const args: ObjMap<GraphQLArgumentConfig> = {
+                ...connectionArgs,
+              }
+              if (filtersObj && sortingObj) {
+                args.filters = { type: filtersObj }
+                args.sorting = { type: sortingObj }
+              }
+              config[alias] = {
+                type: this.#types[`${reference.name}Connection`],
+                args,
+                resolve: async (
+                  account,
+                  { filters, ...args }: ConnectionQueryArguments,
+                  ctx,
+                ): Promise<Connection<ModelInstanceDocument | null>> => {
+                  const query = createAccountReferenceQuery([model.id], account, reference, filters)
+                  return await ctx.queryConnection({ ...query, ...args })
+                },
+              }
+              config[`${alias}Count`] = {
+                type: new GraphQLNonNull(GraphQLInt),
+                args: filtersObj ? { filters: { type: filtersObj } } : {},
+                resolve: async (
+                  account,
+                  { filters }: ConnectionFiltersArgument,
+                  ctx,
+                ): Promise<number> => {
+                  const query = createAccountReferenceQuery([model.id], account, reference, filters)
+                  return await ctx.queryCount(query)
+                },
+              }
+              break
             }
-          } else if (reference.type === 'account' || reference.type === 'connection') {
-            const filtersObj = this.#inputObjects[`${reference.name}Filters`]
-            const sortingObj = this.#inputObjects[`${reference.name}Sorting`]
-            const args: ObjMap<GraphQLArgumentConfig> = {
-              ...connectionArgs,
+
+            case 'node':
+              config[alias] = {
+                type: this.#types[reference.name],
+                resolve: async (account, _, ctx): Promise<ModelInstanceDocument | null> => {
+                  return await ctx.queryOne({ account, models: [model.id] })
+                },
+              }
+              break
+
+            case 'set': {
+              if (model.accountRelation.type !== 'set') {
+                throw new Error(
+                  `Invalid reference ${alias} on account: referenced model ${reference.name} must use the SET account relation`,
+                )
+              }
+
+              const relationFields = model.accountRelation.fields
+
+              // The SET reference requires a dedicated input object to specify the set fields values
+              const withInput = this._buildSetInputObjectType(reference.name, relationFields)
+              config[alias] = {
+                type: this.#types[reference.name],
+                args: {
+                  with: { type: new GraphQLNonNull(withInput) },
+                },
+                resolve: async (
+                  account,
+                  args: { with: Record<string, string | number> },
+                  ctx,
+                ): Promise<ModelInstanceDocument | null> => {
+                  const where: ObjectFilter = {}
+                  for (const field of relationFields) {
+                    where[field] = { equalTo: args.with[field] }
+                  }
+                  return await ctx.queryOne({
+                    account,
+                    models: [model.id],
+                    queryFilters: { where },
+                  })
+                },
+              }
+              break
             }
-            if (filtersObj && sortingObj) {
-              args.filters = { type: filtersObj }
-              args.sorting = { type: sortingObj }
-            }
-            config[alias] = {
-              type: this.#types[`${reference.name}Connection`],
-              args,
-              resolve: async (
-                account,
-                { filters, ...args }: ConnectionQueryArguments,
-                ctx,
-              ): Promise<Connection<ModelInstanceDocument | null>> => {
-                const query = createAccountReferenceQuery([model.id], account, reference, filters)
-                return await ctx.queryConnection({ ...query, ...args })
-              },
-            }
-            config[`${alias}Count`] = {
-              type: new GraphQLNonNull(GraphQLInt),
-              args: filtersObj ? { filters: { type: filtersObj } } : {},
-              resolve: async (
-                account,
-                { filters }: ConnectionFiltersArgument,
-                ctx,
-              ): Promise<number> => {
-                const query = createAccountReferenceQuery([model.id], account, reference, filters)
-                return await ctx.queryCount(query)
-              },
-            }
-          } else {
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            throw new Error(`Unsupported reference type: ${reference.type}`)
+
+            default:
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore reference type
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+              throw new Error(`Unsupported reference type: ${reference.type}`)
           }
         }
         return config
@@ -722,8 +781,15 @@ class SchemaBuilder {
             args: ConnectionRelationArguments,
             ctx,
           ): Promise<Connection<unknown> | null> => {
-            const account =
-              args.account === 'documentAccount' ? doc.metadata.controller : args.account
+            let account: string | undefined
+            if (args.account != null) {
+              const refAccount = getReferencedAccount(args.account, doc, ctx)
+              // If the referenced account is not set (viewer not authenticated), return null
+              if (refAccount == null) {
+                return null
+              }
+              account = refAccount
+            }
             const queryFilters = createRelationQueryFilters(
               relation.property,
               doc.id.toString(),
@@ -753,8 +819,15 @@ class SchemaBuilder {
           type: new GraphQLNonNull(GraphQLInt),
           args,
           resolve: async (doc, args: ConnectionRelationCountArguments, ctx): Promise<number> => {
-            const account =
-              args.account === 'documentAccount' ? doc.metadata.controller : args.account
+            let account: string | undefined
+            if (args.account != null) {
+              const refAccount = getReferencedAccount(args.account, doc, ctx)
+              // If the referenced account is not set (viewer not authenticated), return 0
+              if (refAccount == null) {
+                return 0
+              }
+              account = refAccount
+            }
             const queryFilters = createRelationQueryFilters(
               relation.property,
               doc.id.toString(),
@@ -936,53 +1009,183 @@ class SchemaBuilder {
     }
   }
 
+  _buildSetInputObjectType(name: string, relationFields: Array<string>): GraphQLInputObjectType {
+    const objectFields = this.#def.objects[name]
+    if (objectFields == null) {
+      throw new Error(`Object fields not found for model ${name}`)
+    }
+
+    const inputName = `With${name}Input`
+    this.#inputObjects[inputName] = new GraphQLInputObjectType({
+      name: inputName,
+      fields: () => {
+        const fields: GraphQLInputFieldConfigMap = {}
+        for (const fieldName of relationFields) {
+          const field = objectFields[fieldName]
+          if (field == null) {
+            throw new Error(`Field ${fieldName} not found on model ${name}`)
+          }
+
+          let type
+          switch (field.type) {
+            case 'list':
+            case 'meta':
+            case 'view':
+              throw new Error(
+                `Invalid account relation field ${fieldName} on model ${name}: unsupported type ${field.type}`,
+              )
+            case 'reference':
+              switch (field.refType) {
+                case 'connection':
+                  throw new Error(
+                    `Invalid account relation field ${fieldName} on model ${name}: unsupported connection reference`,
+                  )
+                case 'enum':
+                  type = this.#types[field.refName] as GraphQLEnumType
+                  break
+                case 'node':
+                  type = GraphQLID
+                  break
+                case 'object': {
+                  throw new Error(
+                    `Invalid account relation field ${fieldName} on model ${name}: unsupported object reference`,
+                  )
+                }
+              }
+              break
+            default:
+              type = getScalar(field.type)
+          }
+
+          if (type == null) {
+            throw new Error(
+              `Invalid account relation field ${fieldName} on model ${name}: type not found`,
+            )
+          }
+          fields[fieldName] = { type: new GraphQLNonNull(type) }
+        }
+
+        return fields
+      },
+    })
+
+    return this.#inputObjects[inputName]
+  }
+
   _buildNodeMutations(
     queryFields: GraphQLFieldConfigMap<unknown, Context>,
     name: string,
     model: RuntimeModel,
   ) {
-    if (model.accountRelation.type === 'single') {
-      this.#mutations[`create${name}`] = mutationWithClientMutationId({
-        name: `Create${name}`,
-        inputFields: () => ({
-          content: { type: new GraphQLNonNull(this.#inputObjects[name]) },
-          options: { type: SetOptionsInput },
-        }),
-        outputFields: () => ({
-          ...queryFields,
-          document: { type: new GraphQLNonNull(this.#types[name]) },
-        }),
-        mutateAndGetPayload: async (
-          input: { content: Record<string, unknown>; options?: SetOptions },
-          ctx: Context,
-        ) => {
-          if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
-            throw new Error('Ceramic instance is not authenticated')
-          }
-          const document = await ctx.createSingle(model.id, input.content, {
-            syncTimeoutSeconds: input.options?.syncTimeout,
-          })
-          return { document }
-        },
-      })
-    } else {
-      this.#mutations[`create${name}`] = mutationWithClientMutationId({
-        name: `Create${name}`,
-        inputFields: () => ({
-          content: { type: new GraphQLNonNull(this.#inputObjects[name]) },
-        }),
-        outputFields: () => ({
-          ...queryFields,
-          document: { type: new GraphQLNonNull(this.#types[name]) },
-        }),
-        mutateAndGetPayload: async (input: { content: Record<string, unknown> }, ctx: Context) => {
-          if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
-            throw new Error('Ceramic instance is not authenticated')
-          }
-          const document = await ctx.createDoc(model.id, input.content)
-          return { document }
-        },
-      })
+    switch (model.accountRelation.type) {
+      case 'list':
+        this.#mutations[`create${name}`] = mutationWithClientMutationId({
+          name: `Create${name}`,
+          inputFields: () => ({
+            content: { type: new GraphQLNonNull(this.#inputObjects[name]) },
+          }),
+          outputFields: () => ({
+            ...queryFields,
+            document: { type: new GraphQLNonNull(this.#types[name]) },
+          }),
+          mutateAndGetPayload: async (
+            input: { content: Record<string, unknown> },
+            ctx: Context,
+          ) => {
+            if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
+              throw new Error('Ceramic instance is not authenticated')
+            }
+            const document = await ctx.createDoc(model.id, input.content)
+            return { document }
+          },
+        })
+        break
+
+      case 'set': {
+        const relationFields = model.accountRelation.fields
+
+        this.#mutations[`set${name}`] = mutationWithClientMutationId({
+          name: `Set${name}`,
+          inputFields: () => ({
+            content: { type: new GraphQLNonNull(this.#inputObjects[name]) },
+            options: { type: SetOptionsInput },
+          }),
+          outputFields: () => ({
+            ...queryFields,
+            document: { type: new GraphQLNonNull(this.#types[name]) },
+          }),
+          mutateAndGetPayload: async (
+            input: { content: Record<string, unknown>; options?: SetOptions },
+            ctx: Context,
+          ) => {
+            if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
+              throw new Error('Ceramic instance is not authenticated')
+            }
+            const unique = relationFields.map((field) => String(input.content[field]))
+            const document = await ctx.upsertSet(model.id, unique, input.content, {
+              syncTimeoutSeconds: input.options?.syncTimeout,
+            })
+            return { document }
+          },
+        })
+        break
+      }
+
+      case 'single':
+        this.#mutations[`set${name}`] = mutationWithClientMutationId({
+          name: `Set${name}`,
+          inputFields: () => ({
+            content: { type: new GraphQLNonNull(this.#inputObjects[name]) },
+            options: { type: SetOptionsInput },
+          }),
+          outputFields: () => ({
+            ...queryFields,
+            document: { type: new GraphQLNonNull(this.#types[name]) },
+          }),
+          mutateAndGetPayload: async (
+            input: { content: Record<string, unknown>; options?: SetOptions },
+            ctx: Context,
+          ) => {
+            if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
+              throw new Error('Ceramic instance is not authenticated')
+            }
+            const document = await ctx.upsertSingle(model.id, input.content, {
+              syncTimeoutSeconds: input.options?.syncTimeout,
+            })
+            return { document }
+          },
+        })
+        // Legacy "create" mutation for SINGLE account relation, to be removed in a future version
+        this.#mutations[`create${name}`] = mutationWithClientMutationId({
+          name: `Create${name}`,
+          deprecationReason: `Replaced by the set${name} mutation, create${name} will be removed in a future version of ComposeDB.`,
+          inputFields: () => ({
+            content: { type: new GraphQLNonNull(this.#inputObjects[name]) },
+            options: { type: SetOptionsInput },
+          }),
+          outputFields: () => ({
+            ...queryFields,
+            document: { type: new GraphQLNonNull(this.#types[name]) },
+          }),
+          mutateAndGetPayload: async (
+            input: { content: Record<string, unknown>; options?: SetOptions },
+            ctx: Context,
+          ) => {
+            if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
+              throw new Error('Ceramic instance is not authenticated')
+            }
+            const document = await ctx.upsertSingle(model.id, input.content, {
+              syncTimeoutSeconds: input.options?.syncTimeout,
+            })
+            return { document }
+          },
+        })
+        break
+
+      default:
+        throw new Error(
+          `Unsupported account relation type to create mutations: ${model.accountRelation.type}`,
+        )
     }
 
     this.#mutations[`update${name}`] = mutationWithClientMutationId({

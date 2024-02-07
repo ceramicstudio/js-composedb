@@ -1,12 +1,8 @@
-import type {
-  CeramicApi,
-  CeramicCommit,
-  ModelData,
-  SignedCommitContainer,
-} from '@ceramicnetwork/common'
+import type { CeramicCommit, ModelData, SignedCommitContainer } from '@ceramicnetwork/common'
 import { Model } from '@ceramicnetwork/stream-model'
 import { StreamID } from '@ceramicnetwork/streamid'
 import {
+  CeramicAPI,
   CompositeViewsDefinition,
   EncodedCompositeDefinition,
   InternalCompositeDefinition,
@@ -98,7 +94,7 @@ export function setDefinitionViews(
 }
 
 async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
-  ceramic: CeramicApi,
+  ceramic: CeramicAPI,
   modelsCommits: Models & {}, // eslint-disable-line @typescript-eslint/ban-types
 ): Promise<Record<keyof Models, ModelDefinition>> {
   const definitions = await Promise.all(
@@ -111,9 +107,14 @@ async function loadModelsFromCommits<Models = Record<string, StreamCommits>>(
         MODEL_GENESIS_OPTS,
       )
 
-      for await (const commit of modelCommitsValues.filter(isSignedCommitContainer)) {
-        await assertSupportedReadModelController(model, commit as unknown as SignedCommitContainer)
-      }
+      await Promise.all(
+        modelCommitsValues.filter(isSignedCommitContainer).map(async (commit: StreamCommits) => {
+          await assertSupportedReadModelController(
+            model,
+            commit as unknown as SignedCommitContainer,
+          )
+        }),
+      )
       for (const commit of updates) {
         await ceramic.applyCommit(model.id, commit as unknown as CeramicCommit)
       }
@@ -189,7 +190,7 @@ export type CreateParams = {
    * instance **must have an authenticated DID attached to it** in order to create Models, using
    * the `did:key` method.
    */
-  ceramic: CeramicApi
+  ceramic: CeramicAPI
   /**
    * Composite schema string.
    */
@@ -208,7 +209,7 @@ export type FromJSONParams = {
   /**
    * Ceramic instance connected to the node where the Model stream will be pushed.
    */
-  ceramic: CeramicApi
+  ceramic: CeramicAPI
   /**
    * JSON-encoded composite definition.
    */
@@ -227,7 +228,7 @@ export type FromModelsParams = CompositeOptions & {
   /**
    * Ceramic instance connected to the node where the Model stream are already present.
    */
-  ceramic: CeramicApi
+  ceramic: CeramicAPI
   /**
    * Stream IDs of the Models to import in the composite.
    */
@@ -391,6 +392,16 @@ export class Composite {
   }
 
   /**
+   * Get the StreamID of the given model `alias` if present in the Composite.
+   */
+  getModelID(alias: string): string | null {
+    const found = Object.entries(this.#definition.aliases).find(
+      ([_, modelAlias]) => modelAlias === alias,
+    )
+    return found ? found[0] : null
+  }
+
+  /**
    * Copy a given set of Models identified by their stream ID, name or alias into a new Composite.
    */
   copy(models: Array<string>): Composite {
@@ -547,7 +558,7 @@ export class Composite {
    * Configure the Ceramic node to index the models defined in the composite. An authenticated DID
    * set as admin in the Ceramic node configuration must be attached to the Ceramic instance.
    */
-  async startIndexingOn(ceramic: CeramicApi): Promise<void> {
+  async startIndexingOn(ceramic: CeramicAPI): Promise<void> {
     assertAuthenticatedDID(ceramic)
     const definedIndices: Array<ModelData> = []
     for (const [id, model] of Object.entries(this.#definition.models)) {

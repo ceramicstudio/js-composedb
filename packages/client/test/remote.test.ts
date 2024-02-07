@@ -21,7 +21,7 @@ describe('remote', () => {
 
   describe('createHybridSchema()', () => {
     test('Runs mutations directly', async () => {
-      const createSingle = jest.fn(() => {
+      const upsertSingle = jest.fn(() => {
         return {
           id: 'createdDocumentID',
           metadata: { model: definition.models['GenericProfile'].id },
@@ -35,12 +35,12 @@ describe('remote', () => {
           ceramic: {
             did: { authenticated: true },
           },
-          createSingle,
+          upsertSingle,
         },
         schema,
         document: parse(`
-        mutation CreateProfile($input: CreateGenericProfileInput!) {
-          createGenericProfile(input: $input) {
+        mutation SetProfile($input: SetGenericProfileInput!) {
+          setGenericProfile(input: $input) {
             document {
               id
             }
@@ -50,7 +50,7 @@ describe('remote', () => {
         variableValues: { input: { content: { name: 'Alice' } } },
       })
       expect(res.errors).not.toBeDefined()
-      expect(createSingle).toHaveBeenCalled()
+      expect(upsertSingle).toHaveBeenCalled()
       expect(remoteExecutor).not.toHaveBeenCalled()
     })
 

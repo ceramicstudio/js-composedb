@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { noteSchema, postSchema, profilesSchema, socialSchema } from '@composedb/test-schemas'
+import {
+  favoriteSchema,
+  noteSchema,
+  postSchema,
+  profilesSchema,
+  socialSchema,
+} from '@composedb/test-schemas'
 
 import { createRuntimeDefinition, getName, mockDefinitionFromSchema } from '../src'
 
@@ -52,6 +58,12 @@ describe('Runtime format', () => {
   test('Social with account reference', () => {
     const socialDefinition = mockDefinitionFromSchema(socialSchema)
     const runtime = createRuntimeDefinition(socialDefinition)
+    expect(runtime).toMatchSnapshot()
+  })
+
+  test('Favorite with SET account relation', () => {
+    const favoriteDefinition = mockDefinitionFromSchema(favoriteSchema)
+    const runtime = createRuntimeDefinition(favoriteDefinition)
     expect(runtime).toMatchSnapshot()
   })
 })

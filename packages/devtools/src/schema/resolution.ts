@@ -1,4 +1,4 @@
-import type { CeramicApi, SignedCommitContainer } from '@ceramicnetwork/common'
+import type { SignedCommitContainer } from '@ceramicnetwork/common'
 import {
   Model,
   ModelViewDefinitionV2,
@@ -8,7 +8,7 @@ import {
   loadAllModelInterfaces,
 } from '@ceramicnetwork/stream-model'
 import type { StreamID } from '@ceramicnetwork/streamid'
-import type { FieldsIndex } from '@composedb/types'
+import type { CeramicAPI, FieldsIndex } from '@composedb/types'
 
 import { promiseMap } from '../utils.js'
 
@@ -54,7 +54,7 @@ export type IntermediaryCompositeDefinition = {
 }
 
 async function loadCommits(
-  ceramic: CeramicApi,
+  ceramic: CeramicAPI,
   id: string | StreamID,
 ): Promise<Array<SignedCommitContainer>> {
   const commits = await ceramic.loadStreamCommits(id)
@@ -62,7 +62,7 @@ async function loadCommits(
 }
 
 function executeCreateFactory(
-  ceramic: CeramicApi,
+  ceramic: CeramicAPI,
   modelName: string,
   definition: AbstractCreateModelDefinition,
 ) {
@@ -153,7 +153,7 @@ function executeCreateFactory(
 }
 
 function executeLoadFactory(
-  ceramic: CeramicApi,
+  ceramic: CeramicAPI,
   modelName: string,
   definition: AbstractLoadModelDefinition,
 ) {
@@ -199,7 +199,7 @@ function assertNoCircularDependency(
 }
 
 export async function createIntermediaryCompositeDefinition(
-  ceramic: CeramicApi,
+  ceramic: CeramicAPI,
   models: Record<string, AbstractModelDefinition>,
 ): Promise<IntermediaryCompositeDefinition> {
   const toResolve: Record<string, ResolveModel> = {}

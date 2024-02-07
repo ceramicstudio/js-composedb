@@ -1,9 +1,10 @@
-import type { CeramicApi, CreateOpts, UpdateOpts } from '@ceramicnetwork/common'
+import type { CreateOpts, UpdateOpts } from '@ceramicnetwork/common'
 import {
   ModelInstanceDocument,
   type ModelInstanceDocumentMetadataArgs,
 } from '@ceramicnetwork/stream-model-instance'
 import { type CommitID, StreamID, StreamRef } from '@ceramicnetwork/streamid'
+import type { CeramicAPI } from '@composedb/types'
 import DataLoader from 'dataloader'
 import type { BatchLoadFn } from 'dataloader'
 
@@ -44,7 +45,7 @@ export type DocumentLoaderParams = {
   /**
    * A Ceramic client instance
    */
-  ceramic: CeramicApi
+  ceramic: CeramicAPI
   /**
    * A supported cache implementation, `true` to use the default implementation or `false` to
    * disable the cache (default)
@@ -80,10 +81,21 @@ export function removeNullValues(content: Record<string, unknown>): Record<strin
   return copy
 }
 
+/** @internal */
+export function toMetadata(
+  model: StreamID | string,
+  controller?: string,
+): ModelInstanceDocumentMetadataArgs {
+  return {
+    controller,
+    model: model instanceof StreamID ? model : StreamID.fromString(model),
+  }
+}
+
 const tempBatchLoadFn: BatchLoadFn<DocID, ModelInstanceDocument> = () => Promise.resolve([])
 
 export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
-  #ceramic: CeramicApi
+  #ceramic: CeramicAPI
   #useCache: boolean
 
   constructor(params: DocumentLoaderParams) {
@@ -139,14 +151,10 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
     content: T,
     { controller, ...options }: CreateOptions = {},
   ): Promise<ModelInstanceDocument<T>> {
-    const metadata: ModelInstanceDocumentMetadataArgs = {
-      controller,
-      model: model instanceof StreamID ? model : StreamID.fromString(model),
-    }
     const stream = await ModelInstanceDocument.create<T>(
       this.#ceramic,
       removeNullValues(content) as T,
-      metadata,
+      toMetadata(model, controller),
       options,
     )
     this.cache(stream)
@@ -165,16 +173,29 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
   /**
    * Create or load a deterministic ModelInstanceDocument and cache it.
    */
-  async single<T extends Record<string, any> = Record<string, any>>(
+  async loadSingle<T extends Record<string, any> = Record<string, any>>(
     controller: string,
     model: string | StreamID,
     options?: CreateOpts,
   ): Promise<ModelInstanceDocument<T>> {
-    const metadata: ModelInstanceDocumentMetadataArgs = {
-      controller,
-      model: model instanceof StreamID ? model : StreamID.fromString(model),
-    }
+    const metadata = toMetadata(model, controller)
     const stream = await ModelInstanceDocument.single<T>(this.#ceramic, metadata, options)
+    this.cache(stream)
+    return stream
+  }
+
+  /**
+   * Create or load a deterministic ModelInstanceDocument using the SET account
+   * relation and cache it.
+   */
+  async loadSet<T extends Record<string, any> = Record<string, any>>(
+    controller: string,
+    model: string | StreamID,
+    unique: Array<string>,
+    options?: CreateOpts,
+  ): Promise<ModelInstanceDocument<T>> {
+    const metadata = toMetadata(model, controller)
+    const stream = await ModelInstanceDocument.set<T>(this.#ceramic, metadata, unique, options)
     this.cache(stream)
     return stream
   }

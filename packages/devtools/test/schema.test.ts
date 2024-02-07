@@ -942,4 +942,116 @@ describe('schema parsing and compilation', () => {
     `)
     }).toThrow('Invalid model MyModel: at least one content property must be defined')
   })
+
+  describe('SET account relation support', () => {
+    test('throws if the relationAccountFields argument is not defined', () => {
+      expect(() => {
+        createAbstractCompositeDefinition(`
+        type MyModel @createModel(description: "Test model", accountRelation: SET) {
+          test: DID!
+        }
+      `)
+      }).toThrow(
+        'Missing accountRelationFields argument for @createModel directive on object MyModel',
+      )
+    })
+
+    test('throws if the relationAccountFields argument is an empty array', () => {
+      expect(() => {
+        createAbstractCompositeDefinition(`
+        type MyModel @createModel(description: "Test model", accountRelation: SET, accountRelationFields: []) {
+          test: DID!
+        }
+      `)
+      }).toThrow(
+        'The accountRelationFields argument must specify at least one field for @createModel directive on object MyModel',
+      )
+    })
+
+    test('throws if a field defined in the relationAccountFields argument is not present in the schema', () => {
+      expect(() => {
+        createAbstractCompositeDefinition(`
+        type MyModel @createModel(description: "Test model", accountRelation: SET, accountRelationFields: ["foo"]) {
+          test: DID!
+        }
+      `)
+      }).toThrow(
+        'Missing property foo defined in accountRelationFields argument for @createModel directive on object MyModel',
+      )
+    })
+
+    test('throws if a field defined in the relationAccountFields argument is not required', () => {
+      expect(() => {
+        createAbstractCompositeDefinition(`
+        type MyModel @createModel(description: "Test model", accountRelation: SET, accountRelationFields: ["foo", "bar"]) {
+          foo: DID!
+          bar: DID
+        }
+      `)
+      }).toThrow(
+        'Property bar defined in accountRelationFields argument for @createModel directive on object MyModel must have a required value',
+      )
+    })
+
+    test('throws if a field defined in the relationAccountFields argument is not a scalar', () => {
+      expect(() => {
+        createAbstractCompositeDefinition(`
+        type MyModel @createModel(description: "Test model", accountRelation: SET, accountRelationFields: ["foo", "bar"]) {
+          foo: DID!
+          bar: [DID!]! @list(maxLength: 5)
+        }
+      `)
+      }).toThrow(
+        'Property bar defined in accountRelationFields argument for @createModel directive on object MyModel must use an enum or scalar type',
+      )
+    })
+
+    test('validates with supported scalar types', () => {
+      const def = createAbstractCompositeDefinition(`
+        enum TestEnum {
+          ONE
+          TWO
+          THREE
+        }
+
+        type TestModel @createModel(description: "Test model", accountRelation: SET, accountRelationFields: ["boolean", "float", "int", "string", "enum", "date", "did", "streamid", "commitid"]) {
+          boolean: Boolean!
+          float: Float!
+          int: Int!
+          string: String! @string(maxLength: 10)
+          enum: TestEnum!
+          date: Date!
+          did: DID!
+          streamid: StreamID!
+          commitid: CommitID!
+        }
+      `)
+      expect(def).toMatchObject({
+        models: {
+          TestModel: {
+            action: 'create',
+            indices: [],
+            model: {
+              name: 'TestModel',
+              description: 'Test model',
+              accountRelation: {
+                type: 'set',
+                fields: [
+                  'boolean',
+                  'float',
+                  'int',
+                  'string',
+                  'enum',
+                  'date',
+                  'did',
+                  'streamid',
+                  'commitid',
+                ],
+              },
+            },
+          },
+        },
+      })
+    })
+  })
 })

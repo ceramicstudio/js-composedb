@@ -2,11 +2,11 @@
  * @jest-environment composedb
  */
 
-import type { CeramicApi } from '@ceramicnetwork/common'
 import { CommitID, StreamID } from '@ceramicnetwork/streamid'
 import { Composite } from '@composedb/devtools'
 import {
   extraScalarsSchema,
+  favoriteSchema,
   mediaSchema,
   noteSchema,
   postSchema,
@@ -14,6 +14,7 @@ import {
   ratingSchema,
   socialSchema,
 } from '@composedb/test-schemas'
+import type { CeramicAPI } from '@composedb/types'
 import { jest } from '@jest/globals'
 import { AccountId, ChainId } from 'caip'
 import { CID } from 'multiformats/cid'
@@ -21,21 +22,21 @@ import { CID } from 'multiformats/cid'
 import { ComposeRuntime, createContext, printGraphQLSchema } from '../src'
 
 declare global {
-  const ceramic: CeramicApi
+  const ceramic: CeramicAPI
 }
 
 describe('runtime', () => {
-  test('create profile with custom sync timeout', async () => {
+  test('set profile with custom sync timeout', async () => {
     const composite = await Composite.create({ ceramic, schema: profilesSchema })
 
     const context = createContext({ ceramic })
-    const spy = jest.spyOn(context, 'createSingle')
+    const spy = jest.spyOn(context, 'upsertSingle')
 
     const runtime = new ComposeRuntime({ ceramic, context, definition: composite.toRuntime() })
-    const res = await runtime.executeQuery<{ createGenericProfile: { document: { id: string } } }>(
+    const res = await runtime.executeQuery<{ setGenericProfile: { document: { id: string } } }>(
       `
-      mutation CreateProfile($input: CreateGenericProfileInput!) {
-        createGenericProfile(input: $input) {
+      mutation SetProfile($input: SetGenericProfileInput!) {
+        setGenericProfile(input: $input) {
           document {
             id
           }
@@ -44,7 +45,7 @@ describe('runtime', () => {
       `,
       { input: { content: { name: 'Alice' }, options: { syncTimeout: 1 } } },
     )
-    expect(res.data?.createGenericProfile.document.id).toBeDefined()
+    expect(res.data?.setGenericProfile.document.id).toBeDefined()
     expect(spy).toHaveBeenCalledWith(
       expect.any(String),
       { name: 'Alice' },
@@ -755,4 +756,89 @@ describe('runtime', () => {
     )
     expect(relationsRes).toMatchSnapshot()
   }, 30000)
+
+  test('SET account relation support', async () => {
+    const [favoriteComposite, postComposite] = await Promise.all([
+      Composite.create({ ceramic, schema: favoriteSchema }),
+      Composite.create({ ceramic, schema: postSchema }),
+    ])
+    const favoriteModelID = favoriteComposite.getModelID('Favorite')!
+    const postModelID = postComposite.getModelID('Post')!
+    const composite = Composite.from([favoriteComposite, postComposite], {
+      views: {
+        models: {
+          [postModelID]: {
+            favorites: { type: 'relationFrom', model: favoriteModelID, property: 'docID' },
+          },
+        },
+      },
+    })
+
+    const definition = composite.toRuntime()
+    expect(printGraphQLSchema(definition)).toMatchSnapshot()
+    const runtime = new ComposeRuntime({ ceramic, definition: composite.toRuntime() })
+
+    const createdPosts = await runtime.executeQuery<Record<string, { document: { id: string } }>>(
+      `
+      mutation CreatePosts(
+        $post1Input: CreatePostInput!,
+        $post2Input: CreatePostInput!) {
+        post1: createPost(input: $post1Input) {
+          document {
+            id
+          }
+        }
+        post2: createPost(input: $post2Input) {
+          document {
+            id
+          }
+        }
+      }
+      `,
+      {
+        post1Input: { content: { title: 'Test post 1', text: 'First post' } },
+        post2Input: { content: { title: 'Test post 2', text: 'Second post' } },
+      },
+    )
+    const post1ID = createdPosts.data!.post1.document.id
+    const post2ID = createdPosts.data!.post2.document.id
+
+    const setFavorite = `
+      mutation SetFavorite($input: SetFavoriteInput!) {
+        setFavorite(input: $input) {
+          document {
+            doc {
+              ... on Post {
+                title
+              }
+            }
+          }
+          viewer {
+            favoriteList(first: 10) {
+              edges {
+                node {
+                  doc {
+                    ... on Post {
+                      title
+                    }
+                  }
+                  tag
+                }
+              }
+            }
+          }
+        }
+      }
+    `
+
+    const favorite1Res = await runtime.executeQuery(setFavorite, {
+      input: { content: { docID: post1ID, tag: 'posts' } },
+    })
+    expect(favorite1Res.data).toMatchSnapshot()
+
+    const favorite2Res = await runtime.executeQuery(setFavorite, {
+      input: { content: { docID: post2ID, tag: 'posts' } },
+    })
+    expect(favorite2Res.data).toMatchSnapshot()
+  })
 })

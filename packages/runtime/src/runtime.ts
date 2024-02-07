@@ -1,5 +1,5 @@
-import type { CeramicApi } from '@ceramicnetwork/common'
 import { CeramicClient } from '@ceramicnetwork/http-client'
+import type { CeramicAPI } from '@composedb/types'
 import {
   type DocumentNode,
   type ExecutionResult,
@@ -23,7 +23,7 @@ export type ComposeRuntimeParams = GetSchemaParams & {
   /**
    * Ceramic client instance or HTTP URL.
    */
-  ceramic: CeramicApi | string
+  ceramic: CeramicAPI | string
   /**
    * Optional context to use.
    */
