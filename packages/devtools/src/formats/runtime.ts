@@ -54,6 +54,7 @@ type ExtractSchemaParams = {
   ownName?: string
   required?: boolean
   localRef?: boolean
+  immutable?: boolean
 }
 
 type RuntimeModelDefinition = {
@@ -83,12 +84,13 @@ export class RuntimeModelBuilder {
     this.#modelAccountRelation = params.definition.accountRelation
     this.#modelName = params.name
     this.#modelRelations = params.definition.relations ?? {}
-    if (params.definition.version !== "1.0") {
-      this.#immutableFields = params.definition.immutableFields?? []
-    }    
     this.#modelSchema = params.definition.schema
     this.#modelViews = params.views
     this.#modelIndices = params.indices
+    this.#immutableFields =
+      // TODO: remove @ts-ignore once model definition is updated
+      // @ts-ignore added in new version of the model definition
+      params.definition.version === '1.0' ? [] : params.definition.immutableFields ?? []
   }
 
   build(): RuntimeModelDefinition {
@@ -132,6 +134,7 @@ export class RuntimeModelBuilder {
         ownName: propKey,
         parentName: ownName,
         required: requiredProps.includes(propKey),
+        immutable: this.#immutableFields.includes(propKey),
       })
     }
     return fields
@@ -157,11 +160,16 @@ export class RuntimeModelBuilder {
     }
 
     const required = params.required ?? false
-    const immutable = params.ownName? this.#immutableFields.includes(params.ownName): false
+    const immutable = params.immutable ?? false
     const items = schema.items as AnySchema
 
     if (items.$ref != null) {
-      return { type: 'list', required, immutable, item: this._buildListReference(items.$ref, params) }
+      return {
+        type: 'list',
+        required,
+        immutable,
+        item: this._buildListReference(items.$ref, params),
+      }
     }
     if (items.type == null) {
       throw new Error('Missing schema $ref or type for array items')
@@ -213,7 +221,7 @@ export class RuntimeModelBuilder {
       refType: 'object',
       refName: ownName,
       required: params.required ?? false,
-      immutable: params.ownName? this.#immutableFields.includes(params.ownName): false
+      immutable: params.immutable ?? false,
     }
   }
 
@@ -230,7 +238,7 @@ export class RuntimeModelBuilder {
       refType: 'enum',
       refName: ownName,
       required: params.required ?? false,
-      immutable: params.ownName? this.#immutableFields.includes(params.ownName): false
+      immutable: params.immutable ?? false,
     }
   }
 
@@ -256,7 +264,7 @@ export class RuntimeModelBuilder {
     }
 
     const required = params.required ?? false
-    const immutable = params.ownName? this.#immutableFields.includes(params.ownName): false
+    const immutable = params.immutable ?? false
 
     switch (schema.type) {
       case 'boolean':
@@ -336,16 +344,14 @@ export function createRuntimeDefinition(
   for (const [modelID, modelDefinition] of Object.entries(definition.models)) {
     const modelName = definition.aliases?.[modelID] ?? modelDefinition.name
     const isV1 = modelDefinition.version === '1.0'
-    const interfaceDefinition =
-      isV1
-        ? { interface: false, implements: [] }
-        : { interface: modelDefinition.interface, implements: modelDefinition.implements }
+    const interfaceDefinition = isV1
+      ? { interface: false, implements: [] }
+      : { interface: modelDefinition.interface, implements: modelDefinition.implements }
     // Add name to model metadata mapping
     runtime.models[modelName] = {
       ...interfaceDefinition,
       id: modelID,
       accountRelation: modelDefinition.accountRelation,
-      immutableFields: !isV1? modelDefinition.immutableFields: [],
     }
 
     // Extract objects, enums, relations and views from model schema

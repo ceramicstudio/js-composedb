@@ -218,7 +218,6 @@ export type RuntimeModel = {
   interface: boolean
   implements: Array<string>
   accountRelation: ModelAccountRelationV2
-  immutableFields?: Array<string>
 }
 
 /**

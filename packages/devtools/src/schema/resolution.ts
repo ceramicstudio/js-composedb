@@ -126,10 +126,12 @@ function executeCreateFactory(
       name: sourceDefinition.name,
       description: sourceDefinition.description,
       accountRelation: sourceDefinition.accountRelation,
-      immutableFields: !isV1 ? (sourceDefinition as ModelDefinitionV2).immutableFields: [],
       interface: isV1 ? false : sourceDefinition.interface,
       implements: implementIDs,
       schema: sourceDefinition.schema,
+      // TODO: remove @ts-ignore once model definition is updated
+      // @ts-ignore added in new version of the model definition
+      immutableFields: isV1 ? [] : sourceDefinition.immutableFields,
       relations,
       views,
     }
