@@ -28,9 +28,9 @@ describe('latency', () => {
   test('using ModelInstanceDocument.set()', async () => {
     const model = StreamID.fromString(modelID)
     console.time('using ModelInstanceDocument.set()')
-    await ModelInstanceDocument.set(ceramic, { controller, model }, ['one', 'one'])
+    await ModelInstanceDocument.set(ceramic, { controller, model }, ['one', 'one'], {sync: SyncOptions.NEVER_SYNC, syncTimeSeconds: 0})
     console.timeLog('using ModelInstanceDocument.set()', 'first load')
-    await ModelInstanceDocument.set(ceramic, { controller, model }, ['one', 'one'])
+    await ModelInstanceDocument.set(ceramic, { controller, model }, ['one', 'one'], {sync: SyncOptions.NEVER_SYNC, syncTimeSeconds: 0})
     console.timeEnd('using ModelInstanceDocument.set()')
   })
 
@@ -50,9 +50,9 @@ describe('latency', () => {
   test('using loader.loadSet()', async () => {
     const loader = new DocumentLoader({ ceramic })
     console.time('using loader.loadSet()')
-    await loader.loadSet(controller, modelID, ['three', 'three'])
+    await loader.loadSet(controller, modelID, ['three', 'three'], {sync: SyncOptions.NEVER_SYNC, syncTimeSeconds: 0})
     console.timeLog('using loader.loadSet()', 'first load')
-    await loader.loadSet(controller, modelID, ['three', 'three'])
+    await loader.loadSet(controller, modelID, ['three', 'three'], {sync: SyncOptions.NEVER_SYNC, syncTimeSeconds: 0})
     console.timeEnd('using loader.loadSet()')
   })
 
