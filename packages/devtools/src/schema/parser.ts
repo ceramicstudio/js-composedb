@@ -97,7 +97,6 @@ export class SchemaParser {
         const model = this._parseModelDirective(type, directives, object)
         if (model == null) {
           throw new Error(`Missing @createModel or @loadModel directive for interface ${type.name}`)
-          // this.#def.interfaces[type.name] = this._parseObject(type)
         } else {
           this.#def.models[type.name] = model
         }
@@ -268,13 +267,25 @@ export class SchemaParser {
         )
       }
 
+      const inheritedImmutableFields: Array<string> = type
+        .getInterfaces()
+        .flatMap((interfaceObj) => {
+          const fields = interfaceObj.getFields()
+          return Object.values(fields)
+            .filter((field) => {
+              const { directives } = field.astNode as unknown as { directives: Array<string> }
+              return directives.some((directive: any) => directive.name.value === 'immutable')
+            })
+            .map((field) => field.name)
+        })
+
       return {
         action: 'create',
         interface: isInterfaceType(type),
         implements: type.getInterfaces().map((i) => i.name),
-        immutableFields: Object.keys(object.properties).filter(
-          (key) => object.properties[key].immutable === true,
-        ),
+        immutableFields: Object.keys(object.properties)
+          .filter((key) => object.properties[key].immutable === true)
+          .concat(inheritedImmutableFields),
         description: args.description,
         accountRelation: accountRelationValue,
         relations: object.relations,

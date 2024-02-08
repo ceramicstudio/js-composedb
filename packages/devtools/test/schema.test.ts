@@ -866,6 +866,67 @@ describe('schema parsing and compilation', () => {
     }).toThrow(`Unsupported immutable directive for stringField on nested object TestInfo`)
   })
 
+  it('@immutable directive is supported from inherited objects', () => {
+    expect(
+      createAbstractCompositeDefinition(`
+      interface TestInterface @createModel(description: "Test interface") {
+        test: String! @string(maxLength: 50) @immutable
+      }
+
+      type TestModel implements TestInterface  @createModel(description: "A test model") {
+        intField: Int
+      }
+      `),
+    ).toMatchObject({
+      models: {
+        TestInterface: {
+          action: 'create',
+          model: {
+            interface: true,
+            implements: [],
+            immutableFields: ['test'],
+            description: 'Test interface',
+            accountRelation: { type: 'none' },
+            relations: {},
+            version: '2.0',
+            name: 'TestInterface',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: { test: { type: 'string', maxLength: 50 } },
+              additionalProperties: false,
+              required: ['test'],
+            },
+            views: {},
+          },
+          indices: [],
+        },
+        TestModel: {
+          action: 'create',
+          model: {
+            interface: false,
+            implements: ['TestInterface'],
+            immutableFields: ['test'],
+            description: 'A test model',
+            accountRelation: { type: 'list' },
+            relations: {},
+            version: '2.0',
+            name: 'TestModel',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: { intField: { type: 'integer' } },
+              additionalProperties: false,
+            },
+            views: {},
+          },
+          indices: [],
+        },
+      },
+      commonEmbeds: [],
+    })
+  })
+
   it('Index directive is properly supported and added to ICD', () => {
     const def = createAbstractCompositeDefinition(`
       type ModelWithIDProp @createModel(
