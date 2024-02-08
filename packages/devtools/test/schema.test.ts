@@ -852,22 +852,18 @@ describe('schema parsing and compilation', () => {
   })
 
   it('@immutable directive is unsupported in nested objects', () => {
-    createAbstractCompositeDefinition(`
-        interface TestInterface @createModel(description: "Test interface") {
-          test: String! @string(maxLength: 50)
-        }
-      `)
     expect(() => {
       createAbstractCompositeDefinition(`
-      interface TestInterface @loadModel(id: "interface ID") {
-        id: ID! @immutable
+      type TestInfo {
+        stringField: String! @string(maxLength: 100) @immutable
       }
-
-      type TestModel @createModel(description: "Test model") {
-        text: String! @string(maxLength: 10)
+      
+      interface TestInterface @createModel(description: "An interface for test metadata") {
+        src: String! @string(maxLength: 500)
+        info: TestInfo
       }
       `)
-    }).toThrow(`Unsupported immutable directive for id on nested object TestInterface`)
+    }).toThrow(`Unsupported immutable directive for stringField on nested object TestInfo`)
   })
 
   it('Index directive is properly supported and added to ICD', () => {
