@@ -88,8 +88,6 @@ export class RuntimeModelBuilder {
     this.#modelViews = params.views
     this.#modelIndices = params.indices
     this.#immutableFields =
-      // TODO: remove @ts-ignore once model definition is updated
-      // @ts-ignore added in new version of the model definition
       params.definition.version === '1.0' ? [] : params.definition.immutableFields ?? []
   }
 
