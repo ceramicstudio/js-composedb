@@ -1705,6 +1705,7 @@ type Post implements Node {
   id: ID!
   date: DateTime
   text: String!
+  title: String!
 
   """Account controlling the document"""
   author: CeramicAccount!
@@ -1799,7 +1800,6 @@ input UpdatePostInput {
 input PartialPostInput {
   date: DateTime
   text: String
-  title: String
 }
 
 input UpdateOptionsInput {

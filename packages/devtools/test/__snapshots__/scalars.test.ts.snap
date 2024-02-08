@@ -240,80 +240,99 @@ exports[`scalars support extra scalars 2`] = `
   "objects": {
     "ExtraScalars": {
       "accountID": {
+        "immutable": false,
         "required": false,
         "type": "accountid",
       },
       "chainID": {
+        "immutable": false,
         "required": false,
         "type": "chainid",
       },
       "cid": {
+        "immutable": false,
         "required": false,
         "type": "cid",
       },
       "commitID": {
+        "immutable": false,
         "required": false,
         "type": "commitid",
       },
       "countryCode": {
+        "immutable": false,
         "required": false,
         "type": "countrycode",
       },
       "date": {
+        "immutable": false,
         "required": false,
         "type": "date",
       },
       "dateTime": {
+        "immutable": false,
         "indexed": true,
         "required": false,
         "type": "datetime",
       },
       "did": {
+        "immutable": false,
         "required": false,
         "type": "did",
       },
       "duration": {
+        "immutable": false,
         "required": false,
         "type": "duration",
       },
       "latitude": {
+        "immutable": false,
         "required": false,
         "type": "float",
       },
       "localDate": {
+        "immutable": false,
         "required": false,
         "type": "localdate",
       },
       "localTime": {
+        "immutable": false,
         "required": false,
         "type": "localtime",
       },
       "locale": {
+        "immutable": false,
         "required": false,
         "type": "locale",
       },
       "longitude": {
+        "immutable": false,
         "required": false,
         "type": "float",
       },
       "streamID": {
+        "immutable": false,
         "indexed": true,
         "required": false,
         "type": "streamid",
       },
       "time": {
+        "immutable": false,
         "required": false,
         "type": "time",
       },
       "timeZone": {
+        "immutable": false,
         "required": false,
         "type": "timezone",
       },
       "uri": {
+        "immutable": false,
         "required": false,
         "type": "uri",
       },
       "utcOffset": {
+        "immutable": false,
         "required": false,
         "type": "utcoffset",
       },

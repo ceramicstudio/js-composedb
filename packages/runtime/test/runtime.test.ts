@@ -18,7 +18,6 @@ import type { CeramicAPI } from '@composedb/types'
 import { jest } from '@jest/globals'
 import { AccountId, ChainId } from 'caip'
 import { CID } from 'multiformats/cid'
-
 import { ComposeRuntime, createContext, printGraphQLSchema } from '../src'
 
 declare global {
@@ -853,9 +852,13 @@ describe('runtime', () => {
       text: String! @string(maxLength: 2000)
     }
     `
+    const originalTitle = 'An Original Post'
+    const date = '2024-01-01T10:15:30Z'
+    const text = 'First post content'
+
     const composite = await Composite.create({ ceramic, schema: postWithImmutableFieldSchema })
     const definition = composite.toRuntime()
-    
+
     expect(printGraphQLSchema(definition)).toMatchSnapshot()
 
     const runtime = new ComposeRuntime({ ceramic, definition })
@@ -869,18 +872,21 @@ describe('runtime', () => {
         }
       }
     `
-    
-    const res = await runtime.executeQuery(createPostMutation, {
-      input: {
-        content: {
-          title: 'A first post',
-          text: 'First post content',
-          date: '2024-01-01T10:15:30Z',
+
+    const res = await runtime.executeQuery<{ CreatePost: { document: { id: string } } }>(
+      createPostMutation,
+      {
+        input: {
+          content: {
+            title: originalTitle,
+            text,
+            date,
+          },
         },
       },
-    })
-    const doc = res.data?.createPost.document
-    expect(doc.id).toBeDefined()
+    )
+    const docID = res.data?.CreatePost.document.id
+    expect(docID).toBeDefined()
 
     const updatePost = `mutation UpdatePost($i: UpdatePostInput!) {
       updatePost(input: $i) {
@@ -888,14 +894,18 @@ describe('runtime', () => {
               id
               title
               text
+              date
           }
       }
     }`
-    
+
     const res2 = await runtime.executeQuery(updatePost, {
-      input: { id: doc.id, content: { title: 'A different title' } },
+      i: { id: docID, content: { title: 'A different title' } },
     })
- 
-    expect(true)
+
+    expect(res2.errors).toBeDefined()
+    expect(res2.errors![0].message).toEqual(
+      `Variable "$i" got invalid value { title: "A different title" } at "i.content"; Field "title" is not defined by type "PartialPostInput". Did you mean "date"?`,
+    )
   }, 60000)
 })

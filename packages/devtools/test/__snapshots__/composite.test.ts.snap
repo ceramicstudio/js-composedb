@@ -53,18 +53,18 @@ exports[`composite class Composite instance merge() merges composites into the i
       ],
     },
   ],
-  "kjzl6hvfrbw6camgytf2iuwiq3yir9o1eyxsl45jm699k8d68bs85r61bfhove1": [
+  "kjzl6hvfrbw6c69amtwor67uvg21yavw0vosyje46iut1qxefp9arco6t8gbzpf": [
     {
       "fields": [
         {
           "path": [
-            "title",
+            "text",
           ],
         },
       ],
     },
   ],
-  "kjzl6hvfrbw6caw7znzf9mv822sxddqxb3fzv0jbu51mr6vz3nkz51e29vek5xd": [
+  "kjzl6hvfrbw6c7iuamtluwr32esh0bt915ydlb4k14244smnfwqx94354sitsn9": [
     {
       "fields": [
         {
@@ -88,6 +88,17 @@ exports[`composite class Composite instance merge() merges composites into the i
         {
           "path": [
             "value",
+          ],
+        },
+      ],
+    },
+  ],
+  "kjzl6hvfrbw6c8cmu4arizz4ihjpsks5zkzqp1oj59wyj8ncnhb6ij15wj2lz3n": [
+    {
+      "fields": [
+        {
+          "path": [
+            "title",
           ],
         },
       ],
