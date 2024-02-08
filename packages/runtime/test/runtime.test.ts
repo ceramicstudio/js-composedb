@@ -843,18 +843,24 @@ describe('runtime', () => {
 
   test('runtime operations on models with immutable field', async () => {
     const postWithImmutableFieldSchema = `
-    type Post 
+    interface TestInterface @createModel(description: "Test interface with immutable field") {
+      testField: String @string(maxLength: 50) @immutable
+    }
+
+    type Post implements TestInterface
       @createModel(accountRelation: LIST, description: "Simple post with immutable field") 
       @createIndex(fields: [{path:["title"]}]) {
       author: DID! @documentAccount
       date: DateTime 
       title: String! @string(minLength: 10, maxLength: 100) @immutable
       text: String! @string(maxLength: 2000)
+      testField: String @string(maxLength: 50) 
     }
     `
     const originalTitle = 'An Original Post'
     const date = '2024-01-01T10:15:30Z'
     const text = 'First post content'
+    const testField = 'A test field'
 
     const composite = await Composite.create({ ceramic, schema: postWithImmutableFieldSchema })
     const definition = composite.toRuntime()
@@ -873,7 +879,7 @@ describe('runtime', () => {
       }
     `
 
-    const res = await runtime.executeQuery<{ CreatePost: { document: { id: string } } }>(
+    const res = await runtime.executeQuery<{ createPost: { document: { id: string } } }>(
       createPostMutation,
       {
         input: {
@@ -881,11 +887,13 @@ describe('runtime', () => {
             title: originalTitle,
             text,
             date,
+            testField,
           },
         },
       },
     )
-    const docID = res.data?.CreatePost.document.id
+
+    const docID = res.data?.createPost.document.id
     expect(docID).toBeDefined()
 
     const updatePost = `mutation UpdatePost($i: UpdatePostInput!) {

@@ -1618,6 +1618,22 @@ exports[`runtime runtime operations on models with immutable field 1`] = `
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
+  testInterfaceIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: TestInterfaceFiltersInput
+    sorting: TestInterfaceSortingInput
+  ): TestInterfaceConnection
+  testInterfaceCount(filters: TestInterfaceFiltersInput): Int!
   postIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -1650,6 +1666,22 @@ type CeramicAccount implements Node {
   Whether the Ceramic instance is currently authenticated with this account or not
   """
   isViewer: Boolean!
+  testInterfaceList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: TestInterfaceFiltersInput
+    sorting: TestInterfaceSortingInput
+  ): TestInterfaceConnection
+  testInterfaceListCount(filters: TestInterfaceFiltersInput): Int!
   postList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -1669,12 +1701,12 @@ type CeramicAccount implements Node {
 }
 
 """A connection to a list of items."""
-type PostConnection {
+type TestInterfaceConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [PostEdge]
+  edges: [TestInterfaceEdge]
 }
 
 """Information about pagination in a connection."""
@@ -1693,6 +1725,60 @@ type PageInfo {
 }
 
 """An edge in a connection."""
+type TestInterfaceEdge {
+  """The item at the end of the edge"""
+  node: TestInterface
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+interface TestInterface {
+  testField: String
+}
+
+input TestInterfaceFiltersInput {
+  where: TestInterfaceObjectFilterInput
+  and: [TestInterfaceFiltersInput!]
+  or: [TestInterfaceFiltersInput!]
+  not: TestInterfaceFiltersInput
+}
+
+input TestInterfaceObjectFilterInput {
+  testField: StringValueFilterInput
+}
+
+input StringValueFilterInput {
+  isNull: Boolean
+  equalTo: String
+  notEqualTo: String
+  in: [String!]
+  notIn: [String!]
+  lessThan: String
+  lessThanOrEqualTo: String
+  greaterThan: String
+  greaterThanOrEqualTo: String
+}
+
+input TestInterfaceSortingInput {
+  testField: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+"""A connection to a list of items."""
+type PostConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PostEdge]
+}
+
+"""An edge in a connection."""
 type PostEdge {
   """The item at the end of the edge"""
   node: Post
@@ -1701,11 +1787,12 @@ type PostEdge {
   cursor: String!
 }
 
-type Post implements Node {
+type Post implements Node & TestInterface {
   id: ID!
   date: DateTime
   text: String!
   title: String!
+  testField: String
 
   """Account controlling the document"""
   author: CeramicAccount!
@@ -1727,25 +1814,8 @@ input PostObjectFilterInput {
   title: StringValueFilterInput
 }
 
-input StringValueFilterInput {
-  isNull: Boolean
-  equalTo: String
-  notEqualTo: String
-  in: [String!]
-  notIn: [String!]
-  lessThan: String
-  lessThanOrEqualTo: String
-  greaterThan: String
-  greaterThanOrEqualTo: String
-}
-
 input PostSortingInput {
   title: SortOrder
-}
-
-enum SortOrder {
-  ASC
-  DESC
 }
 
 type Mutation {
@@ -1775,6 +1845,7 @@ input PostInput {
   date: DateTime
   text: String!
   title: String!
+  testField: String
 }
 
 type UpdatePostPayload {

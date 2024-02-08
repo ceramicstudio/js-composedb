@@ -274,7 +274,7 @@ export class SchemaParser {
           return Object.values(fields)
             .filter((field) => {
               const { directives } = field.astNode as unknown as { directives: Array<string> }
-              return directives.some((directive: any) => directive.name.value === 'immutable')
+              return directives.some((directive) => directive === 'immutable')
             })
             .map((field) => field.name)
         })
