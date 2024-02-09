@@ -53,6 +53,25 @@ export function getKeyID(key: LoadKey): string {
   return typeof key.id === 'string' ? StreamRef.from(key.id).toString() : key.id.toString()
 }
 
+/** @internal */
+export function removeNullValues(content: Record<string, unknown>): Record<string, unknown> {
+  const copy = { ...content }
+  for (const [key, value] of Object.entries(copy)) {
+    if (value == null) {
+      delete copy[key]
+    } else if (Array.isArray(value)) {
+      copy[key] = value.map((item: unknown) => {
+        return typeof item === 'object' && !Array.isArray(item) && item != null
+          ? removeNullValues(item as Record<string, unknown>)
+          : item
+      })
+    } else if (typeof value === 'object') {
+      copy[key] = removeNullValues(value as Record<string, unknown>)
+    }
+  }
+  return copy
+}
+
 const tempBatchLoadFn: BatchLoadFn<LoadKey, ModelInstanceDocument> = () => Promise.resolve([])
 
 /**
@@ -143,7 +162,12 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
       controller,
       model: model instanceof StreamID ? model : StreamID.fromString(model),
     }
-    const stream = await ModelInstanceDocument.create<T>(this.#ceramic, content, metadata, options)
+    const stream = await ModelInstanceDocument.create<T>(
+      this.#ceramic,
+      removeNullValues(content) as T,
+      metadata,
+      options,
+    )
     this.cache(stream)
     return stream
   }
@@ -209,8 +233,8 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
     if (version != null && stream.commitId.toString() !== version) {
       throw new Error('Stream version mismatch')
     }
-    const newContent = replace ? content : { ...stream.content, ...content }
-    await stream.replace(newContent, options)
+    const newContent = replace ? content : { ...(stream.content ?? {}), ...content }
+    await stream.replace(removeNullValues(newContent) as T, undefined, options)
     return stream
   }
 }

@@ -1,5 +1,6 @@
 import type { FieldsIndex } from '@ceramicnetwork/common'
 import type {
+  ModelAccountRelationV2,
   ModelDefinition,
   ModelRelationsDefinitionV2,
   ModelViewsDefinitionV2,
@@ -66,6 +67,7 @@ type RuntimeModelDefinition = {
 export class RuntimeModelBuilder {
   #accountData: Record<string, RuntimeViewReference> = {}
   #commonEmbeds: Array<string>
+  #modelAccountRelation: ModelAccountRelationV2
   #modelName: string
   #modelRelations: ModelRelationsDefinitionV2
   #modelSchema: JSONSchema.Object
@@ -77,6 +79,7 @@ export class RuntimeModelBuilder {
 
   constructor(params: RuntimeModelBuilderParams) {
     this.#commonEmbeds = params.commonEmbeds ?? []
+    this.#modelAccountRelation = params.definition.accountRelation
     this.#modelName = params.name
     this.#modelRelations = params.definition.relations ?? {}
     this.#modelSchema = params.definition.schema
@@ -264,8 +267,19 @@ export class RuntimeModelBuilder {
   _buildRelations(relations: ModelRelationsDefinitionV2 = {}): void {
     for (const [key, relation] of Object.entries(relations)) {
       if (relation.type === 'account') {
-        const relationKey = camelCase(`${key}Of${this.#modelName}List`)
-        this.#accountData[relationKey] = { type: 'account', name: this.#modelName, property: key }
+        const relationKey = camelCase(`${key}Of${this.#modelName}`)
+        this.#accountData[`${relationKey}List`] = {
+          type: 'account',
+          name: this.#modelName,
+          property: key,
+        }
+        if (this.#modelAccountRelation.type === 'set') {
+          this.#accountData[relationKey] = {
+            type: 'account-set',
+            name: this.#modelName,
+            property: key,
+          }
+        }
       }
     }
   }

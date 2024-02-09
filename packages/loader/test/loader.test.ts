@@ -4,7 +4,12 @@ import type { CeramicAPI } from '@composedb/types'
 import { jest } from '@jest/globals'
 
 import { createDeterministicKey, getDeterministicCacheKey } from '../src/deterministic'
-import { DEFAULT_DETERMINISTIC_OPTIONS, DocumentLoader, getKeyID } from '../src/loader'
+import {
+  DEFAULT_DETERMINISTIC_OPTIONS,
+  DocumentLoader,
+  getKeyID,
+  removeNullValues,
+} from '../src/loader'
 import type { DocumentCache } from '../src/types'
 
 const multiqueryTimeout = 2000
@@ -31,6 +36,24 @@ describe('loader', () => {
 
     test('with StreamID key', () => {
       expect(getKeyID({ id: testStreamID })).toBe(testID1)
+    })
+  })
+
+  describe('removeNullValues()', () => {
+    test('returns a copy of the object', () => {
+      const source = { foo: 'foo', bar: null }
+      expect(removeNullValues(source)).toStrictEqual({ foo: 'foo' })
+      expect(source).toEqual({ foo: 'foo', bar: null })
+    })
+
+    test('does not remove null values from arrays', () => {
+      const source = { foo: 'foo', bar: ['bar', null, 'baz'] }
+      expect(removeNullValues(source)).toStrictEqual(source)
+    })
+
+    test('recursively removes null values', () => {
+      const source = { foo: 'foo', bar: { bar: 'bar', foo: null } }
+      expect(removeNullValues(source)).toStrictEqual({ foo: 'foo', bar: { bar: 'bar' } })
     })
   })
 
@@ -280,7 +303,9 @@ describe('loader', () => {
         expect(cacheSet).toHaveBeenCalledTimes(1)
 
         await loader.update(testID1, { test: true }, { publish: true })
-        expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, { publish: true })
+        expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, undefined, {
+          publish: true,
+        })
         expect(cacheDelete).toHaveBeenCalledWith(testID1)
         expect(cacheMap.has(testID1)).toBe(true)
         expect(cacheSet).toHaveBeenCalledTimes(2)
@@ -311,7 +336,7 @@ describe('loader', () => {
           ceramic: { multiQuery } as unknown as CeramicAPI,
         })
         await loader.update(testID1, { test: true }, { version: testCommitID.toString() })
-        expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, {})
+        expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, undefined, {})
       })
 
       test('performs a full replacement if the option is set', async () => {
@@ -324,7 +349,7 @@ describe('loader', () => {
           ceramic: { multiQuery } as unknown as CeramicAPI,
         })
         await loader.update(testID1, { test: true }, { replace: true })
-        expect(replace).toHaveBeenCalledWith({ test: true }, {})
+        expect(replace).toHaveBeenCalledWith({ test: true }, undefined, {})
       })
     })
   })

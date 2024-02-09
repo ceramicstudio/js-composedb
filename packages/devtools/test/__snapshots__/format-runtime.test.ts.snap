@@ -58,6 +58,10 @@ exports[`Runtime format Favorite with SET account relation 1`] = `
 exports[`Runtime format Note model definition with views 1`] = `
 {
   "accountData": {
+    "noteBookList": {
+      "name": "NoteBook",
+      "type": "connection",
+    },
     "noteList": {
       "name": "Note",
       "type": "connection",
@@ -79,12 +83,33 @@ exports[`Runtime format Note model definition with views 1`] = `
       "implements": [],
       "interface": false,
     },
+    "NoteBook": {
+      "accountRelation": {
+        "type": "list",
+      },
+      "id": "NoteBookID",
+      "implements": [],
+      "interface": false,
+    },
   },
   "objects": {
     "Note": {
       "author": {
         "type": "view",
         "viewType": "documentAccount",
+      },
+      "noteBook": {
+        "relation": {
+          "model": "NoteBookID",
+          "property": "noteBookID",
+          "source": "document",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "noteBookID": {
+        "required": false,
+        "type": "streamid",
       },
       "status": {
         "refName": "NoteStatus",
@@ -95,6 +120,39 @@ exports[`Runtime format Note model definition with views 1`] = `
       "text": {
         "required": true,
         "type": "string",
+      },
+      "title": {
+        "indexed": true,
+        "required": true,
+        "type": "string",
+      },
+      "version": {
+        "type": "view",
+        "viewType": "documentVersion",
+      },
+    },
+    "NoteBook": {
+      "author": {
+        "type": "view",
+        "viewType": "documentAccount",
+      },
+      "notes": {
+        "relation": {
+          "model": "NoteID",
+          "property": "noteBookID",
+          "source": "queryConnection",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "notesCount": {
+        "relation": {
+          "model": "NoteID",
+          "property": "noteBookID",
+          "source": "queryCount",
+        },
+        "type": "view",
+        "viewType": "relation",
       },
       "title": {
         "indexed": true,
@@ -527,6 +585,360 @@ exports[`Runtime format Profile definition with added model view 1`] = `
         "indexed": true,
         "required": false,
         "type": "string",
+      },
+    },
+  },
+}
+`;
+
+exports[`Runtime format Social network kitchen sink 1`] = `
+{
+  "accountData": {
+    "followingOfFollows": {
+      "name": "Follows",
+      "property": "following",
+      "type": "account-set",
+    },
+    "followingOfFollowsList": {
+      "name": "Follows",
+      "property": "following",
+      "type": "account",
+    },
+    "follows": {
+      "name": "Follows",
+      "type": "set",
+    },
+    "followsList": {
+      "name": "Follows",
+      "type": "connection",
+    },
+    "like": {
+      "name": "Like",
+      "type": "set",
+    },
+    "likeList": {
+      "name": "Like",
+      "type": "connection",
+    },
+    "postList": {
+      "name": "Post",
+      "type": "connection",
+    },
+    "postTag": {
+      "name": "PostTag",
+      "type": "set",
+    },
+    "postTagList": {
+      "name": "PostTag",
+      "type": "connection",
+    },
+    "tag": {
+      "name": "Tag",
+      "type": "set",
+    },
+    "tagList": {
+      "name": "Tag",
+      "type": "connection",
+    },
+    "textPostList": {
+      "name": "TextPost",
+      "type": "connection",
+    },
+  },
+  "enums": {},
+  "models": {
+    "Follows": {
+      "accountRelation": {
+        "fields": [
+          "following",
+        ],
+        "type": "set",
+      },
+      "id": "FollowsID",
+      "implements": [],
+      "interface": false,
+    },
+    "Like": {
+      "accountRelation": {
+        "fields": [
+          "postID",
+        ],
+        "type": "set",
+      },
+      "id": "LikeID",
+      "implements": [],
+      "interface": false,
+    },
+    "Post": {
+      "accountRelation": {
+        "type": "none",
+      },
+      "id": "PostID",
+      "implements": [],
+      "interface": true,
+    },
+    "PostTag": {
+      "accountRelation": {
+        "fields": [
+          "postID",
+          "tagID",
+        ],
+        "type": "set",
+      },
+      "id": "PostTagID",
+      "implements": [],
+      "interface": false,
+    },
+    "Tag": {
+      "accountRelation": {
+        "fields": [
+          "name",
+        ],
+        "type": "set",
+      },
+      "id": "TagID",
+      "implements": [],
+      "interface": false,
+    },
+    "TextPost": {
+      "accountRelation": {
+        "type": "list",
+      },
+      "id": "TextPostID",
+      "implements": [
+        "PostID",
+      ],
+      "interface": false,
+    },
+  },
+  "objects": {
+    "Follows": {
+      "date": {
+        "indexed": true,
+        "required": false,
+        "type": "date",
+      },
+      "follower": {
+        "type": "view",
+        "viewType": "documentAccount",
+      },
+      "following": {
+        "required": true,
+        "type": "did",
+      },
+    },
+    "Like": {
+      "post": {
+        "relation": {
+          "model": null,
+          "property": "postID",
+          "source": "document",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "postID": {
+        "required": true,
+        "type": "streamid",
+      },
+    },
+    "Post": {
+      "date": {
+        "required": true,
+        "type": "datetime",
+      },
+      "like": {
+        "relation": {
+          "model": "LikeID",
+          "property": "postID",
+          "source": "set",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "likesCount": {
+        "relation": {
+          "model": "LikeID",
+          "property": "postID",
+          "source": "queryCount",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "postTag": {
+        "relation": {
+          "model": "PostTagID",
+          "property": "postID",
+          "source": "set",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "postTags": {
+        "relation": {
+          "model": "PostTagID",
+          "property": "postID",
+          "source": "queryConnection",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "postTagsCount": {
+        "relation": {
+          "model": "PostTagID",
+          "property": "postID",
+          "source": "queryCount",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "threadID": {
+        "required": false,
+        "type": "streamid",
+      },
+      "threadPost": {
+        "relation": {
+          "model": null,
+          "property": "threadID",
+          "source": "document",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+    },
+    "PostTag": {
+      "post": {
+        "relation": {
+          "model": null,
+          "property": "postID",
+          "source": "document",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "postID": {
+        "indexed": true,
+        "required": true,
+        "type": "streamid",
+      },
+      "tag": {
+        "relation": {
+          "model": null,
+          "property": "tagID",
+          "source": "document",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "tagID": {
+        "indexed": true,
+        "required": true,
+        "type": "streamid",
+      },
+    },
+    "Tag": {
+      "description": {
+        "required": false,
+        "type": "string",
+      },
+      "name": {
+        "required": true,
+        "type": "string",
+      },
+      "postTag": {
+        "relation": {
+          "model": "PostTagID",
+          "property": "tagID",
+          "source": "set",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "postTags": {
+        "relation": {
+          "model": "PostTagID",
+          "property": "tagID",
+          "source": "queryConnection",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "postTagsCount": {
+        "relation": {
+          "model": "PostTagID",
+          "property": "tagID",
+          "source": "queryCount",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+    },
+    "TextPost": {
+      "date": {
+        "required": true,
+        "type": "datetime",
+      },
+      "like": {
+        "relation": {
+          "model": "LikeID",
+          "property": "postID",
+          "source": "set",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "likesCount": {
+        "relation": {
+          "model": "LikeID",
+          "property": "postID",
+          "source": "queryCount",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "postTag": {
+        "relation": {
+          "model": "PostTagID",
+          "property": "postID",
+          "source": "set",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "postTags": {
+        "relation": {
+          "model": "PostTagID",
+          "property": "postID",
+          "source": "queryConnection",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "postTagsCount": {
+        "relation": {
+          "model": "PostTagID",
+          "property": "postID",
+          "source": "queryCount",
+        },
+        "type": "view",
+        "viewType": "relation",
+      },
+      "text": {
+        "required": true,
+        "type": "string",
+      },
+      "threadID": {
+        "required": false,
+        "type": "streamid",
+      },
+      "threadPost": {
+        "relation": {
+          "model": null,
+          "property": "threadID",
+          "source": "document",
+        },
+        "type": "view",
+        "viewType": "relation",
       },
     },
   },

@@ -214,15 +214,16 @@ export class SchemaParser {
         accountRelationFields?: Array<string>
         description?: string
       }
-      const accountRelation = args.accountRelation ?? 'LIST'
+      const accountRelationType = args.accountRelation ?? 'LIST'
 
-      const accountRelationValue = ACCOUNT_RELATIONS[isInterface ? 'NONE' : accountRelation]
-      if (accountRelationValue == null) {
+      const accountRelation = ACCOUNT_RELATIONS[isInterface ? 'NONE' : accountRelationType]
+      if (accountRelation == null) {
         throw new Error(
-          `Unsupported accountRelation value ${accountRelation} for @createModel directive on object ${type.name}`,
+          `Unsupported accountRelation value ${accountRelationType} for @createModel directive on object ${type.name}`,
         )
       }
 
+      const accountRelationValue = { ...accountRelation }
       if (accountRelationValue.type === 'set') {
         const accountRelationFields = args.accountRelationFields
         if (accountRelationFields == null) {
@@ -448,6 +449,25 @@ export class SchemaParser {
             required: true,
             viewType: 'relation',
             relation: { source: 'queryCount', model, property },
+          }
+        }
+        case 'relationSetFrom': {
+          if (!isObjectType(type)) {
+            throw new Error(
+              `Unsupported @relationSetFrom directive on field ${fieldName} of object ${objectName}, @relationSetFrom can only be set on a referenced object`,
+            )
+          }
+          const property = directive.args?.property as string | void
+          if (property == null) {
+            throw new Error(
+              `Missing property argument for @relationSetFrom directive on field ${fieldName} of object ${objectName}`,
+            )
+          }
+          return {
+            type: 'view',
+            required: false,
+            viewType: 'relation',
+            relation: { source: 'set', model: type.name, property },
           }
         }
       }

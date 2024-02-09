@@ -26,12 +26,21 @@
     "eslint-plugin-jest": "^27.6.3",
     "jest": "^29.7.0",
     "prettier": "^3.2.5",
-    "turbo": "^1.12.2",
+    "turbo": "^1.12.3",
     "typedoc": "0.25.7",
     "typedoc-plugin-markdown": "^3.17.1",
     "typescript": "^5.3.3"
   },
   "pnpm": {
-    "overrides": {}
+    "overrides": {
+      "@ceramicnetwork/3id-did-resolver": "^5.0.1-rc.0",
+      "@ceramicnetwork/cli": "^5.0.1-rc.0",
+      "@ceramicnetwork/common": "^5.0.1-rc.0",
+      "@ceramicnetwork/core": "^5.0.1-rc.0",
+      "@ceramicnetwork/http-client": "^5.0.1-rc.0",
+      "@ceramicnetwork/stream-model": "^4.0.1-rc.0",
+      "@ceramicnetwork/stream-model-instance": "^4.0.1-rc.0",
+      "@ceramicnetwork/streamid": "^5.0.0"
+    }
   }
 }
