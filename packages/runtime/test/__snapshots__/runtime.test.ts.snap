@@ -388,15 +388,9 @@ type UpdateFavoritePayload {
 
 input UpdateFavoriteInput {
   id: ID!
-  content: PartialFavoriteInput!
   options: UpdateOptionsInput
+  content: PartialFavoriteInput!
   clientMutationId: String
-}
-
-input PartialFavoriteInput {
-  tag: String
-  note: String
-  docID: CeramicStreamID
 }
 
 input UpdateOptionsInput {
@@ -407,6 +401,10 @@ input UpdateOptionsInput {
 
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
+}
+
+input PartialFavoriteInput {
+  note: String
 }
 
 type CreatePostPayload {
@@ -448,8 +446,8 @@ type UpdatePostPayload {
 
 input UpdatePostInput {
   id: ID!
-  content: PartialPostInput!
   options: UpdateOptionsInput
+  content: PartialPostInput!
   clientMutationId: String
 }
 
@@ -497,8 +495,8 @@ type UpdateCommentPayload {
 
 input UpdateCommentInput {
   id: ID!
-  content: PartialCommentInput!
   options: UpdateOptionsInput
+  content: PartialCommentInput!
   clientMutationId: String
 }
 
@@ -896,15 +894,9 @@ type UpdatePostPayload {
 
 input UpdatePostInput {
   id: ID!
-  content: PartialPostInput!
   options: UpdateOptionsInput
+  content: PartialPostInput!
   clientMutationId: String
-}
-
-input PartialPostInput {
-  date: DateTime
-  text: String
-  title: String
 }
 
 input UpdateOptionsInput {
@@ -915,6 +907,12 @@ input UpdateOptionsInput {
 
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
+}
+
+input PartialPostInput {
+  date: DateTime
+  text: String
+  title: String
 }
 
 type CreateCommentPayload {
@@ -955,8 +953,8 @@ type UpdateCommentPayload {
 
 input UpdateCommentInput {
   id: ID!
-  content: PartialCommentInput!
   options: UpdateOptionsInput
+  content: PartialCommentInput!
   clientMutationId: String
 }
 
@@ -1650,14 +1648,9 @@ type UpdatePostPayload {
 
 input UpdatePostInput {
   id: ID!
-  content: PartialPostInput!
   options: UpdateOptionsInput
+  content: PartialPostInput!
   clientMutationId: String
-}
-
-input PartialPostInput {
-  date: DateTime
-  text: String
 }
 
 input UpdateOptionsInput {
@@ -1671,5 +1664,10 @@ input UpdateOptionsInput {
 }
 
 """A Ceramic Commit ID"""
-scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")"
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
+
+input PartialPostInput {
+  date: DateTime
+  text: String
+}"
 `;

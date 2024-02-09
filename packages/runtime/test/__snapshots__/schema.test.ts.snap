@@ -164,15 +164,9 @@ type UpdateFavoritePayload {
 
 input UpdateFavoriteInput {
   id: ID!
-  content: PartialFavoriteInput!
   options: UpdateOptionsInput
+  content: PartialFavoriteInput!
   clientMutationId: String
-}
-
-input PartialFavoriteInput {
-  docID: CeramicStreamID
-  tag: String
-  note: String
 }
 
 input UpdateOptionsInput {
@@ -186,7 +180,11 @@ input UpdateOptionsInput {
 }
 
 """A Ceramic Commit ID"""
-scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")"
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
+
+input PartialFavoriteInput {
+  note: String
+}"
 `;
 
 exports[`schema media interfaces 1`] = `
@@ -1524,17 +1522,9 @@ type UpdateMyImagePayload {
 
 input UpdateMyImageInput {
   id: ID!
-  content: PartialMyImageInput!
   options: UpdateOptionsInput
+  content: PartialMyImageInput!
   clientMutationId: String
-}
-
-input PartialMyImageInput {
-  src: String
-  size: Int
-  width: Int
-  height: Int
-  info: MediaInfoInput
 }
 
 input UpdateOptionsInput {
@@ -1549,6 +1539,14 @@ input UpdateOptionsInput {
 
 """A Ceramic Commit ID"""
 scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
+
+input PartialMyImageInput {
+  src: String
+  size: Int
+  width: Int
+  height: Int
+  info: MediaInfoInput
+}
 
 type CreateMyAudioPayload {
   """Fetches an object given its ID"""
@@ -1590,8 +1588,8 @@ type UpdateMyAudioPayload {
 
 input UpdateMyAudioInput {
   id: ID!
-  content: PartialMyAudioInput!
   options: UpdateOptionsInput
+  content: PartialMyAudioInput!
   clientMutationId: String
 }
 
@@ -1644,8 +1642,8 @@ type UpdateMyVideoPayload {
 
 input UpdateMyVideoInput {
   id: ID!
-  content: PartialMyVideoInput!
   options: UpdateOptionsInput
+  content: PartialMyVideoInput!
   clientMutationId: String
 }
 
@@ -1697,8 +1695,8 @@ type UpdateMyMediaCollectionItemPayload {
 
 input UpdateMyMediaCollectionItemInput {
   id: ID!
-  content: PartialMyMediaCollectionItemInput!
   options: UpdateOptionsInput
+  content: PartialMyMediaCollectionItemInput!
   clientMutationId: String
 }
 
@@ -1747,8 +1745,8 @@ type UpdateMyMediaCollectionPayload {
 
 input UpdateMyMediaCollectionInput {
   id: ID!
-  content: PartialMyMediaCollectionInput!
   options: UpdateOptionsInput
+  content: PartialMyMediaCollectionInput!
   clientMutationId: String
 }
 
@@ -2060,13 +2058,9 @@ type UpdateNoteBookPayload {
 
 input UpdateNoteBookInput {
   id: ID!
-  content: PartialNoteBookInput!
   options: UpdateOptionsInput
+  content: PartialNoteBookInput!
   clientMutationId: String
-}
-
-input PartialNoteBookInput {
-  title: String
 }
 
 input UpdateOptionsInput {
@@ -2077,6 +2071,10 @@ input UpdateOptionsInput {
 
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
+}
+
+input PartialNoteBookInput {
+  title: String
 }
 
 type CreateNotePayload {
@@ -2119,8 +2117,8 @@ type UpdateNotePayload {
 
 input UpdateNoteInput {
   id: ID!
-  content: PartialNoteInput!
   options: UpdateOptionsInput
+  content: PartialNoteInput!
   clientMutationId: String
 }
 
@@ -2434,15 +2432,9 @@ type UpdatePostPayload {
 
 input UpdatePostInput {
   id: ID!
-  content: PartialPostInput!
   options: UpdateOptionsInput
+  content: PartialPostInput!
   clientMutationId: String
-}
-
-input PartialPostInput {
-  date: DateTime
-  title: String
-  text: String
 }
 
 input UpdateOptionsInput {
@@ -2453,6 +2445,12 @@ input UpdateOptionsInput {
 
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
+}
+
+input PartialPostInput {
+  date: DateTime
+  title: String
+  text: String
 }
 
 type CreateCommentPayload {
@@ -2493,8 +2491,8 @@ type UpdateCommentPayload {
 
 input UpdateCommentInput {
   id: ID!
-  content: PartialCommentInput!
   options: UpdateOptionsInput
+  content: PartialCommentInput!
   clientMutationId: String
 }
 
@@ -2855,14 +2853,9 @@ type UpdateGenericProfilePayload {
 
 input UpdateGenericProfileInput {
   id: ID!
-  content: PartialGenericProfileInput!
   options: UpdateOptionsInput
+  content: PartialGenericProfileInput!
   clientMutationId: String
-}
-
-input PartialGenericProfileInput {
-  name: String
-  image: ImageSourcesInput
 }
 
 input UpdateOptionsInput {
@@ -2877,6 +2870,11 @@ input UpdateOptionsInput {
 
 """A Ceramic Commit ID"""
 scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
+
+input PartialGenericProfileInput {
+  name: String
+  image: ImageSourcesInput
+}
 
 type SetSocialProfilePayload {
   """Fetches an object given its ID"""
@@ -2938,8 +2936,8 @@ type UpdateSocialProfilePayload {
 
 input UpdateSocialProfileInput {
   id: ID!
-  content: PartialSocialProfileInput!
   options: UpdateOptionsInput
+  content: PartialSocialProfileInput!
   clientMutationId: String
 }
 
@@ -3012,8 +3010,8 @@ type UpdatePersonProfilePayload {
 
 input UpdatePersonProfileInput {
   id: ID!
-  content: PartialPersonProfileInput!
   options: UpdateOptionsInput
+  content: PartialPersonProfileInput!
   clientMutationId: String
 }
 
@@ -3692,15 +3690,9 @@ type UpdateTextPostPayload {
 
 input UpdateTextPostInput {
   id: ID!
-  content: PartialTextPostInput!
   options: UpdateOptionsInput
+  content: PartialTextPostInput!
   clientMutationId: String
-}
-
-input PartialTextPostInput {
-  date: DateTime
-  threadID: CeramicStreamID
-  text: String
 }
 
 input UpdateOptionsInput {
@@ -3715,6 +3707,12 @@ input UpdateOptionsInput {
 
 """A Ceramic Commit ID"""
 scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
+
+input PartialTextPostInput {
+  date: DateTime
+  threadID: CeramicStreamID
+  text: String
+}
 
 type SetLikePayload {
   """Fetches an object given its ID"""
@@ -3761,13 +3759,8 @@ type UpdateLikePayload {
 
 input UpdateLikeInput {
   id: ID!
-  content: PartialLikeInput!
   options: UpdateOptionsInput
   clientMutationId: String
-}
-
-input PartialLikeInput {
-  postID: CeramicStreamID
 }
 
 type SetTagPayload {
@@ -3809,13 +3802,12 @@ type UpdateTagPayload {
 
 input UpdateTagInput {
   id: ID!
-  content: PartialTagInput!
   options: UpdateOptionsInput
+  content: PartialTagInput!
   clientMutationId: String
 }
 
 input PartialTagInput {
-  name: String
   description: String
 }
 
@@ -3858,14 +3850,8 @@ type UpdatePostTagPayload {
 
 input UpdatePostTagInput {
   id: ID!
-  content: PartialPostTagInput!
   options: UpdateOptionsInput
   clientMutationId: String
-}
-
-input PartialPostTagInput {
-  postID: CeramicStreamID
-  tagID: CeramicStreamID
 }
 
 type SetFollowsPayload {
@@ -3907,13 +3893,12 @@ type UpdateFollowsPayload {
 
 input UpdateFollowsInput {
   id: ID!
-  content: PartialFollowsInput!
   options: UpdateOptionsInput
+  content: PartialFollowsInput!
   clientMutationId: String
 }
 
 input PartialFollowsInput {
-  following: DID
   date: Date
 }"
 `;
@@ -4203,9 +4188,19 @@ type UpdateExtraScalarsPayload {
 
 input UpdateExtraScalarsInput {
   id: ID!
-  content: PartialExtraScalarsInput!
   options: UpdateOptionsInput
+  content: PartialExtraScalarsInput!
   clientMutationId: String
+}
+
+input UpdateOptionsInput {
+  """
+  Fully replace the document contents instead of performing a shallow merge
+  """
+  replace: Boolean = false
+
+  """Only perform mutation if the document matches the provided version"""
+  version: CeramicCommitID
 }
 
 input PartialExtraScalarsInput {
@@ -4228,15 +4223,5 @@ input PartialExtraScalarsInput {
   timeZone: TimeZone
   uri: URI
   utcOffset: UtcOffset
-}
-
-input UpdateOptionsInput {
-  """
-  Fully replace the document contents instead of performing a shallow merge
-  """
-  replace: Boolean = false
-
-  """Only perform mutation if the document matches the provided version"""
-  version: CeramicCommitID
 }"
 `;

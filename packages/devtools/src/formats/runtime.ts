@@ -87,8 +87,17 @@ export class RuntimeModelBuilder {
     this.#modelSchema = params.definition.schema
     this.#modelViews = params.views
     this.#modelIndices = params.indices
-    this.#immutableFields =
-      params.definition.version === '1.0' ? [] : params.definition.immutableFields ?? []
+
+    const immutableFields = new Set(
+      params.definition.version === '1.0' ? [] : params.definition.immutableFields ?? [],
+    )
+    if (this.#modelAccountRelation.type === 'set') {
+      // Add fields defined in the SET account relation as immutable
+      for (const field of this.#modelAccountRelation.fields) {
+        immutableFields.add(field)
+      }
+    }
+    this.#immutableFields = Array.from(immutableFields)
   }
 
   build(): RuntimeModelDefinition {
