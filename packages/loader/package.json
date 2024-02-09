@@ -50,6 +50,7 @@
     "@composedb/devtools": "workspace:^",
     "@composedb/test-schemas": "workspace:^",
     "@composedb/types": "workspace:^",
+    "graphql-relay": "^0.10.0",
     "jest-environment-composedb": "workspace:^"
   },
   "jest": {

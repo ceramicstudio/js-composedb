@@ -445,6 +445,9 @@ importers:
       '@composedb/types':
         specifier: workspace:^
         version: link:../types
+      graphql-relay:
+        specifier: ^0.10.0
+        version: 0.10.0(graphql@16.8.1)
       jest-environment-composedb:
         specifier: workspace:^
         version: link:../jest-environment-composedb
@@ -16634,7 +16637,6 @@ packages:
       graphql: ^16.2.0
     dependencies:
       graphql: 16.8.1
-    dev: false
 
   /graphql-scalars@1.22.4(graphql@16.8.1):
     resolution: {integrity: sha512-ILnv7jq5VKHLUyoaTFX7lgYrjCd6vTee9i8/B+D4zJKJT5TguOl0KkpPEbXHjmeor8AZYrVsrYUHdqRBMX1pjA==}

@@ -1,3 +1,4 @@
+import type { StreamState } from '@ceramicnetwork/common'
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { CommitID, StreamID } from '@ceramicnetwork/streamid'
 import type { CeramicAPI } from '@composedb/types'
@@ -20,6 +21,10 @@ describe('loader', () => {
   const testStreamID = new StreamID(1, testCID)
   const testID1 = testStreamID.toString()
   const testID2 = 'kjzl6cwe1jw147dvq16zluojmraqvwdmbh61dx9e0c59i344lcrsgqfohexp60s'
+  const testState = {
+    type: ModelInstanceDocument.STREAM_TYPE_ID,
+    log: [{ cid: 'bagcqcerakszw2vsovxznyp5gfnpdj4cqm2xiv76yd24wkjewhhykovorwo6a' }],
+  } as unknown as StreamState
 
   describe('getKeyID()', () => {
     test('with string key', () => {
@@ -351,6 +356,58 @@ describe('loader', () => {
         await loader.update(testID1, { test: true }, { replace: true })
         expect(replace).toHaveBeenCalledWith({ test: true }, undefined, {})
       })
+    })
+
+    test('queryConnection() method queries the index and caches the results', async () => {
+      const expectedNode = { id: testStreamID }
+      const buildStreamFromState = jest.fn(() => expectedNode)
+      const query = jest.fn(() => ({
+        edges: [
+          { cursor: 'cursor1', node: testState },
+          { cursor: 'cursor2', node: null },
+          { cursor: 'cursor3', node: testState },
+        ],
+        pageInfo: { hasNextPage: true, hasPreviousPage: false },
+      }))
+      const set = jest.fn()
+      const noop = jest.fn()
+      const cache = { set, get: noop, delete: noop, clear: noop } as DocumentCache
+      const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicAPI
+      const loader = new DocumentLoader({ cache, ceramic })
+
+      await expect(loader.queryConnection({ model: 'test', first: 3 })).resolves.toEqual({
+        edges: [
+          { cursor: 'cursor1', node: expectedNode },
+          { cursor: 'cursor2', node: null },
+          { cursor: 'cursor3', node: expectedNode },
+        ],
+        pageInfo: {
+          hasNextPage: true,
+          hasPreviousPage: false,
+          startCursor: null,
+          endCursor: null,
+        },
+      })
+      expect(query).toHaveBeenCalledWith({ model: 'test', first: 3, after: undefined })
+      expect(set).toHaveBeenCalledTimes(2)
+    })
+
+    test('queryOne() method queries the index and caches the result', async () => {
+      const expectedNode = { id: testStreamID }
+      const buildStreamFromState = jest.fn(() => expectedNode)
+      const query = jest.fn(() => ({
+        edges: [{ cursor: 'cursor1', node: testState }],
+        pageInfo: { hasNextPage: false, hasPreviousPage: false },
+      }))
+      const set = jest.fn()
+      const noop = jest.fn()
+      const cache = { set, get: noop, delete: noop, clear: noop } as DocumentCache
+      const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicAPI
+      const loader = new DocumentLoader({ cache, ceramic })
+
+      await expect(loader.queryOne({ model: 'test' })).resolves.toBe(expectedNode)
+      expect(query).toHaveBeenCalledWith({ model: 'test', last: 1 })
+      expect(set).toHaveBeenCalledTimes(1)
     })
   })
 })

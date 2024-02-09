@@ -340,7 +340,7 @@ class SchemaBuilder {
                   ctx,
                 ): Promise<Connection<ModelInstanceDocument | null>> => {
                   const query = createAccountReferenceQuery([model.id], account, reference, filters)
-                  return await ctx.queryConnection({ ...query, ...args })
+                  return await ctx.loader.queryConnection({ ...query, ...args })
                 },
               }
               config[`${alias}Count`] = {
@@ -846,7 +846,7 @@ class SchemaBuilder {
               doc.id.toString(),
               args.filters,
             )
-            return await ctx.queryConnection({
+            return await ctx.loader.queryConnection({
               ...args,
               account,
               models: [relationModel],
@@ -1196,7 +1196,7 @@ class SchemaBuilder {
             if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
               throw new Error('Ceramic instance is not authenticated')
             }
-            const document = await ctx.createDoc(model.id, input.content)
+            const document = await ctx.loader.create(model.id, input.content)
             return { document }
           },
         })
@@ -1307,7 +1307,7 @@ class SchemaBuilder {
         if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
           throw new Error('Ceramic instance is not authenticated')
         }
-        return { document: await ctx.updateDoc(input.id, input.content, input.options) }
+        return { document: await ctx.loader.update(input.id, input.content, input.options) }
       },
     })
   }
@@ -1342,7 +1342,11 @@ class SchemaBuilder {
           if (filters != null) {
             assertValidQueryFilters(filters)
           }
-          return await ctx.queryConnection({ ...args, queryFilters: filters, models: [model.id] })
+          return await ctx.loader.queryConnection({
+            ...args,
+            queryFilters: filters,
+            models: [model.id],
+          })
         },
       }
       queryFields[`${first}${rest}Count`] = {

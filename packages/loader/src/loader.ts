@@ -1,4 +1,5 @@
 import {
+  type BaseQuery,
   type CreateOpts,
   type LoadOpts,
   SyncOptions,
@@ -8,12 +9,14 @@ import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { StreamID, StreamRef } from '@ceramicnetwork/streamid'
 import type { CeramicAPI } from '@composedb/types'
 import DataLoader, { type BatchLoadFn } from 'dataloader'
+import type { Connection } from 'graphql-relay'
 
 import {
   type GenesisMetadata,
   createDeterministicKey,
   getDeterministicCacheKey,
 } from './deterministic.js'
+import { type ConnectionQuery, queryConnection, queryOne } from './query.js'
 import type { DeterministicKeysCache, DocumentCache, LoadKey } from './types.js'
 
 export const DEFAULT_DETERMINISTIC_OPTIONS: LoadOpts = { sync: SyncOptions.NEVER_SYNC }
@@ -236,5 +239,29 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
     const newContent = replace ? content : { ...(stream.content ?? {}), ...content }
     await stream.replace(removeNullValues(newContent) as T, undefined, options)
     return stream
+  }
+
+  /**
+   * Query the index for multiple ModelInstanceDocument streams and cache the results.
+   */
+  async queryConnection(query: ConnectionQuery): Promise<Connection<ModelInstanceDocument | null>> {
+    const connection = await queryConnection(this.#ceramic, query)
+    for (const edge of connection.edges) {
+      if (edge.node != null) {
+        this.cache(edge.node)
+      }
+    }
+    return connection
+  }
+
+  /**
+   * Query the index for a single ModelInstanceDocument stream and cache it.
+   */
+  async queryOne(query: BaseQuery): Promise<ModelInstanceDocument | null> {
+    const doc = await queryOne(this.#ceramic, query)
+    if (doc != null) {
+      this.cache(doc)
+    }
+    return doc
   }
 }
