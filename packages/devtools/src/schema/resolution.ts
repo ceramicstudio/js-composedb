@@ -129,8 +129,6 @@ function executeCreateFactory(
       interface: isV1 ? false : sourceDefinition.interface,
       implements: implementIDs,
       schema: sourceDefinition.schema,
-      // TODO: remove @ts-ignore once model definition is updated
-      // @ts-ignore added in new version of the model definition
       immutableFields: isV1 ? [] : sourceDefinition.immutableFields,
       relations,
       views,
