@@ -719,7 +719,7 @@ describe('schema parsing and compilation', () => {
       createAbstractCompositeDefinition(`
       type ModelWithIntProp @createModel(
         accountRelation: SINGLE,
-        description: "Test model with a constreained int property"
+        description: "Test model with a constrained int property"
       ) {
         intValue: Int @int(min: 5, max: 10)
       }
@@ -731,7 +731,7 @@ describe('schema parsing and compilation', () => {
           model: {
             name: 'ModelWithIntProp',
             accountRelation: { type: 'single' },
-            description: 'Test model with a constreained int property',
+            description: 'Test model with a constrained int property',
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
               type: 'object',
@@ -783,6 +783,148 @@ describe('schema parsing and compilation', () => {
           },
         },
       },
+    })
+  })
+
+  it('@immutable directive is supported and properly converted to ICD', () => {
+    expect(
+      createAbstractCompositeDefinition(`
+      type ModelWithImmutableProp @createModel(
+        accountRelation: SINGLE,
+        description: "Test model with an immutable int property"
+      ) {
+        uniqueValue: Int @immutable
+        tag: String! @string(minLength: 1, maxLength: 100)
+      }
+      `),
+    ).toMatchObject({
+      models: {
+        ModelWithImmutableProp: {
+          action: 'create',
+          model: {
+            name: 'ModelWithImmutableProp',
+            immutableFields: ['uniqueValue'],
+            accountRelation: { type: 'single' },
+            description: 'Test model with an immutable int property',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: { uniqueValue: { type: 'integer' } },
+              additionalProperties: false,
+            },
+          },
+        },
+      },
+    })
+  })
+
+  it('@immutable directive can be set for multiple fields and is supported and properly converted to ICD', () => {
+    expect(
+      createAbstractCompositeDefinition(`
+      type ModelWithImmutableProp @createModel(
+        accountRelation: SINGLE,
+        description: "Test model with an immutable int property"
+      ) {
+        uniqueValue: Int @immutable
+        tag: String! @string(minLength: 1, maxLength: 100)
+        uniqueValue2: Int @immutable
+      }
+      `),
+    ).toMatchObject({
+      models: {
+        ModelWithImmutableProp: {
+          action: 'create',
+          model: {
+            name: 'ModelWithImmutableProp',
+            immutableFields: ['uniqueValue', 'uniqueValue2'],
+            accountRelation: { type: 'single' },
+            description: 'Test model with an immutable int property',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: { uniqueValue: { type: 'integer' } },
+              additionalProperties: false,
+            },
+          },
+        },
+      },
+    })
+  })
+
+  it('@immutable directive is unsupported in nested objects', () => {
+    expect(() => {
+      createAbstractCompositeDefinition(`
+      type TestInfo {
+        stringField: String! @string(maxLength: 100) @immutable
+      }
+      
+      interface TestInterface @createModel(description: "An interface for test metadata") {
+        src: String! @string(maxLength: 500)
+        info: TestInfo
+      }
+      `)
+    }).toThrow(`Unsupported immutable directive for stringField on nested object TestInfo`)
+  })
+
+  it('@immutable directive is supported from inherited objects', () => {
+    expect(
+      createAbstractCompositeDefinition(`
+      interface TestInterface @createModel(description: "Test interface") {
+        testField: String! @string(maxLength: 50) @immutable
+      }
+
+      type TestModel implements TestInterface  @createModel(description: "A test model") {
+        intField: Int
+        testField: String! @string(maxLength: 50)
+      }
+      `),
+    ).toMatchObject({
+      models: {
+        TestInterface: {
+          action: 'create',
+          model: {
+            interface: true,
+            implements: [],
+            immutableFields: ['testField'],
+            description: 'Test interface',
+            accountRelation: { type: 'none' },
+            relations: {},
+            version: '2.0',
+            name: 'TestInterface',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: { testField: { type: 'string', maxLength: 50 } },
+              additionalProperties: false,
+              required: ['testField'],
+            },
+            views: {},
+          },
+          indices: [],
+        },
+        TestModel: {
+          action: 'create',
+          model: {
+            interface: false,
+            implements: ['TestInterface'],
+            immutableFields: ['testField'],
+            description: 'A test model',
+            accountRelation: { type: 'list' },
+            relations: {},
+            version: '2.0',
+            name: 'TestModel',
+            schema: {
+              $schema: 'https://json-schema.org/draft/2020-12/schema',
+              type: 'object',
+              properties: { intField: { type: 'integer' } },
+              additionalProperties: false,
+            },
+            views: {},
+          },
+          indices: [],
+        },
+      },
+      commonEmbeds: [],
     })
   })
 

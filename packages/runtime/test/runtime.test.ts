@@ -18,7 +18,6 @@ import type { CeramicAPI } from '@composedb/types'
 import { jest } from '@jest/globals'
 import { AccountId, ChainId } from 'caip'
 import { CID } from 'multiformats/cid'
-
 import { ComposeRuntime, createContext, printGraphQLSchema } from '../src'
 
 declare global {
@@ -841,4 +840,80 @@ describe('runtime', () => {
     })
     expect(favorite2Res.data).toMatchSnapshot()
   })
+
+  test('runtime operations on models with immutable field', async () => {
+    const postWithImmutableFieldSchema = `
+    interface TestInterface @createModel(description: "Test interface with immutable field") {
+      testField: String @string(maxLength: 50) @immutable
+    }
+
+    type Post implements TestInterface
+      @createModel(accountRelation: LIST, description: "Simple post with immutable field") 
+      @createIndex(fields: [{path:["title"]}]) {
+      author: DID! @documentAccount
+      date: DateTime 
+      title: String! @string(minLength: 10, maxLength: 100) @immutable
+      text: String! @string(maxLength: 2000)
+      testField: String @string(maxLength: 50) 
+    }
+    `
+    const originalTitle = 'An Original Post'
+    const date = '2024-01-01T10:15:30Z'
+    const text = 'First post content'
+    const testField = 'A test field'
+
+    const composite = await Composite.create({ ceramic, schema: postWithImmutableFieldSchema })
+    const definition = composite.toRuntime()
+
+    expect(printGraphQLSchema(definition)).toMatchSnapshot()
+
+    const runtime = new ComposeRuntime({ ceramic, definition })
+
+    const createPostMutation = `
+      mutation CreatePost($input: CreatePostInput!) {
+        createPost(input: $input) {
+          document {
+            id
+          }
+        }
+      }
+    `
+
+    const res = await runtime.executeQuery<{ createPost: { document: { id: string } } }>(
+      createPostMutation,
+      {
+        input: {
+          content: {
+            title: originalTitle,
+            text,
+            date,
+            testField,
+          },
+        },
+      },
+    )
+
+    const docID = res.data?.createPost.document.id
+    expect(docID).toBeDefined()
+
+    const updatePost = `mutation UpdatePost($i: UpdatePostInput!) {
+      updatePost(input: $i) {
+          document {
+              id
+              title
+              text
+              date
+          }
+      }
+    }`
+
+    const res2 = await runtime.executeQuery(updatePost, {
+      i: { id: docID, content: { title: 'A different title' } },
+    })
+
+    expect(res2.errors).toBeDefined()
+    expect(res2.errors![0].message).toEqual(
+      `Variable "$i" got invalid value { title: "A different title" } at "i.content"; Field "title" is not defined by type "PartialPostInput". Did you mean "date"?`,
+    )
+  }, 60000)
 })

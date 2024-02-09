@@ -54,6 +54,7 @@ type ExtractSchemaParams = {
   ownName?: string
   required?: boolean
   localRef?: boolean
+  immutable?: boolean
 }
 
 type RuntimeModelDefinition = {
@@ -76,6 +77,7 @@ export class RuntimeModelBuilder {
   #objects: Record<string, RuntimeObjectFields> = {}
   #enums: Record<string, Array<string>> = {}
   #unions: Record<string, Array<string>> = {}
+  #immutableFields: Array<string> = []
 
   constructor(params: RuntimeModelBuilderParams) {
     this.#commonEmbeds = params.commonEmbeds ?? []
@@ -85,6 +87,8 @@ export class RuntimeModelBuilder {
     this.#modelSchema = params.definition.schema
     this.#modelViews = params.views
     this.#modelIndices = params.indices
+    this.#immutableFields =
+      params.definition.version === '1.0' ? [] : params.definition.immutableFields ?? []
   }
 
   build(): RuntimeModelDefinition {
@@ -128,6 +132,7 @@ export class RuntimeModelBuilder {
         ownName: propKey,
         parentName: ownName,
         required: requiredProps.includes(propKey),
+        immutable: this.#immutableFields.includes(propKey),
       })
     }
     return fields
@@ -153,10 +158,16 @@ export class RuntimeModelBuilder {
     }
 
     const required = params.required ?? false
+    const immutable = params.immutable ?? false
     const items = schema.items as AnySchema
 
     if (items.$ref != null) {
-      return { type: 'list', required, item: this._buildListReference(items.$ref, params) }
+      return {
+        type: 'list',
+        required,
+        immutable,
+        item: this._buildListReference(items.$ref, params),
+      }
     }
     if (items.type == null) {
       throw new Error('Missing schema $ref or type for array items')
@@ -173,7 +184,7 @@ export class RuntimeModelBuilder {
         item = this._buildScalar(items as ScalarSchema, params)
         break
     }
-    return { type: 'list', required, item }
+    return { type: 'list', required, immutable, item }
   }
 
   _buildListReference(
@@ -208,6 +219,7 @@ export class RuntimeModelBuilder {
       refType: 'object',
       refName: ownName,
       required: params.required ?? false,
+      immutable: params.immutable ?? false,
     }
   }
 
@@ -224,6 +236,7 @@ export class RuntimeModelBuilder {
       refType: 'enum',
       refName: ownName,
       required: params.required ?? false,
+      immutable: params.immutable ?? false,
     }
   }
 
@@ -249,17 +262,19 @@ export class RuntimeModelBuilder {
     }
 
     const required = params.required ?? false
+    const immutable = params.immutable ?? false
 
     switch (schema.type) {
       case 'boolean':
       case 'integer':
-        return { type: schema.type, required }
+        return { type: schema.type, required, immutable }
       case 'number':
-        return { type: 'float', required }
+        return { type: 'float', required, immutable }
       case 'string':
         return {
           type: getStringScalarType(schema),
           required,
+          immutable,
         }
     }
   }
@@ -326,19 +341,21 @@ export function createRuntimeDefinition(
 
   for (const [modelID, modelDefinition] of Object.entries(definition.models)) {
     const modelName = definition.aliases?.[modelID] ?? modelDefinition.name
-    const interfaceDefinition =
-      modelDefinition.version === '1.0'
-        ? { interface: false, implements: [] }
-        : { interface: modelDefinition.interface, implements: modelDefinition.implements }
+    const isV1 = modelDefinition.version === '1.0'
+    const interfaceDefinition = isV1
+      ? { interface: false, implements: [] }
+      : { interface: modelDefinition.interface, implements: modelDefinition.implements }
     // Add name to model metadata mapping
     runtime.models[modelName] = {
       ...interfaceDefinition,
       id: modelID,
       accountRelation: modelDefinition.accountRelation,
     }
+
     // Extract objects, enums, relations and views from model schema
     const modelViews = modelDefinition.views ?? {}
     const compositeModelViews = definition.views?.models?.[modelID] ?? {}
+
     const modelBuilder = new RuntimeModelBuilder({
       commonEmbeds: definition.commonEmbeds,
       name: modelName,

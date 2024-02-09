@@ -591,8 +591,7 @@ class SchemaBuilder {
         for (const [key, field] of Object.entries(fields)) {
           switch (field.type) {
             case 'meta':
-              // Don't show meta fields in schema
-              continue
+              break
             case 'reference':
               config[key] = this._buildDocumentObjectReferenceField(key, field)
               break
@@ -1052,6 +1051,11 @@ class SchemaBuilder {
       const inputPrefix = isDocument || required ? '' : 'Partial'
 
       for (const [key, field] of Object.entries(fields)) {
+        if (!required && (field as RuntimeScalarCommon).immutable) {
+          // Skip immutable fields from partial inputs
+          continue
+        }
+
         let type
         switch (field.type) {
           case 'meta':

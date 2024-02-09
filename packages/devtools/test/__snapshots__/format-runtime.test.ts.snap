@@ -39,14 +39,17 @@ exports[`Runtime format Favorite with SET account relation 1`] = `
         "viewType": "relation",
       },
       "docID": {
+        "immutable": false,
         "required": true,
         "type": "streamid",
       },
       "note": {
+        "immutable": false,
         "required": false,
         "type": "string",
       },
       "tag": {
+        "immutable": false,
         "required": true,
         "type": "string",
       },
@@ -108,20 +111,24 @@ exports[`Runtime format Note model definition with views 1`] = `
         "viewType": "relation",
       },
       "noteBookID": {
+        "immutable": false,
         "required": false,
         "type": "streamid",
       },
       "status": {
+        "immutable": false,
         "refName": "NoteStatus",
         "refType": "enum",
         "required": false,
         "type": "reference",
       },
       "text": {
+        "immutable": false,
         "required": true,
         "type": "string",
       },
       "title": {
+        "immutable": false,
         "indexed": true,
         "required": true,
         "type": "string",
@@ -155,6 +162,7 @@ exports[`Runtime format Note model definition with views 1`] = `
         "viewType": "relation",
       },
       "title": {
+        "immutable": false,
         "indexed": true,
         "required": true,
         "type": "string",
@@ -215,10 +223,12 @@ exports[`Runtime format Post with comments relations 1`] = `
         "viewType": "relation",
       },
       "postID": {
+        "immutable": false,
         "required": true,
         "type": "streamid",
       },
       "text": {
+        "immutable": false,
         "indexed": true,
         "required": true,
         "type": "string",
@@ -252,14 +262,17 @@ exports[`Runtime format Post with comments relations 1`] = `
         "viewType": "relation",
       },
       "date": {
+        "immutable": false,
         "required": false,
         "type": "datetime",
       },
       "text": {
+        "immutable": false,
         "required": true,
         "type": "string",
       },
       "title": {
+        "immutable": false,
         "indexed": true,
         "required": true,
         "type": "string",
@@ -319,12 +332,14 @@ exports[`Runtime format Profile - multiples models with common local references 
   "objects": {
     "GenericProfile": {
       "image": {
+        "immutable": false,
         "refName": "ImageSources",
         "refType": "object",
         "required": false,
         "type": "reference",
       },
       "name": {
+        "immutable": false,
         "indexed": true,
         "required": false,
         "type": "string",
@@ -332,29 +347,36 @@ exports[`Runtime format Profile - multiples models with common local references 
     },
     "ImageMetadata": {
       "height": {
+        "immutable": false,
         "required": true,
         "type": "integer",
       },
       "mimeType": {
+        "immutable": false,
         "required": true,
         "type": "string",
       },
       "size": {
+        "immutable": false,
         "required": false,
         "type": "integer",
       },
       "src": {
+        "immutable": false,
         "required": true,
         "type": "string",
       },
       "width": {
+        "immutable": false,
         "required": true,
         "type": "integer",
       },
     },
     "ImageSources": {
       "alternatives": {
+        "immutable": false,
         "item": {
+          "immutable": false,
           "refName": "ImageMetadata",
           "refType": "object",
           "required": false,
@@ -364,6 +386,7 @@ exports[`Runtime format Profile - multiples models with common local references 
         "type": "list",
       },
       "original": {
+        "immutable": false,
         "refName": "ImageMetadata",
         "refType": "object",
         "required": true,
@@ -372,7 +395,9 @@ exports[`Runtime format Profile - multiples models with common local references 
     },
     "PersonProfile": {
       "affiliations": {
+        "immutable": false,
         "item": {
+          "immutable": false,
           "required": false,
           "type": "string",
         },
@@ -380,19 +405,24 @@ exports[`Runtime format Profile - multiples models with common local references 
         "type": "list",
       },
       "birthDate": {
+        "immutable": false,
         "required": false,
         "type": "date",
       },
       "gender": {
+        "immutable": false,
         "required": false,
         "type": "string",
       },
       "homeLocation": {
+        "immutable": false,
         "required": false,
         "type": "string",
       },
       "nationalities": {
+        "immutable": false,
         "item": {
+          "immutable": false,
           "required": false,
           "type": "countrycode",
         },
@@ -400,6 +430,7 @@ exports[`Runtime format Profile - multiples models with common local references 
         "type": "list",
       },
       "residenceCountry": {
+        "immutable": false,
         "indexed": true,
         "required": false,
         "type": "countrycode",
@@ -407,20 +438,24 @@ exports[`Runtime format Profile - multiples models with common local references 
     },
     "SocialProfile": {
       "background": {
+        "immutable": false,
         "refName": "ImageSources",
         "refType": "object",
         "required": false,
         "type": "reference",
       },
       "description": {
+        "immutable": false,
         "required": false,
         "type": "string",
       },
       "emoji": {
+        "immutable": false,
         "required": false,
         "type": "string",
       },
       "url": {
+        "immutable": false,
         "indexed": true,
         "required": false,
         "type": "string",
@@ -476,12 +511,14 @@ exports[`Runtime format Profile definition with added model view 1`] = `
   "objects": {
     "GenericProfile": {
       "image": {
+        "immutable": false,
         "refName": "ImageSources",
         "refType": "object",
         "required": false,
         "type": "reference",
       },
       "name": {
+        "immutable": false,
         "indexed": true,
         "required": false,
         "type": "string",
@@ -493,29 +530,36 @@ exports[`Runtime format Profile definition with added model view 1`] = `
     },
     "ImageMetadata": {
       "height": {
+        "immutable": false,
         "required": true,
         "type": "integer",
       },
       "mimeType": {
+        "immutable": false,
         "required": true,
         "type": "string",
       },
       "size": {
+        "immutable": false,
         "required": false,
         "type": "integer",
       },
       "src": {
+        "immutable": false,
         "required": true,
         "type": "string",
       },
       "width": {
+        "immutable": false,
         "required": true,
         "type": "integer",
       },
     },
     "ImageSources": {
       "alternatives": {
+        "immutable": false,
         "item": {
+          "immutable": false,
           "refName": "ImageMetadata",
           "refType": "object",
           "required": false,
@@ -525,6 +569,7 @@ exports[`Runtime format Profile definition with added model view 1`] = `
         "type": "list",
       },
       "original": {
+        "immutable": false,
         "refName": "ImageMetadata",
         "refType": "object",
         "required": true,
@@ -533,7 +578,9 @@ exports[`Runtime format Profile definition with added model view 1`] = `
     },
     "PersonProfile": {
       "affiliations": {
+        "immutable": false,
         "item": {
+          "immutable": false,
           "required": false,
           "type": "string",
         },
@@ -541,19 +588,24 @@ exports[`Runtime format Profile definition with added model view 1`] = `
         "type": "list",
       },
       "birthDate": {
+        "immutable": false,
         "required": false,
         "type": "date",
       },
       "gender": {
+        "immutable": false,
         "required": false,
         "type": "string",
       },
       "homeLocation": {
+        "immutable": false,
         "required": false,
         "type": "string",
       },
       "nationalities": {
+        "immutable": false,
         "item": {
+          "immutable": false,
           "required": false,
           "type": "countrycode",
         },
@@ -561,6 +613,7 @@ exports[`Runtime format Profile definition with added model view 1`] = `
         "type": "list",
       },
       "residenceCountry": {
+        "immutable": false,
         "indexed": true,
         "required": false,
         "type": "countrycode",
@@ -568,20 +621,24 @@ exports[`Runtime format Profile definition with added model view 1`] = `
     },
     "SocialProfile": {
       "background": {
+        "immutable": false,
         "refName": "ImageSources",
         "refType": "object",
         "required": false,
         "type": "reference",
       },
       "description": {
+        "immutable": false,
         "required": false,
         "type": "string",
       },
       "emoji": {
+        "immutable": false,
         "required": false,
         "type": "string",
       },
       "url": {
+        "immutable": false,
         "indexed": true,
         "required": false,
         "type": "string",
@@ -714,6 +771,7 @@ exports[`Runtime format Social network kitchen sink 1`] = `
   "objects": {
     "Follows": {
       "date": {
+        "immutable": false,
         "indexed": true,
         "required": false,
         "type": "date",
@@ -723,6 +781,7 @@ exports[`Runtime format Social network kitchen sink 1`] = `
         "viewType": "documentAccount",
       },
       "following": {
+        "immutable": false,
         "required": true,
         "type": "did",
       },
@@ -738,12 +797,14 @@ exports[`Runtime format Social network kitchen sink 1`] = `
         "viewType": "relation",
       },
       "postID": {
+        "immutable": false,
         "required": true,
         "type": "streamid",
       },
     },
     "Post": {
       "date": {
+        "immutable": false,
         "required": true,
         "type": "datetime",
       },
@@ -793,6 +854,7 @@ exports[`Runtime format Social network kitchen sink 1`] = `
         "viewType": "relation",
       },
       "threadID": {
+        "immutable": false,
         "required": false,
         "type": "streamid",
       },
@@ -817,6 +879,7 @@ exports[`Runtime format Social network kitchen sink 1`] = `
         "viewType": "relation",
       },
       "postID": {
+        "immutable": false,
         "indexed": true,
         "required": true,
         "type": "streamid",
@@ -831,6 +894,7 @@ exports[`Runtime format Social network kitchen sink 1`] = `
         "viewType": "relation",
       },
       "tagID": {
+        "immutable": false,
         "indexed": true,
         "required": true,
         "type": "streamid",
@@ -838,10 +902,12 @@ exports[`Runtime format Social network kitchen sink 1`] = `
     },
     "Tag": {
       "description": {
+        "immutable": false,
         "required": false,
         "type": "string",
       },
       "name": {
+        "immutable": false,
         "required": true,
         "type": "string",
       },
@@ -875,6 +941,7 @@ exports[`Runtime format Social network kitchen sink 1`] = `
     },
     "TextPost": {
       "date": {
+        "immutable": false,
         "required": true,
         "type": "datetime",
       },
@@ -924,10 +991,12 @@ exports[`Runtime format Social network kitchen sink 1`] = `
         "viewType": "relation",
       },
       "text": {
+        "immutable": false,
         "required": true,
         "type": "string",
       },
       "threadID": {
+        "immutable": false,
         "required": false,
         "type": "streamid",
       },
@@ -972,11 +1041,13 @@ exports[`Runtime format Social with account reference 1`] = `
   "objects": {
     "PersonMet": {
       "date": {
+        "immutable": false,
         "indexed": true,
         "required": false,
         "type": "date",
       },
       "other": {
+        "immutable": false,
         "required": true,
         "type": "did",
       },
