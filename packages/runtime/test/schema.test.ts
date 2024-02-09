@@ -7,6 +7,7 @@ import {
   noteSchema,
   postSchema,
   profilesSchema,
+  socialNetworkSchema,
 } from '@composedb/test-schemas'
 import type { RuntimeCompositeDefinition } from '@composedb/types'
 
@@ -42,5 +43,9 @@ describe('schema', () => {
 
   test('favorite schema with SET account relation', () => {
     expect(printGraphQLSchema(createSchemaDefinition(favoriteSchema))).toMatchSnapshot()
+  })
+
+  test('social network schema kitchen sink', () => {
+    expect(printGraphQLSchema(createSchemaDefinition(socialNetworkSchema))).toMatchSnapshot()
   })
 })

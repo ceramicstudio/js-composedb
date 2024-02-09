@@ -3027,6 +3027,897 @@ input PartialPersonProfileInput {
 }"
 `;
 
+exports[`schema social network schema kitchen sink 1`] = `
+"type Query {
+  """Fetches objects given their IDs"""
+  nodes(
+    """The IDs of objects"""
+    ids: [ID!]!
+  ): [Node]!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  postIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostFiltersInput
+    sorting: PostSortingInput
+  ): PostConnection
+  postCount(filters: PostFiltersInput): Int!
+  textPostIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): TextPostConnection
+  textPostCount: Int!
+  likeIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): LikeConnection
+  likeCount: Int!
+  tagIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): TagConnection
+  tagCount: Int!
+  postTagIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostTagFiltersInput
+    sorting: PostTagSortingInput
+  ): PostTagConnection
+  postTagCount(filters: PostTagFiltersInput): Int!
+  followsIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: FollowsFiltersInput
+    sorting: FollowsSortingInput
+  ): FollowsConnection
+  followsCount(filters: FollowsFiltersInput): Int!
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+type CeramicAccount implements Node {
+  """Globally unique identifier of the account (DID string)"""
+  id: ID!
+
+  """
+  Whether the Ceramic instance is currently authenticated with this account or not
+  """
+  isViewer: Boolean!
+  postList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostFiltersInput
+    sorting: PostSortingInput
+  ): PostConnection
+  postListCount(filters: PostFiltersInput): Int!
+  textPostList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): TextPostConnection
+  textPostListCount: Int!
+  like(with: WithLikeInput!): Like
+  likeList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): LikeConnection
+  likeListCount: Int!
+  tag(with: WithTagInput!): Tag
+  tagList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): TagConnection
+  tagListCount: Int!
+  postTag(with: WithPostTagInput!): PostTag
+  postTagList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostTagFiltersInput
+    sorting: PostTagSortingInput
+  ): PostTagConnection
+  postTagListCount(filters: PostTagFiltersInput): Int!
+  followingOfFollowsList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: FollowsFiltersInput
+    sorting: FollowsSortingInput
+  ): FollowsConnection
+  followingOfFollowsListCount(filters: FollowsFiltersInput): Int!
+  followingOfFollows(
+    """Account defining the relation"""
+    account: ID!
+  ): Follows
+  follows(with: WithFollowsInput!): Follows
+  followsList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: FollowsFiltersInput
+    sorting: FollowsSortingInput
+  ): FollowsConnection
+  followsListCount(filters: FollowsFiltersInput): Int!
+}
+
+"""A connection to a list of items."""
+type PostConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PostEdge]
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""An edge in a connection."""
+type PostEdge {
+  """The item at the end of the edge"""
+  node: Post
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+interface Post {
+  date: DateTime!
+  threadID: CeramicStreamID
+  threadPost: Node
+  like(
+    """Account defining the relation"""
+    account: ID!
+  ): Like
+  likesCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+  ): Int!
+  postTag(
+    """Account defining the relation"""
+    account: ID!
+    with: WithPostIDPostTagInput!
+  ): PostTag
+  postTags(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: PostTagFiltersInput
+    sorting: PostTagSortingInput
+  ): PostTagConnection!
+  postTagsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: PostTagFiltersInput
+  ): Int!
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the \`date-time\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+"""A Ceramic Stream ID"""
+scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
+
+type Like implements Node {
+  id: ID!
+  postID: CeramicStreamID!
+  post: Node
+}
+
+type PostTag implements Node {
+  id: ID!
+  postID: CeramicStreamID!
+  tagID: CeramicStreamID!
+  post: Node
+  tag: Node
+}
+
+input WithPostIDPostTagInput {
+  tagID: CeramicStreamID!
+}
+
+"""A connection to a list of items."""
+type PostTagConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PostTagEdge]
+}
+
+"""An edge in a connection."""
+type PostTagEdge {
+  """The item at the end of the edge"""
+  node: PostTag
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input PostTagFiltersInput {
+  where: PostTagObjectFilterInput
+  and: [PostTagFiltersInput!]
+  or: [PostTagFiltersInput!]
+  not: PostTagFiltersInput
+}
+
+input PostTagObjectFilterInput {
+  postID: StringValueFilterInput
+  tagID: StringValueFilterInput
+}
+
+input StringValueFilterInput {
+  isNull: Boolean
+  equalTo: String
+  notEqualTo: String
+  in: [String!]
+  notIn: [String!]
+  lessThan: String
+  lessThanOrEqualTo: String
+  greaterThan: String
+  greaterThanOrEqualTo: String
+}
+
+input PostTagSortingInput {
+  postID: SortOrder
+  tagID: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+input PostFiltersInput {
+  where: PostObjectFilterInput
+  and: [PostFiltersInput!]
+  or: [PostFiltersInput!]
+  not: PostFiltersInput
+}
+
+input PostObjectFilterInput {
+  date: StringValueFilterInput
+  threadID: StringValueFilterInput
+}
+
+input PostSortingInput {
+  date: SortOrder
+  threadID: SortOrder
+}
+
+"""A connection to a list of items."""
+type TextPostConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TextPostEdge]
+}
+
+"""An edge in a connection."""
+type TextPostEdge {
+  """The item at the end of the edge"""
+  node: TextPost
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type TextPost implements Node & Post {
+  id: ID!
+  date: DateTime!
+  threadID: CeramicStreamID
+  text: String!
+  threadPost: Node
+  like(
+    """Account defining the relation"""
+    account: ID!
+  ): Like
+  likesCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+  ): Int!
+  postTag(
+    """Account defining the relation"""
+    account: ID!
+    with: WithPostIDPostTagInput!
+  ): PostTag
+  postTags(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: PostTagFiltersInput
+    sorting: PostTagSortingInput
+  ): PostTagConnection!
+  postTagsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: PostTagFiltersInput
+  ): Int!
+}
+
+input WithLikeInput {
+  postID: CeramicStreamID!
+}
+
+"""A connection to a list of items."""
+type LikeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [LikeEdge]
+}
+
+"""An edge in a connection."""
+type LikeEdge {
+  """The item at the end of the edge"""
+  node: Like
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Tag implements Node {
+  id: ID!
+  name: String!
+  description: String
+  postTag(
+    """Account defining the relation"""
+    account: ID!
+    with: WithTagIDPostTagInput!
+  ): PostTag
+  postTags(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: PostTagFiltersInput
+    sorting: PostTagSortingInput
+  ): PostTagConnection!
+  postTagsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: PostTagFiltersInput
+  ): Int!
+}
+
+input WithTagIDPostTagInput {
+  postID: CeramicStreamID!
+}
+
+input WithTagInput {
+  name: String!
+}
+
+"""A connection to a list of items."""
+type TagConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TagEdge]
+}
+
+"""An edge in a connection."""
+type TagEdge {
+  """The item at the end of the edge"""
+  node: Tag
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input WithPostTagInput {
+  postID: CeramicStreamID!
+  tagID: CeramicStreamID!
+}
+
+"""A connection to a list of items."""
+type FollowsConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [FollowsEdge]
+}
+
+"""An edge in a connection."""
+type FollowsEdge {
+  """The item at the end of the edge"""
+  node: Follows
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Follows implements Node {
+  id: ID!
+  following: CeramicAccount!
+  date: Date
+
+  """Account controlling the document"""
+  follower: CeramicAccount!
+}
+
+"""
+A date string, such as 2007-12-03, compliant with the \`full-date\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+input FollowsFiltersInput {
+  where: FollowsObjectFilterInput
+  and: [FollowsFiltersInput!]
+  or: [FollowsFiltersInput!]
+  not: FollowsFiltersInput
+}
+
+input FollowsObjectFilterInput {
+  date: StringValueFilterInput
+}
+
+input FollowsSortingInput {
+  date: SortOrder
+}
+
+input WithFollowsInput {
+  following: DID!
+}
+
+"""
+A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
+"""
+scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
+
+type Mutation {
+  createTextPost(input: CreateTextPostInput!): CreateTextPostPayload
+  updateTextPost(input: UpdateTextPostInput!): UpdateTextPostPayload
+  setLike(input: SetLikeInput!): SetLikePayload
+  updateLike(input: UpdateLikeInput!): UpdateLikePayload
+  setTag(input: SetTagInput!): SetTagPayload
+  updateTag(input: UpdateTagInput!): UpdateTagPayload
+  setPostTag(input: SetPostTagInput!): SetPostTagPayload
+  updatePostTag(input: UpdatePostTagInput!): UpdatePostTagPayload
+  setFollows(input: SetFollowsInput!): SetFollowsPayload
+  updateFollows(input: UpdateFollowsInput!): UpdateFollowsPayload
+}
+
+type CreateTextPostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: TextPost!
+  clientMutationId: String
+}
+
+input CreateTextPostInput {
+  content: TextPostInput!
+  clientMutationId: String
+}
+
+input TextPostInput {
+  date: DateTime!
+  threadID: CeramicStreamID
+  text: String!
+}
+
+type UpdateTextPostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: TextPost!
+  clientMutationId: String
+}
+
+input UpdateTextPostInput {
+  id: ID!
+  content: PartialTextPostInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialTextPostInput {
+  date: DateTime
+  threadID: CeramicStreamID
+  text: String
+}
+
+input UpdateOptionsInput {
+  """
+  Fully replace the document contents instead of performing a shallow merge
+  """
+  replace: Boolean = false
+
+  """Only perform mutation if the document matches the provided version"""
+  version: CeramicCommitID
+}
+
+"""A Ceramic Commit ID"""
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
+
+type SetLikePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Like!
+  clientMutationId: String
+}
+
+input SetLikeInput {
+  content: LikeInput!
+  options: SetOptionsInput
+  clientMutationId: String
+}
+
+input LikeInput {
+  postID: CeramicStreamID!
+}
+
+input SetOptionsInput {
+  """
+  Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds
+  """
+  syncTimeout: Int
+}
+
+type UpdateLikePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Like!
+  clientMutationId: String
+}
+
+input UpdateLikeInput {
+  id: ID!
+  content: PartialLikeInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialLikeInput {
+  postID: CeramicStreamID
+}
+
+type SetTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Tag!
+  clientMutationId: String
+}
+
+input SetTagInput {
+  content: TagInput!
+  options: SetOptionsInput
+  clientMutationId: String
+}
+
+input TagInput {
+  name: String!
+  description: String
+}
+
+type UpdateTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Tag!
+  clientMutationId: String
+}
+
+input UpdateTagInput {
+  id: ID!
+  content: PartialTagInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialTagInput {
+  name: String
+  description: String
+}
+
+type SetPostTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: PostTag!
+  clientMutationId: String
+}
+
+input SetPostTagInput {
+  content: PostTagInput!
+  options: SetOptionsInput
+  clientMutationId: String
+}
+
+input PostTagInput {
+  postID: CeramicStreamID!
+  tagID: CeramicStreamID!
+}
+
+type UpdatePostTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: PostTag!
+  clientMutationId: String
+}
+
+input UpdatePostTagInput {
+  id: ID!
+  content: PartialPostTagInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialPostTagInput {
+  postID: CeramicStreamID
+  tagID: CeramicStreamID
+}
+
+type SetFollowsPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Follows!
+  clientMutationId: String
+}
+
+input SetFollowsInput {
+  content: FollowsInput!
+  options: SetOptionsInput
+  clientMutationId: String
+}
+
+input FollowsInput {
+  following: DID!
+  date: Date
+}
+
+type UpdateFollowsPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Follows!
+  clientMutationId: String
+}
+
+input UpdateFollowsInput {
+  id: ID!
+  content: PartialFollowsInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialFollowsInput {
+  following: DID
+  date: Date
+}"
+`;
+
 exports[`schema supported scalars 1`] = `
 "type Query {
   """Fetches objects given their IDs"""

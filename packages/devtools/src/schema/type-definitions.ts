@@ -35,8 +35,9 @@ directive @documentReference(model: String!) on FIELD_DEFINITION
 # Relation views
 
 directive @relationDocument(property: String!) on FIELD_DEFINITION
-directive @relationFrom(model: String!, property: String!) on FIELD_DEFINITION
+directive @relationFrom(model: String, property: String!) on FIELD_DEFINITION
 directive @relationCountFrom(model: String!, property: String!) on FIELD_DEFINITION
+directive @relationSetFrom(property: String!) on FIELD_DEFINITION
 
 # Model definition
 

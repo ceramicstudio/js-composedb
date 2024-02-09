@@ -5,6 +5,7 @@ import {
   noteSchema,
   postSchema,
   profilesSchema,
+  socialNetworkSchema,
   socialSchema,
 } from '@composedb/test-schemas'
 
@@ -64,6 +65,12 @@ describe('Runtime format', () => {
   test('Favorite with SET account relation', () => {
     const favoriteDefinition = mockDefinitionFromSchema(favoriteSchema)
     const runtime = createRuntimeDefinition(favoriteDefinition)
+    expect(runtime).toMatchSnapshot()
+  })
+
+  test('Social network kitchen sink', () => {
+    const definition = mockDefinitionFromSchema(socialNetworkSchema)
+    const runtime = createRuntimeDefinition(definition)
     expect(runtime).toMatchSnapshot()
   })
 })

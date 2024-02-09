@@ -3,6 +3,7 @@ import type { InternalCompositeDefinition } from '@composedb/types'
 
 import { createAbstractCompositeDefinition } from './schema/compiler.js'
 import type { AbstractCompositeDefinition } from './schema/types.js'
+import { isRelationViewDefinition } from './utils.js'
 
 /** @internal */
 export function mockDefinition(
@@ -20,12 +21,7 @@ export function mockDefinition(
         definition.implements = definition.implements.map((name) => `${name}ID`)
       }
       for (const view of Object.values(definition.views ?? {})) {
-        if (
-          (view.type === 'relationCountFrom' ||
-            view.type === 'relationDocument' ||
-            view.type === 'relationFrom') &&
-          view.model !== null
-        ) {
+        if (isRelationViewDefinition(view) && view.model !== null) {
           view.model = `${view.model}ID`
         }
       }

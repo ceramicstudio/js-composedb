@@ -86,6 +86,9 @@ type BuildObjectParams = {
 }
 type BuildModelObjectParams = BuildObjectParams & { model: RuntimeModel }
 
+type FilterWithArgument = { with: Record<string, string | number> }
+type AccountFilterWithArgument = FilterWithArgument & { account: string }
+
 type ConnectionAccountArgument = { account?: string }
 type ConnectionFiltersArgument = { filters?: QueryFilters }
 type ConnectionSortingArgument = { sorting?: Sorting }
@@ -93,8 +96,8 @@ type ConnectionSortingArgument = { sorting?: Sorting }
 type ConnectionQueryArguments = ConnectionArguments &
   ConnectionFiltersArgument &
   ConnectionSortingArgument
-type ConnectionRelationArguments = ConnectionQueryArguments & ConnectionAccountArgument
-type ConnectionRelationCountArguments = ConnectionAccountArgument & ConnectionFiltersArgument
+type ConnectionRelationArguments = ConnectionAccountArgument & ConnectionFiltersArgument
+type ConnectionRelationSortingArguments = ConnectionAccountArgument & ConnectionQueryArguments
 
 function createAccountReferenceQuery(
   models: Array<string>,
@@ -130,6 +133,11 @@ function getReferencedAccount(
     default:
       return account
   }
+}
+
+const accountRelationArg = {
+  type: new GraphQLNonNull(GraphQLID),
+  description: 'Account defining the relation',
 }
 
 const connectionArgsWithAccount = {
@@ -377,7 +385,7 @@ class SchemaBuilder {
                 },
                 resolve: async (
                   account,
-                  args: { with: Record<string, string | number> },
+                  args: FilterWithArgument,
                   ctx,
                 ): Promise<ModelInstanceDocument | null> => {
                   const where: ObjectFilter = {}
@@ -391,6 +399,59 @@ class SchemaBuilder {
                   })
                 },
               }
+              break
+            }
+
+            case 'account-set': {
+              if (model.accountRelation.type !== 'set') {
+                throw new Error(
+                  `Invalid reference ${alias} on account: referenced model ${reference.name} must use the SET account relation`,
+                )
+              }
+
+              const args: ObjMap<GraphQLArgumentConfig> = { account: accountRelationArg }
+              // Check if other fields than the reference property need to be provided and create an input as needed
+              const withFields = model.accountRelation.fields.filter(
+                (field) => field !== reference.property,
+              )
+              if (withFields.length !== 0) {
+                // The SET reference requires a dedicated input object to specify the set fields values
+                const withInput = this._buildSetInputObjectType(
+                  reference.name,
+                  withFields,
+                  reference.property,
+                )
+                args.with = { type: new GraphQLNonNull(withInput) }
+              }
+              config[alias] = {
+                type: this.#types[reference.name],
+                args,
+                resolve: async (
+                  account,
+                  args: AccountFilterWithArgument,
+                  ctx,
+                ): Promise<ModelInstanceDocument | null> => {
+                  const refAccount = args.account === 'viewer' ? ctx.getViewerID() : args.account
+                  // If the referenced account is not set (viewer not authenticated), return null
+                  if (refAccount == null) {
+                    return null
+                  }
+                  // Filter based on the reference property
+                  const where: ObjectFilter = {
+                    [reference.property]: { equalTo: account },
+                  }
+                  // Add extra filters for the other set fields, if any
+                  for (const field of withFields) {
+                    where[field] = { equalTo: args.with[field] }
+                  }
+                  return await ctx.queryOne({
+                    account: refAccount,
+                    models: [model.id],
+                    queryFilters: { where },
+                  })
+                },
+              }
+
               break
             }
 
@@ -778,7 +839,7 @@ class SchemaBuilder {
           args,
           resolve: async (
             doc,
-            args: ConnectionRelationArguments,
+            args: ConnectionRelationSortingArguments,
             ctx,
           ): Promise<Connection<unknown> | null> => {
             let account: string | undefined
@@ -818,7 +879,7 @@ class SchemaBuilder {
         return {
           type: new GraphQLNonNull(GraphQLInt),
           args,
-          resolve: async (doc, args: ConnectionRelationCountArguments, ctx): Promise<number> => {
+          resolve: async (doc, args: ConnectionRelationArguments, ctx): Promise<number> => {
             let account: string | undefined
             if (args.account != null) {
               const refAccount = getReferencedAccount(args.account, doc, ctx)
@@ -834,6 +895,52 @@ class SchemaBuilder {
               args.filters,
             )
             return await ctx.queryCount({ account, models: [relationModel], queryFilters })
+          },
+        }
+      }
+      case 'set': {
+        const model = this.#def.models[modelAlias]
+        if (model.accountRelation.type !== 'set') {
+          throw new Error(
+            `Invalid relation on field ${key}: referenced model ${modelAlias} must use the "set" account relation`,
+          )
+        }
+
+        const args: ObjMap<GraphQLArgumentConfig> = { account: accountRelationArg }
+        // Check if other fields than the relation property need to be provided and create an input as needed
+        const withFields = model.accountRelation.fields.filter(
+          (field) => field !== relation.property,
+        )
+        if (withFields.length !== 0) {
+          const withInput = this._buildSetInputObjectType(modelAlias, withFields, relation.property)
+          args.with = { type: new GraphQLNonNull(withInput) }
+        }
+        return {
+          type: this.#types[modelAlias],
+          args,
+          resolve: async (
+            doc,
+            args: AccountFilterWithArgument,
+            ctx,
+          ): Promise<ModelInstanceDocument | null> => {
+            const account = getReferencedAccount(args.account, doc, ctx)
+            // If the referenced account is not set (viewer not authenticated), return null
+            if (account == null) {
+              return null
+            }
+            // Filter based on the relation property
+            const where: ObjectFilter = {
+              [relation.property]: { equalTo: doc.id.toString() },
+            }
+            // Add extra filters for the other set fields, if any
+            for (const field of withFields) {
+              where[field] = { equalTo: args.with[field] }
+            }
+            return await ctx.queryOne({
+              account,
+              models: [model.id],
+              queryFilters: { where },
+            })
           },
         }
       }
@@ -1009,65 +1116,75 @@ class SchemaBuilder {
     }
   }
 
-  _buildSetInputObjectType(name: string, relationFields: Array<string>): GraphQLInputObjectType {
+  _buildSetInputObjectType(
+    name: string,
+    withFields: Array<string>,
+    relationField?: string,
+  ): GraphQLInputObjectType {
     const objectFields = this.#def.objects[name]
     if (objectFields == null) {
       throw new Error(`Object fields not found for model ${name}`)
     }
 
-    const inputName = `With${name}Input`
-    this.#inputObjects[inputName] = new GraphQLInputObjectType({
-      name: inputName,
-      fields: () => {
-        const fields: GraphQLInputFieldConfigMap = {}
-        for (const fieldName of relationFields) {
-          const field = objectFields[fieldName]
-          if (field == null) {
-            throw new Error(`Field ${fieldName} not found on model ${name}`)
-          }
+    const relationFieldName = relationField
+      ? relationField[0].toUpperCase() + relationField.slice(1)
+      : ''
+    const inputName = `With${relationFieldName}${name}Input`
 
-          let type
-          switch (field.type) {
-            case 'list':
-            case 'meta':
-            case 'view':
-              throw new Error(
-                `Invalid account relation field ${fieldName} on model ${name}: unsupported type ${field.type}`,
-              )
-            case 'reference':
-              switch (field.refType) {
-                case 'connection':
-                  throw new Error(
-                    `Invalid account relation field ${fieldName} on model ${name}: unsupported connection reference`,
-                  )
-                case 'enum':
-                  type = this.#types[field.refName] as GraphQLEnumType
-                  break
-                case 'node':
-                  type = GraphQLID
-                  break
-                case 'object': {
-                  throw new Error(
-                    `Invalid account relation field ${fieldName} on model ${name}: unsupported object reference`,
-                  )
+    if (this.#inputObjects[inputName] == null) {
+      this.#inputObjects[inputName] = new GraphQLInputObjectType({
+        name: inputName,
+        fields: () => {
+          const fields: GraphQLInputFieldConfigMap = {}
+          for (const fieldName of withFields) {
+            const field = objectFields[fieldName]
+            if (field == null) {
+              throw new Error(`Field ${fieldName} not found on model ${name}`)
+            }
+
+            let type
+            switch (field.type) {
+              case 'list':
+              case 'meta':
+              case 'view':
+                throw new Error(
+                  `Invalid account relation field ${fieldName} on model ${name}: unsupported type ${field.type}`,
+                )
+              case 'reference':
+                switch (field.refType) {
+                  case 'connection':
+                    throw new Error(
+                      `Invalid account relation field ${fieldName} on model ${name}: unsupported connection reference`,
+                    )
+                  case 'enum':
+                    type = this.#types[field.refName] as GraphQLEnumType
+                    break
+                  case 'node':
+                    type = GraphQLID
+                    break
+                  case 'object': {
+                    throw new Error(
+                      `Invalid account relation field ${fieldName} on model ${name}: unsupported object reference`,
+                    )
+                  }
                 }
-              }
-              break
-            default:
-              type = getScalar(field.type)
+                break
+              default:
+                type = getScalar(field.type)
+            }
+
+            if (type == null) {
+              throw new Error(
+                `Invalid account relation field ${fieldName} on model ${name}: type not found`,
+              )
+            }
+            fields[fieldName] = { type: new GraphQLNonNull(type) }
           }
 
-          if (type == null) {
-            throw new Error(
-              `Invalid account relation field ${fieldName} on model ${name}: type not found`,
-            )
-          }
-          fields[fieldName] = { type: new GraphQLNonNull(type) }
-        }
-
-        return fields
-      },
-    })
+          return fields
+        },
+      })
+    }
 
     return this.#inputObjects[inputName]
   }
