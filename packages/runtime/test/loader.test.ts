@@ -286,7 +286,9 @@ describe('loader', () => {
         expect(cacheSet).toHaveBeenCalledTimes(1)
 
         await loader.update(testID1, { test: true }, { publish: true })
-        expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, { publish: true })
+        expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, undefined, {
+          publish: true,
+        })
         expect(cacheDelete).toHaveBeenCalledWith(testID1)
         expect(cacheMap.has(testID1)).toBe(true)
         expect(cacheSet).toHaveBeenCalledTimes(2)
@@ -317,7 +319,7 @@ describe('loader', () => {
           ceramic: { multiQuery } as unknown as CeramicAPI,
         })
         await loader.update(testID1, { test: true }, { version: testCommitID.toString() })
-        expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, {})
+        expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, undefined, {})
       })
 
       test('performs a full replacement if the option is set', async () => {
@@ -330,7 +332,7 @@ describe('loader', () => {
           ceramic: { multiQuery } as unknown as CeramicAPI,
         })
         await loader.update(testID1, { test: true }, { replace: true })
-        expect(replace).toHaveBeenCalledWith({ test: true }, {})
+        expect(replace).toHaveBeenCalledWith({ test: true }, undefined, {})
       })
     })
   })

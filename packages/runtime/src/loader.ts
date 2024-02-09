@@ -215,7 +215,7 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
       throw new Error('Stream version mismatch')
     }
     const newContent = replace ? content : { ...(stream.content ?? {}), ...content }
-    await stream.replace(removeNullValues(newContent) as T, options)
+    await stream.replace(removeNullValues(newContent) as T, undefined, options)
     return stream
   }
 }

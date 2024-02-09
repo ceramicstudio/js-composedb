@@ -1,16 +1,16 @@
 import type { SignedCommitContainer } from '@ceramicnetwork/common'
 import {
   Model,
-  ModelViewDefinitionV2,
   type ModelDefinition,
   type ModelDefinitionV2,
+  type ModelViewDefinitionV2,
   type ModelViewsDefinitionV2,
   loadAllModelInterfaces,
 } from '@ceramicnetwork/stream-model'
 import type { StreamID } from '@ceramicnetwork/streamid'
 import type { CeramicAPI, FieldsIndex } from '@composedb/types'
 
-import { promiseMap } from '../utils.js'
+import { isRelationViewDefinition, promiseMap } from '../utils.js'
 
 import type {
   AbstractCreateModelDefinition,
@@ -100,12 +100,7 @@ function executeCreateFactory(
     const compositeViews: ModelViewsDefinitionV2 = {}
     const viewsPromises: Record<string, Promise<ModelViewDefinitionV2>> = {}
     for (const [name, view] of Object.entries(sourceDefinition.views ?? {})) {
-      if (
-        (view.type === 'relationCountFrom' ||
-          view.type === 'relationFrom' ||
-          view.type === 'relationDocument') &&
-        view.model !== null
-      ) {
+      if (isRelationViewDefinition(view) && view.model !== null) {
         const existing = executing[view.model]
         if (existing == null) {
           compositeViews[name] = view
@@ -198,6 +193,28 @@ function assertNoCircularDependency(
   }
 }
 
+function assertValidSetRelationReference(
+  modelID: string,
+  refModelID: string,
+  refModel: ModelDefinition,
+  property: string,
+) {
+  if (refModel.version === '1.0' || refModel.accountRelation.type !== 'set') {
+    throw new Error(`Invalid view referencing model ${refModelID}: expected "set" account relation`)
+  }
+  if (!refModel.accountRelation.fields.includes(property)) {
+    throw new Error(
+      `Invalid property ${property} set for view to model ${refModelID}: ${property} is not defined as a "set" account relation field`,
+    )
+  }
+  const relation = refModel.relations?.[property]
+  if (relation == null || relation.type !== 'document' || relation.model !== modelID) {
+    throw new Error(
+      `Invalid property ${property} set for view to model ${refModelID}: ${property} must define a relation to model ${modelID}`,
+    )
+  }
+}
+
 export async function createIntermediaryCompositeDefinition(
   ceramic: CeramicAPI,
   models: Record<string, AbstractModelDefinition>,
@@ -232,12 +249,7 @@ export async function createIntermediaryCompositeDefinition(
       }
 
       for (const view of Object.values(definition.model.views ?? {})) {
-        if (
-          (view.type === 'relationCountFrom' ||
-            view.type === 'relationFrom' ||
-            view.type === 'relationDocument') &&
-          view.model !== null
-        ) {
+        if (isRelationViewDefinition(view) && view.model !== null) {
           if (isInterface) {
             // Views must be present in the model definition of interfaces
             requiredDependencies.add(view.model)
@@ -320,17 +332,19 @@ export async function createIntermediaryCompositeDefinition(
     }),
   )
   // Replace referenced models in composite views by their ID after all models are resolved
-  for (const modelViews of Object.values(definition.views)) {
+  for (const [modelID, modelViews] of Object.entries(definition.views)) {
     for (const view of Object.values(modelViews)) {
-      if (
-        (view.type === 'relationCountFrom' ||
-          view.type === 'relationFrom' ||
-          view.type === 'relationDocument') &&
-        view.model !== null
-      ) {
+      if (isRelationViewDefinition(view) && view.model !== null) {
         const id = modelIDs[view.model]
         if (id == null) {
           throw new Error(`ID not found for referenced model ${view.model}`)
+        }
+        if (view.type === 'relationSetFrom') {
+          const refModel = definition.models[id]
+          if (refModel == null) {
+            throw new Error(`Model not found for ID ${id}`)
+          }
+          assertValidSetRelationReference(modelID, id, refModel, view.property)
         }
         view.model = id
       }

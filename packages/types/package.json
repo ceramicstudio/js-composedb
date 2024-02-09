@@ -36,11 +36,11 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/common": "^4.1.0",
-    "@ceramicnetwork/core": "^4.1.0",
-    "@ceramicnetwork/http-client": "^4.1.0",
-    "@ceramicnetwork/stream-model": "^3.1.0",
-    "@ceramicnetwork/stream-model-instance": "^3.1.0",
+    "@ceramicnetwork/common": "^5.0.1-rc.0",
+    "@ceramicnetwork/core": "^5.0.1-rc.0",
+    "@ceramicnetwork/http-client": "^5.0.1-rc.0",
+    "@ceramicnetwork/stream-model": "^4.0.1-rc.0",
+    "@ceramicnetwork/stream-model-instance": "^4.0.1-rc.0",
     "dids": "^5.0.2",
     "json-schema-typed": "^8.0.1"
   }

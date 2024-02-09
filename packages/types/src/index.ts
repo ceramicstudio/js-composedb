@@ -178,7 +178,7 @@ export type RuntimeMetaType = 'objectType'
 export type RuntimeMetaField = { type: 'meta'; metaType: RuntimeMetaType }
 
 /** Runtime relation source. */
-export type RuntimeRelationSource = 'document' | 'queryConnection' | 'queryCount'
+export type RuntimeRelationSource = 'document' | 'queryConnection' | 'queryCount' | 'set'
 /** Runtime relation field representation. */
 export type RuntimeRelation = {
   source: RuntimeRelationSource
@@ -202,13 +202,14 @@ export type RuntimeObjectField =
 /** Runtime object property name to field representation mapping. */
 export type RuntimeObjectFields = Record<string, RuntimeObjectField>
 
-/** Runtime views types. */
-export type RuntimeViewReferenceType = 'connection' | 'node'
+/** Runtime views account reference types. */
+export type RuntimeViewAccountReferenceType = 'account' | 'account-set'
+/** Runtime views document reference types. */
+export type RuntimeViewDocumentReferenceType = 'connection' | 'node' | 'set'
 /** Runtime view reference representation. */
 export type RuntimeViewReference =
-  | { type: 'account'; name: string; property: string }
-  | { type: RuntimeViewReferenceType; name: string }
-  | { type: 'set'; name: string }
+  | { type: RuntimeViewAccountReferenceType; name: string; property: string }
+  | { type: RuntimeViewDocumentReferenceType; name: string }
 
 /** Runtime model information. */
 export type RuntimeModel = {

@@ -48,27 +48,33 @@ const RELATION_VIEW_SOURCES: Record<RelationViewType, RuntimeRelationSource> = {
   relationDocument: 'document',
   relationFrom: 'queryConnection',
   relationCountFrom: 'queryCount',
+  relationSetFrom: 'set',
 }
 
 const RELATION_VIEW_TYPES = Object.keys(RELATION_VIEW_SOURCES)
 
+export function isRelationViewDefinition(
+  view: ModelViewDefinitionV2,
+): view is ModelRelationViewDefinitionV2 {
+  return RELATION_VIEW_TYPES.includes(view.type)
+}
+
 /** @internal */
 export function assertRelationViewDefinition(
   view: ModelViewDefinitionV2,
-): ModelRelationViewDefinitionV2 {
-  if (!RELATION_VIEW_TYPES.includes(view.type)) {
+): asserts view is ModelRelationViewDefinitionV2 {
+  if (!isRelationViewDefinition(view)) {
     throw new Error(`Invalid relation view: ${view.type}`)
   }
-  return view as ModelRelationViewDefinitionV2
 }
 
 /** @internal */
 export function viewDefinitionToRuntimeRelation(view: ModelViewDefinitionV2): RuntimeRelation {
-  const relation = assertRelationViewDefinition(view)
+  assertRelationViewDefinition(view)
   return {
-    source: RELATION_VIEW_SOURCES[relation.type],
-    model: relation.model,
-    property: relation.property,
+    source: RELATION_VIEW_SOURCES[view.type],
+    model: view.model,
+    property: view.property,
   }
 }
 
@@ -81,6 +87,7 @@ export function viewDefinitionToRuntime(view: ModelViewDefinitionV2): RuntimeVie
     case 'relationCountFrom':
     case 'relationDocument':
     case 'relationFrom':
+    case 'relationSetFrom':
       return {
         type: 'view',
         viewType: 'relation',
@@ -107,6 +114,8 @@ export function viewRuntimeToModel(field: RuntimeViewField): ModelViewDefinition
         return { type: 'relationFrom', model, property }
       case 'queryCount':
         return { type: 'relationCountFrom', model, property }
+      case 'set':
+        return { type: 'relationSetFrom', model, property }
     }
   }
   return { type: field.viewType }
