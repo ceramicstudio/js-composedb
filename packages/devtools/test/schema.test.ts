@@ -870,11 +870,12 @@ describe('schema parsing and compilation', () => {
     expect(
       createAbstractCompositeDefinition(`
       interface TestInterface @createModel(description: "Test interface") {
-        test: String! @string(maxLength: 50) @immutable
+        testField: String! @string(maxLength: 50) @immutable
       }
 
       type TestModel implements TestInterface  @createModel(description: "A test model") {
         intField: Int
+        testField: String! @string(maxLength: 50)
       }
       `),
     ).toMatchObject({
@@ -884,7 +885,7 @@ describe('schema parsing and compilation', () => {
           model: {
             interface: true,
             implements: [],
-            immutableFields: ['test'],
+            immutableFields: ['testField'],
             description: 'Test interface',
             accountRelation: { type: 'none' },
             relations: {},
@@ -893,9 +894,9 @@ describe('schema parsing and compilation', () => {
             schema: {
               $schema: 'https://json-schema.org/draft/2020-12/schema',
               type: 'object',
-              properties: { test: { type: 'string', maxLength: 50 } },
+              properties: { testField: { type: 'string', maxLength: 50 } },
               additionalProperties: false,
-              required: ['test'],
+              required: ['testField'],
             },
             views: {},
           },
@@ -906,7 +907,7 @@ describe('schema parsing and compilation', () => {
           model: {
             interface: false,
             implements: ['TestInterface'],
-            immutableFields: ['test'],
+            immutableFields: ['testField'],
             description: 'A test model',
             accountRelation: { type: 'list' },
             relations: {},

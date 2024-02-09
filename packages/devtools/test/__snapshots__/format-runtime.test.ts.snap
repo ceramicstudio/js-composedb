@@ -111,6 +111,7 @@ exports[`Runtime format Note model definition with views 1`] = `
         "viewType": "relation",
       },
       "noteBookID": {
+        "immutable": false,
         "required": false,
         "type": "streamid",
       },
@@ -161,6 +162,7 @@ exports[`Runtime format Note model definition with views 1`] = `
         "viewType": "relation",
       },
       "title": {
+        "immutable": false,
         "indexed": true,
         "required": true,
         "type": "string",
@@ -769,6 +771,7 @@ exports[`Runtime format Social network kitchen sink 1`] = `
   "objects": {
     "Follows": {
       "date": {
+        "immutable": false,
         "indexed": true,
         "required": false,
         "type": "date",
@@ -778,6 +781,7 @@ exports[`Runtime format Social network kitchen sink 1`] = `
         "viewType": "documentAccount",
       },
       "following": {
+        "immutable": false,
         "required": true,
         "type": "did",
       },
@@ -793,12 +797,14 @@ exports[`Runtime format Social network kitchen sink 1`] = `
         "viewType": "relation",
       },
       "postID": {
+        "immutable": false,
         "required": true,
         "type": "streamid",
       },
     },
     "Post": {
       "date": {
+        "immutable": false,
         "required": true,
         "type": "datetime",
       },
@@ -848,6 +854,7 @@ exports[`Runtime format Social network kitchen sink 1`] = `
         "viewType": "relation",
       },
       "threadID": {
+        "immutable": false,
         "required": false,
         "type": "streamid",
       },
@@ -872,6 +879,7 @@ exports[`Runtime format Social network kitchen sink 1`] = `
         "viewType": "relation",
       },
       "postID": {
+        "immutable": false,
         "indexed": true,
         "required": true,
         "type": "streamid",
@@ -886,6 +894,7 @@ exports[`Runtime format Social network kitchen sink 1`] = `
         "viewType": "relation",
       },
       "tagID": {
+        "immutable": false,
         "indexed": true,
         "required": true,
         "type": "streamid",
@@ -893,10 +902,12 @@ exports[`Runtime format Social network kitchen sink 1`] = `
     },
     "Tag": {
       "description": {
+        "immutable": false,
         "required": false,
         "type": "string",
       },
       "name": {
+        "immutable": false,
         "required": true,
         "type": "string",
       },
@@ -930,6 +941,7 @@ exports[`Runtime format Social network kitchen sink 1`] = `
     },
     "TextPost": {
       "date": {
+        "immutable": false,
         "required": true,
         "type": "datetime",
       },
@@ -979,10 +991,12 @@ exports[`Runtime format Social network kitchen sink 1`] = `
         "viewType": "relation",
       },
       "text": {
+        "immutable": false,
         "required": true,
         "type": "string",
       },
       "threadID": {
+        "immutable": false,
         "required": false,
         "type": "streamid",
       },

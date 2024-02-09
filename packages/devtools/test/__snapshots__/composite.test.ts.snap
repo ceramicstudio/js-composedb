@@ -2,18 +2,7 @@
 
 exports[`composite class Composite instance merge() merges composites into the instance with indices 1`] = `
 {
-  "kjzl6hvfrbw6c73rp8imlzu30z24u3ojkdw1bxm32ymoj0mbkxa41sdt6b90gtx": [
-    {
-      "fields": [
-        {
-          "path": [
-            "text",
-          ],
-        },
-      ],
-    },
-  ],
-  "kjzl6hvfrbw6c85zxgdsynde91d2nq24dnpgy0fv8p5oopyzy401yrbip8debwb": [
+  "kjzl6hvfrbw6c60gma89cmczoy4l2mc1do7xatgwcevvcln1z1k8o189rnwx8qd": [
     {
       "fields": [
         {
@@ -28,26 +17,6 @@ exports[`composite class Composite instance merge() merges composites into the i
         {
           "path": [
             "title",
-          ],
-        },
-      ],
-    },
-  ],
-  "kjzl6hvfrbw6c8vrx18erjixmhj6a1u0jxl4x2pl6wlcif8enjavftoizd0edp3": [
-    {
-      "fields": [
-        {
-          "path": [
-            "title",
-          ],
-        },
-      ],
-    },
-    {
-      "fields": [
-        {
-          "path": [
-            "status",
           ],
         },
       ],
@@ -99,6 +68,26 @@ exports[`composite class Composite instance merge() merges composites into the i
         {
           "path": [
             "title",
+          ],
+        },
+      ],
+    },
+  ],
+  "kjzl6hvfrbw6c96acxiclhpv46996g38jjuenk8idm2p8m37krloa12wmbe5gpj": [
+    {
+      "fields": [
+        {
+          "path": [
+            "title",
+          ],
+        },
+      ],
+    },
+    {
+      "fields": [
+        {
+          "path": [
+            "status",
           ],
         },
       ],

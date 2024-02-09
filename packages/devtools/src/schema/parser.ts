@@ -273,8 +273,10 @@ export class SchemaParser {
           const fields = interfaceObj.getFields()
           return Object.values(fields)
             .filter((field) => {
-              const { directives } = field.astNode as unknown as { directives: Array<string> }
-              return directives.some((directive) => directive === 'immutable')
+              const { directives } = field.astNode as unknown as {
+                directives: Array<{ name: { value: string } }>
+              }
+              return directives.some((directive) => directive.name.value === 'immutable')
             })
             .map((field) => field.name)
         })
