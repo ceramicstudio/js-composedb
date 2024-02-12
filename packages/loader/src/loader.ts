@@ -8,7 +8,7 @@ import {
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { StreamID, StreamRef } from '@ceramicnetwork/streamid'
 import type { CeramicAPI } from '@composedb/types'
-import DataLoader, { type BatchLoadFn } from 'dataloader'
+import DataLoader from 'dataloader'
 import type { Connection } from 'graphql-relay'
 
 import {
@@ -75,8 +75,6 @@ export function removeNullValues(content: Record<string, unknown>): Record<strin
   return copy
 }
 
-const tempBatchLoadFn: BatchLoadFn<LoadKey, ModelInstanceDocument> = () => Promise.resolve([])
-
 /**
  * The DocumentLoader class provides APIs to batch load and cache ModelInstanceDocument streams.
  *
@@ -92,36 +90,34 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
   #useCache: boolean
 
   constructor(params: DocumentLoaderParams) {
-    super(tempBatchLoadFn, {
-      cache: true, // Cache needs to be enabled for batching
-      cacheKeyFn: getKeyID,
-      cacheMap:
-        params.cache != null && typeof params.cache !== 'boolean' ? params.cache : undefined,
-    })
-
-    this.#deterministicKeys = params.deterministicKeysCache ?? new Map()
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore internal method
-    this._batchLoadFn = async (keys: ReadonlyArray<LoadKey>) => {
-      if (!params.cache) {
-        // Disable cache but keep batching behavior - from https://github.com/graphql/dataloader#disabling-cache
-        this.clearAll()
-      }
-      const results = await params.ceramic.multiQuery(
-        keys.map(({ id, ...rest }) => ({ streamId: id, ...rest })),
-        params.multiqueryTimeout,
-      )
-      return keys.map((key) => {
-        const id = getKeyID(key)
-        const doc = results[id]
-        return doc
-          ? (doc as unknown as ModelInstanceDocument)
-          : new Error(`Failed to load document: ${id}`)
-      })
-    }
+    super(
+      async (keys: ReadonlyArray<LoadKey>) => {
+        if (!params.cache) {
+          // Disable cache but keep batching behavior - from https://github.com/graphql/dataloader#disabling-cache
+          this.clearAll()
+        }
+        const results = await params.ceramic.multiQuery(
+          keys.map(({ id, ...rest }) => ({ streamId: id, ...rest })),
+          params.multiqueryTimeout,
+        )
+        return keys.map((key) => {
+          const id = getKeyID(key)
+          const doc = results[id]
+          return doc
+            ? (doc as unknown as ModelInstanceDocument)
+            : new Error(`Failed to load document: ${id}`)
+        })
+      },
+      {
+        cache: true, // Cache needs to be enabled for batching
+        cacheKeyFn: getKeyID,
+        cacheMap:
+          params.cache != null && typeof params.cache !== 'boolean' ? params.cache : undefined,
+      },
+    )
 
     this.#ceramic = params.ceramic
+    this.#deterministicKeys = params.deterministicKeysCache ?? new Map()
     this.#useCache = !!params.cache
   }
 
@@ -193,9 +189,7 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
   ): Promise<ModelInstanceDocument<T>> {
     const opts = { ...DEFAULT_DETERMINISTIC_OPTIONS, ...options }
     const key = await this._getDeterministicKey(meta)
-    const stream = await this.load<T>({ ...key, opts })
-    this.cache(stream)
-    return stream
+    return await this.load<T>({ ...key, opts })
   }
 
   /**

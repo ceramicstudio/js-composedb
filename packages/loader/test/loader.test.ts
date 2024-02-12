@@ -229,11 +229,13 @@ describe('loader', () => {
       const { id, genesis } = loadKey
       const multiQuery = jest.fn(() => ({ [id.toString()]: { id, metadata } }))
       const ceramic = { multiQuery } as unknown as CeramicAPI
+      const cache = new Map()
       const deterministicKeysCache = new Map()
-      const loader = new DocumentLoader({ cache: true, ceramic, deterministicKeysCache })
+      const loader = new DocumentLoader({ cache, ceramic, deterministicKeysCache })
 
       const cacheKey = getDeterministicCacheKey(metadata)
       expect(deterministicKeysCache.has(cacheKey)).toBe(false)
+      expect(cache.has(id.toString())).toBe(false)
 
       const opts = { anchor: false }
       const stream = await loader.loadSingle('did:test:123', testStreamID, opts)
@@ -243,6 +245,7 @@ describe('loader', () => {
         undefined,
       )
       expect(deterministicKeysCache.has(cacheKey)).toBe(true)
+      expect(cache.has(id.toString())).toBe(true)
       expect(loader._getDeterministicKey(metadata)).toBeDefined()
 
       await expect(loader.load(loadKey)).resolves.toBe(stream)
@@ -256,11 +259,13 @@ describe('loader', () => {
       const { id, genesis } = loadKey
       const multiQuery = jest.fn(() => ({ [id.toString()]: { id, metadata } }))
       const ceramic = { multiQuery } as unknown as CeramicAPI
+      const cache = new Map()
       const deterministicKeysCache = new Map()
-      const loader = new DocumentLoader({ cache: true, ceramic, deterministicKeysCache })
+      const loader = new DocumentLoader({ cache, ceramic, deterministicKeysCache })
 
       const cacheKey = getDeterministicCacheKey({ ...metadata, unique })
       expect(deterministicKeysCache.has(cacheKey)).toBe(false)
+      expect(cache.has(id.toString())).toBe(false)
 
       const opts = { anchor: false }
       const stream = await loader.loadSet('did:test:123', testStreamID, unique, opts)
@@ -270,6 +275,7 @@ describe('loader', () => {
         undefined,
       )
       expect(deterministicKeysCache.has(cacheKey)).toBe(true)
+      expect(cache.has(id.toString())).toBe(true)
       expect(loader._getDeterministicKey({ ...metadata, unique })).toBeDefined()
 
       await expect(loader.load(loadKey)).resolves.toBe(stream)
