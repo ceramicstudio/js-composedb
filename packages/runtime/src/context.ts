@@ -174,7 +174,8 @@ export function createContext(params: ContextParams): Context {
       if (controller == null) {
         throw new Error('Document can only be hidden with an authenticated account')
       }
-      const doc = await loader.loadSingle<Content>(controller, model, {})
+
+      const doc = await loader.load<Content>(model)
       await doc.shouldIndex(false, opts)
     },
     queryConnection: async (

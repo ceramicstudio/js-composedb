@@ -1361,7 +1361,6 @@ class SchemaBuilder {
       name: `Hide${name}`,
       inputFields: () => ({
         id: { type: new GraphQLNonNull(GraphQLID) },
-        content: { type: new GraphQLNonNull(this.#inputObjects[name]) },
         options: { type: HideOptionsInput },
       }),
       outputFields: () => ({

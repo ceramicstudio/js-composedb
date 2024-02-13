@@ -386,6 +386,43 @@ describe('runtime', () => {
     expect(updated.data?.updateNote.document).toMatchSnapshot()
   }, 20000)
 
+  test('create and hide post with comments', async () => {
+    const composite = await Composite.create({ ceramic, schema: postSchema })
+    const definition = composite.toRuntime()
+
+    const runtime = new ComposeRuntime({ ceramic, definition })
+
+    const createPostMutation = `
+      mutation CreatePost($input: CreatePostInput!) {
+        createPost(input: $input) {
+          document {
+            id
+          }
+        }
+      }
+    `
+
+    const postRes = await runtime.executeQuery<{ createPost: { document: { id: string } } }>(
+      createPostMutation,
+      { input: { content: { title: 'A first post', text: 'First post content' } } },
+    )
+    const { id } = postRes.data?.createPost.document ?? {}
+
+    const hidePostMutation = `mutation HidePost($input: HidePostInput!) {
+        hidePost(input: $input) {
+          document {
+            id
+          }
+        }
+      }`
+    const hideRes = await runtime.executeQuery<{ hidePost: { document: { id: string } } }>(
+      hidePostMutation,
+      { input: { id } },
+    )
+
+    expect(hideRes.errors).toBeUndefined()
+  }, 60000)
+
   test('relation to account reference', async () => {
     const composite = await Composite.create({ ceramic, schema: socialSchema })
     const runtime = new ComposeRuntime({ ceramic, definition: composite.toRuntime() })
