@@ -11,9 +11,11 @@ const sidebars: SidebarsConfig = {
       items: [
         { type: 'doc', id: 'api/modules/client', label: 'ComposeDB Client' },
         { type: 'doc', id: 'api/modules/runtime', label: 'ComposeDB Runtime' },
+        { type: 'doc', id: 'api/modules/loader', label: 'ComposeDB Loader' },
         { type: 'doc', id: 'api/modules/server', label: 'ComposeDB Server' },
         { type: 'doc', id: 'api/classes/client.ComposeClient', label: 'ComposeClient class' },
         { type: 'doc', id: 'api/classes/runtime.ComposeRuntime', label: 'ComposeRuntime class' },
+        { type: 'doc', id: 'api/classes/loader.DocumentLoader', label: 'DocumentLoader class' },
       ],
     },
     {

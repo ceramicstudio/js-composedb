@@ -1,6 +1,6 @@
 {
   "name": "@composedb/client",
-  "version": "0.7.0",
+  "version": "0.7.0-rc.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://composedb.js.org",
@@ -55,6 +55,7 @@
   "devDependencies": {
     "@ceramicnetwork/common": "^5.0.1-rc.0",
     "@composedb/devtools": "workspace:^",
+    "@composedb/loader": "workspace:^",
     "@composedb/test-schemas": "workspace:^",
     "@composedb/types": "workspace:^",
     "dids": "^5.0.2",

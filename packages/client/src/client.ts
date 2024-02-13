@@ -1,9 +1,9 @@
 import { CeramicClient } from '@ceramicnetwork/http-client'
+import type { DocumentCache, DocumentLoader } from '@composedb/loader'
 import {
   ComposeRuntime,
   type ComposeRuntimeParams,
   type Context,
-  type DocumentCache,
   createContext,
 } from '@composedb/runtime'
 import type { CeramicAPI, RuntimeCompositeDefinition } from '@composedb/types'
@@ -27,6 +27,10 @@ export type ComposeClientParams = {
    * development tools.
    */
   definition: RuntimeCompositeDefinition
+  /**
+   * Optional document loader.
+   */
+  loader?: DocumentLoader
   /**
    * Optional remote query executor.
    */

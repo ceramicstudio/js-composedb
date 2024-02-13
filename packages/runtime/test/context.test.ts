@@ -1,18 +1,11 @@
-import type { StreamState } from '@ceramicnetwork/common'
-import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
+import { DocumentLoader } from '@composedb/loader'
 import type { CeramicAPI } from '@composedb/types'
 import { jest } from '@jest/globals'
 import type { DID } from 'dids'
 
 import { createContext } from '../src'
-import { DocumentLoader } from '../src/loader'
 
 describe('context', () => {
-  const testState = {
-    type: ModelInstanceDocument.STREAM_TYPE_ID,
-    log: [{ cid: 'bagcqcerakszw2vsovxznyp5gfnpdj4cqm2xiv76yd24wkjewhhykovorwo6a' }],
-  } as unknown as StreamState
-
   test('isAuthenticated()', () => {
     const ceramic = {} as unknown as CeramicAPI
     const context = createContext({ ceramic })
@@ -53,7 +46,7 @@ describe('context', () => {
       const context = createContext({ ceramic, loader })
 
       await expect(context.loadDoc('testID')).resolves.toBe(expectedDoc)
-      expect(load).toHaveBeenCalledWith('testID')
+      expect(load).toHaveBeenCalledWith({ id: 'testID' })
     })
 
     test('calls the clear() method of the loader if the fresh parameter is set', async () => {
@@ -63,21 +56,9 @@ describe('context', () => {
       const context = createContext({ ceramic, loader })
 
       await context.loadDoc('testID', true)
-      expect(clear).toHaveBeenCalledWith('testID')
-      expect(load).toHaveBeenCalledWith('testID')
+      expect(clear).toHaveBeenCalledWith({ id: 'testID' })
+      expect(load).toHaveBeenCalledWith({ id: 'testID' })
     })
-  })
-
-  test('createDoc()', async () => {
-    const expectedDoc = {}
-    const create = jest.fn(() => expectedDoc)
-    const loader = { create } as unknown as DocumentLoader
-    const ceramic = {} as unknown as CeramicAPI
-    const context = createContext({ ceramic, loader })
-
-    const content = {}
-    await expect(context.createDoc('testID', content)).resolves.toBe(expectedDoc)
-    expect(create).toHaveBeenCalledWith('testID', content)
   })
 
   describe('upsertSingle', () => {
@@ -176,62 +157,6 @@ describe('context', () => {
         syncTimeoutSeconds: 30,
       })
     })
-  })
-
-  test('updateDoc()', async () => {
-    const expectedDoc = {}
-    const update = jest.fn(() => expectedDoc)
-    const loader = { update } as unknown as DocumentLoader
-    const ceramic = {} as unknown as CeramicAPI
-    const context = createContext({ ceramic, loader })
-
-    const content = {}
-    await expect(context.updateDoc('testID', content)).resolves.toBe(expectedDoc)
-    expect(update).toHaveBeenCalledWith('testID', content, undefined)
-  })
-
-  test('queryConnection()', async () => {
-    const expectedNode = {}
-    const buildStreamFromState = jest.fn(() => expectedNode)
-    const query = jest.fn(() => ({
-      edges: [
-        { cursor: 'cursor1', node: testState },
-        { cursor: 'cursor2', node: null },
-        { cursor: 'cursor3', node: testState },
-      ],
-      pageInfo: { hasNextPage: true, hasPreviousPage: false },
-    }))
-    const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicAPI
-    const context = createContext({ ceramic })
-
-    await expect(context.queryConnection({ model: 'test', first: 3 })).resolves.toEqual({
-      edges: [
-        { cursor: 'cursor1', node: expectedNode },
-        { cursor: 'cursor2', node: null },
-        { cursor: 'cursor3', node: expectedNode },
-      ],
-      pageInfo: {
-        hasNextPage: true,
-        hasPreviousPage: false,
-        startCursor: null,
-        endCursor: null,
-      },
-    })
-    expect(query).toHaveBeenCalledWith({ model: 'test', first: 3, after: undefined })
-  })
-
-  test('queryOne()', async () => {
-    const expectedNode = {}
-    const buildStreamFromState = jest.fn(() => expectedNode)
-    const query = jest.fn(() => ({
-      edges: [{ cursor: 'cursor1', node: testState }],
-      pageInfo: { hasNextPage: false, hasPreviousPage: false },
-    }))
-    const ceramic = { buildStreamFromState, index: { query } } as unknown as CeramicAPI
-    const context = createContext({ ceramic })
-
-    await expect(context.queryOne({ model: 'test' })).resolves.toBe(expectedNode)
-    expect(query).toHaveBeenCalledWith({ model: 'test', last: 1 })
   })
 
   test('queryCount()', async () => {
