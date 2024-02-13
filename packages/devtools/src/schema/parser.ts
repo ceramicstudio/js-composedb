@@ -92,12 +92,11 @@ export class SchemaParser {
           return type
         }
         const directives = getDirectives(this.#schema, type)
-        const object = this._parseObject(type)
+        const object = this._parseObject(type, directives)
         this.#def.objects[type.name] = object
         const model = this._parseModelDirective(type, directives, object)
         if (model == null) {
           throw new Error(`Missing @createModel or @loadModel directive for interface ${type.name}`)
-          // this.#def.interfaces[type.name] = this._parseObject(type)
         } else {
           this.#def.models[type.name] = model
         }
@@ -106,7 +105,7 @@ export class SchemaParser {
       [MapperKind.OBJECT_TYPE]: (type: GraphQLObjectType) => {
         const directives = getDirectives(this.#schema, type)
         const indices = this._parseIndices(directives)
-        const object = this._parseObject(type)
+        const object = this._parseObject(type, directives)
         object.indices = indices
         this.#def.objects[type.name] = object
         const model = this._parseModelDirective(type, directives, object)
@@ -268,10 +267,31 @@ export class SchemaParser {
         )
       }
 
+      const inheritedImmutableFields: Array<string> = type
+        .getInterfaces()
+        .flatMap((interfaceObj) => {
+          const fields = interfaceObj.getFields()
+          return Object.values(fields)
+            .filter((field) => {
+              const { directives } = field.astNode as unknown as {
+                directives: Array<{ name: { value: string } }>
+              }
+              return directives.some((directive) => directive.name.value === 'immutable')
+            })
+            .map((field) => field.name)
+        })
+
       return {
         action: 'create',
         interface: isInterfaceType(type),
         implements: type.getInterfaces().map((i) => i.name),
+        immutableFields: Array.from(
+          new Set(
+            Object.keys(object.properties)
+              .filter((key) => object.properties[key].immutable === true)
+              .concat(inheritedImmutableFields),
+          ),
+        ),
         description: args.description,
         accountRelation: accountRelationValue,
         relations: object.relations,
@@ -279,8 +299,11 @@ export class SchemaParser {
     }
   }
 
-  _parseObject(type: GraphQLInterfaceType | GraphQLObjectType): ObjectDefinition {
-    const { definition, references, relations } = this._parseObjectFields(type)
+  _parseObject(
+    type: GraphQLInterfaceType | GraphQLObjectType,
+    directives: Array<DirectiveAnnotation>,
+  ): ObjectDefinition {
+    const { definition, references, relations } = this._parseObjectFields(type, directives)
     return {
       // implements: type.getInterfaces().map((i) => i.name),
       properties: definition,
@@ -290,11 +313,15 @@ export class SchemaParser {
     }
   }
 
-  _parseObjectFields(type: GraphQLInterfaceType | GraphQLObjectType): IntermediaryObjectDefinition {
+  _parseObjectFields(
+    type: GraphQLInterfaceType | GraphQLObjectType,
+    directives: Array<DirectiveAnnotation>,
+  ): IntermediaryObjectDefinition {
     const objectFields = type.getFields()
     const fields: ObjectFieldsDefinition = {}
     let references: Array<string> = []
     const relations: ModelRelationsDefinition = {}
+    const hasCreateModel = directives.some((directive) => directive.name === 'createModel') ?? false
 
     for (const [key, value] of Object.entries(objectFields)) {
       const directives = getDirectives(this.#schema, value)
@@ -312,7 +339,14 @@ export class SchemaParser {
       if (view != null) {
         fields[key] = view
       } else if (isListType(innerType)) {
-        const list = this._parseListType(type.name, key, innerType, required, directives)
+        const list = this._parseListType(
+          type.name,
+          key,
+          innerType,
+          required,
+          directives,
+          hasCreateModel,
+        )
         fields[key] = list.definition
         references = [...references, ...list.references]
       } else {
@@ -320,7 +354,8 @@ export class SchemaParser {
         if (listDirective != null) {
           throw new Error(`Unexpected @list directive on field ${key} of object ${type.name}`)
         }
-        const item = this._parseItemType(type.name, key, value.type, directives)
+
+        const item = this._parseItemType(type.name, key, value.type, directives, hasCreateModel)
         fields[key] = item.definition
         references = [...references, ...item.references]
       }
@@ -370,14 +405,14 @@ export class SchemaParser {
               `Unsupported @documentAccount directive on field ${fieldName} of object ${objectName}, @documentAccount can only be set on a DID scalar`,
             )
           }
-          return { type: 'view', required: true, viewType: 'documentAccount' }
+          return { type: 'view', required: true, immutable: false, viewType: 'documentAccount' }
         case 'documentVersion':
           if (!isScalarType(type) || type.name !== 'CommitID') {
             throw new Error(
               `Unsupported @documentVersion directive on field ${fieldName} of object ${objectName}, @documentVersion can only be set on a CommitID scalar`,
             )
           }
-          return { type: 'view', required: true, viewType: 'documentVersion' }
+          return { type: 'view', required: true, immutable: false, viewType: 'documentVersion' }
         case 'relationDocument': {
           if (!isInterfaceType(type) && !isObjectType(type)) {
             throw new Error(
@@ -398,6 +433,7 @@ export class SchemaParser {
           return {
             type: 'view',
             required: false,
+            immutable: false,
             viewType: 'relation',
             relation: {
               source: 'document',
@@ -422,6 +458,7 @@ export class SchemaParser {
           return {
             type: 'view',
             required: true,
+            immutable: false,
             viewType: 'relation',
             relation: { source: 'queryConnection', model, property },
           }
@@ -447,6 +484,7 @@ export class SchemaParser {
           return {
             type: 'view',
             required: true,
+            immutable: false,
             viewType: 'relation',
             relation: { source: 'queryCount', model, property },
           }
@@ -480,6 +518,7 @@ export class SchemaParser {
     type: GraphQLList<GraphQLType>,
     required: boolean,
     directives: Array<DirectiveAnnotation>,
+    hasCreateModel: boolean,
   ): DefinitionWithReferences<ListFieldDefinition> {
     const list = directives.find((d) => d.name === 'list')
     if (list == null) {
@@ -491,7 +530,7 @@ export class SchemaParser {
       )
     }
 
-    const item = this._parseItemType(objectName, fieldName, type.ofType, directives)
+    const item = this._parseItemType(objectName, fieldName, type.ofType, directives, hasCreateModel)
     const definition: ListFieldDefinition = {
       type: 'list',
       required,
@@ -509,8 +548,15 @@ export class SchemaParser {
     fieldName: string,
     type: GraphQLType,
     directives: Array<DirectiveAnnotation>,
+    hasCreateModel: boolean,
   ): DefinitionWithReferences<ItemDefinition> {
     const required = isNonNullType(type)
+    const immutable = directives.some((item) => item.name === 'immutable')
+    if (immutable && !hasCreateModel) {
+      throw new Error(
+        `Unsupported immutable directive for ${fieldName} on nested object ${objectName}`,
+      )
+    }
     const innerType = required ? type.ofType : type
     if (isListType(innerType)) {
       throw new Error(`Unsupported nested list on field ${fieldName} of object ${objectName}`)
@@ -519,7 +565,7 @@ export class SchemaParser {
     const referenceType = this._getReferenceFieldType(innerType)
     if (referenceType != null) {
       return {
-        definition: { type: referenceType, required, name: innerType.name },
+        definition: { type: referenceType, required, immutable, name: innerType.name },
         references: [innerType.name],
       }
     }
@@ -529,6 +575,7 @@ export class SchemaParser {
         definition: {
           type: 'scalar',
           required,
+          immutable,
           schema: this._parseScalarSchema(objectName, fieldName, innerType, directives),
         },
         references: [],

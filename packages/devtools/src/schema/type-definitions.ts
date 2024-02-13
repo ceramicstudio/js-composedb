@@ -2,14 +2,14 @@ import { DOC_ID_FIELD, NODE_INTERFACE_NAME } from '../constants.js'
 
 import { extraScalars } from './scalars.js'
 
-const scarlarDefinitions = Object.keys(extraScalars)
+const scalarDefinitions = Object.keys(extraScalars)
   .map((name) => `scalar ${name}`)
   .join('\n')
 
 export const typeDefinitions = `
 # Added scalars
 
-${scarlarDefinitions}
+${scalarDefinitions}
 
 # Field validation and configuration
 
@@ -26,6 +26,7 @@ directive @list(minLength: Int, maxLength: Int!) on FIELD_DEFINITION
 
 directive @documentAccount on FIELD_DEFINITION
 directive @documentVersion on FIELD_DEFINITION
+directive @immutable on FIELD_DEFINITION
 
 # Relation definitions
 

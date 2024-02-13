@@ -12,6 +12,7 @@ export { type Field } from '@ceramicnetwork/common'
 
 export type FieldCommonDefinition = {
   required: boolean
+  immutable?: boolean
 }
 
 export type EnumFieldDefinition = FieldCommonDefinition & {
@@ -62,6 +63,7 @@ export type ParsedCreateModelDefinition = {
   description: string
   accountRelation: ModelAccountRelationV2
   relations: ModelRelationsDefinitionV2
+  immutableFields: Array<string>
 }
 
 export type ParsedLoadModelDefinition = {

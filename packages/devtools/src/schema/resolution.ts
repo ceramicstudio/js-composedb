@@ -119,6 +119,7 @@ function executeCreateFactory(
       relationsPromise,
       promiseMap(viewsPromises, (viewPromise) => viewPromise),
     ])
+
     // Always convert to a v2 definition
     const newDefinition: ModelDefinitionV2 = {
       version: '2.0',
@@ -128,6 +129,7 @@ function executeCreateFactory(
       interface: isV1 ? false : sourceDefinition.interface,
       implements: implementIDs,
       schema: sourceDefinition.schema,
+      immutableFields: isV1 ? [] : sourceDefinition.immutableFields,
       relations,
       views,
     }
