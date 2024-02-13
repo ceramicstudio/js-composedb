@@ -1,6 +1,7 @@
-import type { BaseQuery, ObjectFilter, QueryFilters, Sorting } from '@ceramicnetwork/common'
+import type { BaseQuery, QueryFilters, Sorting } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { CeramicCommitID, getScalar } from '@composedb/graphql-scalars'
+import type { UpdateDocOptions } from '@composedb/loader'
 import type {
   RuntimeCompositeDefinition,
   RuntimeList,
@@ -16,6 +17,7 @@ import type {
   RuntimeViewReference,
 } from '@composedb/types'
 import {
+  type GraphQLArgumentConfig,
   GraphQLBoolean,
   GraphQLEnumType,
   type GraphQLEnumValueConfigMap,
@@ -35,9 +37,9 @@ import {
   GraphQLSchema,
   GraphQLString,
   assertValidSchema,
-  GraphQLArgumentConfig,
   isInterfaceType,
 } from 'graphql'
+import type { ObjMap } from 'graphql/jsutils/ObjMap'
 import {
   type Connection,
   type ConnectionArguments,
@@ -48,9 +50,7 @@ import {
 } from 'graphql-relay'
 
 import type { Context } from './context.js'
-import type { UpdateDocOptions } from './loader.js'
 import { assertValidQueryFilters, createRelationQueryFilters } from './query.js'
-import { ObjMap } from 'graphql/jsutils/ObjMap'
 
 const NON_SCALAR_FIELD_TYPES: Array<RuntimeObjectField['type']> = [
   'meta',
@@ -340,7 +340,7 @@ class SchemaBuilder {
                   ctx,
                 ): Promise<Connection<ModelInstanceDocument | null>> => {
                   const query = createAccountReferenceQuery([model.id], account, reference, filters)
-                  return await ctx.queryConnection({ ...query, ...args })
+                  return await ctx.loader.queryConnection({ ...query, ...args })
                 },
               }
               config[`${alias}Count`] = {
@@ -362,7 +362,7 @@ class SchemaBuilder {
               config[alias] = {
                 type: this.#types[reference.name],
                 resolve: async (account, _, ctx): Promise<ModelInstanceDocument | null> => {
-                  return await ctx.queryOne({ account, models: [model.id] })
+                  return await ctx.loader.loadSingle(account, model.id)
                 },
               }
               break
@@ -388,15 +388,11 @@ class SchemaBuilder {
                   args: FilterWithArgument,
                   ctx,
                 ): Promise<ModelInstanceDocument | null> => {
-                  const where: ObjectFilter = {}
-                  for (const field of relationFields) {
-                    where[field] = { equalTo: args.with[field] }
-                  }
-                  return await ctx.queryOne({
-                    account,
-                    models: [model.id],
-                    queryFilters: { where },
+                  const unique = relationFields.map((field) => {
+                    const value = args.with[field]
+                    return value ? String(value) : ''
                   })
+                  return await ctx.loader.loadSet(account, model.id, unique)
                 },
               }
               break
@@ -409,11 +405,10 @@ class SchemaBuilder {
                 )
               }
 
+              const relationFields = model.accountRelation.fields
               const args: ObjMap<GraphQLArgumentConfig> = { account: accountRelationArg }
               // Check if other fields than the reference property need to be provided and create an input as needed
-              const withFields = model.accountRelation.fields.filter(
-                (field) => field !== reference.property,
-              )
+              const withFields = relationFields.filter((field) => field !== reference.property)
               if (withFields.length !== 0) {
                 // The SET reference requires a dedicated input object to specify the set fields values
                 const withInput = this._buildSetInputObjectType(
@@ -436,19 +431,14 @@ class SchemaBuilder {
                   if (refAccount == null) {
                     return null
                   }
-                  // Filter based on the reference property
-                  const where: ObjectFilter = {
-                    [reference.property]: { equalTo: account },
-                  }
-                  // Add extra filters for the other set fields, if any
-                  for (const field of withFields) {
-                    where[field] = { equalTo: args.with[field] }
-                  }
-                  return await ctx.queryOne({
-                    account: refAccount,
-                    models: [model.id],
-                    queryFilters: { where },
+                  const unique = relationFields.map((field) => {
+                    if (field === reference.property) {
+                      return account
+                    }
+                    const value = args.with[field]
+                    return value ? String(value) : ''
                   })
+                  return await ctx.loader.loadSet(refAccount, model.id, unique)
                 },
               }
 
@@ -855,7 +845,7 @@ class SchemaBuilder {
               doc.id.toString(),
               args.filters,
             )
-            return await ctx.queryConnection({
+            return await ctx.loader.queryConnection({
               ...args,
               account,
               models: [relationModel],
@@ -905,11 +895,10 @@ class SchemaBuilder {
           )
         }
 
+        const relationFields = model.accountRelation.fields
         const args: ObjMap<GraphQLArgumentConfig> = { account: accountRelationArg }
         // Check if other fields than the relation property need to be provided and create an input as needed
-        const withFields = model.accountRelation.fields.filter(
-          (field) => field !== relation.property,
-        )
+        const withFields = relationFields.filter((field) => field !== relation.property)
         if (withFields.length !== 0) {
           const withInput = this._buildSetInputObjectType(modelAlias, withFields, relation.property)
           args.with = { type: new GraphQLNonNull(withInput) }
@@ -927,19 +916,14 @@ class SchemaBuilder {
             if (account == null) {
               return null
             }
-            // Filter based on the relation property
-            const where: ObjectFilter = {
-              [relation.property]: { equalTo: doc.id.toString() },
-            }
-            // Add extra filters for the other set fields, if any
-            for (const field of withFields) {
-              where[field] = { equalTo: args.with[field] }
-            }
-            return await ctx.queryOne({
-              account,
-              models: [model.id],
-              queryFilters: { where },
+            const unique = relationFields.map((field) => {
+              if (field === relation.property) {
+                return doc.id.toString()
+              }
+              const value = args.with[field]
+              return value ? String(value) : ''
             })
+            return await ctx.loader.loadSet(account, model.id, unique)
           },
         }
       }
@@ -1216,7 +1200,7 @@ class SchemaBuilder {
             if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
               throw new Error('Ceramic instance is not authenticated')
             }
-            const document = await ctx.createDoc(model.id, input.content)
+            const document = await ctx.loader.create(model.id, input.content)
             return { document }
           },
         })
@@ -1327,7 +1311,7 @@ class SchemaBuilder {
         if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
           throw new Error('Ceramic instance is not authenticated')
         }
-        return { document: await ctx.updateDoc(input.id, input.content, input.options) }
+        return { document: await ctx.loader.update(input.id, input.content, input.options) }
       },
     })
   }
@@ -1362,7 +1346,11 @@ class SchemaBuilder {
           if (filters != null) {
             assertValidQueryFilters(filters)
           }
-          return await ctx.queryConnection({ ...args, queryFilters: filters, models: [model.id] })
+          return await ctx.loader.queryConnection({
+            ...args,
+            queryFilters: filters,
+            models: [model.id],
+          })
         },
       }
       queryFields[`${first}${rest}Count`] = {

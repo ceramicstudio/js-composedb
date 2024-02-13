@@ -1,11 +1,8 @@
 import type { BaseQuery, CreateOpts } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import type { CommitID, StreamID } from '@ceramicnetwork/streamid'
+import { type DocumentCache, DocumentLoader } from '@composedb/loader'
 import type { CeramicAPI } from '@composedb/types'
-import type { Connection } from 'graphql-relay'
-
-import { type ConnectionQuery, queryConnection, queryOne } from './query.js'
-import { type DocumentCache, DocumentLoader, type UpdateDocOptions } from './loader.js'
 
 export type ContextParams = {
   /**
@@ -52,13 +49,6 @@ export type Context = {
     fresh?: boolean,
   ) => Promise<ModelInstanceDocument<Content>>
   /**
-   * Create a new document with the given model and content.
-   */
-  createDoc: <Content extends Record<string, any>>(
-    model: string,
-    content: Content,
-  ) => Promise<ModelInstanceDocument<Content>>
-  /**
    * Create or update a document using the SINGLE account relation with the
    * given model and content.
    */
@@ -78,25 +68,9 @@ export type Context = {
     options?: CreateOpts,
   ) => Promise<ModelInstanceDocument<Content>>
   /**
-   * Update an existing document.
-   */
-  updateDoc: <Content extends Record<string, any>>(
-    id: string | StreamID,
-    content: Content,
-    options?: UpdateDocOptions,
-  ) => Promise<ModelInstanceDocument<Content>>
-  /**
-   * Query the index for a connection of documents.
-   */
-  queryConnection: (query: ConnectionQuery) => Promise<Connection<ModelInstanceDocument | null>>
-  /**
    * Query the index for the total number of documents matching the query parameters.
    */
   queryCount: (query: BaseQuery) => Promise<number>
-  /**
-   * Query the index for a single document.
-   */
-  queryOne: (query: BaseQuery) => Promise<ModelInstanceDocument | null>
 }
 
 export function createContext(params: ContextParams): Context {
@@ -117,16 +91,11 @@ export function createContext(params: ContextParams): Context {
       id: string | CommitID | StreamID,
       fresh = false,
     ): Promise<ModelInstanceDocument<Content>> => {
+      const key = { id }
       if (fresh) {
-        loader.clear(id)
+        loader.clear(key)
       }
-      return await loader.load<Content>(id)
-    },
-    createDoc: async <Content extends Record<string, any> = Record<string, any>>(
-      model: string,
-      content: Content,
-    ): Promise<ModelInstanceDocument<Content>> => {
-      return await loader.create(model, content)
+      return await loader.load<Content>(key)
     },
     upsertSingle: async <Content extends Record<string, any> = Record<string, any>>(
       model: string,
@@ -155,23 +124,8 @@ export function createContext(params: ContextParams): Context {
       await doc.replace(content)
       return doc
     },
-    updateDoc: async <Content extends Record<string, any> = Record<string, any>>(
-      id: string | StreamID,
-      content: Content,
-      options?: UpdateDocOptions,
-    ): Promise<ModelInstanceDocument<Content>> => {
-      return await loader.update(id, content, options)
-    },
-    queryConnection: async (
-      query: ConnectionQuery,
-    ): Promise<Connection<ModelInstanceDocument | null>> => {
-      return await queryConnection(ceramic, query)
-    },
     queryCount: async (query: BaseQuery): Promise<number> => {
       return await ceramic.index.count(query)
-    },
-    queryOne: async (query: BaseQuery): Promise<ModelInstanceDocument | null> => {
-      return await queryOne(ceramic, query)
     },
   }
 }
