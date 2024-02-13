@@ -190,6 +190,39 @@ describe('context', () => {
     expect(update).toHaveBeenCalledWith('testID', content, undefined)
   })
 
+  describe('hideDoc', () => {
+    test('throws an error if the viewerID is not set', async () => {
+      const shouldIndex = jest.fn()
+      const expectedDoc = { shouldIndex }
+      const loadSingle = jest.fn(() => expectedDoc)
+      const loader = { loadSingle } as unknown as DocumentLoader
+      const ceramic = {} as unknown as CeramicAPI
+      const context = createContext({ ceramic, loader })
+
+      await expect(context.hideDoc('testID')).rejects.toThrow(
+        'Document can only be hidden with an authenticated account',
+      )
+      expect(loadSingle).not.toHaveBeenCalled()
+      expect(shouldIndex).not.toHaveBeenCalled()
+    })
+
+    test('sets shouldIndex as false', async () => {
+      const viewerID = 'did:test:123'
+      const model = 'testID'
+      const shouldIndex = jest.fn()
+      const expectedDoc = { shouldIndex }
+      const loadSingle = jest.fn(() => expectedDoc)
+      const loader = { loadSingle } as unknown as DocumentLoader
+      const ceramic = { did: { id: viewerID } } as unknown as CeramicAPI
+      const context = createContext({ ceramic, loader })
+
+      await expect(context.hideDoc(model)).resolves.toBeUndefined()
+
+      expect(loadSingle).toHaveBeenCalledWith(viewerID, model, {})
+      expect(shouldIndex).toHaveBeenCalledWith(false, undefined)
+    })
+  })
+
   test('queryConnection()', async () => {
     const expectedNode = {}
     const buildStreamFromState = jest.fn(() => expectedNode)

@@ -285,11 +285,13 @@ export class SchemaParser {
         action: 'create',
         interface: isInterfaceType(type),
         implements: type.getInterfaces().map((i) => i.name),
-        immutableFields: Array.from(new Set(
-          Object.keys(object.properties)
-            .filter((key) => object.properties[key].immutable === true)
-            .concat(inheritedImmutableFields)
-        )),
+        immutableFields: Array.from(
+          new Set(
+            Object.keys(object.properties)
+              .filter((key) => object.properties[key].immutable === true)
+              .concat(inheritedImmutableFields),
+          ),
+        ),
         description: args.description,
         accountRelation: accountRelationValue,
         relations: object.relations,

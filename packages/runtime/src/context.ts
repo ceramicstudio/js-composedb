@@ -1,4 +1,4 @@
-import type { BaseQuery, CreateOpts } from '@ceramicnetwork/common'
+import type { BaseQuery, CreateOpts, UpdateOpts } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import type { CommitID, StreamID } from '@ceramicnetwork/streamid'
 import type { CeramicAPI } from '@composedb/types'
@@ -86,6 +86,10 @@ export type Context = {
     options?: UpdateDocOptions,
   ) => Promise<ModelInstanceDocument<Content>>
   /**
+   * Hides/soft delete an existing document.
+   */
+  hideDoc: (model: string, opts?: UpdateOpts) => Promise<void>
+  /**
    * Query the index for a connection of documents.
    */
   queryConnection: (query: ConnectionQuery) => Promise<Connection<ModelInstanceDocument | null>>
@@ -161,6 +165,17 @@ export function createContext(params: ContextParams): Context {
       options?: UpdateDocOptions,
     ): Promise<ModelInstanceDocument<Content>> => {
       return await loader.update(id, content, options)
+    },
+    hideDoc: async <Content extends Record<string, any> = Record<string, any>>(
+      model: string,
+      opts?: UpdateOpts,
+    ): Promise<void> => {
+      const controller = getViewerID()
+      if (controller == null) {
+        throw new Error('Document can only be hidden with an authenticated account')
+      }
+      const doc = await loader.loadSingle<Content>(controller, model, {})
+      await doc.shouldIndex(false, opts)
     },
     queryConnection: async (
       query: ConnectionQuery,
