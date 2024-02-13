@@ -1,6 +1,11 @@
-import type { BaseQuery, ObjectFilter, QueryFilters, Sorting } from '@ceramicnetwork/common'
+import {
+  type BaseQuery,
+  type ObjectFilter,
+  type QueryFilters,
+  type Sorting,
+} from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
-import { CeramicCommitID, getScalar } from '@composedb/graphql-scalars'
+import { CeramicCommitID, GraphQLDID, getScalar } from '@composedb/graphql-scalars'
 import type {
   RuntimeCompositeDefinition,
   RuntimeList,
@@ -48,7 +53,7 @@ import {
 } from 'graphql-relay'
 
 import type { Context } from './context.js'
-import type { UpdateDocOptions } from './loader.js'
+import type { UpdateDocOptions, UpdateOptions } from './loader.js'
 import { assertValidQueryFilters, createRelationQueryFilters } from './query.js'
 import { ObjMap } from 'graphql/jsutils/ObjMap'
 
@@ -174,6 +179,27 @@ const UpdateOptionsInput = new GraphQLInputObjectType({
     version: {
       type: CeramicCommitID,
       description: 'Only perform mutation if the document matches the provided version',
+    },
+  },
+})
+
+const CeramicSignerInputType = new GraphQLInputObjectType({
+  name: 'CeramicSignerInput',
+  fields: {
+    isAuthenticated: { type: GraphQLBoolean },
+  },
+})
+
+const HideOptionsInput = new GraphQLInputObjectType({
+  name: 'HideOptionsInput',
+  fields: {
+    asDID: {
+      type: GraphQLDID,
+      description: 'DID for the signer(Optional)',
+    },
+    signer: {
+      type: CeramicSignerInputType,
+      description: 'Ceramic signer (Optional)',
     },
   },
 })
@@ -1328,6 +1354,25 @@ class SchemaBuilder {
           throw new Error('Ceramic instance is not authenticated')
         }
         return { document: await ctx.updateDoc(input.id, input.content, input.options) }
+      },
+    })
+
+    this.#mutations[`hide${name}`] = mutationWithClientMutationId({
+      name: `Hide${name}`,
+      inputFields: () => ({
+        id: { type: new GraphQLNonNull(GraphQLID) },
+        content: { type: new GraphQLNonNull(this.#inputObjects[name]) },
+        options: { type: HideOptionsInput },
+      }),
+      outputFields: () => ({
+        ...queryFields,
+        document: { type: new GraphQLNonNull(this.#types[name]) },
+      }),
+      mutateAndGetPayload: async (input: { id: string; options?: UpdateOptions }, ctx: Context) => {
+        if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
+          throw new Error('Ceramic instance is not authenticated')
+        }
+        return { document: await ctx.hideDoc(input.id, input.options) }
       },
     })
   }
