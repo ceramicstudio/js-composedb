@@ -1365,7 +1365,7 @@ class SchemaBuilder {
       }),
       outputFields: () => ({
         ...queryFields,
-        document: { type: new GraphQLNonNull(this.#types[name]) },
+        document: { type: this.#types[name] },
       }),
       mutateAndGetPayload: async (input: { id: string; options?: UpdateOptions }, ctx: Context) => {
         if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {

@@ -198,7 +198,7 @@ type HideFavoritePayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: Favorite!
+  document: Favorite
   clientMutationId: String
 }
 
@@ -1601,7 +1601,7 @@ type HideMyImagePayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: MyImage!
+  document: MyImage
   clientMutationId: String
 }
 
@@ -1689,7 +1689,7 @@ type HideMyAudioPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: MyAudio!
+  document: MyAudio
   clientMutationId: String
 }
 
@@ -1764,7 +1764,7 @@ type HideMyVideoPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: MyVideo!
+  document: MyVideo
   clientMutationId: String
 }
 
@@ -1833,7 +1833,7 @@ type HideMyMediaCollectionItemPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: MyMediaCollectionItem!
+  document: MyMediaCollectionItem
   clientMutationId: String
 }
 
@@ -1902,7 +1902,7 @@ type HideMyMediaCollectionPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: MyMediaCollection!
+  document: MyMediaCollection
   clientMutationId: String
 }
 
@@ -2244,7 +2244,7 @@ type HideNoteBookPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: NoteBook!
+  document: NoteBook
   clientMutationId: String
 }
 
@@ -2332,7 +2332,7 @@ type HideNotePayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: Note!
+  document: Note
   clientMutationId: String
 }
 
@@ -2677,7 +2677,7 @@ type HidePostPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: Post!
+  document: Post
   clientMutationId: String
 }
 
@@ -2761,7 +2761,7 @@ type HideCommentPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: Comment!
+  document: Comment
   clientMutationId: String
 }
 
@@ -3158,7 +3158,7 @@ type HideGenericProfilePayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: GenericProfile!
+  document: GenericProfile
   clientMutationId: String
 }
 
@@ -3266,7 +3266,7 @@ type HideSocialProfilePayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: SocialProfile!
+  document: SocialProfile
   clientMutationId: String
 }
 
@@ -3361,7 +3361,7 @@ type HidePersonProfilePayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: PersonProfile!
+  document: PersonProfile
   clientMutationId: String
 }
 
@@ -4075,7 +4075,7 @@ type HideTextPostPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: TextPost!
+  document: TextPost
   clientMutationId: String
 }
 
@@ -4160,7 +4160,7 @@ type HideLikePayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: Like!
+  document: Like
   clientMutationId: String
 }
 
@@ -4228,7 +4228,7 @@ type HideTagPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: Tag!
+  document: Tag
   clientMutationId: String
 }
 
@@ -4296,7 +4296,7 @@ type HidePostTagPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: PostTag!
+  document: PostTag
   clientMutationId: String
 }
 
@@ -4364,7 +4364,7 @@ type HideFollowsPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: Follows!
+  document: Follows
   clientMutationId: String
 }
 
@@ -4707,7 +4707,7 @@ type HideExtraScalarsPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: ExtraScalars!
+  document: ExtraScalars
   clientMutationId: String
 }
 
