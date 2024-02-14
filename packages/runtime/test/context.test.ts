@@ -211,14 +211,15 @@ describe('context', () => {
       const model = 'testID'
       const shouldIndex = jest.fn()
       const expectedDoc = { shouldIndex }
+      const load = jest.fn(() => expectedDoc)
       const loadSingle = jest.fn(() => expectedDoc)
-      const loader = { loadSingle } as unknown as DocumentLoader
+      const loader = { loadSingle, load } as unknown as DocumentLoader
       const ceramic = { did: { id: viewerID } } as unknown as CeramicAPI
       const context = createContext({ ceramic, loader })
 
       await expect(context.hideDoc(model)).resolves.toBeUndefined()
 
-      expect(loadSingle).toHaveBeenCalledWith(viewerID, model, {})
+      expect(load).toHaveBeenCalledWith(model)
       expect(shouldIndex).toHaveBeenCalledWith(false, undefined)
     })
   })

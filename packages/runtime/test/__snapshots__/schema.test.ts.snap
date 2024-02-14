@@ -115,6 +115,7 @@ type FavoriteEdge {
 type Mutation {
   setFavorite(input: SetFavoriteInput!): SetFavoritePayload
   updateFavorite(input: UpdateFavoriteInput!): UpdateFavoritePayload
+  hideFavorite(input: HideFavoriteInput!): HideFavoritePayload
 }
 
 type SetFavoritePayload {
@@ -186,7 +187,43 @@ input UpdateOptionsInput {
 }
 
 """A Ceramic Commit ID"""
-scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")"
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
+
+type HideFavoritePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Favorite!
+  clientMutationId: String
+}
+
+input HideFavoriteInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
+}
+
+input HideOptionsInput {
+  """DID for the signer(Optional)"""
+  asDID: DID
+
+  """Ceramic signer (Optional)"""
+  signer: CeramicSignerInput
+}
+
+"""
+A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
+"""
+scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
+
+input CeramicSignerInput {
+  isAuthenticated: Boolean
+}"
 `;
 
 exports[`schema media interfaces 1`] = `
@@ -1468,14 +1505,19 @@ input MyMediaCollectionSortingInput {
 type Mutation {
   createMyImage(input: CreateMyImageInput!): CreateMyImagePayload
   updateMyImage(input: UpdateMyImageInput!): UpdateMyImagePayload
+  hideMyImage(input: HideMyImageInput!): HideMyImagePayload
   createMyAudio(input: CreateMyAudioInput!): CreateMyAudioPayload
   updateMyAudio(input: UpdateMyAudioInput!): UpdateMyAudioPayload
+  hideMyAudio(input: HideMyAudioInput!): HideMyAudioPayload
   createMyVideo(input: CreateMyVideoInput!): CreateMyVideoPayload
   updateMyVideo(input: UpdateMyVideoInput!): UpdateMyVideoPayload
+  hideMyVideo(input: HideMyVideoInput!): HideMyVideoPayload
   createMyMediaCollectionItem(input: CreateMyMediaCollectionItemInput!): CreateMyMediaCollectionItemPayload
   updateMyMediaCollectionItem(input: UpdateMyMediaCollectionItemInput!): UpdateMyMediaCollectionItemPayload
+  hideMyMediaCollectionItem(input: HideMyMediaCollectionItemInput!): HideMyMediaCollectionItemPayload
   createMyMediaCollection(input: CreateMyMediaCollectionInput!): CreateMyMediaCollectionPayload
   updateMyMediaCollection(input: UpdateMyMediaCollectionInput!): UpdateMyMediaCollectionPayload
+  hideMyMediaCollection(input: HideMyMediaCollectionInput!): HideMyMediaCollectionPayload
 }
 
 type CreateMyImagePayload {
@@ -1550,6 +1592,42 @@ input UpdateOptionsInput {
 """A Ceramic Commit ID"""
 scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
 
+type HideMyImagePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyImage!
+  clientMutationId: String
+}
+
+input HideMyImageInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
+}
+
+input HideOptionsInput {
+  """DID for the signer(Optional)"""
+  asDID: DID
+
+  """Ceramic signer (Optional)"""
+  signer: CeramicSignerInput
+}
+
+"""
+A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
+"""
+scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
+
+input CeramicSignerInput {
+  isAuthenticated: Boolean
+}
+
 type CreateMyAudioPayload {
   """Fetches an object given its ID"""
   node(
@@ -1600,6 +1678,25 @@ input PartialMyAudioInput {
   size: Int
   duration: Duration
   info: MediaInfoInput
+}
+
+type HideMyAudioPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyAudio!
+  clientMutationId: String
+}
+
+input HideMyAudioInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
 }
 
 type CreateMyVideoPayload {
@@ -1658,6 +1755,25 @@ input PartialMyVideoInput {
   info: MediaInfoInput
 }
 
+type HideMyVideoPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyVideo!
+  clientMutationId: String
+}
+
+input HideMyVideoInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
+}
+
 type CreateMyMediaCollectionItemPayload {
   """Fetches an object given its ID"""
   node(
@@ -1708,6 +1824,25 @@ input PartialMyMediaCollectionItemInput {
   createdAt: DateTime
 }
 
+type HideMyMediaCollectionItemPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyMediaCollectionItem!
+  clientMutationId: String
+}
+
+input HideMyMediaCollectionItemInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
+}
+
 type CreateMyMediaCollectionPayload {
   """Fetches an object given its ID"""
   node(
@@ -1756,6 +1891,25 @@ input PartialMyMediaCollectionInput {
   name: String
   description: String
   createdAt: DateTime
+}
+
+type HideMyMediaCollectionPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyMediaCollection!
+  clientMutationId: String
+}
+
+input HideMyMediaCollectionInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
 }"
 `;
 
@@ -2019,8 +2173,10 @@ input NoteBookSortingInput {
 type Mutation {
   createNoteBook(input: CreateNoteBookInput!): CreateNoteBookPayload
   updateNoteBook(input: UpdateNoteBookInput!): UpdateNoteBookPayload
+  hideNoteBook(input: HideNoteBookInput!): HideNoteBookPayload
   createNote(input: CreateNoteInput!): CreateNotePayload
   updateNote(input: UpdateNoteInput!): UpdateNotePayload
+  hideNote(input: HideNoteInput!): HideNotePayload
 }
 
 type CreateNoteBookPayload {
@@ -2079,6 +2235,42 @@ input UpdateOptionsInput {
   version: CeramicCommitID
 }
 
+type HideNoteBookPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: NoteBook!
+  clientMutationId: String
+}
+
+input HideNoteBookInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
+}
+
+input HideOptionsInput {
+  """DID for the signer(Optional)"""
+  asDID: DID
+
+  """Ceramic signer (Optional)"""
+  signer: CeramicSignerInput
+}
+
+"""
+A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
+"""
+scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
+
+input CeramicSignerInput {
+  isAuthenticated: Boolean
+}
+
 type CreateNotePayload {
   """Fetches an object given its ID"""
   node(
@@ -2129,6 +2321,25 @@ input PartialNoteInput {
   status: NoteStatus
   title: String
   text: String
+}
+
+type HideNotePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Note!
+  clientMutationId: String
+}
+
+input HideNoteInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
 }"
 `;
 
@@ -2391,8 +2602,10 @@ input PostSortingInput {
 type Mutation {
   createPost(input: CreatePostInput!): CreatePostPayload
   updatePost(input: UpdatePostInput!): UpdatePostPayload
+  hidePost(input: HidePostInput!): HidePostPayload
   createComment(input: CreateCommentInput!): CreateCommentPayload
   updateComment(input: UpdateCommentInput!): UpdateCommentPayload
+  hideComment(input: HideCommentInput!): HideCommentPayload
 }
 
 type CreatePostPayload {
@@ -2455,6 +2668,42 @@ input UpdateOptionsInput {
   version: CeramicCommitID
 }
 
+type HidePostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Post!
+  clientMutationId: String
+}
+
+input HidePostInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
+}
+
+input HideOptionsInput {
+  """DID for the signer(Optional)"""
+  asDID: DID
+
+  """Ceramic signer (Optional)"""
+  signer: CeramicSignerInput
+}
+
+"""
+A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
+"""
+scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
+
+input CeramicSignerInput {
+  isAuthenticated: Boolean
+}
+
 type CreateCommentPayload {
   """Fetches an object given its ID"""
   node(
@@ -2501,6 +2750,25 @@ input UpdateCommentInput {
 input PartialCommentInput {
   postID: CeramicStreamID
   text: String
+}
+
+type HideCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Comment!
+  clientMutationId: String
+}
+
+input HideCommentInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
 }"
 `;
 
@@ -2769,12 +3037,15 @@ type Mutation {
   setGenericProfile(input: SetGenericProfileInput!): SetGenericProfilePayload
   createGenericProfile(input: CreateGenericProfileInput!): CreateGenericProfilePayload @deprecated(reason: "Replaced by the setGenericProfile mutation, createGenericProfile will be removed in a future version of ComposeDB.")
   updateGenericProfile(input: UpdateGenericProfileInput!): UpdateGenericProfilePayload
+  hideGenericProfile(input: HideGenericProfileInput!): HideGenericProfilePayload
   setSocialProfile(input: SetSocialProfileInput!): SetSocialProfilePayload
   createSocialProfile(input: CreateSocialProfileInput!): CreateSocialProfilePayload @deprecated(reason: "Replaced by the setSocialProfile mutation, createSocialProfile will be removed in a future version of ComposeDB.")
   updateSocialProfile(input: UpdateSocialProfileInput!): UpdateSocialProfilePayload
+  hideSocialProfile(input: HideSocialProfileInput!): HideSocialProfilePayload
   setPersonProfile(input: SetPersonProfileInput!): SetPersonProfilePayload
   createPersonProfile(input: CreatePersonProfileInput!): CreatePersonProfilePayload @deprecated(reason: "Replaced by the setPersonProfile mutation, createPersonProfile will be removed in a future version of ComposeDB.")
   updatePersonProfile(input: UpdatePersonProfileInput!): UpdatePersonProfilePayload
+  hidePersonProfile(input: HidePersonProfileInput!): HidePersonProfilePayload
 }
 
 type SetGenericProfilePayload {
@@ -2878,6 +3149,42 @@ input UpdateOptionsInput {
 """A Ceramic Commit ID"""
 scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
 
+type HideGenericProfilePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: GenericProfile!
+  clientMutationId: String
+}
+
+input HideGenericProfileInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
+}
+
+input HideOptionsInput {
+  """DID for the signer(Optional)"""
+  asDID: DID
+
+  """Ceramic signer (Optional)"""
+  signer: CeramicSignerInput
+}
+
+"""
+A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
+"""
+scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
+
+input CeramicSignerInput {
+  isAuthenticated: Boolean
+}
+
 type SetSocialProfilePayload {
   """Fetches an object given its ID"""
   node(
@@ -2948,6 +3255,25 @@ input PartialSocialProfileInput {
   emoji: String
   background: ImageSourcesInput
   url: String
+}
+
+type HideSocialProfilePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: SocialProfile!
+  clientMutationId: String
+}
+
+input HideSocialProfileInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
 }
 
 type SetPersonProfilePayload {
@@ -3024,6 +3350,25 @@ input PartialPersonProfileInput {
   residenceCountry: CountryCode
   nationalities: [CountryCode]
   affiliations: [String]
+}
+
+type HidePersonProfilePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: PersonProfile!
+  clientMutationId: String
+}
+
+input HidePersonProfileInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
 }"
 `;
 
@@ -3643,14 +3988,19 @@ scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
 type Mutation {
   createTextPost(input: CreateTextPostInput!): CreateTextPostPayload
   updateTextPost(input: UpdateTextPostInput!): UpdateTextPostPayload
+  hideTextPost(input: HideTextPostInput!): HideTextPostPayload
   setLike(input: SetLikeInput!): SetLikePayload
   updateLike(input: UpdateLikeInput!): UpdateLikePayload
+  hideLike(input: HideLikeInput!): HideLikePayload
   setTag(input: SetTagInput!): SetTagPayload
   updateTag(input: UpdateTagInput!): UpdateTagPayload
+  hideTag(input: HideTagInput!): HideTagPayload
   setPostTag(input: SetPostTagInput!): SetPostTagPayload
   updatePostTag(input: UpdatePostTagInput!): UpdatePostTagPayload
+  hidePostTag(input: HidePostTagInput!): HidePostTagPayload
   setFollows(input: SetFollowsInput!): SetFollowsPayload
   updateFollows(input: UpdateFollowsInput!): UpdateFollowsPayload
+  hideFollows(input: HideFollowsInput!): HideFollowsPayload
 }
 
 type CreateTextPostPayload {
@@ -3716,6 +4066,37 @@ input UpdateOptionsInput {
 """A Ceramic Commit ID"""
 scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
 
+type HideTextPostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: TextPost!
+  clientMutationId: String
+}
+
+input HideTextPostInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
+}
+
+input HideOptionsInput {
+  """DID for the signer(Optional)"""
+  asDID: DID
+
+  """Ceramic signer (Optional)"""
+  signer: CeramicSignerInput
+}
+
+input CeramicSignerInput {
+  isAuthenticated: Boolean
+}
+
 type SetLikePayload {
   """Fetches an object given its ID"""
   node(
@@ -3770,6 +4151,25 @@ input PartialLikeInput {
   postID: CeramicStreamID
 }
 
+type HideLikePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Like!
+  clientMutationId: String
+}
+
+input HideLikeInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
+}
+
 type SetTagPayload {
   """Fetches an object given its ID"""
   node(
@@ -3817,6 +4217,25 @@ input UpdateTagInput {
 input PartialTagInput {
   name: String
   description: String
+}
+
+type HideTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Tag!
+  clientMutationId: String
+}
+
+input HideTagInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
 }
 
 type SetPostTagPayload {
@@ -3868,6 +4287,25 @@ input PartialPostTagInput {
   tagID: CeramicStreamID
 }
 
+type HidePostTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: PostTag!
+  clientMutationId: String
+}
+
+input HidePostTagInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
+}
+
 type SetFollowsPayload {
   """Fetches an object given its ID"""
   node(
@@ -3915,6 +4353,25 @@ input UpdateFollowsInput {
 input PartialFollowsInput {
   following: DID
   date: Date
+}
+
+type HideFollowsPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Follows!
+  clientMutationId: String
+}
+
+input HideFollowsInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
 }"
 `;
 
@@ -4141,6 +4598,7 @@ enum SortOrder {
 type Mutation {
   createExtraScalars(input: CreateExtraScalarsInput!): CreateExtraScalarsPayload
   updateExtraScalars(input: UpdateExtraScalarsInput!): UpdateExtraScalarsPayload
+  hideExtraScalars(input: HideExtraScalarsInput!): HideExtraScalarsPayload
 }
 
 type CreateExtraScalarsPayload {
@@ -4238,5 +4696,36 @@ input UpdateOptionsInput {
 
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
+}
+
+type HideExtraScalarsPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: ExtraScalars!
+  clientMutationId: String
+}
+
+input HideExtraScalarsInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
+}
+
+input HideOptionsInput {
+  """DID for the signer(Optional)"""
+  asDID: DID
+
+  """Ceramic signer (Optional)"""
+  signer: CeramicSignerInput
+}
+
+input CeramicSignerInput {
+  isAuthenticated: Boolean
 }"
 `;

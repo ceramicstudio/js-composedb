@@ -335,10 +335,13 @@ input PostSortingInput {
 type Mutation {
   setFavorite(input: SetFavoriteInput!): SetFavoritePayload
   updateFavorite(input: UpdateFavoriteInput!): UpdateFavoritePayload
+  hideFavorite(input: HideFavoriteInput!): HideFavoritePayload
   createPost(input: CreatePostInput!): CreatePostPayload
   updatePost(input: UpdatePostInput!): UpdatePostPayload
+  hidePost(input: HidePostInput!): HidePostPayload
   createComment(input: CreateCommentInput!): CreateCommentPayload
   updateComment(input: UpdateCommentInput!): UpdateCommentPayload
+  hideComment(input: HideCommentInput!): HideCommentPayload
 }
 
 type SetFavoritePayload {
@@ -409,6 +412,42 @@ input UpdateOptionsInput {
   version: CeramicCommitID
 }
 
+type HideFavoritePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Favorite!
+  clientMutationId: String
+}
+
+input HideFavoriteInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
+}
+
+input HideOptionsInput {
+  """DID for the signer(Optional)"""
+  asDID: DID
+
+  """Ceramic signer (Optional)"""
+  signer: CeramicSignerInput
+}
+
+"""
+A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
+"""
+scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
+
+input CeramicSignerInput {
+  isAuthenticated: Boolean
+}
+
 type CreatePostPayload {
   """Fetches an object given its ID"""
   node(
@@ -459,6 +498,25 @@ input PartialPostInput {
   title: String
 }
 
+type HidePostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Post!
+  clientMutationId: String
+}
+
+input HidePostInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
+}
+
 type CreateCommentPayload {
   """Fetches an object given its ID"""
   node(
@@ -505,6 +563,25 @@ input UpdateCommentInput {
 input PartialCommentInput {
   text: String
   postID: CeramicStreamID
+}
+
+type HideCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Comment!
+  clientMutationId: String
+}
+
+input HideCommentInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
 }"
 `;
 
@@ -1284,8 +1361,10 @@ input PostSortingInput {
 type Mutation {
   createPost(input: CreatePostInput!): CreatePostPayload
   updatePost(input: UpdatePostInput!): UpdatePostPayload
+  hidePost(input: HidePostInput!): HidePostPayload
   createComment(input: CreateCommentInput!): CreateCommentPayload
   updateComment(input: UpdateCommentInput!): UpdateCommentPayload
+  hideComment(input: HideCommentInput!): HideCommentPayload
 }
 
 type CreatePostPayload {
@@ -1348,6 +1427,42 @@ input UpdateOptionsInput {
   version: CeramicCommitID
 }
 
+type HidePostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Post!
+  clientMutationId: String
+}
+
+input HidePostInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
+}
+
+input HideOptionsInput {
+  """DID for the signer(Optional)"""
+  asDID: DID
+
+  """Ceramic signer (Optional)"""
+  signer: CeramicSignerInput
+}
+
+"""
+A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
+"""
+scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
+
+input CeramicSignerInput {
+  isAuthenticated: Boolean
+}
+
 type CreateCommentPayload {
   """Fetches an object given its ID"""
   node(
@@ -1394,6 +1509,25 @@ input UpdateCommentInput {
 input PartialCommentInput {
   text: String
   postID: CeramicStreamID
+}
+
+type HideCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Comment!
+  clientMutationId: String
+}
+
+input HideCommentInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
 }"
 `;
 
@@ -2039,6 +2173,7 @@ input PostSortingInput {
 type Mutation {
   createPost(input: CreatePostInput!): CreatePostPayload
   updatePost(input: UpdatePostInput!): UpdatePostPayload
+  hidePost(input: HidePostInput!): HidePostPayload
 }
 
 type CreatePostPayload {
@@ -2102,5 +2237,41 @@ input UpdateOptionsInput {
 }
 
 """A Ceramic Commit ID"""
-scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")"
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
+
+type HidePostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Post!
+  clientMutationId: String
+}
+
+input HidePostInput {
+  id: ID!
+  options: HideOptionsInput
+  clientMutationId: String
+}
+
+input HideOptionsInput {
+  """DID for the signer(Optional)"""
+  asDID: DID
+
+  """Ceramic signer (Optional)"""
+  signer: CeramicSignerInput
+}
+
+"""
+A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
+"""
+scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
+
+input CeramicSignerInput {
+  isAuthenticated: Boolean
+}"
 `;
