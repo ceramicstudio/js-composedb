@@ -143,6 +143,9 @@ input FavoriteInput {
 }
 
 input SetOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """
   Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds
   """
@@ -1494,6 +1497,7 @@ type CreateMyImagePayload {
 
 input CreateMyImageInput {
   content: MyImageInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -1508,6 +1512,11 @@ input MyImageInput {
 input MediaInfoInput {
   title: String!
   tag: String
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 }
 
 type UpdateMyImagePayload {
@@ -1569,6 +1578,7 @@ type CreateMyAudioPayload {
 
 input CreateMyAudioInput {
   content: MyAudioInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -1621,6 +1631,7 @@ type CreateMyVideoPayload {
 
 input CreateMyVideoInput {
   content: MyVideoInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -1677,6 +1688,7 @@ type CreateMyMediaCollectionItemPayload {
 
 input CreateMyMediaCollectionItemInput {
   content: MyMediaCollectionItemInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -1727,6 +1739,7 @@ type CreateMyMediaCollectionPayload {
 
 input CreateMyMediaCollectionInput {
   content: MyMediaCollectionInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -2042,11 +2055,17 @@ type CreateNoteBookPayload {
 
 input CreateNoteBookInput {
   content: NoteBookInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
 input NoteBookInput {
   title: String!
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 }
 
 type UpdateNoteBookPayload {
@@ -2101,6 +2120,7 @@ type CreateNotePayload {
 
 input CreateNoteInput {
   content: NoteInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -2417,6 +2437,7 @@ type CreatePostPayload {
 
 input CreatePostInput {
   content: PostInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -2424,6 +2445,11 @@ input PostInput {
   date: DateTime
   title: String!
   text: String!
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 }
 
 type UpdatePostPayload {
@@ -2480,6 +2506,7 @@ type CreateCommentPayload {
 
 input CreateCommentInput {
   content: CommentInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -2825,6 +2852,9 @@ input ImageMetadataInput {
 }
 
 input SetOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """
   Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds
   """
@@ -3681,6 +3711,7 @@ type CreateTextPostPayload {
 
 input CreateTextPostInput {
   content: TextPostInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -3688,6 +3719,11 @@ input TextPostInput {
   date: DateTime!
   threadID: CeramicStreamID
   text: String!
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 }
 
 type UpdateTextPostPayload {
@@ -3756,6 +3792,9 @@ input LikeInput {
 }
 
 input SetOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """
   Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds
   """
@@ -4161,6 +4200,7 @@ type CreateExtraScalarsPayload {
 
 input CreateExtraScalarsInput {
   content: ExtraScalarsInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -4190,6 +4230,11 @@ input ExtraScalarsInput {
 A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
 """
 scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+}
 
 type UpdateExtraScalarsPayload {
   """Fetches an object given its ID"""

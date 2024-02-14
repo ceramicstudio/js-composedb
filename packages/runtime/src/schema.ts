@@ -25,6 +25,7 @@ import {
   type GraphQLFieldConfigMap,
   GraphQLFloat,
   GraphQLID,
+  type GraphQLInputFieldConfig,
   type GraphQLInputFieldConfigMap,
   GraphQLInputObjectType,
   GraphQLInt,
@@ -148,18 +149,34 @@ const connectionArgsWithAccount = {
   },
 }
 
+const shouldIndexField: GraphQLInputFieldConfig = {
+  type: GraphQLBoolean,
+  description: 'Inform indexers if they should index this document or not',
+}
+
+const syncTimeoutField: GraphQLInputFieldConfig = {
+  type: GraphQLInt,
+  description:
+    'Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds',
+}
+
+const CreateOptionsInput = new GraphQLInputObjectType({
+  name: 'CreateOptionsInput',
+  fields: {
+    shouldIndex: shouldIndexField,
+  },
+})
+
 const SetOptionsInput = new GraphQLInputObjectType({
   name: 'SetOptionsInput',
   fields: {
-    syncTimeout: {
-      type: GraphQLInt,
-      description:
-        'Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds',
-    },
+    shouldIndex: shouldIndexField,
+    syncTimeout: syncTimeoutField,
   },
 })
 
 type SetOptions = {
+  shouldIndex?: boolean
   syncTimeout?: number
 }
 
@@ -1207,19 +1224,22 @@ class SchemaBuilder {
           name: `Create${name}`,
           inputFields: () => ({
             content: { type: new GraphQLNonNull(this.#inputObjects[name]) },
+            options: { type: CreateOptionsInput },
           }),
           outputFields: () => ({
             ...queryFields,
             document: { type: new GraphQLNonNull(this.#types[name]) },
           }),
           mutateAndGetPayload: async (
-            input: { content: Record<string, unknown> },
+            input: { content: Record<string, unknown>; options?: { shouldIndex: boolean } },
             ctx: Context,
           ) => {
             if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
               throw new Error('Ceramic instance is not authenticated')
             }
-            const document = await ctx.loader.create(model.id, input.content)
+            const document = await ctx.loader.create(model.id, input.content, {
+              shouldIndex: input.options?.shouldIndex,
+            })
             return { document }
           },
         })
@@ -1247,6 +1267,7 @@ class SchemaBuilder {
             }
             const unique = relationFields.map((field) => String(input.content[field]))
             const document = await ctx.upsertSet(model.id, unique, input.content, {
+              shouldIndex: input.options?.shouldIndex,
               syncTimeoutSeconds: input.options?.syncTimeout,
             })
             return { document }
@@ -1274,6 +1295,7 @@ class SchemaBuilder {
               throw new Error('Ceramic instance is not authenticated')
             }
             const document = await ctx.upsertSingle(model.id, input.content, {
+              shouldIndex: input.options?.shouldIndex,
               syncTimeoutSeconds: input.options?.syncTimeout,
             })
             return { document }
@@ -1299,6 +1321,7 @@ class SchemaBuilder {
               throw new Error('Ceramic instance is not authenticated')
             }
             const document = await ctx.upsertSingle(model.id, input.content, {
+              shouldIndex: input.options?.shouldIndex,
               syncTimeoutSeconds: input.options?.syncTimeout,
             })
             return { document }
