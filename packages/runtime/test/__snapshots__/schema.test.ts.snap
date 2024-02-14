@@ -175,6 +175,9 @@ input UpdateOptionsInput {
   """
   replace: Boolean = false
 
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
 }
@@ -1533,6 +1536,9 @@ input UpdateOptionsInput {
   """
   replace: Boolean = false
 
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
 }
@@ -2069,6 +2075,9 @@ input UpdateOptionsInput {
   """
   replace: Boolean = false
 
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
 }
@@ -2442,6 +2451,9 @@ input UpdateOptionsInput {
   Fully replace the document contents instead of performing a shallow merge
   """
   replace: Boolean = false
+
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
@@ -2863,6 +2875,9 @@ input UpdateOptionsInput {
   Fully replace the document contents instead of performing a shallow merge
   """
   replace: Boolean = false
+
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
@@ -3701,6 +3716,9 @@ input UpdateOptionsInput {
   """
   replace: Boolean = false
 
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
 }
@@ -4198,6 +4216,9 @@ input UpdateOptionsInput {
   Fully replace the document contents instead of performing a shallow merge
   """
   replace: Boolean = false
+
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID

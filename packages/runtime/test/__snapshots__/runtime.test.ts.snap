@@ -399,6 +399,9 @@ input UpdateOptionsInput {
   """
   replace: Boolean = false
 
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
 }
@@ -904,6 +907,9 @@ input UpdateOptionsInput {
   Fully replace the document contents instead of performing a shallow merge
   """
   replace: Boolean = false
+
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
@@ -1659,6 +1665,9 @@ input UpdateOptionsInput {
   """
   replace: Boolean = false
 
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
 }
@@ -1670,4 +1679,62 @@ input PartialPostInput {
   date: DateTime
   text: String
 }"
+`;
+
+exports[`runtime toggling \`shouldIndex\` metadata 1`] = `
+{
+  "data": {
+    "postIndex": {
+      "edges": [
+        {
+          "node": {
+            "title": "A first post",
+          },
+        },
+        {
+          "node": {
+            "title": "A second post",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`runtime toggling \`shouldIndex\` metadata 2`] = `
+{
+  "data": {
+    "postIndex": {
+      "edges": [
+        {
+          "node": {
+            "title": "A second post",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`runtime toggling \`shouldIndex\` metadata 3`] = `
+{
+  "data": {
+    "postIndex": {
+      "edges": [
+        {
+          "node": {
+            "title": "A second post",
+          },
+        },
+        {
+          "node": {
+            "title": "First post is back",
+          },
+        },
+      ],
+    },
+  },
+}
 `;

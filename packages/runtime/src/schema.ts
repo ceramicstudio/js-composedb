@@ -171,6 +171,10 @@ const UpdateOptionsInput = new GraphQLInputObjectType({
       defaultValue: false,
       description: 'Fully replace the document contents instead of performing a shallow merge',
     },
+    shouldIndex: {
+      type: GraphQLBoolean,
+      description: 'Inform indexers if they should index this document or not',
+    },
     version: {
       type: CeramicCommitID,
       description: 'Only perform mutation if the document matches the provided version',

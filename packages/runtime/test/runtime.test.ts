@@ -916,4 +916,78 @@ describe('runtime', () => {
       `Variable "$i" got invalid value { title: "A different title" } at "i.content"; Field "title" is not defined by type "PartialPostInput". Did you mean "date"?`,
     )
   }, 60000)
+
+  test('toggling `shouldIndex` metadata', async () => {
+    const composite = await Composite.create({
+      ceramic,
+      schema: `
+        type Post @createModel(description: "Test post") {
+          title: String! @string(maxLength: 1000)
+        }
+      `,
+    })
+    const definition = composite.toRuntime()
+    const runtime = new ComposeRuntime({ ceramic, definition })
+
+    const createdRes = await runtime.executeQuery<{
+      post1: { document: { id: string } }
+      post2: { document: { id: string } }
+    }>(
+      `
+      mutation CreatePosts($input1: CreatePostInput!, $input2: CreatePostInput!) {
+        post1: createPost(input: $input1) {
+          document {
+            id
+          }
+        }
+        post2: createPost(input: $input2) {
+          document {
+            id
+          }
+        }
+      }
+      `,
+      {
+        input1: { content: { title: 'A first post' } },
+        input2: { content: { title: 'A second post' } },
+      },
+    )
+    const postID = createdRes.data?.post1.document.id
+    expect(postID).toBeDefined()
+
+    async function runQuery() {
+      return await runtime.executeQuery(`
+        query Posts {
+          postIndex (first: 2) {
+            edges {
+              node {
+                title
+              }
+            }
+          }
+        }
+      `)
+    }
+
+    await expect(runQuery()).resolves.toMatchSnapshot()
+
+    async function togglePostShouldIndex(shouldIndex: boolean, content = {}) {
+      await runtime.executeQuery(
+        `mutation UpdatePost($input: UpdatePostInput!) {
+          updatePost(input: $input) {
+            document {
+              id
+            }
+          }
+        }`,
+        { input: { id: postID, content, options: { shouldIndex } } },
+      )
+    }
+
+    await togglePostShouldIndex(false)
+    await expect(runQuery()).resolves.toMatchSnapshot()
+
+    await togglePostShouldIndex(true, { title: 'First post is back' })
+    await expect(runQuery()).resolves.toMatchSnapshot()
+  }, 30000)
 })

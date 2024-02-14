@@ -27,6 +27,7 @@ export type CreateOptions = CreateOpts & {
 
 export type UpdateDocOptions = {
   replace?: boolean
+  shouldIndex?: boolean
   version?: string
 }
 
@@ -222,7 +223,7 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
   async update<T extends Record<string, any> = Record<string, any>>(
     streamID: string | StreamID,
     content: T,
-    { replace, version, ...options }: UpdateOptions = {},
+    { replace, shouldIndex, version, ...options }: UpdateOptions = {},
   ): Promise<ModelInstanceDocument<T>> {
     const key = { id: streamID }
     this.clear(key)
@@ -231,7 +232,8 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
       throw new Error('Stream version mismatch')
     }
     const newContent = replace ? content : { ...(stream.content ?? {}), ...content }
-    await stream.replace(removeNullValues(newContent) as T, undefined, options)
+    const metadata = typeof shouldIndex === 'undefined' ? undefined : { shouldIndex }
+    await stream.replace(removeNullValues(newContent) as T, metadata, options)
     return stream
   }
 
