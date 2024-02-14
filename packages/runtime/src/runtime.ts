@@ -1,4 +1,5 @@
 import { CeramicClient } from '@ceramicnetwork/http-client'
+import type { DocumentCache, DocumentLoader } from '@composedb/loader'
 import type { CeramicAPI } from '@composedb/types'
 import {
   type DocumentNode,
@@ -12,7 +13,6 @@ import {
 } from 'graphql'
 
 import { type Context, createContext } from './context.js'
-import type { DocumentCache } from './loader.js'
 import { type GetSchemaParams, getSchema } from './utils.js'
 
 export type ComposeRuntimeParams = GetSchemaParams & {
@@ -28,6 +28,10 @@ export type ComposeRuntimeParams = GetSchemaParams & {
    * Optional context to use.
    */
   context?: Context
+  /**
+   * Optional document loader.
+   */
+  loader?: DocumentLoader
 }
 
 /**

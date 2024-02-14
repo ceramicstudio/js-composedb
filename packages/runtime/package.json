@@ -1,6 +1,6 @@
 {
   "name": "@composedb/runtime",
-  "version": "0.7.0",
+  "version": "0.7.0-rc.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
@@ -44,7 +44,7 @@
     "@ceramicnetwork/stream-model-instance": "^4.0.1-rc.0",
     "@ceramicnetwork/streamid": "^5.0.0",
     "@composedb/graphql-scalars": "workspace:^",
-    "dataloader": "^2.2.2",
+    "@composedb/loader": "workspace:^",
     "graphql": "^16.8.1",
     "graphql-relay": "^0.10.0"
   },

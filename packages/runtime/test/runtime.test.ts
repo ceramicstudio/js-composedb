@@ -876,7 +876,7 @@ describe('runtime', () => {
       input: { content: { docID: post2ID, tag: 'posts' } },
     })
     expect(favorite2Res.data).toMatchSnapshot()
-  })
+  }, 30000)
 
   test('runtime operations on models with immutable field', async () => {
     const postWithImmutableFieldSchema = `

@@ -1,6 +1,6 @@
 {
   "name": "@composedb/server",
-  "version": "0.7.0",
+  "version": "0.7.0-rc.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "@ceramicnetwork/common": "^5.0.1-rc.0",
+    "@composedb/loader": "workspace:^",
     "@composedb/types": "workspace:^",
     "@types/node": "^20.11.17"
   },
