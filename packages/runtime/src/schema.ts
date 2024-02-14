@@ -24,8 +24,8 @@ import {
   type GraphQLFieldConfig,
   type GraphQLFieldConfigMap,
   GraphQLFloat,
-  type GraphQLInputFieldConfigMap,
   GraphQLID,
+  type GraphQLInputFieldConfigMap,
   GraphQLInputObjectType,
   GraphQLInt,
   GraphQLInterfaceType,
@@ -1097,10 +1097,25 @@ class SchemaBuilder {
       fields: () => buildFields(true),
     })
     if (isDocument) {
-      this.#inputObjects[`Partial${name}`] = new GraphQLInputObjectType({
-        name: `Partial${name}Input`,
-        fields: () => buildFields(false),
-      })
+      // GraphQL doesn't allow empty input objects so we need to check if there is any mutable field
+      let hasMutableField = false
+      for (const field of Object.values(fields)) {
+        if (
+          !(field as RuntimeScalarCommon).immutable &&
+          field.type !== 'meta' &&
+          field.type !== 'view' &&
+          !(field.type === 'reference' && field.refType === 'connection')
+        ) {
+          hasMutableField = true
+          break
+        }
+      }
+      if (hasMutableField) {
+        this.#inputObjects[`Partial${name}`] = new GraphQLInputObjectType({
+          name: `Partial${name}Input`,
+          fields: () => buildFields(false),
+        })
+      }
     }
   }
 
@@ -1295,11 +1310,18 @@ class SchemaBuilder {
 
     this.#mutations[`update${name}`] = mutationWithClientMutationId({
       name: `Update${name}`,
-      inputFields: () => ({
-        id: { type: new GraphQLNonNull(GraphQLID) },
-        content: { type: new GraphQLNonNull(this.#inputObjects[`Partial${name}`]) },
-        options: { type: UpdateOptionsInput },
-      }),
+      inputFields: () => {
+        const inputFields: GraphQLInputFieldConfigMap = {
+          id: { type: new GraphQLNonNull(GraphQLID) },
+          options: { type: UpdateOptionsInput },
+        }
+        // It's possible content can't be updated if all fields are immutable
+        const partialContentInput = this.#inputObjects[`Partial${name}`]
+        if (partialContentInput != null) {
+          inputFields.content = { type: new GraphQLNonNull(partialContentInput) }
+        }
+        return inputFields
+      },
       outputFields: () => ({
         ...queryFields,
         document: { type: new GraphQLNonNull(this.#types[name]) },
