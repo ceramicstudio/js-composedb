@@ -1,4 +1,4 @@
-import type { BaseQuery, QueryFilters, Sorting } from '@ceramicnetwork/common'
+import type { BaseQuery, QueryFilters, Sorting, UpdateOpts } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { CeramicCommitID, GraphQLDID, getScalar } from '@composedb/graphql-scalars'
 import type { UpdateDocOptions } from '@composedb/loader'
@@ -1346,7 +1346,7 @@ class SchemaBuilder {
         ...queryFields,
         document: { type: this.#types[name] },
       }),
-      mutateAndGetPayload: async (input: { id: string; options?: UpdateOptions }, ctx: Context) => {
+      mutateAndGetPayload: async (input: { id: string; options?: UpdateOpts }, ctx: Context) => {
         if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
           throw new Error('Ceramic instance is not authenticated')
         }

@@ -178,6 +178,7 @@ describe('context', () => {
     test('sets shouldIndex as false', async () => {
       const viewerID = 'did:test:123'
       const model = 'testID'
+      const key = { id: model }
       const shouldIndex = jest.fn()
       const expectedDoc = { shouldIndex }
       const load = jest.fn(() => expectedDoc)
@@ -188,7 +189,7 @@ describe('context', () => {
 
       await expect(context.hideDoc(model)).resolves.toBeUndefined()
 
-      expect(load).toHaveBeenCalledWith(model)
+      expect(load).toHaveBeenCalledWith(key)
       expect(shouldIndex).toHaveBeenCalledWith(false, undefined)
     })
   })
