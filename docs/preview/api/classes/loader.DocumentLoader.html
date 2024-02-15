@@ -13,8 +13,8 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="ComposeDB on Ceramic" href="/opensearch.xml"><link rel="stylesheet" href="/assets/css/styles.7923b3cd.css">
-<script src="/assets/js/runtime~main.9777aad8.js" defer="defer"></script>
-<script src="/assets/js/main.373d9dfd.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.4bda0bac.js" defer="defer"></script>
+<script src="/assets/js/main.666b7419.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TFSMT4ZD" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -49,14 +49,14 @@
 <p><code>Promise</code>&lt;<a href="/docs/preview/api/modules/loader#loadkey"><code>LoadKey</code></a>&gt;</p>
 <hr>
 <h3 class="anchor anchorWithStickyNavbar_mcDu" id="_loaddeterministic">_loadDeterministic<a href="#_loaddeterministic" class="hash-link" aria-label="Direct link to _loadDeterministic" title="Direct link to _loadDeterministic">​</a></h3>
-<p>▸ <strong>_loadDeterministic</strong>&lt;<code>T</code>&gt;(<code>meta</code>, <code>options?</code>): <code>Promise</code>&lt;<code>ModelInstanceDocument</code>&lt;<code>T</code>&gt;&gt;</p>
+<p>▸ <strong>_loadDeterministic</strong>&lt;<code>T</code>&gt;(<code>meta</code>, <code>options?</code>): <code>Promise</code>&lt;<code>null</code> | <code>ModelInstanceDocument</code>&lt;<code>T</code>&gt;&gt;</p>
 <p>Load a deterministic stream and add it to the cache.</p>
 <h4 class="anchor anchorWithStickyNavbar_mcDu" id="type-parameters">Type parameters<a href="#type-parameters" class="hash-link" aria-label="Direct link to Type parameters" title="Direct link to Type parameters">​</a></h4>
 <table><thead><tr><th style="text-align:left">Name</th><th style="text-align:left">Type</th></tr></thead><tbody><tr><td style="text-align:left"><code>T</code></td><td style="text-align:left">extends <code>Record</code>&lt;<code>string</code>, <code>any</code>&gt; = <code>Record</code>&lt;<code>string</code>, <code>any</code>&gt;</td></tr></tbody></table>
 <h4 class="anchor anchorWithStickyNavbar_mcDu" id="parameters-2">Parameters<a href="#parameters-2" class="hash-link" aria-label="Direct link to Parameters" title="Direct link to Parameters">​</a></h4>
-<table><thead><tr><th style="text-align:left">Name</th><th style="text-align:left">Type</th></tr></thead><tbody><tr><td style="text-align:left"><code>meta</code></td><td style="text-align:left"><code>GenesisMetadata</code></td></tr><tr><td style="text-align:left"><code>options</code></td><td style="text-align:left"><code>CreateOpts</code></td></tr></tbody></table>
+<table><thead><tr><th style="text-align:left">Name</th><th style="text-align:left">Type</th></tr></thead><tbody><tr><td style="text-align:left"><code>meta</code></td><td style="text-align:left"><code>GenesisMetadata</code></td></tr><tr><td style="text-align:left"><code>options</code></td><td style="text-align:left"><a href="/docs/preview/api/modules/loader#deterministicloadoptions"><code>DeterministicLoadOptions</code></a></td></tr></tbody></table>
 <h4 class="anchor anchorWithStickyNavbar_mcDu" id="returns-2">Returns<a href="#returns-2" class="hash-link" aria-label="Direct link to Returns" title="Direct link to Returns">​</a></h4>
-<p><code>Promise</code>&lt;<code>ModelInstanceDocument</code>&lt;<code>T</code>&gt;&gt;</p>
+<p><code>Promise</code>&lt;<code>null</code> | <code>ModelInstanceDocument</code>&lt;<code>T</code>&gt;&gt;</p>
 <hr>
 <h3 class="anchor anchorWithStickyNavbar_mcDu" id="cache">cache<a href="#cache" class="hash-link" aria-label="Direct link to cache" title="Direct link to cache">​</a></h3>
 <p>▸ <strong>cache</strong>(<code>stream</code>): <code>boolean</code></p>
@@ -89,25 +89,25 @@
 <p>DataLoader.load</p>
 <hr>
 <h3 class="anchor anchorWithStickyNavbar_mcDu" id="loadset">loadSet<a href="#loadset" class="hash-link" aria-label="Direct link to loadSet" title="Direct link to loadSet">​</a></h3>
-<p>▸ <strong>loadSet</strong>&lt;<code>T</code>&gt;(<code>controller</code>, <code>model</code>, <code>unique</code>, <code>options?</code>): <code>Promise</code>&lt;<code>ModelInstanceDocument</code>&lt;<code>T</code>&gt;&gt;</p>
+<p>▸ <strong>loadSet</strong>&lt;<code>T</code>&gt;(<code>controller</code>, <code>model</code>, <code>unique</code>, <code>options?</code>): <code>Promise</code>&lt;<code>null</code> | <code>ModelInstanceDocument</code>&lt;<code>T</code>&gt;&gt;</p>
 <p>Create or load a deterministic ModelInstanceDocument using the SET account
 relation and cache it.</p>
 <h4 class="anchor anchorWithStickyNavbar_mcDu" id="type-parameters-3">Type parameters<a href="#type-parameters-3" class="hash-link" aria-label="Direct link to Type parameters" title="Direct link to Type parameters">​</a></h4>
 <table><thead><tr><th style="text-align:left">Name</th><th style="text-align:left">Type</th></tr></thead><tbody><tr><td style="text-align:left"><code>T</code></td><td style="text-align:left">extends <code>Record</code>&lt;<code>string</code>, <code>any</code>&gt; = <code>Record</code>&lt;<code>string</code>, <code>any</code>&gt;</td></tr></tbody></table>
 <h4 class="anchor anchorWithStickyNavbar_mcDu" id="parameters-6">Parameters<a href="#parameters-6" class="hash-link" aria-label="Direct link to Parameters" title="Direct link to Parameters">​</a></h4>
-<table><thead><tr><th style="text-align:left">Name</th><th style="text-align:left">Type</th></tr></thead><tbody><tr><td style="text-align:left"><code>controller</code></td><td style="text-align:left"><code>string</code></td></tr><tr><td style="text-align:left"><code>model</code></td><td style="text-align:left"><code>string</code> | <code>StreamID</code></td></tr><tr><td style="text-align:left"><code>unique</code></td><td style="text-align:left"><code>string</code>[]</td></tr><tr><td style="text-align:left"><code>options?</code></td><td style="text-align:left"><code>CreateOpts</code></td></tr></tbody></table>
+<table><thead><tr><th style="text-align:left">Name</th><th style="text-align:left">Type</th></tr></thead><tbody><tr><td style="text-align:left"><code>controller</code></td><td style="text-align:left"><code>string</code></td></tr><tr><td style="text-align:left"><code>model</code></td><td style="text-align:left"><code>string</code> | <code>StreamID</code></td></tr><tr><td style="text-align:left"><code>unique</code></td><td style="text-align:left"><code>string</code>[]</td></tr><tr><td style="text-align:left"><code>options?</code></td><td style="text-align:left"><a href="/docs/preview/api/modules/loader#deterministicloadoptions"><code>DeterministicLoadOptions</code></a></td></tr></tbody></table>
 <h4 class="anchor anchorWithStickyNavbar_mcDu" id="returns-6">Returns<a href="#returns-6" class="hash-link" aria-label="Direct link to Returns" title="Direct link to Returns">​</a></h4>
-<p><code>Promise</code>&lt;<code>ModelInstanceDocument</code>&lt;<code>T</code>&gt;&gt;</p>
+<p><code>Promise</code>&lt;<code>null</code> | <code>ModelInstanceDocument</code>&lt;<code>T</code>&gt;&gt;</p>
 <hr>
 <h3 class="anchor anchorWithStickyNavbar_mcDu" id="loadsingle">loadSingle<a href="#loadsingle" class="hash-link" aria-label="Direct link to loadSingle" title="Direct link to loadSingle">​</a></h3>
-<p>▸ <strong>loadSingle</strong>&lt;<code>T</code>&gt;(<code>controller</code>, <code>model</code>, <code>options?</code>): <code>Promise</code>&lt;<code>ModelInstanceDocument</code>&lt;<code>T</code>&gt;&gt;</p>
+<p>▸ <strong>loadSingle</strong>&lt;<code>T</code>&gt;(<code>controller</code>, <code>model</code>, <code>options?</code>): <code>Promise</code>&lt;<code>null</code> | <code>ModelInstanceDocument</code>&lt;<code>T</code>&gt;&gt;</p>
 <p>Create or load a deterministic ModelInstanceDocument and cache it.</p>
 <h4 class="anchor anchorWithStickyNavbar_mcDu" id="type-parameters-4">Type parameters<a href="#type-parameters-4" class="hash-link" aria-label="Direct link to Type parameters" title="Direct link to Type parameters">​</a></h4>
 <table><thead><tr><th style="text-align:left">Name</th><th style="text-align:left">Type</th></tr></thead><tbody><tr><td style="text-align:left"><code>T</code></td><td style="text-align:left">extends <code>Record</code>&lt;<code>string</code>, <code>any</code>&gt; = <code>Record</code>&lt;<code>string</code>, <code>any</code>&gt;</td></tr></tbody></table>
 <h4 class="anchor anchorWithStickyNavbar_mcDu" id="parameters-7">Parameters<a href="#parameters-7" class="hash-link" aria-label="Direct link to Parameters" title="Direct link to Parameters">​</a></h4>
-<table><thead><tr><th style="text-align:left">Name</th><th style="text-align:left">Type</th></tr></thead><tbody><tr><td style="text-align:left"><code>controller</code></td><td style="text-align:left"><code>string</code></td></tr><tr><td style="text-align:left"><code>model</code></td><td style="text-align:left"><code>string</code> | <code>StreamID</code></td></tr><tr><td style="text-align:left"><code>options?</code></td><td style="text-align:left"><code>CreateOpts</code></td></tr></tbody></table>
+<table><thead><tr><th style="text-align:left">Name</th><th style="text-align:left">Type</th></tr></thead><tbody><tr><td style="text-align:left"><code>controller</code></td><td style="text-align:left"><code>string</code></td></tr><tr><td style="text-align:left"><code>model</code></td><td style="text-align:left"><code>string</code> | <code>StreamID</code></td></tr><tr><td style="text-align:left"><code>options?</code></td><td style="text-align:left"><a href="/docs/preview/api/modules/loader#deterministicloadoptions"><code>DeterministicLoadOptions</code></a></td></tr></tbody></table>
 <h4 class="anchor anchorWithStickyNavbar_mcDu" id="returns-7">Returns<a href="#returns-7" class="hash-link" aria-label="Direct link to Returns" title="Direct link to Returns">​</a></h4>
-<p><code>Promise</code>&lt;<code>ModelInstanceDocument</code>&lt;<code>T</code>&gt;&gt;</p>
+<p><code>Promise</code>&lt;<code>null</code> | <code>ModelInstanceDocument</code>&lt;<code>T</code>&gt;&gt;</p>
 <hr>
 <h3 class="anchor anchorWithStickyNavbar_mcDu" id="queryconnection">queryConnection<a href="#queryconnection" class="hash-link" aria-label="Direct link to queryConnection" title="Direct link to queryConnection">​</a></h3>
 <p>▸ <strong>queryConnection</strong>(<code>query</code>): <code>Promise</code>&lt;<code>Connection</code>&lt;<code>null</code> | <code>ModelInstanceDocument</code>&lt;<code>Record</code>&lt;<code>string</code>, <code>any</code>&gt;&gt;&gt;&gt;</p>
