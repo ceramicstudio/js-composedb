@@ -143,6 +143,9 @@ input FavoriteInput {
 }
 
 input SetOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """
   Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds
   """
@@ -174,6 +177,9 @@ input UpdateOptionsInput {
   Fully replace the document contents instead of performing a shallow merge
   """
   replace: Boolean = false
+
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
@@ -1491,6 +1497,7 @@ type CreateMyImagePayload {
 
 input CreateMyImageInput {
   content: MyImageInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -1505,6 +1512,11 @@ input MyImageInput {
 input MediaInfoInput {
   title: String!
   tag: String
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 }
 
 type UpdateMyImagePayload {
@@ -1532,6 +1544,9 @@ input UpdateOptionsInput {
   Fully replace the document contents instead of performing a shallow merge
   """
   replace: Boolean = false
+
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
@@ -1563,6 +1578,7 @@ type CreateMyAudioPayload {
 
 input CreateMyAudioInput {
   content: MyAudioInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -1615,6 +1631,7 @@ type CreateMyVideoPayload {
 
 input CreateMyVideoInput {
   content: MyVideoInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -1671,6 +1688,7 @@ type CreateMyMediaCollectionItemPayload {
 
 input CreateMyMediaCollectionItemInput {
   content: MyMediaCollectionItemInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -1721,6 +1739,7 @@ type CreateMyMediaCollectionPayload {
 
 input CreateMyMediaCollectionInput {
   content: MyMediaCollectionInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -2036,11 +2055,17 @@ type CreateNoteBookPayload {
 
 input CreateNoteBookInput {
   content: NoteBookInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
 input NoteBookInput {
   title: String!
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 }
 
 type UpdateNoteBookPayload {
@@ -2069,6 +2094,9 @@ input UpdateOptionsInput {
   """
   replace: Boolean = false
 
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
 }
@@ -2092,6 +2120,7 @@ type CreateNotePayload {
 
 input CreateNoteInput {
   content: NoteInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -2408,6 +2437,7 @@ type CreatePostPayload {
 
 input CreatePostInput {
   content: PostInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -2415,6 +2445,11 @@ input PostInput {
   date: DateTime
   title: String!
   text: String!
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 }
 
 type UpdatePostPayload {
@@ -2443,6 +2478,9 @@ input UpdateOptionsInput {
   """
   replace: Boolean = false
 
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
 }
@@ -2468,6 +2506,7 @@ type CreateCommentPayload {
 
 input CreateCommentInput {
   content: CommentInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -2813,6 +2852,9 @@ input ImageMetadataInput {
 }
 
 input SetOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """
   Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds
   """
@@ -2863,6 +2905,9 @@ input UpdateOptionsInput {
   Fully replace the document contents instead of performing a shallow merge
   """
   replace: Boolean = false
+
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
@@ -3666,6 +3711,7 @@ type CreateTextPostPayload {
 
 input CreateTextPostInput {
   content: TextPostInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -3673,6 +3719,11 @@ input TextPostInput {
   date: DateTime!
   threadID: CeramicStreamID
   text: String!
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 }
 
 type UpdateTextPostPayload {
@@ -3700,6 +3751,9 @@ input UpdateOptionsInput {
   Fully replace the document contents instead of performing a shallow merge
   """
   replace: Boolean = false
+
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
@@ -3738,6 +3792,9 @@ input LikeInput {
 }
 
 input SetOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """
   Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds
   """
@@ -4143,6 +4200,7 @@ type CreateExtraScalarsPayload {
 
 input CreateExtraScalarsInput {
   content: ExtraScalarsInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -4173,6 +4231,11 @@ A field whose value conforms to the standard DID format as specified in did-core
 """
 scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
 
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+}
+
 type UpdateExtraScalarsPayload {
   """Fetches an object given its ID"""
   node(
@@ -4198,6 +4261,9 @@ input UpdateOptionsInput {
   Fully replace the document contents instead of performing a shallow merge
   """
   replace: Boolean = false
+
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID

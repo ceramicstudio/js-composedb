@@ -4,6 +4,10 @@ import type { CommitID, StreamID } from '@ceramicnetwork/streamid'
 import { type DocumentCache, DocumentLoader } from '@composedb/loader'
 import type { CeramicAPI } from '@composedb/types'
 
+export type UpsertOptions = CreateOpts & {
+  shouldIndex?: boolean
+}
+
 export type ContextParams = {
   /**
    * Optional cache for documents.
@@ -47,7 +51,7 @@ export type Context = {
   loadDoc: <Content extends Record<string, any>>(
     id: string | CommitID | StreamID,
     fresh?: boolean,
-  ) => Promise<ModelInstanceDocument<Content>>
+  ) => Promise<ModelInstanceDocument<Content> | null>
   /**
    * Create or update a document using the SINGLE account relation with the
    * given model and content.
@@ -55,8 +59,8 @@ export type Context = {
   upsertSingle: <Content extends Record<string, any>>(
     model: string,
     content: Content,
-    options?: CreateOpts,
-  ) => Promise<ModelInstanceDocument<Content>>
+    options?: UpsertOptions,
+  ) => Promise<ModelInstanceDocument<Content> | null>
   /**
    * Create or update a document using the SET account relation with the given
    * model, content and unique fields value.
@@ -65,8 +69,8 @@ export type Context = {
     model: string,
     unique: Array<string>,
     content: Content,
-    options?: CreateOpts,
-  ) => Promise<ModelInstanceDocument<Content>>
+    options?: UpsertOptions,
+  ) => Promise<ModelInstanceDocument<Content> | null>
   /**
    * Query the index for the total number of documents matching the query parameters.
    */
@@ -90,7 +94,7 @@ export function createContext(params: ContextParams): Context {
     loadDoc: async <Content extends Record<string, any> = Record<string, any>>(
       id: string | CommitID | StreamID,
       fresh = false,
-    ): Promise<ModelInstanceDocument<Content>> => {
+    ): Promise<ModelInstanceDocument<Content> | null> => {
       const key = { id }
       if (fresh) {
         loader.clear(key)
@@ -100,28 +104,36 @@ export function createContext(params: ContextParams): Context {
     upsertSingle: async <Content extends Record<string, any> = Record<string, any>>(
       model: string,
       content: Content,
-      options?: CreateOpts,
-    ): Promise<ModelInstanceDocument<Content>> => {
+      options: UpsertOptions = {},
+    ): Promise<ModelInstanceDocument<Content> | null> => {
       const controller = getViewerID()
       if (controller == null) {
         throw new Error('Document can only be created with an authenticated account')
       }
-      const doc = await loader.loadSingle<Content>(controller, model, options)
-      await doc.replace(content)
+      const { shouldIndex, ...opts } = options
+      const doc = await loader.loadSingle<Content>(controller, model, {
+        ...opts,
+        onlyIndexed: false,
+      })
+      await doc!.replace(content, typeof shouldIndex === 'undefined' ? undefined : { shouldIndex })
       return doc
     },
     upsertSet: async <Content extends Record<string, any> = Record<string, any>>(
       model: string,
       unique: Array<string>,
       content: Content,
-      options?: CreateOpts,
-    ): Promise<ModelInstanceDocument<Content>> => {
+      options: UpsertOptions = {},
+    ): Promise<ModelInstanceDocument<Content> | null> => {
       const controller = getViewerID()
       if (controller == null) {
         throw new Error('Document can only be created with an authenticated account')
       }
-      const doc = await loader.loadSet<Content>(controller, model, unique, options)
-      await doc.replace(content)
+      const { shouldIndex, ...opts } = options
+      const doc = await loader.loadSet<Content>(controller, model, unique, {
+        ...opts,
+        onlyIndexed: false,
+      })
+      await doc!.replace(content, typeof shouldIndex === 'undefined' ? undefined : { shouldIndex })
       return doc
     },
     queryCount: async (query: BaseQuery): Promise<number> => {

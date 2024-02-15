@@ -23,10 +23,16 @@ export const DEFAULT_DETERMINISTIC_OPTIONS: LoadOpts = { sync: SyncOptions.NEVER
 
 export type CreateOptions = CreateOpts & {
   controller?: string
+  shouldIndex?: boolean
+}
+
+export type DeterministicLoadOptions = CreateOptions & {
+  onlyIndexed?: boolean
 }
 
 export type UpdateDocOptions = {
   replace?: boolean
+  shouldIndex?: boolean
   version?: string
 }
 
@@ -155,11 +161,12 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
   async create<T extends Record<string, any> = Record<string, any>>(
     model: string | StreamID,
     content: T,
-    { controller, ...options }: CreateOptions = {},
+    { controller, shouldIndex, ...options }: CreateOptions = {},
   ): Promise<ModelInstanceDocument<T>> {
     const metadata = {
       controller,
       model: model instanceof StreamID ? model : StreamID.fromString(model),
+      shouldIndex,
     }
     const stream = await ModelInstanceDocument.create<T>(
       this.#ceramic,
@@ -185,11 +192,12 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
    */
   async _loadDeterministic<T extends Record<string, any> = Record<string, any>>(
     meta: GenesisMetadata,
-    options: CreateOpts = {},
-  ): Promise<ModelInstanceDocument<T>> {
+    options: DeterministicLoadOptions = {},
+  ): Promise<ModelInstanceDocument<T> | null> {
     const opts = { ...DEFAULT_DETERMINISTIC_OPTIONS, ...options }
     const key = await this._getDeterministicKey(meta)
-    return await this.load<T>({ ...key, opts })
+    const doc = await this.load<T>({ ...key, opts })
+    return options.onlyIndexed === false || doc.metadata.shouldIndex !== false ? doc : null
   }
 
   /**
@@ -198,8 +206,8 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
   async loadSingle<T extends Record<string, any> = Record<string, any>>(
     controller: string,
     model: string | StreamID,
-    options?: CreateOpts,
-  ): Promise<ModelInstanceDocument<T>> {
+    options?: DeterministicLoadOptions,
+  ): Promise<ModelInstanceDocument<T> | null> {
     return await this._loadDeterministic({ controller, model }, options)
   }
 
@@ -211,8 +219,8 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
     controller: string,
     model: string | StreamID,
     unique: Array<string>,
-    options?: CreateOpts,
-  ): Promise<ModelInstanceDocument<T>> {
+    options?: DeterministicLoadOptions,
+  ): Promise<ModelInstanceDocument<T> | null> {
     return await this._loadDeterministic({ controller, model, unique }, options)
   }
 
@@ -222,7 +230,7 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
   async update<T extends Record<string, any> = Record<string, any>>(
     streamID: string | StreamID,
     content: T,
-    { replace, version, ...options }: UpdateOptions = {},
+    { replace, shouldIndex, version, ...options }: UpdateOptions = {},
   ): Promise<ModelInstanceDocument<T>> {
     const key = { id: streamID }
     this.clear(key)
@@ -231,7 +239,8 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
       throw new Error('Stream version mismatch')
     }
     const newContent = replace ? content : { ...(stream.content ?? {}), ...content }
-    await stream.replace(removeNullValues(newContent) as T, undefined, options)
+    const metadata = typeof shouldIndex === 'undefined' ? undefined : { shouldIndex }
+    await stream.replace(removeNullValues(newContent) as T, metadata, options)
     return stream
   }
 

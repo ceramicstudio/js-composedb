@@ -350,6 +350,38 @@ describe('loader', () => {
         expect(replace).toHaveBeenCalledWith({ foo: 'bar', test: true }, undefined, {})
       })
 
+      test('does not set any metadata if `shouldIndex` is not provided', async () => {
+        const replace = jest.fn()
+        const multiQuery = jest.fn(() => ({
+          [testID1]: { commitId: testCommitID, content: { test: false }, replace },
+        }))
+        const loader = new DocumentLoader({
+          ceramic: { multiQuery } as unknown as CeramicAPI,
+        })
+        await loader.update(testID1, { test: true })
+        expect(replace).toHaveBeenCalledWith({ test: true }, undefined, {})
+      })
+
+      test('sets the `shouldIndex` metadata if provided', async () => {
+        const replace = jest.fn()
+        const multiQuery = jest.fn(() => ({
+          [testID1]: { commitId: testCommitID, content: { test: false }, replace },
+        }))
+        const loader = new DocumentLoader({
+          ceramic: { multiQuery } as unknown as CeramicAPI,
+        })
+
+        await loader.update(testID1, { test: true }, { shouldIndex: true })
+        expect(replace).toHaveBeenCalledWith({ test: true }, { shouldIndex: true }, {})
+
+        await loader.update(testID1, { index: false }, { shouldIndex: false })
+        expect(replace).toHaveBeenLastCalledWith(
+          { test: false, index: false },
+          { shouldIndex: false },
+          {},
+        )
+      })
+
       test('performs a full replacement if the option is set', async () => {
         const replace = jest.fn()
         const multiQuery = jest.fn(() => ({
