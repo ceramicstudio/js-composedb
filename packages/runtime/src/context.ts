@@ -116,9 +116,6 @@ export function createContext(params: ContextParams): Context {
         onlyIndexed: false,
       })
       await doc!.replace(content, typeof shouldIndex === 'undefined' ? undefined : { shouldIndex })
-      if (shouldIndex === false) {
-        loader.clear({ id: doc!.id })
-      }
       return doc
     },
     upsertSet: async <Content extends Record<string, any> = Record<string, any>>(
@@ -137,9 +134,6 @@ export function createContext(params: ContextParams): Context {
         onlyIndexed: false,
       })
       await doc!.replace(content, typeof shouldIndex === 'undefined' ? undefined : { shouldIndex })
-      if (shouldIndex === false) {
-        loader.clear({ id: doc!.id })
-      }
       return doc
     },
     queryCount: async (query: BaseQuery): Promise<number> => {
