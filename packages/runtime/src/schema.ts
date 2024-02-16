@@ -1,6 +1,6 @@
 import type { BaseQuery, QueryFilters, Sorting, UpdateOpts } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
-import { CeramicCommitID, GraphQLDID, getScalar } from '@composedb/graphql-scalars'
+import { CeramicCommitID, getScalar } from '@composedb/graphql-scalars'
 import type { UpdateDocOptions } from '@composedb/loader'
 import type {
   RuntimeCompositeDefinition,
@@ -178,23 +178,12 @@ const UpdateOptionsInput = new GraphQLInputObjectType({
   },
 })
 
-const CeramicSignerInputType = new GraphQLInputObjectType({
-  name: 'CeramicSignerInput',
-  fields: {
-    isAuthenticated: { type: GraphQLBoolean },
-  },
-})
-
 const HideOptionsInput = new GraphQLInputObjectType({
   name: 'HideOptionsInput',
   fields: {
-    asDID: {
-      type: GraphQLDID,
-      description: 'DID for the signer(Optional)',
-    },
-    signer: {
-      type: CeramicSignerInputType,
-      description: 'Ceramic signer (Optional)',
+    shouldIndex: {
+      type: GraphQLBoolean,
+      description: 'Inform indexers if they should index this document or not(Optional)',
     },
   },
 })

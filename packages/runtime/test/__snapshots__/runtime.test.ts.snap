@@ -432,20 +432,8 @@ input HideFavoriteInput {
 }
 
 input HideOptionsInput {
-  """DID for the signer(Optional)"""
-  asDID: DID
-
-  """Ceramic signer (Optional)"""
-  signer: CeramicSignerInput
-}
-
-"""
-A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
-"""
-scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
-
-input CeramicSignerInput {
-  isAuthenticated: Boolean
+  """Inform indexers if they should index this document or not(Optional)"""
+  shouldIndex: Boolean
 }
 
 type CreatePostPayload {
@@ -1016,20 +1004,8 @@ input HidePostInput {
 }
 
 input HideOptionsInput {
-  """DID for the signer(Optional)"""
-  asDID: DID
-
-  """Ceramic signer (Optional)"""
-  signer: CeramicSignerInput
-}
-
-"""
-A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
-"""
-scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
-
-input CeramicSignerInput {
-  isAuthenticated: Boolean
+  """Inform indexers if they should index this document or not(Optional)"""
+  shouldIndex: Boolean
 }
 
 type CreateCommentPayload {
@@ -1828,19 +1804,7 @@ input HidePostInput {
 }
 
 input HideOptionsInput {
-  """DID for the signer(Optional)"""
-  asDID: DID
-
-  """Ceramic signer (Optional)"""
-  signer: CeramicSignerInput
-}
-
-"""
-A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
-"""
-scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
-
-input CeramicSignerInput {
-  isAuthenticated: Boolean
+  """Inform indexers if they should index this document or not(Optional)"""
+  shouldIndex: Boolean
 }"
 `;
