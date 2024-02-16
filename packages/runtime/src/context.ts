@@ -72,9 +72,9 @@ export type Context = {
     options?: UpsertOptions,
   ) => Promise<ModelInstanceDocument<Content> | null>
   /**
-   * Hides/soft delete an existing document.
+   * Enable indexing for an existing document.
    */
-  hideDoc: (model: string, opts?: UpdateOpts) => Promise<void>
+  enableDocIndexing: (model: string, opts?: UpdateOpts) => Promise<void>
   /**
    * Query the index for the total number of documents matching the query parameters.
    */
@@ -140,7 +140,7 @@ export function createContext(params: ContextParams): Context {
       await doc!.replace(content, typeof shouldIndex === 'undefined' ? undefined : { shouldIndex })
       return doc
     },
-    hideDoc: async <Content extends Record<string, any> = Record<string, any>>(
+    enableDocIndexing: async <Content extends Record<string, any> = Record<string, any>>(
       model: string,
       opts?: UpdateOpts,
     ): Promise<void> => {

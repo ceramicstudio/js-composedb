@@ -199,17 +199,14 @@ const UpdateOptionsInput = new GraphQLInputObjectType({
   },
 })
 
-const HideOptionsInput = new GraphQLInputObjectType({
-  name: 'HideOptionsInput',
+const EnableIndexingOptionsInput = new GraphQLInputObjectType({
+  name: 'EnableIndexingOptionsInput',
   fields: {
     streamID: {
       type: GraphQLString,
       description: 'Reference a specific and unique event stream',
     },
-    shouldIndex: {
-      type: GraphQLBoolean,
-      description: 'Inform indexers if they should index this document or not(Optional)',
-    },
+    shouldIndexField,
   },
 })
 
@@ -1378,11 +1375,11 @@ class SchemaBuilder {
       },
     })
 
-    this.#mutations[`hide${name}`] = mutationWithClientMutationId({
-      name: `Hide${name}`,
+    this.#mutations[`enableIndexing${name}`] = mutationWithClientMutationId({
+      name: `EnableIndexing${name}`,
       inputFields: () => ({
         id: { type: new GraphQLNonNull(GraphQLID) },
-        options: { type: HideOptionsInput },
+        options: { type: EnableIndexingOptionsInput },
       }),
       outputFields: () => ({
         ...queryFields,
@@ -1392,7 +1389,7 @@ class SchemaBuilder {
         if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
           throw new Error('Ceramic instance is not authenticated')
         }
-        return { document: await ctx.hideDoc(input.id, input.options) }
+        return { document: await ctx.enableDocIndexing(input.id, input.options) }
       },
     })
   }

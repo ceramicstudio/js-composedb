@@ -335,13 +335,13 @@ input PostSortingInput {
 type Mutation {
   setFavorite(input: SetFavoriteInput!): SetFavoritePayload
   updateFavorite(input: UpdateFavoriteInput!): UpdateFavoritePayload
-  hideFavorite(input: HideFavoriteInput!): HideFavoritePayload
+  enableIndexingFavorite(input: EnableIndexingFavoriteInput!): EnableIndexingFavoritePayload
   createPost(input: CreatePostInput!): CreatePostPayload
   updatePost(input: UpdatePostInput!): UpdatePostPayload
-  hidePost(input: HidePostInput!): HidePostPayload
+  enableIndexingPost(input: EnableIndexingPostInput!): EnableIndexingPostPayload
   createComment(input: CreateCommentInput!): CreateCommentPayload
   updateComment(input: UpdateCommentInput!): UpdateCommentPayload
-  hideComment(input: HideCommentInput!): HideCommentPayload
+  enableIndexingComment(input: EnableIndexingCommentInput!): EnableIndexingCommentPayload
 }
 
 type SetFavoritePayload {
@@ -416,7 +416,7 @@ input PartialFavoriteInput {
   note: String
 }
 
-type HideFavoritePayload {
+type EnableIndexingFavoritePayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -429,18 +429,18 @@ type HideFavoritePayload {
   clientMutationId: String
 }
 
-input HideFavoriteInput {
+input EnableIndexingFavoriteInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
-input HideOptionsInput {
+input EnableIndexingOptionsInput {
   """Reference a specific and unique event stream"""
   streamID: String
 
-  """Inform indexers if they should index this document or not(Optional)"""
-  shouldIndex: Boolean
+  """Inform indexers if they should index this document or not"""
+  shouldIndexField: Boolean
 }
 
 type CreatePostPayload {
@@ -499,7 +499,7 @@ input PartialPostInput {
   title: String
 }
 
-type HidePostPayload {
+type EnableIndexingPostPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -512,9 +512,9 @@ type HidePostPayload {
   clientMutationId: String
 }
 
-input HidePostInput {
+input EnableIndexingPostInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
@@ -567,7 +567,7 @@ input PartialCommentInput {
   postID: CeramicStreamID
 }
 
-type HideCommentPayload {
+type EnableIndexingCommentPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -580,9 +580,9 @@ type HideCommentPayload {
   clientMutationId: String
 }
 
-input HideCommentInput {
+input EnableIndexingCommentInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }"
 `;
@@ -935,10 +935,10 @@ input PostSortingInput {
 type Mutation {
   createPost(input: CreatePostInput!): CreatePostPayload
   updatePost(input: UpdatePostInput!): UpdatePostPayload
-  hidePost(input: HidePostInput!): HidePostPayload
+  enableIndexingPost(input: EnableIndexingPostInput!): EnableIndexingPostPayload
   createComment(input: CreateCommentInput!): CreateCommentPayload
   updateComment(input: UpdateCommentInput!): UpdateCommentPayload
-  hideComment(input: HideCommentInput!): HideCommentPayload
+  enableIndexingComment(input: EnableIndexingCommentInput!): EnableIndexingCommentPayload
 }
 
 type CreatePostPayload {
@@ -1010,7 +1010,7 @@ input PartialPostInput {
   title: String
 }
 
-type HidePostPayload {
+type EnableIndexingPostPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -1023,18 +1023,18 @@ type HidePostPayload {
   clientMutationId: String
 }
 
-input HidePostInput {
+input EnableIndexingPostInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
-input HideOptionsInput {
+input EnableIndexingOptionsInput {
   """Reference a specific and unique event stream"""
   streamID: String
 
-  """Inform indexers if they should index this document or not(Optional)"""
-  shouldIndex: Boolean
+  """Inform indexers if they should index this document or not"""
+  shouldIndexField: Boolean
 }
 
 type CreateCommentPayload {
@@ -1086,7 +1086,7 @@ input PartialCommentInput {
   postID: CeramicStreamID
 }
 
-type HideCommentPayload {
+type EnableIndexingCommentPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -1099,9 +1099,9 @@ type HideCommentPayload {
   clientMutationId: String
 }
 
-input HideCommentInput {
+input EnableIndexingCommentInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }"
 `;
@@ -1748,7 +1748,7 @@ input PostSortingInput {
 type Mutation {
   createPost(input: CreatePostInput!): CreatePostPayload
   updatePost(input: UpdatePostInput!): UpdatePostPayload
-  hidePost(input: HidePostInput!): HidePostPayload
+  enableIndexingPost(input: EnableIndexingPostInput!): EnableIndexingPostPayload
 }
 
 type CreatePostPayload {
@@ -1823,7 +1823,7 @@ input PartialPostInput {
   text: String
 }
 
-type HidePostPayload {
+type EnableIndexingPostPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -1836,18 +1836,18 @@ type HidePostPayload {
   clientMutationId: String
 }
 
-input HidePostInput {
+input EnableIndexingPostInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
-input HideOptionsInput {
+input EnableIndexingOptionsInput {
   """Reference a specific and unique event stream"""
   streamID: String
 
-  """Inform indexers if they should index this document or not(Optional)"""
-  shouldIndex: Boolean
+  """Inform indexers if they should index this document or not"""
+  shouldIndexField: Boolean
 }"
 `;
 

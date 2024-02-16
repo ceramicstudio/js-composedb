@@ -115,7 +115,7 @@ type FavoriteEdge {
 type Mutation {
   setFavorite(input: SetFavoriteInput!): SetFavoritePayload
   updateFavorite(input: UpdateFavoriteInput!): UpdateFavoritePayload
-  hideFavorite(input: HideFavoriteInput!): HideFavoritePayload
+  enableIndexingFavorite(input: EnableIndexingFavoriteInput!): EnableIndexingFavoritePayload
 }
 
 type SetFavoritePayload {
@@ -193,7 +193,7 @@ input PartialFavoriteInput {
   note: String
 }
 
-type HideFavoritePayload {
+type EnableIndexingFavoritePayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -206,18 +206,18 @@ type HideFavoritePayload {
   clientMutationId: String
 }
 
-input HideFavoriteInput {
+input EnableIndexingFavoriteInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
-input HideOptionsInput {
+input EnableIndexingOptionsInput {
   """Reference a specific and unique event stream"""
   streamID: String
 
-  """Inform indexers if they should index this document or not(Optional)"""
-  shouldIndex: Boolean
+  """Inform indexers if they should index this document or not"""
+  shouldIndexField: Boolean
 }"
 `;
 
@@ -1500,19 +1500,19 @@ input MyMediaCollectionSortingInput {
 type Mutation {
   createMyImage(input: CreateMyImageInput!): CreateMyImagePayload
   updateMyImage(input: UpdateMyImageInput!): UpdateMyImagePayload
-  hideMyImage(input: HideMyImageInput!): HideMyImagePayload
+  enableIndexingMyImage(input: EnableIndexingMyImageInput!): EnableIndexingMyImagePayload
   createMyAudio(input: CreateMyAudioInput!): CreateMyAudioPayload
   updateMyAudio(input: UpdateMyAudioInput!): UpdateMyAudioPayload
-  hideMyAudio(input: HideMyAudioInput!): HideMyAudioPayload
+  enableIndexingMyAudio(input: EnableIndexingMyAudioInput!): EnableIndexingMyAudioPayload
   createMyVideo(input: CreateMyVideoInput!): CreateMyVideoPayload
   updateMyVideo(input: UpdateMyVideoInput!): UpdateMyVideoPayload
-  hideMyVideo(input: HideMyVideoInput!): HideMyVideoPayload
+  enableIndexingMyVideo(input: EnableIndexingMyVideoInput!): EnableIndexingMyVideoPayload
   createMyMediaCollectionItem(input: CreateMyMediaCollectionItemInput!): CreateMyMediaCollectionItemPayload
   updateMyMediaCollectionItem(input: UpdateMyMediaCollectionItemInput!): UpdateMyMediaCollectionItemPayload
-  hideMyMediaCollectionItem(input: HideMyMediaCollectionItemInput!): HideMyMediaCollectionItemPayload
+  enableIndexingMyMediaCollectionItem(input: EnableIndexingMyMediaCollectionItemInput!): EnableIndexingMyMediaCollectionItemPayload
   createMyMediaCollection(input: CreateMyMediaCollectionInput!): CreateMyMediaCollectionPayload
   updateMyMediaCollection(input: UpdateMyMediaCollectionInput!): UpdateMyMediaCollectionPayload
-  hideMyMediaCollection(input: HideMyMediaCollectionInput!): HideMyMediaCollectionPayload
+  enableIndexingMyMediaCollection(input: EnableIndexingMyMediaCollectionInput!): EnableIndexingMyMediaCollectionPayload
 }
 
 type CreateMyImagePayload {
@@ -1596,7 +1596,7 @@ input PartialMyImageInput {
   info: MediaInfoInput
 }
 
-type HideMyImagePayload {
+type EnableIndexingMyImagePayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -1609,18 +1609,18 @@ type HideMyImagePayload {
   clientMutationId: String
 }
 
-input HideMyImageInput {
+input EnableIndexingMyImageInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
-input HideOptionsInput {
+input EnableIndexingOptionsInput {
   """Reference a specific and unique event stream"""
   streamID: String
 
-  """Inform indexers if they should index this document or not(Optional)"""
-  shouldIndex: Boolean
+  """Inform indexers if they should index this document or not"""
+  shouldIndexField: Boolean
 }
 
 type CreateMyAudioPayload {
@@ -1676,7 +1676,7 @@ input PartialMyAudioInput {
   info: MediaInfoInput
 }
 
-type HideMyAudioPayload {
+type EnableIndexingMyAudioPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -1689,9 +1689,9 @@ type HideMyAudioPayload {
   clientMutationId: String
 }
 
-input HideMyAudioInput {
+input EnableIndexingMyAudioInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
@@ -1752,7 +1752,7 @@ input PartialMyVideoInput {
   info: MediaInfoInput
 }
 
-type HideMyVideoPayload {
+type EnableIndexingMyVideoPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -1765,9 +1765,9 @@ type HideMyVideoPayload {
   clientMutationId: String
 }
 
-input HideMyVideoInput {
+input EnableIndexingMyVideoInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
@@ -1822,7 +1822,7 @@ input PartialMyMediaCollectionItemInput {
   createdAt: DateTime
 }
 
-type HideMyMediaCollectionItemPayload {
+type EnableIndexingMyMediaCollectionItemPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -1835,9 +1835,9 @@ type HideMyMediaCollectionItemPayload {
   clientMutationId: String
 }
 
-input HideMyMediaCollectionItemInput {
+input EnableIndexingMyMediaCollectionItemInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
@@ -1892,7 +1892,7 @@ input PartialMyMediaCollectionInput {
   createdAt: DateTime
 }
 
-type HideMyMediaCollectionPayload {
+type EnableIndexingMyMediaCollectionPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -1905,9 +1905,9 @@ type HideMyMediaCollectionPayload {
   clientMutationId: String
 }
 
-input HideMyMediaCollectionInput {
+input EnableIndexingMyMediaCollectionInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }"
 `;
@@ -2172,10 +2172,10 @@ input NoteBookSortingInput {
 type Mutation {
   createNoteBook(input: CreateNoteBookInput!): CreateNoteBookPayload
   updateNoteBook(input: UpdateNoteBookInput!): UpdateNoteBookPayload
-  hideNoteBook(input: HideNoteBookInput!): HideNoteBookPayload
+  enableIndexingNoteBook(input: EnableIndexingNoteBookInput!): EnableIndexingNoteBookPayload
   createNote(input: CreateNoteInput!): CreateNotePayload
   updateNote(input: UpdateNoteInput!): UpdateNotePayload
-  hideNote(input: HideNoteInput!): HideNotePayload
+  enableIndexingNote(input: EnableIndexingNoteInput!): EnableIndexingNotePayload
 }
 
 type CreateNoteBookPayload {
@@ -2243,7 +2243,7 @@ input PartialNoteBookInput {
   title: String
 }
 
-type HideNoteBookPayload {
+type EnableIndexingNoteBookPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -2256,18 +2256,18 @@ type HideNoteBookPayload {
   clientMutationId: String
 }
 
-input HideNoteBookInput {
+input EnableIndexingNoteBookInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
-input HideOptionsInput {
+input EnableIndexingOptionsInput {
   """Reference a specific and unique event stream"""
   streamID: String
 
-  """Inform indexers if they should index this document or not(Optional)"""
-  shouldIndex: Boolean
+  """Inform indexers if they should index this document or not"""
+  shouldIndexField: Boolean
 }
 
 type CreateNotePayload {
@@ -2323,7 +2323,7 @@ input PartialNoteInput {
   text: String
 }
 
-type HideNotePayload {
+type EnableIndexingNotePayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -2336,9 +2336,9 @@ type HideNotePayload {
   clientMutationId: String
 }
 
-input HideNoteInput {
+input EnableIndexingNoteInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }"
 `;
@@ -2602,10 +2602,10 @@ input PostSortingInput {
 type Mutation {
   createPost(input: CreatePostInput!): CreatePostPayload
   updatePost(input: UpdatePostInput!): UpdatePostPayload
-  hidePost(input: HidePostInput!): HidePostPayload
+  enableIndexingPost(input: EnableIndexingPostInput!): EnableIndexingPostPayload
   createComment(input: CreateCommentInput!): CreateCommentPayload
   updateComment(input: UpdateCommentInput!): UpdateCommentPayload
-  hideComment(input: HideCommentInput!): HideCommentPayload
+  enableIndexingComment(input: EnableIndexingCommentInput!): EnableIndexingCommentPayload
 }
 
 type CreatePostPayload {
@@ -2677,7 +2677,7 @@ input PartialPostInput {
   text: String
 }
 
-type HidePostPayload {
+type EnableIndexingPostPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -2690,18 +2690,18 @@ type HidePostPayload {
   clientMutationId: String
 }
 
-input HidePostInput {
+input EnableIndexingPostInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
-input HideOptionsInput {
+input EnableIndexingOptionsInput {
   """Reference a specific and unique event stream"""
   streamID: String
 
-  """Inform indexers if they should index this document or not(Optional)"""
-  shouldIndex: Boolean
+  """Inform indexers if they should index this document or not"""
+  shouldIndexField: Boolean
 }
 
 type CreateCommentPayload {
@@ -2753,7 +2753,7 @@ input PartialCommentInput {
   text: String
 }
 
-type HideCommentPayload {
+type EnableIndexingCommentPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -2766,9 +2766,9 @@ type HideCommentPayload {
   clientMutationId: String
 }
 
-input HideCommentInput {
+input EnableIndexingCommentInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }"
 `;
@@ -3038,15 +3038,15 @@ type Mutation {
   setGenericProfile(input: SetGenericProfileInput!): SetGenericProfilePayload
   createGenericProfile(input: CreateGenericProfileInput!): CreateGenericProfilePayload @deprecated(reason: "Replaced by the setGenericProfile mutation, createGenericProfile will be removed in a future version of ComposeDB.")
   updateGenericProfile(input: UpdateGenericProfileInput!): UpdateGenericProfilePayload
-  hideGenericProfile(input: HideGenericProfileInput!): HideGenericProfilePayload
+  enableIndexingGenericProfile(input: EnableIndexingGenericProfileInput!): EnableIndexingGenericProfilePayload
   setSocialProfile(input: SetSocialProfileInput!): SetSocialProfilePayload
   createSocialProfile(input: CreateSocialProfileInput!): CreateSocialProfilePayload @deprecated(reason: "Replaced by the setSocialProfile mutation, createSocialProfile will be removed in a future version of ComposeDB.")
   updateSocialProfile(input: UpdateSocialProfileInput!): UpdateSocialProfilePayload
-  hideSocialProfile(input: HideSocialProfileInput!): HideSocialProfilePayload
+  enableIndexingSocialProfile(input: EnableIndexingSocialProfileInput!): EnableIndexingSocialProfilePayload
   setPersonProfile(input: SetPersonProfileInput!): SetPersonProfilePayload
   createPersonProfile(input: CreatePersonProfileInput!): CreatePersonProfilePayload @deprecated(reason: "Replaced by the setPersonProfile mutation, createPersonProfile will be removed in a future version of ComposeDB.")
   updatePersonProfile(input: UpdatePersonProfileInput!): UpdatePersonProfilePayload
-  hidePersonProfile(input: HidePersonProfileInput!): HidePersonProfilePayload
+  enableIndexingPersonProfile(input: EnableIndexingPersonProfileInput!): EnableIndexingPersonProfilePayload
 }
 
 type SetGenericProfilePayload {
@@ -3156,7 +3156,7 @@ input PartialGenericProfileInput {
   image: ImageSourcesInput
 }
 
-type HideGenericProfilePayload {
+type EnableIndexingGenericProfilePayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -3169,18 +3169,18 @@ type HideGenericProfilePayload {
   clientMutationId: String
 }
 
-input HideGenericProfileInput {
+input EnableIndexingGenericProfileInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
-input HideOptionsInput {
+input EnableIndexingOptionsInput {
   """Reference a specific and unique event stream"""
   streamID: String
 
-  """Inform indexers if they should index this document or not(Optional)"""
-  shouldIndex: Boolean
+  """Inform indexers if they should index this document or not"""
+  shouldIndexField: Boolean
 }
 
 type SetSocialProfilePayload {
@@ -3255,7 +3255,7 @@ input PartialSocialProfileInput {
   url: String
 }
 
-type HideSocialProfilePayload {
+type EnableIndexingSocialProfilePayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -3268,9 +3268,9 @@ type HideSocialProfilePayload {
   clientMutationId: String
 }
 
-input HideSocialProfileInput {
+input EnableIndexingSocialProfileInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
@@ -3350,7 +3350,7 @@ input PartialPersonProfileInput {
   affiliations: [String]
 }
 
-type HidePersonProfilePayload {
+type EnableIndexingPersonProfilePayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -3363,9 +3363,9 @@ type HidePersonProfilePayload {
   clientMutationId: String
 }
 
-input HidePersonProfileInput {
+input EnableIndexingPersonProfileInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }"
 `;
@@ -3986,19 +3986,19 @@ scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
 type Mutation {
   createTextPost(input: CreateTextPostInput!): CreateTextPostPayload
   updateTextPost(input: UpdateTextPostInput!): UpdateTextPostPayload
-  hideTextPost(input: HideTextPostInput!): HideTextPostPayload
+  enableIndexingTextPost(input: EnableIndexingTextPostInput!): EnableIndexingTextPostPayload
   setLike(input: SetLikeInput!): SetLikePayload
   updateLike(input: UpdateLikeInput!): UpdateLikePayload
-  hideLike(input: HideLikeInput!): HideLikePayload
+  enableIndexingLike(input: EnableIndexingLikeInput!): EnableIndexingLikePayload
   setTag(input: SetTagInput!): SetTagPayload
   updateTag(input: UpdateTagInput!): UpdateTagPayload
-  hideTag(input: HideTagInput!): HideTagPayload
+  enableIndexingTag(input: EnableIndexingTagInput!): EnableIndexingTagPayload
   setPostTag(input: SetPostTagInput!): SetPostTagPayload
   updatePostTag(input: UpdatePostTagInput!): UpdatePostTagPayload
-  hidePostTag(input: HidePostTagInput!): HidePostTagPayload
+  enableIndexingPostTag(input: EnableIndexingPostTagInput!): EnableIndexingPostTagPayload
   setFollows(input: SetFollowsInput!): SetFollowsPayload
   updateFollows(input: UpdateFollowsInput!): UpdateFollowsPayload
-  hideFollows(input: HideFollowsInput!): HideFollowsPayload
+  enableIndexingFollows(input: EnableIndexingFollowsInput!): EnableIndexingFollowsPayload
 }
 
 type CreateTextPostPayload {
@@ -4073,7 +4073,7 @@ input PartialTextPostInput {
   text: String
 }
 
-type HideTextPostPayload {
+type EnableIndexingTextPostPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -4086,18 +4086,18 @@ type HideTextPostPayload {
   clientMutationId: String
 }
 
-input HideTextPostInput {
+input EnableIndexingTextPostInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
-input HideOptionsInput {
+input EnableIndexingOptionsInput {
   """Reference a specific and unique event stream"""
   streamID: String
 
-  """Inform indexers if they should index this document or not(Optional)"""
-  shouldIndex: Boolean
+  """Inform indexers if they should index this document or not"""
+  shouldIndexField: Boolean
 }
 
 type SetLikePayload {
@@ -4152,7 +4152,7 @@ input UpdateLikeInput {
   clientMutationId: String
 }
 
-type HideLikePayload {
+type EnableIndexingLikePayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -4165,9 +4165,9 @@ type HideLikePayload {
   clientMutationId: String
 }
 
-input HideLikeInput {
+input EnableIndexingLikeInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
@@ -4219,7 +4219,7 @@ input PartialTagInput {
   description: String
 }
 
-type HideTagPayload {
+type EnableIndexingTagPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -4232,9 +4232,9 @@ type HideTagPayload {
   clientMutationId: String
 }
 
-input HideTagInput {
+input EnableIndexingTagInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
@@ -4281,7 +4281,7 @@ input UpdatePostTagInput {
   clientMutationId: String
 }
 
-type HidePostTagPayload {
+type EnableIndexingPostTagPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -4294,9 +4294,9 @@ type HidePostTagPayload {
   clientMutationId: String
 }
 
-input HidePostTagInput {
+input EnableIndexingPostTagInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
@@ -4348,7 +4348,7 @@ input PartialFollowsInput {
   date: Date
 }
 
-type HideFollowsPayload {
+type EnableIndexingFollowsPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -4361,9 +4361,9 @@ type HideFollowsPayload {
   clientMutationId: String
 }
 
-input HideFollowsInput {
+input EnableIndexingFollowsInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }"
 `;
@@ -4591,7 +4591,7 @@ enum SortOrder {
 type Mutation {
   createExtraScalars(input: CreateExtraScalarsInput!): CreateExtraScalarsPayload
   updateExtraScalars(input: UpdateExtraScalarsInput!): UpdateExtraScalarsPayload
-  hideExtraScalars(input: HideExtraScalarsInput!): HideExtraScalarsPayload
+  enableIndexingExtraScalars(input: EnableIndexingExtraScalarsInput!): EnableIndexingExtraScalarsPayload
 }
 
 type CreateExtraScalarsPayload {
@@ -4700,7 +4700,7 @@ input PartialExtraScalarsInput {
   utcOffset: UtcOffset
 }
 
-type HideExtraScalarsPayload {
+type EnableIndexingExtraScalarsPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -4713,17 +4713,17 @@ type HideExtraScalarsPayload {
   clientMutationId: String
 }
 
-input HideExtraScalarsInput {
+input EnableIndexingExtraScalarsInput {
   id: ID!
-  options: HideOptionsInput
+  options: EnableIndexingOptionsInput
   clientMutationId: String
 }
 
-input HideOptionsInput {
+input EnableIndexingOptionsInput {
   """Reference a specific and unique event stream"""
   streamID: String
 
-  """Inform indexers if they should index this document or not(Optional)"""
-  shouldIndex: Boolean
+  """Inform indexers if they should index this document or not"""
+  shouldIndexField: Boolean
 }"
 `;

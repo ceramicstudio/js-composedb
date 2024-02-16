@@ -454,7 +454,7 @@ describe('runtime', () => {
     expect(updated.data?.updateNote.document).toMatchSnapshot()
   }, 20000)
 
-  test('create and hide post with comments', async () => {
+  test('create and enable indexing post with comments', async () => {
     const composite = await Composite.create({ ceramic, schema: postSchema })
     const definition = composite.toRuntime()
 
@@ -476,19 +476,19 @@ describe('runtime', () => {
     )
     const { id } = postRes.data?.createPost.document ?? {}
 
-    const hidePostMutation = `mutation HidePost($input: HidePostInput!) {
-        hidePost(input: $input) {
+    const enableIndexingPostMutation = `mutation EnableIndexingPost($input: EnableIndexingPostInput!) {
+      enableIndexingPost(input: $input) {
           document {
             id
           }
         }
       }`
-    const hideRes = await runtime.executeQuery<{ hidePost: { document: { id: string } } }>(
-      hidePostMutation,
+    const res = await runtime.executeQuery<{ enableIndexingPost: { document: { id: string } } }>(
+      enableIndexingPostMutation,
       { input: { id } },
     )
 
-    expect(hideRes.errors).toBeUndefined()
+    expect(res.errors).toBeUndefined()
   }, 60000)
 
   test('relation to account reference', async () => {
