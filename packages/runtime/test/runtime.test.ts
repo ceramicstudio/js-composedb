@@ -10,7 +10,6 @@ import {
   mediaSchema,
   noteSchema,
   postSchema,
-  profilesSchema,
   ratingSchema,
   socialSchema,
 } from '@composedb/test-schemas'
@@ -25,31 +24,100 @@ declare global {
 }
 
 describe('runtime', () => {
-  test('set profile with custom sync timeout', async () => {
-    const composite = await Composite.create({ ceramic, schema: profilesSchema })
+  test('set and unset profile with custom sync timeout', async () => {
+    const composite = await Composite.create({
+      ceramic,
+      schema: `
+        type Profile @createModel(description: "Test profile", accountRelation: SINGLE) {
+          name: String! @string(minLength: 2, maxLength: 20)
+        }
+      `,
+    })
 
     const context = createContext({ ceramic })
     const spy = jest.spyOn(context, 'upsertSingle')
 
     const runtime = new ComposeRuntime({ ceramic, context, definition: composite.toRuntime() })
-    const res = await runtime.executeQuery<{ setGenericProfile: { document: { id: string } } }>(
+    const setRes = await runtime.executeQuery<{
+      setProfile: { document: { id: string }; viewer: { profile: { name: string } } }
+    }>(
       `
-      mutation SetProfile($input: SetGenericProfileInput!) {
-        setGenericProfile(input: $input) {
+      mutation SetProfile($input: SetProfileInput!) {
+        setProfile(input: $input) {
           document {
             id
+          }
+          viewer {
+            profile {
+              name
+            }
           }
         }
       }
       `,
       { input: { content: { name: 'Alice' }, options: { syncTimeout: 1 } } },
     )
-    expect(res.data?.setGenericProfile.document.id).toBeDefined()
+    const profileID = setRes.data?.setProfile.document.id
+    expect(profileID).toBeDefined()
+    expect(setRes.data?.setProfile.viewer.profile.name).toBe('Alice')
     expect(spy).toHaveBeenCalledWith(
       expect.any(String),
       { name: 'Alice' },
       { syncTimeoutSeconds: 1 },
     )
+
+    async function runQuery() {
+      return await runtime.executeQuery(`
+        query Profiles {
+          profileIndex (first: 1) {
+            edges {
+              node {
+                name
+              }
+            }
+          }
+        }
+      `)
+    }
+    // Check profile is returned by indexer
+    await expect(runQuery()).resolves.toMatchSnapshot()
+
+    const updateRes = await runtime.executeQuery<{
+      updateProfile: { viewer: { profile: { name: string } } }
+    }>(
+      `
+      mutation UpdateProfile($input: UpdateProfileInput!) {
+        updateProfile(input: $input) {
+          viewer {
+            profile {
+              name
+            }
+          }
+        }
+      }
+    `,
+      { input: { id: profileID, content: {}, options: { shouldIndex: false } } },
+    )
+    // Profile should no longer be returned
+    expect(updateRes.data?.updateProfile.viewer.profile).toBeNull()
+
+    // Check profile is no longer returned by indexer
+    await expect(runQuery()).resolves.toMatchSnapshot()
+
+    // Document is still accessible by direct access using its stream ID
+    const directLoadRes = await runtime.executeQuery(
+      `
+        query LoadProfile($id: ID!) {
+          node(id: $id) {
+            ... on Profile {
+              name
+            }
+          }
+        }
+      `,
+      { id: profileID },
+    )
+    expect(directLoadRes).toMatchSnapshot()
   }, 30000)
 
   test('create and query post with comments', async () => {
@@ -843,6 +911,7 @@ describe('runtime', () => {
       mutation SetFavorite($input: SetFavoriteInput!) {
         setFavorite(input: $input) {
           document {
+            id
             doc {
               ... on Post {
                 title
@@ -867,15 +936,43 @@ describe('runtime', () => {
       }
     `
 
-    const favorite1Res = await runtime.executeQuery(setFavorite, {
-      input: { content: { docID: post1ID, tag: 'posts' } },
-    })
-    expect(favorite1Res.data).toMatchSnapshot()
+    const favorite1Res = await runtime.executeQuery<{
+      setFavorite: { document: { id: string }; viewer: any }
+    }>(setFavorite, { input: { content: { docID: post1ID, tag: 'posts' } } })
+    expect(favorite1Res.data?.setFavorite.viewer).toMatchSnapshot()
+    const favorite1ID = favorite1Res.data?.setFavorite.document.id
 
-    const favorite2Res = await runtime.executeQuery(setFavorite, {
+    const favorite2Res = await runtime.executeQuery<{
+      setFavorite: { document: { id: string }; viewer: any }
+    }>(setFavorite, {
       input: { content: { docID: post2ID, tag: 'posts' } },
     })
-    expect(favorite2Res.data).toMatchSnapshot()
+    expect(favorite2Res.data?.setFavorite.viewer).toMatchSnapshot()
+
+    const unsetRes = await runtime.executeQuery(
+      `
+      mutation UnsetFavorite($input: UpdateFavoriteInput!) {
+        updateFavorite(input: $input) {
+          viewer {
+            favoriteList(first: 10) {
+              edges {
+                node {
+                  doc {
+                    ... on Post {
+                      title
+                    }
+                  }
+                  tag
+                }
+              }
+            }
+          }
+        }
+      }
+      `,
+      { input: { id: favorite1ID, content: {}, options: { shouldIndex: false } } },
+    )
+    expect(unsetRes.data).toMatchSnapshot()
   }, 30000)
 
   test('runtime operations on models with immutable field', async () => {
@@ -953,4 +1050,78 @@ describe('runtime', () => {
       `Variable "$i" got invalid value { title: "A different title" } at "i.content"; Field "title" is not defined by type "PartialPostInput". Did you mean "date"?`,
     )
   }, 60000)
+
+  test('toggling `shouldIndex` metadata', async () => {
+    const composite = await Composite.create({
+      ceramic,
+      schema: `
+        type Post @createModel(description: "Test post") {
+          title: String! @string(maxLength: 1000)
+        }
+      `,
+    })
+    const definition = composite.toRuntime()
+    const runtime = new ComposeRuntime({ ceramic, definition })
+
+    const createdRes = await runtime.executeQuery<{
+      post1: { document: { id: string } }
+      post2: { document: { id: string } }
+    }>(
+      `
+      mutation CreatePosts($input1: CreatePostInput!, $input2: CreatePostInput!) {
+        post1: createPost(input: $input1) {
+          document {
+            id
+          }
+        }
+        post2: createPost(input: $input2) {
+          document {
+            id
+          }
+        }
+      }
+      `,
+      {
+        input1: { content: { title: 'A first post' } },
+        input2: { content: { title: 'A second post' } },
+      },
+    )
+    const postID = createdRes.data?.post1.document.id
+    expect(postID).toBeDefined()
+
+    async function runQuery() {
+      return await runtime.executeQuery(`
+        query Posts {
+          postIndex (first: 2) {
+            edges {
+              node {
+                title
+              }
+            }
+          }
+        }
+      `)
+    }
+
+    await expect(runQuery()).resolves.toMatchSnapshot()
+
+    async function togglePostShouldIndex(shouldIndex: boolean, content = {}) {
+      await runtime.executeQuery(
+        `mutation UpdatePost($input: UpdatePostInput!) {
+          updatePost(input: $input) {
+            document {
+              id
+            }
+          }
+        }`,
+        { input: { id: postID, content, options: { shouldIndex } } },
+      )
+    }
+
+    await togglePostShouldIndex(false)
+    await expect(runQuery()).resolves.toMatchSnapshot()
+
+    await togglePostShouldIndex(true, { title: 'First post is back' })
+    await expect(runQuery()).resolves.toMatchSnapshot()
+  }, 30000)
 })

@@ -13,6 +13,7 @@ export type { BaseQuery } from '@ceramicnetwork/common'
 export type { Connection } from 'graphql-relay'
 export {
   type CreateOptions,
+  type DeterministicLoadOptions,
   DocumentLoader,
   type DocumentLoaderParams,
   type UpdateDocOptions,

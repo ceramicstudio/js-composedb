@@ -24,8 +24,9 @@ import {
   type GraphQLFieldConfig,
   type GraphQLFieldConfigMap,
   GraphQLFloat,
-  type GraphQLInputFieldConfigMap,
   GraphQLID,
+  type GraphQLInputFieldConfig,
+  type GraphQLInputFieldConfigMap,
   GraphQLInputObjectType,
   GraphQLInt,
   GraphQLInterfaceType,
@@ -148,18 +149,34 @@ const connectionArgsWithAccount = {
   },
 }
 
+const shouldIndexField: GraphQLInputFieldConfig = {
+  type: GraphQLBoolean,
+  description: 'Inform indexers if they should index this document or not',
+}
+
+const syncTimeoutField: GraphQLInputFieldConfig = {
+  type: GraphQLInt,
+  description:
+    'Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds',
+}
+
+const CreateOptionsInput = new GraphQLInputObjectType({
+  name: 'CreateOptionsInput',
+  fields: {
+    shouldIndex: shouldIndexField,
+  },
+})
+
 const SetOptionsInput = new GraphQLInputObjectType({
   name: 'SetOptionsInput',
   fields: {
-    syncTimeout: {
-      type: GraphQLInt,
-      description:
-        'Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds',
-    },
+    shouldIndex: shouldIndexField,
+    syncTimeout: syncTimeoutField,
   },
 })
 
 type SetOptions = {
+  shouldIndex?: boolean
   syncTimeout?: number
 }
 
@@ -170,6 +187,10 @@ const UpdateOptionsInput = new GraphQLInputObjectType({
       type: GraphQLBoolean,
       defaultValue: false,
       description: 'Fully replace the document contents instead of performing a shallow merge',
+    },
+    shouldIndex: {
+      type: GraphQLBoolean,
+      description: 'Inform indexers if they should index this document or not',
     },
     version: {
       type: CeramicCommitID,
@@ -1111,10 +1132,25 @@ class SchemaBuilder {
       fields: () => buildFields(true),
     })
     if (isDocument) {
-      this.#inputObjects[`Partial${name}`] = new GraphQLInputObjectType({
-        name: `Partial${name}Input`,
-        fields: () => buildFields(false),
-      })
+      // GraphQL doesn't allow empty input objects so we need to check if there is any mutable field
+      let hasMutableField = false
+      for (const field of Object.values(fields)) {
+        if (
+          !(field as RuntimeScalarCommon).immutable &&
+          field.type !== 'meta' &&
+          field.type !== 'view' &&
+          !(field.type === 'reference' && field.refType === 'connection')
+        ) {
+          hasMutableField = true
+          break
+        }
+      }
+      if (hasMutableField) {
+        this.#inputObjects[`Partial${name}`] = new GraphQLInputObjectType({
+          name: `Partial${name}Input`,
+          fields: () => buildFields(false),
+        })
+      }
     }
   }
 
@@ -1202,19 +1238,22 @@ class SchemaBuilder {
           name: `Create${name}`,
           inputFields: () => ({
             content: { type: new GraphQLNonNull(this.#inputObjects[name]) },
+            options: { type: CreateOptionsInput },
           }),
           outputFields: () => ({
             ...queryFields,
             document: { type: new GraphQLNonNull(this.#types[name]) },
           }),
           mutateAndGetPayload: async (
-            input: { content: Record<string, unknown> },
+            input: { content: Record<string, unknown>; options?: { shouldIndex: boolean } },
             ctx: Context,
           ) => {
             if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
               throw new Error('Ceramic instance is not authenticated')
             }
-            const document = await ctx.loader.create(model.id, input.content)
+            const document = await ctx.loader.create(model.id, input.content, {
+              shouldIndex: input.options?.shouldIndex,
+            })
             return { document }
           },
         })
@@ -1242,6 +1281,7 @@ class SchemaBuilder {
             }
             const unique = relationFields.map((field) => String(input.content[field]))
             const document = await ctx.upsertSet(model.id, unique, input.content, {
+              shouldIndex: input.options?.shouldIndex,
               syncTimeoutSeconds: input.options?.syncTimeout,
             })
             return { document }
@@ -1269,6 +1309,7 @@ class SchemaBuilder {
               throw new Error('Ceramic instance is not authenticated')
             }
             const document = await ctx.upsertSingle(model.id, input.content, {
+              shouldIndex: input.options?.shouldIndex,
               syncTimeoutSeconds: input.options?.syncTimeout,
             })
             return { document }
@@ -1294,6 +1335,7 @@ class SchemaBuilder {
               throw new Error('Ceramic instance is not authenticated')
             }
             const document = await ctx.upsertSingle(model.id, input.content, {
+              shouldIndex: input.options?.shouldIndex,
               syncTimeoutSeconds: input.options?.syncTimeout,
             })
             return { document }
@@ -1309,11 +1351,18 @@ class SchemaBuilder {
 
     this.#mutations[`update${name}`] = mutationWithClientMutationId({
       name: `Update${name}`,
-      inputFields: () => ({
-        id: { type: new GraphQLNonNull(GraphQLID) },
-        content: { type: new GraphQLNonNull(this.#inputObjects[`Partial${name}`]) },
-        options: { type: UpdateOptionsInput },
-      }),
+      inputFields: () => {
+        const inputFields: GraphQLInputFieldConfigMap = {
+          id: { type: new GraphQLNonNull(GraphQLID) },
+          options: { type: UpdateOptionsInput },
+        }
+        // It's possible content can't be updated if all fields are immutable
+        const partialContentInput = this.#inputObjects[`Partial${name}`]
+        if (partialContentInput != null) {
+          inputFields.content = { type: new GraphQLNonNull(partialContentInput) }
+        }
+        return inputFields
+      },
       outputFields: () => ({
         ...queryFields,
         document: { type: new GraphQLNonNull(this.#types[name]) },

@@ -370,6 +370,9 @@ input FavoriteInput {
 }
 
 input SetOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """
   Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds
   """
@@ -391,15 +394,9 @@ type UpdateFavoritePayload {
 
 input UpdateFavoriteInput {
   id: ID!
-  content: PartialFavoriteInput!
   options: UpdateOptionsInput
+  content: PartialFavoriteInput!
   clientMutationId: String
-}
-
-input PartialFavoriteInput {
-  tag: String
-  note: String
-  docID: CeramicStreamID
 }
 
 input UpdateOptionsInput {
@@ -408,8 +405,17 @@ input UpdateOptionsInput {
   """
   replace: Boolean = false
 
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
+}
+
+input PartialFavoriteInput {
+  tag: String
+  note: String
+  docID: CeramicStreamID
 }
 
 type HideFavoritePayload {
@@ -454,6 +460,7 @@ type CreatePostPayload {
 
 input CreatePostInput {
   content: PostInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -461,6 +468,11 @@ input PostInput {
   date: DateTime
   text: String!
   title: String!
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 }
 
 type UpdatePostPayload {
@@ -478,8 +490,8 @@ type UpdatePostPayload {
 
 input UpdatePostInput {
   id: ID!
-  content: PartialPostInput!
   options: UpdateOptionsInput
+  content: PartialPostInput!
   clientMutationId: String
 }
 
@@ -523,6 +535,7 @@ type CreateCommentPayload {
 
 input CreateCommentInput {
   content: CommentInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -546,8 +559,8 @@ type UpdateCommentPayload {
 
 input UpdateCommentInput {
   id: ID!
-  content: PartialCommentInput!
   options: UpdateOptionsInput
+  content: PartialCommentInput!
   clientMutationId: String
 }
 
@@ -578,38 +591,49 @@ input HideCommentInput {
 
 exports[`runtime SET account relation support 2`] = `
 {
-  "setFavorite": {
-    "document": {
-      "doc": {
-        "title": "Test post 1",
-      },
-    },
-    "viewer": {
-      "favoriteList": {
-        "edges": [
-          {
-            "node": {
-              "doc": {
-                "title": "Test post 1",
-              },
-              "tag": "posts",
-            },
+  "favoriteList": {
+    "edges": [
+      {
+        "node": {
+          "doc": {
+            "title": "Test post 1",
           },
-        ],
+          "tag": "posts",
+        },
       },
-    },
+    ],
   },
 }
 `;
 
 exports[`runtime SET account relation support 3`] = `
 {
-  "setFavorite": {
-    "document": {
-      "doc": {
-        "title": "Test post 2",
+  "favoriteList": {
+    "edges": [
+      {
+        "node": {
+          "doc": {
+            "title": "Test post 1",
+          },
+          "tag": "posts",
+        },
       },
-    },
+      {
+        "node": {
+          "doc": {
+            "title": "Test post 2",
+          },
+          "tag": "posts",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`runtime SET account relation support 4`] = `
+{
+  "updateFavorite": {
     "viewer": {
       "favoriteList": {
         "edges": [
@@ -942,6 +966,7 @@ type CreatePostPayload {
 
 input CreatePostInput {
   content: PostInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -949,6 +974,11 @@ input PostInput {
   date: DateTime
   text: String!
   title: String!
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 }
 
 type UpdatePostPayload {
@@ -966,15 +996,9 @@ type UpdatePostPayload {
 
 input UpdatePostInput {
   id: ID!
-  content: PartialPostInput!
   options: UpdateOptionsInput
+  content: PartialPostInput!
   clientMutationId: String
-}
-
-input PartialPostInput {
-  date: DateTime
-  text: String
-  title: String
 }
 
 input UpdateOptionsInput {
@@ -983,8 +1007,17 @@ input UpdateOptionsInput {
   """
   replace: Boolean = false
 
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
+}
+
+input PartialPostInput {
+  date: DateTime
+  text: String
+  title: String
 }
 
 type HidePostPayload {
@@ -1029,6 +1062,7 @@ type CreateCommentPayload {
 
 input CreateCommentInput {
   content: CommentInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -1052,8 +1086,8 @@ type UpdateCommentPayload {
 
 input UpdateCommentInput {
   id: ID!
-  content: PartialCommentInput!
   options: UpdateOptionsInput
+  content: PartialCommentInput!
   clientMutationId: String
 }
 
@@ -1742,6 +1776,7 @@ type CreatePostPayload {
 
 input CreatePostInput {
   content: PostInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
@@ -1750,6 +1785,11 @@ input PostInput {
   text: String!
   title: String!
   testField: String
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
 }
 
 type UpdatePostPayload {
@@ -1767,14 +1807,9 @@ type UpdatePostPayload {
 
 input UpdatePostInput {
   id: ID!
-  content: PartialPostInput!
   options: UpdateOptionsInput
+  content: PartialPostInput!
   clientMutationId: String
-}
-
-input PartialPostInput {
-  date: DateTime
-  text: String
 }
 
 input UpdateOptionsInput {
@@ -1783,12 +1818,20 @@ input UpdateOptionsInput {
   """
   replace: Boolean = false
 
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
   """Only perform mutation if the document matches the provided version"""
   version: CeramicCommitID
 }
 
 """A Ceramic Commit ID"""
 scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
+
+input PartialPostInput {
+  date: DateTime
+  text: String
+}
 
 type HidePostPayload {
   """Fetches an object given its ID"""
@@ -1816,4 +1859,103 @@ input HideOptionsInput {
   """Inform indexers if they should index this document or not(Optional)"""
   shouldIndex: Boolean
 }"
+`;
+
+exports[`runtime set and unset profile with custom sync timeout 1`] = `
+{
+  "data": {
+    "profileIndex": {
+      "edges": [
+        {
+          "node": {
+            "name": "Alice",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`runtime set and unset profile with custom sync timeout 2`] = `
+{
+  "data": {
+    "profileIndex": {
+      "edges": [],
+    },
+  },
+}
+`;
+
+exports[`runtime set and unset profile with custom sync timeout 3`] = `
+{
+  "data": {
+    "node": {
+      "name": "Alice",
+    },
+  },
+}
+`;
+
+exports[`runtime toggling \`shouldIndex\` metadata 1`] = `
+{
+  "data": {
+    "postIndex": {
+      "edges": [
+        {
+          "node": {
+            "title": "A first post",
+          },
+        },
+        {
+          "node": {
+            "title": "A second post",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`runtime toggling \`shouldIndex\` metadata 2`] = `
+{
+  "data": {
+    "postIndex": {
+      "edges": [
+        {
+          "node": {
+            "title": "A first post",
+          },
+        },
+        {
+          "node": {
+            "title": "A second post",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`runtime toggling \`shouldIndex\` metadata 3`] = `
+{
+  "data": {
+    "postIndex": {
+      "edges": [
+        {
+          "node": {
+            "title": "First post is back",
+          },
+        },
+        {
+          "node": {
+            "title": "A second post",
+          },
+        },
+      ],
+    },
+  },
+}
 `;
