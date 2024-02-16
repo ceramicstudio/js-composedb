@@ -432,6 +432,9 @@ input HideFavoriteInput {
 }
 
 input HideOptionsInput {
+  """Reference a specific and unique event stream"""
+  streamID: String
+
   """Inform indexers if they should index this document or not(Optional)"""
   shouldIndex: Boolean
 }
@@ -1004,6 +1007,9 @@ input HidePostInput {
 }
 
 input HideOptionsInput {
+  """Reference a specific and unique event stream"""
+  streamID: String
+
   """Inform indexers if they should index this document or not(Optional)"""
   shouldIndex: Boolean
 }
@@ -1804,6 +1810,9 @@ input HidePostInput {
 }
 
 input HideOptionsInput {
+  """Reference a specific and unique event stream"""
+  streamID: String
+
   """Inform indexers if they should index this document or not(Optional)"""
   shouldIndex: Boolean
 }"

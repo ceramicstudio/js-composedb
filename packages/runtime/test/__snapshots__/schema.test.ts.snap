@@ -209,6 +209,9 @@ input HideFavoriteInput {
 }
 
 input HideOptionsInput {
+  """Reference a specific and unique event stream"""
+  streamID: String
+
   """Inform indexers if they should index this document or not(Optional)"""
   shouldIndex: Boolean
 }"
@@ -1600,6 +1603,9 @@ input HideMyImageInput {
 }
 
 input HideOptionsInput {
+  """Reference a specific and unique event stream"""
+  streamID: String
+
   """Inform indexers if they should index this document or not(Optional)"""
   shouldIndex: Boolean
 }
@@ -2231,6 +2237,9 @@ input HideNoteBookInput {
 }
 
 input HideOptionsInput {
+  """Reference a specific and unique event stream"""
+  streamID: String
+
   """Inform indexers if they should index this document or not(Optional)"""
   shouldIndex: Boolean
 }
@@ -2652,6 +2661,9 @@ input HidePostInput {
 }
 
 input HideOptionsInput {
+  """Reference a specific and unique event stream"""
+  streamID: String
+
   """Inform indexers if they should index this document or not(Optional)"""
   shouldIndex: Boolean
 }
@@ -3121,6 +3133,9 @@ input HideGenericProfileInput {
 }
 
 input HideOptionsInput {
+  """Reference a specific and unique event stream"""
+  streamID: String
+
   """Inform indexers if they should index this document or not(Optional)"""
   shouldIndex: Boolean
 }
@@ -4026,6 +4041,9 @@ input HideTextPostInput {
 }
 
 input HideOptionsInput {
+  """Reference a specific and unique event stream"""
+  streamID: String
+
   """Inform indexers if they should index this document or not(Optional)"""
   shouldIndex: Boolean
 }
@@ -4651,6 +4669,9 @@ input HideExtraScalarsInput {
 }
 
 input HideOptionsInput {
+  """Reference a specific and unique event stream"""
+  streamID: String
+
   """Inform indexers if they should index this document or not(Optional)"""
   shouldIndex: Boolean
 }"
