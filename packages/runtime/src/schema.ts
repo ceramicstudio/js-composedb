@@ -181,6 +181,10 @@ const UpdateOptionsInput = new GraphQLInputObjectType({
 const HideOptionsInput = new GraphQLInputObjectType({
   name: 'HideOptionsInput',
   fields: {
+    streamID: {
+      type: GraphQLString,
+      description: 'Reference a specific and unique event stream',
+    },
     shouldIndex: {
       type: GraphQLBoolean,
       description: 'Inform indexers if they should index this document or not(Optional)',
