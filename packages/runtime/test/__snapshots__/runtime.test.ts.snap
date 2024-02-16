@@ -413,9 +413,7 @@ input UpdateOptionsInput {
 }
 
 input PartialFavoriteInput {
-  tag: String
   note: String
-  docID: CeramicStreamID
 }
 
 type HideFavoritePayload {
@@ -637,14 +635,6 @@ exports[`runtime SET account relation support 4`] = `
     "viewer": {
       "favoriteList": {
         "edges": [
-          {
-            "node": {
-              "doc": {
-                "title": "Test post 1",
-              },
-              "tag": "posts",
-            },
-          },
           {
             "node": {
               "doc": {
@@ -1925,11 +1915,6 @@ exports[`runtime toggling \`shouldIndex\` metadata 2`] = `
       "edges": [
         {
           "node": {
-            "title": "A first post",
-          },
-        },
-        {
-          "node": {
             "title": "A second post",
           },
         },
@@ -1946,12 +1931,12 @@ exports[`runtime toggling \`shouldIndex\` metadata 3`] = `
       "edges": [
         {
           "node": {
-            "title": "First post is back",
+            "title": "A second post",
           },
         },
         {
           "node": {
-            "title": "A second post",
+            "title": "First post is back",
           },
         },
       ],

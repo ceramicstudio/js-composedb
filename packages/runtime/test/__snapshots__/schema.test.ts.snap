@@ -190,8 +190,6 @@ input UpdateOptionsInput {
 scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
 
 input PartialFavoriteInput {
-  docID: CeramicStreamID
-  tag: String
   note: String
 }
 
@@ -4151,12 +4149,7 @@ type UpdateLikePayload {
 input UpdateLikeInput {
   id: ID!
   options: UpdateOptionsInput
-  content: PartialLikeInput!
   clientMutationId: String
-}
-
-input PartialLikeInput {
-  postID: CeramicStreamID
 }
 
 type HideLikePayload {
@@ -4223,7 +4216,6 @@ input UpdateTagInput {
 }
 
 input PartialTagInput {
-  name: String
   description: String
 }
 
@@ -4286,13 +4278,7 @@ type UpdatePostTagPayload {
 input UpdatePostTagInput {
   id: ID!
   options: UpdateOptionsInput
-  content: PartialPostTagInput!
   clientMutationId: String
-}
-
-input PartialPostTagInput {
-  postID: CeramicStreamID
-  tagID: CeramicStreamID
 }
 
 type HidePostTagPayload {
@@ -4359,7 +4345,6 @@ input UpdateFollowsInput {
 }
 
 input PartialFollowsInput {
-  following: DID
   date: Date
 }
 
