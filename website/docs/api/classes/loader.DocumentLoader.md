@@ -42,49 +42,6 @@ DataLoader\&lt;LoadKey, ModelInstanceDocument, string\&gt;.constructor
 
 ## Methods
 
-### \_getDeterministicKey
-
-▸ **_getDeterministicKey**(`meta`): `Promise`\<[`LoadKey`](../modules/loader.md#loadkey)\>
-
-Get or create the LoadKey for a deterministic stream.
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `meta` | `GenesisMetadata` |
-
-#### Returns
-
-`Promise`\<[`LoadKey`](../modules/loader.md#loadkey)\>
-
-___
-
-### \_loadDeterministic
-
-▸ **_loadDeterministic**\<`T`\>(`meta`, `options?`): `Promise`\<`ModelInstanceDocument`\<`T`\>\>
-
-Load a deterministic stream and add it to the cache.
-
-#### Type parameters
-
-| Name | Type |
-| :------ | :------ |
-| `T` | extends `Record`\<`string`, `any`\> = `Record`\<`string`, `any`\> |
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `meta` | `GenesisMetadata` |
-| `options` | `CreateOpts` |
-
-#### Returns
-
-`Promise`\<`ModelInstanceDocument`\<`T`\>\>
-
-___
-
 ### cache
 
 ▸ **cache**(`stream`): `boolean`
@@ -159,7 +116,7 @@ ___
 
 ### loadSet
 
-▸ **loadSet**\<`T`\>(`controller`, `model`, `unique`, `options?`): `Promise`\<`ModelInstanceDocument`\<`T`\>\>
+▸ **loadSet**\<`T`\>(`controller`, `model`, `unique`, `options?`): `Promise`\<``null`` \| `ModelInstanceDocument`\<`T`\>\>
 
 Create or load a deterministic ModelInstanceDocument using the SET account
 relation and cache it.
@@ -177,17 +134,17 @@ relation and cache it.
 | `controller` | `string` |
 | `model` | `string` \| `StreamID` |
 | `unique` | `string`[] |
-| `options?` | `CreateOpts` |
+| `options?` | [`DeterministicLoadOptions`](../modules/loader.md#deterministicloadoptions) |
 
 #### Returns
 
-`Promise`\<`ModelInstanceDocument`\<`T`\>\>
+`Promise`\<``null`` \| `ModelInstanceDocument`\<`T`\>\>
 
 ___
 
 ### loadSingle
 
-▸ **loadSingle**\<`T`\>(`controller`, `model`, `options?`): `Promise`\<`ModelInstanceDocument`\<`T`\>\>
+▸ **loadSingle**\<`T`\>(`controller`, `model`, `options?`): `Promise`\<``null`` \| `ModelInstanceDocument`\<`T`\>\>
 
 Create or load a deterministic ModelInstanceDocument and cache it.
 
@@ -203,11 +160,47 @@ Create or load a deterministic ModelInstanceDocument and cache it.
 | :------ | :------ |
 | `controller` | `string` |
 | `model` | `string` \| `StreamID` |
-| `options?` | `CreateOpts` |
+| `options?` | [`DeterministicLoadOptions`](../modules/loader.md#deterministicloadoptions) |
 
 #### Returns
 
-`Promise`\<`ModelInstanceDocument`\<`T`\>\>
+`Promise`\<``null`` \| `ModelInstanceDocument`\<`T`\>\>
+
+___
+
+### queryConnection
+
+▸ **queryConnection**(`query`): `Promise`\<`Connection`\<``null`` \| `ModelInstanceDocument`\<`Record`\<`string`, `any`\>\>\>\>
+
+Query the index for multiple ModelInstanceDocument streams and cache the results.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `query` | [`ConnectionQuery`](../modules/loader.md#connectionquery) |
+
+#### Returns
+
+`Promise`\<`Connection`\<``null`` \| `ModelInstanceDocument`\<`Record`\<`string`, `any`\>\>\>\>
+
+___
+
+### queryOne
+
+▸ **queryOne**(`query`): `Promise`\<``null`` \| `ModelInstanceDocument`\<`Record`\<`string`, `any`\>\>\>
+
+Query the index for a single ModelInstanceDocument stream and cache it.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `query` | `BaseQuery` |
+
+#### Returns
+
+`Promise`\<``null`` \| `ModelInstanceDocument`\<`Record`\<`string`, `any`\>\>\>
 
 ___
 

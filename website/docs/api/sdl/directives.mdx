@@ -10,14 +10,17 @@ The `@createModel` directive applies to shapes and interfaces, indicating they
 need to be created as a Model. A Composite must contain at least one Model to
 be valid, otherwise there would be nothing to interact with.
 
-When using the `@createModel` directive, two parameters must be provided:
+When using the `@createModel` directive, the following parameters can be provided:
 
+- `description` (required): a string describing the Model, to help with discovery.
 - `accountRelation`: the type of relation between documents created using the
   Model and the account controlling the document, which can be `SINGLE` for a
-  single document of the given Model (for example profile information), or
+  single document of the given Model (for example profile information), `SET`
+  for multiple dterministic documents based on one or more content fields, or
   `LIST` (default) for a potentially infinite list of documents. When creating
   interfaces, the `accountRelation` is ignored if provided.
-- `description`: a string describing the Model, to help with discovery.
+- `accountRelationFields`: a list of content field names defining the `SET` account
+  relation. This argument is required when the `accountRelation` is `SET`.
 
 Example:
 
@@ -224,8 +227,8 @@ type Comment @createModel(accountRelation: LIST, description: "A comment on a Po
 ### `@relationFrom`
 
 Defines a field representing an inverse relation of documents pointing to the
-current document for a given `model` and `property` identified by the arguments
-of the directive.
+current document for a referenced model and a given `property` identified by the
+arguments of the directive.
 
 Example where a `comments` view is added to an existing Post model, using the
 Comment model described in the
@@ -237,7 +240,7 @@ type Comment @loadModel(id: "<Comment model stream ID>") {
 }
 
 type Post @loadModel(id: "<Post model stream ID>") {
-  comments: [Comment] @relationFrom(model: "Comment", property: "postID")
+  comments: [Comment] @relationFrom(property: "postID")
 }
 ```
 
@@ -258,5 +261,31 @@ type Comment @loadModel(id: "<Comment model stream ID>") {
 
 type Post @loadModel(id: "<Post model stream ID>") {
   commentsCount: Int! @relationCountFrom(model: "Comment", property: "postID")
+}
+```
+
+### `@relationSetFrom`
+
+Defines a field representing a single document with a model using the `SET`
+account relation for a referenced model and a given `property` identified by
+the arguments of the directive.
+
+Example where a `like` view is added to an existing Post model:
+
+```graphql {6}
+type Like
+  @createModel(
+    description: "A positive reaction to a Post"
+    # Models referenced by the @relationSetFrom view MUST use the SET account relation
+    accountRelation: SET
+    # Fields defining the SET relation
+    accountRelationFields: ["postID"]
+  ) {
+  postID: StreamID! @documentReference(model: "Post")
+  post: Post! @relationDocument(property: "postID")
+}
+
+type Post @loadModel(id: "<Post model stream ID>") {
+  like: Like @relationSetFrom(property: "postID")
 }
 ```

@@ -40,15 +40,27 @@ npm install @composedb/loader
 
 ___
 
+### ConnectionQuery
+
+Ƭ **ConnectionQuery**: `BaseQuery` & `ConnectionArguments`
+
+___
+
 ### CreateOptions
 
-Ƭ **CreateOptions**: `CreateOpts` & \{ `controller?`: `string`  }
+Ƭ **CreateOptions**: `CreateOpts` & \{ `controller?`: `string` ; `shouldIndex?`: `boolean`  }
 
 ___
 
 ### DeterministicKeysCache
 
 Ƭ **DeterministicKeysCache**: [`CacheMap`](loader.md#cachemap)\<[`LoadKey`](loader.md#loadkey)\>
+
+___
+
+### DeterministicLoadOptions
+
+Ƭ **DeterministicLoadOptions**: [`CreateOptions`](loader.md#createoptions) & \{ `onlyIndexed?`: `boolean`  }
 
 ___
 
@@ -102,6 +114,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `replace?` | `boolean` |
+| `shouldIndex?` | `boolean` |
 | `version?` | `string` |
 
 ___

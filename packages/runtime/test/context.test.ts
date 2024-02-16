@@ -89,7 +89,7 @@ describe('context', () => {
       const content = {}
       await expect(context.upsertSingle('testID', content)).resolves.toBe(expectedDoc)
       expect(loadSingle).toHaveBeenCalledWith('did:test:123', 'testID', { onlyIndexed: false })
-      expect(replace).toHaveBeenCalledWith(content, undefined)
+      expect(replace).toHaveBeenCalledWith(content, { shouldIndex: true })
     })
 
     test('uses the loadSingle() method of the loader with options', async () => {
@@ -140,7 +140,7 @@ describe('context', () => {
       const content = {}
       await expect(context.upsertSet('testID', unique, content)).resolves.toBe(expectedDoc)
       expect(loadSet).toHaveBeenCalledWith('did:test:123', 'testID', unique, { onlyIndexed: false })
-      expect(replace).toHaveBeenCalledWith(content, undefined)
+      expect(replace).toHaveBeenCalledWith(content, { shouldIndex: true })
     })
 
     test('uses the loadSet() method of the loader with options', async () => {

@@ -33,17 +33,13 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `ceramic` | `CeramicAPI` | Ceramic client instance used internally. |
-| `createDoc` | \<Content\>(`model`: `string`, `content`: `Content`) => `Promise`\<`ModelInstanceDocument`\<`Content`\>\> | Create a new document with the given model and content. |
 | `getViewerID` | () => `string` \| ``null`` | ID of the current viewer (authenticated DID), if set. |
 | `isAuthenticated` | () => `boolean` | Returns whether the Ceramic client instance used internally is authenticated or not. When not authenticated, mutations will fail. |
-| `loadDoc` | \<Content\>(`id`: `string` \| `CommitID` \| `StreamID`, `fresh?`: `boolean`) => `Promise`\<`ModelInstanceDocument`\<`Content`\>\> | Load a document by ID, using the cache if possible. |
+| `loadDoc` | \<Content\>(`id`: `string` \| `CommitID` \| `StreamID`, `fresh?`: `boolean`) => `Promise`\<`ModelInstanceDocument`\<`Content`\> \| ``null``\> | Load a document by ID, using the cache if possible. |
 | `loader` | `DocumentLoader` | Document loader instance used internally. |
-| `queryConnection` | (`query`: `ConnectionQuery`) => `Promise`\<`Connection`\<`ModelInstanceDocument` \| ``null``\>\> | Query the index for a connection of documents. |
 | `queryCount` | (`query`: `BaseQuery`) => `Promise`\<`number`\> | Query the index for the total number of documents matching the query parameters. |
-| `queryOne` | (`query`: `BaseQuery`) => `Promise`\<`ModelInstanceDocument` \| ``null``\> | Query the index for a single document. |
-| `updateDoc` | \<Content\>(`id`: `string` \| `StreamID`, `content`: `Content`, `options?`: `UpdateDocOptions`) => `Promise`\<`ModelInstanceDocument`\<`Content`\>\> | Update an existing document. |
-| `upsertSet` | \<Content\>(`model`: `string`, `unique`: `string`[], `content`: `Content`, `options?`: `CreateOpts`) => `Promise`\<`ModelInstanceDocument`\<`Content`\>\> | Create or update a document using the SET account relation with the given model, content and unique fields value. |
-| `upsertSingle` | \<Content\>(`model`: `string`, `content`: `Content`, `options?`: `CreateOpts`) => `Promise`\<`ModelInstanceDocument`\<`Content`\>\> | Create or update a document using the SINGLE account relation with the given model and content. |
+| `upsertSet` | \<Content\>(`model`: `string`, `unique`: `string`[], `content`: `Content`, `options?`: `UpsertOptions`) => `Promise`\<`ModelInstanceDocument`\<`Content`\> \| ``null``\> | Create or update a document using the SET account relation with the given model, content and unique fields value. |
+| `upsertSingle` | \<Content\>(`model`: `string`, `content`: `Content`, `options?`: `UpsertOptions`) => `Promise`\<`ModelInstanceDocument`\<`Content`\> \| ``null``\> | Create or update a document using the SINGLE account relation with the given model and content. |
 
 ___
 

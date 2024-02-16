@@ -142,6 +142,7 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
 
   /**
    * Get or create the LoadKey for a deterministic stream.
+   * @internal
    */
   _getDeterministicKey(meta: GenesisMetadata): Promise<LoadKey> {
     const cacheKey = getDeterministicCacheKey(meta)
@@ -189,6 +190,7 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
 
   /**
    * Load a deterministic stream and add it to the cache.
+   * @internal
    */
   async _loadDeterministic<T extends Record<string, any> = Record<string, any>>(
     meta: GenesisMetadata,
