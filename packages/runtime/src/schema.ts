@@ -1368,7 +1368,7 @@ class SchemaBuilder {
       name: `EnableIndexing${name}`,
       inputFields: () => ({
         id: { type: new GraphQLNonNull(GraphQLID) },
-        options: { type: EnableIndexingOptionsInput },
+        shouldIndex { type: new GraphQLNonNull(GraphQLBoolean) },
       }),
       outputFields: () => ({
         ...queryFields,
