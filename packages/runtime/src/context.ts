@@ -141,7 +141,8 @@ export function createContext(params: ContextParams): Context {
       return doc
     },
     enableDocIndexing: async <Content extends Record<string, any> = Record<string, any>>(
-      model: string,
+      id: string,
+      shouldIndex: boolean,
       opts?: UpdateOpts,
     ): Promise<void> => {
       const controller = getViewerID()
@@ -149,8 +150,8 @@ export function createContext(params: ContextParams): Context {
         throw new Error('Document can only be hidden with an authenticated account')
       }
 
-      const doc = await loader.load<Content>({ id: model })
-      await doc.shouldIndex(false, opts)
+      const doc = await loader.load<Content>({ id })
+      await doc.shouldIndex(shouldIndex, opts)
     },
     queryCount: async (query: BaseQuery): Promise<number> => {
       return await ceramic.index.count(query)
