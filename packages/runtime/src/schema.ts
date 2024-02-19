@@ -199,17 +199,6 @@ const UpdateOptionsInput = new GraphQLInputObjectType({
   },
 })
 
-const EnableIndexingOptionsInput = new GraphQLInputObjectType({
-  name: 'EnableIndexingOptionsInput',
-  fields: {
-    streamID: {
-      type: GraphQLString,
-      description: 'Reference a specific and unique event stream',
-    },
-    shouldIndexField,
-  },
-})
-
 const SortOrder = new GraphQLEnumType({
   name: 'SortOrder',
   values: {
