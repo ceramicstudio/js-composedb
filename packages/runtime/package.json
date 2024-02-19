@@ -29,7 +29,7 @@
   "sideEffects": false,
   "scripts": {
     "build:clean": "del dist",
-    "build:js": "swc src -d ./dist --config-file ../../.swcrc",
+    "build:js": "swc src -d ./dist --config-file ../../.swcrc --strip-leading-paths",
     "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
     "build": "pnpm build:clean && pnpm build:types && pnpm build:js",
     "lint": "eslint src test --fix",
@@ -56,7 +56,7 @@
     "caip": "^1.1.0",
     "dids": "^5.0.2",
     "jest-environment-composedb": "workspace:^",
-    "multiformats": "^13.0.1"
+    "multiformats": "^13.1.0"
   },
   "jest": {
     "extensionsToTreatAsEsm": [
