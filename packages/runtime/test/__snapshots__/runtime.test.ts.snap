@@ -335,10 +335,13 @@ input PostSortingInput {
 type Mutation {
   setFavorite(input: SetFavoriteInput!): SetFavoritePayload
   updateFavorite(input: UpdateFavoriteInput!): UpdateFavoritePayload
+  enableIndexingFavorite(input: EnableIndexingFavoriteInput!): EnableIndexingFavoritePayload
   createPost(input: CreatePostInput!): CreatePostPayload
   updatePost(input: UpdatePostInput!): UpdatePostPayload
+  enableIndexingPost(input: EnableIndexingPostInput!): EnableIndexingPostPayload
   createComment(input: CreateCommentInput!): CreateCommentPayload
   updateComment(input: UpdateCommentInput!): UpdateCommentPayload
+  enableIndexingComment(input: EnableIndexingCommentInput!): EnableIndexingCommentPayload
 }
 
 type SetFavoritePayload {
@@ -413,6 +416,25 @@ input PartialFavoriteInput {
   note: String
 }
 
+type EnableIndexingFavoritePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Favorite
+  clientMutationId: String
+}
+
+input EnableIndexingFavoriteInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
 type CreatePostPayload {
   """Fetches an object given its ID"""
   node(
@@ -469,6 +491,25 @@ input PartialPostInput {
   title: String
 }
 
+type EnableIndexingPostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Post
+  clientMutationId: String
+}
+
+input EnableIndexingPostInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
 type CreateCommentPayload {
   """Fetches an object given its ID"""
   node(
@@ -516,6 +557,25 @@ input UpdateCommentInput {
 input PartialCommentInput {
   text: String
   postID: CeramicStreamID
+}
+
+type EnableIndexingCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Comment
+  clientMutationId: String
+}
+
+input EnableIndexingCommentInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }"
 `;
 
@@ -867,8 +927,10 @@ input PostSortingInput {
 type Mutation {
   createPost(input: CreatePostInput!): CreatePostPayload
   updatePost(input: UpdatePostInput!): UpdatePostPayload
+  enableIndexingPost(input: EnableIndexingPostInput!): EnableIndexingPostPayload
   createComment(input: CreateCommentInput!): CreateCommentPayload
   updateComment(input: UpdateCommentInput!): UpdateCommentPayload
+  enableIndexingComment(input: EnableIndexingCommentInput!): EnableIndexingCommentPayload
 }
 
 type CreatePostPayload {
@@ -940,6 +1002,25 @@ input PartialPostInput {
   title: String
 }
 
+type EnableIndexingPostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Post
+  clientMutationId: String
+}
+
+input EnableIndexingPostInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
 type CreateCommentPayload {
   """Fetches an object given its ID"""
   node(
@@ -987,6 +1068,25 @@ input UpdateCommentInput {
 input PartialCommentInput {
   text: String
   postID: CeramicStreamID
+}
+
+type EnableIndexingCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Comment
+  clientMutationId: String
+}
+
+input EnableIndexingCommentInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }"
 `;
 
@@ -1632,6 +1732,7 @@ input PostSortingInput {
 type Mutation {
   createPost(input: CreatePostInput!): CreatePostPayload
   updatePost(input: UpdatePostInput!): UpdatePostPayload
+  enableIndexingPost(input: EnableIndexingPostInput!): EnableIndexingPostPayload
 }
 
 type CreatePostPayload {
@@ -1704,6 +1805,25 @@ scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-
 input PartialPostInput {
   date: DateTime
   text: String
+}
+
+type EnableIndexingPostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Post
+  clientMutationId: String
+}
+
+input EnableIndexingPostInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }"
 `;
 

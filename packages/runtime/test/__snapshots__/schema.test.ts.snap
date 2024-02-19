@@ -115,6 +115,7 @@ type FavoriteEdge {
 type Mutation {
   setFavorite(input: SetFavoriteInput!): SetFavoritePayload
   updateFavorite(input: UpdateFavoriteInput!): UpdateFavoritePayload
+  enableIndexingFavorite(input: EnableIndexingFavoriteInput!): EnableIndexingFavoritePayload
 }
 
 type SetFavoritePayload {
@@ -190,6 +191,25 @@ scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-
 
 input PartialFavoriteInput {
   note: String
+}
+
+type EnableIndexingFavoritePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Favorite
+  clientMutationId: String
+}
+
+input EnableIndexingFavoriteInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }"
 `;
 
@@ -1472,14 +1492,19 @@ input MyMediaCollectionSortingInput {
 type Mutation {
   createMyImage(input: CreateMyImageInput!): CreateMyImagePayload
   updateMyImage(input: UpdateMyImageInput!): UpdateMyImagePayload
+  enableIndexingMyImage(input: EnableIndexingMyImageInput!): EnableIndexingMyImagePayload
   createMyAudio(input: CreateMyAudioInput!): CreateMyAudioPayload
   updateMyAudio(input: UpdateMyAudioInput!): UpdateMyAudioPayload
+  enableIndexingMyAudio(input: EnableIndexingMyAudioInput!): EnableIndexingMyAudioPayload
   createMyVideo(input: CreateMyVideoInput!): CreateMyVideoPayload
   updateMyVideo(input: UpdateMyVideoInput!): UpdateMyVideoPayload
+  enableIndexingMyVideo(input: EnableIndexingMyVideoInput!): EnableIndexingMyVideoPayload
   createMyMediaCollectionItem(input: CreateMyMediaCollectionItemInput!): CreateMyMediaCollectionItemPayload
   updateMyMediaCollectionItem(input: UpdateMyMediaCollectionItemInput!): UpdateMyMediaCollectionItemPayload
+  enableIndexingMyMediaCollectionItem(input: EnableIndexingMyMediaCollectionItemInput!): EnableIndexingMyMediaCollectionItemPayload
   createMyMediaCollection(input: CreateMyMediaCollectionInput!): CreateMyMediaCollectionPayload
   updateMyMediaCollection(input: UpdateMyMediaCollectionInput!): UpdateMyMediaCollectionPayload
+  enableIndexingMyMediaCollection(input: EnableIndexingMyMediaCollectionInput!): EnableIndexingMyMediaCollectionPayload
 }
 
 type CreateMyImagePayload {
@@ -1563,6 +1588,25 @@ input PartialMyImageInput {
   info: MediaInfoInput
 }
 
+type EnableIndexingMyImagePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyImage
+  clientMutationId: String
+}
+
+input EnableIndexingMyImageInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
 type CreateMyAudioPayload {
   """Fetches an object given its ID"""
   node(
@@ -1614,6 +1658,25 @@ input PartialMyAudioInput {
   size: Int
   duration: Duration
   info: MediaInfoInput
+}
+
+type EnableIndexingMyAudioPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyAudio
+  clientMutationId: String
+}
+
+input EnableIndexingMyAudioInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }
 
 type CreateMyVideoPayload {
@@ -1673,6 +1736,25 @@ input PartialMyVideoInput {
   info: MediaInfoInput
 }
 
+type EnableIndexingMyVideoPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyVideo
+  clientMutationId: String
+}
+
+input EnableIndexingMyVideoInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
 type CreateMyMediaCollectionItemPayload {
   """Fetches an object given its ID"""
   node(
@@ -1724,6 +1806,25 @@ input PartialMyMediaCollectionItemInput {
   createdAt: DateTime
 }
 
+type EnableIndexingMyMediaCollectionItemPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyMediaCollectionItem
+  clientMutationId: String
+}
+
+input EnableIndexingMyMediaCollectionItemInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
 type CreateMyMediaCollectionPayload {
   """Fetches an object given its ID"""
   node(
@@ -1773,6 +1874,25 @@ input PartialMyMediaCollectionInput {
   name: String
   description: String
   createdAt: DateTime
+}
+
+type EnableIndexingMyMediaCollectionPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyMediaCollection
+  clientMutationId: String
+}
+
+input EnableIndexingMyMediaCollectionInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }"
 `;
 
@@ -2036,8 +2156,10 @@ input NoteBookSortingInput {
 type Mutation {
   createNoteBook(input: CreateNoteBookInput!): CreateNoteBookPayload
   updateNoteBook(input: UpdateNoteBookInput!): UpdateNoteBookPayload
+  enableIndexingNoteBook(input: EnableIndexingNoteBookInput!): EnableIndexingNoteBookPayload
   createNote(input: CreateNoteInput!): CreateNotePayload
   updateNote(input: UpdateNoteInput!): UpdateNotePayload
+  enableIndexingNote(input: EnableIndexingNoteInput!): EnableIndexingNotePayload
 }
 
 type CreateNoteBookPayload {
@@ -2105,6 +2227,25 @@ input PartialNoteBookInput {
   title: String
 }
 
+type EnableIndexingNoteBookPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: NoteBook
+  clientMutationId: String
+}
+
+input EnableIndexingNoteBookInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
 type CreateNotePayload {
   """Fetches an object given its ID"""
   node(
@@ -2156,6 +2297,25 @@ input PartialNoteInput {
   status: NoteStatus
   title: String
   text: String
+}
+
+type EnableIndexingNotePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Note
+  clientMutationId: String
+}
+
+input EnableIndexingNoteInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }"
 `;
 
@@ -2418,8 +2578,10 @@ input PostSortingInput {
 type Mutation {
   createPost(input: CreatePostInput!): CreatePostPayload
   updatePost(input: UpdatePostInput!): UpdatePostPayload
+  enableIndexingPost(input: EnableIndexingPostInput!): EnableIndexingPostPayload
   createComment(input: CreateCommentInput!): CreateCommentPayload
   updateComment(input: UpdateCommentInput!): UpdateCommentPayload
+  enableIndexingComment(input: EnableIndexingCommentInput!): EnableIndexingCommentPayload
 }
 
 type CreatePostPayload {
@@ -2491,6 +2653,25 @@ input PartialPostInput {
   text: String
 }
 
+type EnableIndexingPostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Post
+  clientMutationId: String
+}
+
+input EnableIndexingPostInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
 type CreateCommentPayload {
   """Fetches an object given its ID"""
   node(
@@ -2538,6 +2719,25 @@ input UpdateCommentInput {
 input PartialCommentInput {
   postID: CeramicStreamID
   text: String
+}
+
+type EnableIndexingCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Comment
+  clientMutationId: String
+}
+
+input EnableIndexingCommentInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }"
 `;
 
@@ -2806,12 +3006,15 @@ type Mutation {
   setGenericProfile(input: SetGenericProfileInput!): SetGenericProfilePayload
   createGenericProfile(input: CreateGenericProfileInput!): CreateGenericProfilePayload @deprecated(reason: "Replaced by the setGenericProfile mutation, createGenericProfile will be removed in a future version of ComposeDB.")
   updateGenericProfile(input: UpdateGenericProfileInput!): UpdateGenericProfilePayload
+  enableIndexingGenericProfile(input: EnableIndexingGenericProfileInput!): EnableIndexingGenericProfilePayload
   setSocialProfile(input: SetSocialProfileInput!): SetSocialProfilePayload
   createSocialProfile(input: CreateSocialProfileInput!): CreateSocialProfilePayload @deprecated(reason: "Replaced by the setSocialProfile mutation, createSocialProfile will be removed in a future version of ComposeDB.")
   updateSocialProfile(input: UpdateSocialProfileInput!): UpdateSocialProfilePayload
+  enableIndexingSocialProfile(input: EnableIndexingSocialProfileInput!): EnableIndexingSocialProfilePayload
   setPersonProfile(input: SetPersonProfileInput!): SetPersonProfilePayload
   createPersonProfile(input: CreatePersonProfileInput!): CreatePersonProfilePayload @deprecated(reason: "Replaced by the setPersonProfile mutation, createPersonProfile will be removed in a future version of ComposeDB.")
   updatePersonProfile(input: UpdatePersonProfileInput!): UpdatePersonProfilePayload
+  enableIndexingPersonProfile(input: EnableIndexingPersonProfileInput!): EnableIndexingPersonProfilePayload
 }
 
 type SetGenericProfilePayload {
@@ -2921,6 +3124,25 @@ input PartialGenericProfileInput {
   image: ImageSourcesInput
 }
 
+type EnableIndexingGenericProfilePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: GenericProfile
+  clientMutationId: String
+}
+
+input EnableIndexingGenericProfileInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
 type SetSocialProfilePayload {
   """Fetches an object given its ID"""
   node(
@@ -2991,6 +3213,25 @@ input PartialSocialProfileInput {
   emoji: String
   background: ImageSourcesInput
   url: String
+}
+
+type EnableIndexingSocialProfilePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: SocialProfile
+  clientMutationId: String
+}
+
+input EnableIndexingSocialProfileInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }
 
 type SetPersonProfilePayload {
@@ -3067,6 +3308,25 @@ input PartialPersonProfileInput {
   residenceCountry: CountryCode
   nationalities: [CountryCode]
   affiliations: [String]
+}
+
+type EnableIndexingPersonProfilePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: PersonProfile
+  clientMutationId: String
+}
+
+input EnableIndexingPersonProfileInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }"
 `;
 
@@ -3686,14 +3946,19 @@ scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
 type Mutation {
   createTextPost(input: CreateTextPostInput!): CreateTextPostPayload
   updateTextPost(input: UpdateTextPostInput!): UpdateTextPostPayload
+  enableIndexingTextPost(input: EnableIndexingTextPostInput!): EnableIndexingTextPostPayload
   setLike(input: SetLikeInput!): SetLikePayload
   updateLike(input: UpdateLikeInput!): UpdateLikePayload
+  enableIndexingLike(input: EnableIndexingLikeInput!): EnableIndexingLikePayload
   setTag(input: SetTagInput!): SetTagPayload
   updateTag(input: UpdateTagInput!): UpdateTagPayload
+  enableIndexingTag(input: EnableIndexingTagInput!): EnableIndexingTagPayload
   setPostTag(input: SetPostTagInput!): SetPostTagPayload
   updatePostTag(input: UpdatePostTagInput!): UpdatePostTagPayload
+  enableIndexingPostTag(input: EnableIndexingPostTagInput!): EnableIndexingPostTagPayload
   setFollows(input: SetFollowsInput!): SetFollowsPayload
   updateFollows(input: UpdateFollowsInput!): UpdateFollowsPayload
+  enableIndexingFollows(input: EnableIndexingFollowsInput!): EnableIndexingFollowsPayload
 }
 
 type CreateTextPostPayload {
@@ -3768,6 +4033,25 @@ input PartialTextPostInput {
   text: String
 }
 
+type EnableIndexingTextPostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: TextPost
+  clientMutationId: String
+}
+
+input EnableIndexingTextPostInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
 type SetLikePayload {
   """Fetches an object given its ID"""
   node(
@@ -3820,6 +4104,25 @@ input UpdateLikeInput {
   clientMutationId: String
 }
 
+type EnableIndexingLikePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Like
+  clientMutationId: String
+}
+
+input EnableIndexingLikeInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
 type SetTagPayload {
   """Fetches an object given its ID"""
   node(
@@ -3868,6 +4171,25 @@ input PartialTagInput {
   description: String
 }
 
+type EnableIndexingTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Tag
+  clientMutationId: String
+}
+
+input EnableIndexingTagInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
 type SetPostTagPayload {
   """Fetches an object given its ID"""
   node(
@@ -3908,6 +4230,25 @@ type UpdatePostTagPayload {
 input UpdatePostTagInput {
   id: ID!
   options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+type EnableIndexingPostTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: PostTag
+  clientMutationId: String
+}
+
+input EnableIndexingPostTagInput {
+  id: ID!
+  shouldIndex: Boolean!
   clientMutationId: String
 }
 
@@ -3957,6 +4298,25 @@ input UpdateFollowsInput {
 
 input PartialFollowsInput {
   date: Date
+}
+
+type EnableIndexingFollowsPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Follows
+  clientMutationId: String
+}
+
+input EnableIndexingFollowsInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }"
 `;
 
@@ -4183,6 +4543,7 @@ enum SortOrder {
 type Mutation {
   createExtraScalars(input: CreateExtraScalarsInput!): CreateExtraScalarsPayload
   updateExtraScalars(input: UpdateExtraScalarsInput!): UpdateExtraScalarsPayload
+  enableIndexingExtraScalars(input: EnableIndexingExtraScalarsInput!): EnableIndexingExtraScalarsPayload
 }
 
 type CreateExtraScalarsPayload {
@@ -4289,5 +4650,24 @@ input PartialExtraScalarsInput {
   timeZone: TimeZone
   uri: URI
   utcOffset: UtcOffset
+}
+
+type EnableIndexingExtraScalarsPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: ExtraScalars
+  clientMutationId: String
+}
+
+input EnableIndexingExtraScalarsInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }"
 `;
