@@ -163,6 +163,41 @@ describe('context', () => {
     })
   })
 
+  describe('enableDocIndexing', () => {
+    test('throws an error if the viewerID is not set', async () => {
+      const shouldIndex = jest.fn()
+      const expectedDoc = { shouldIndex }
+      const loadSingle = jest.fn(() => expectedDoc)
+      const loader = { loadSingle } as unknown as DocumentLoader
+      const ceramic = {} as unknown as CeramicAPI
+      const context = createContext({ ceramic, loader })
+
+      await expect(context.enableDocIndexing('testID', false)).rejects.toThrow(
+        'Document can only be hidden with an authenticated account',
+      )
+      expect(loadSingle).not.toHaveBeenCalled()
+      expect(shouldIndex).not.toHaveBeenCalled()
+    })
+
+    test('sets shouldIndex as false', async () => {
+      const viewerID = 'did:test:123'
+      const model = 'testID'
+      const key = { id: model }
+      const shouldIndex = jest.fn()
+      const expectedDoc = { shouldIndex }
+      const load = jest.fn(() => expectedDoc)
+      const loadSingle = jest.fn(() => expectedDoc)
+      const loader = { loadSingle, load } as unknown as DocumentLoader
+      const ceramic = { did: { id: viewerID } } as unknown as CeramicAPI
+      const context = createContext({ ceramic, loader })
+
+      await expect(context.enableDocIndexing(model, false)).resolves.toBeUndefined()
+
+      expect(load).toHaveBeenCalledWith(key)
+      expect(shouldIndex).toHaveBeenCalledWith(false, undefined)
+    })
+  })
+
   test('queryCount()', async () => {
     const count = jest.fn(() => 10)
     const ceramic = { index: { count } } as unknown as CeramicAPI

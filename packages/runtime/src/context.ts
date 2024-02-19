@@ -1,4 +1,4 @@
-import type { BaseQuery, CreateOpts } from '@ceramicnetwork/common'
+import type { BaseQuery, CreateOpts, UpdateOpts } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import type { CommitID, StreamID } from '@ceramicnetwork/streamid'
 import { type DocumentCache, DocumentLoader } from '@composedb/loader'
@@ -72,6 +72,10 @@ export type Context = {
     options?: UpsertOptions,
   ) => Promise<ModelInstanceDocument<Content> | null>
   /**
+   * Enable indexing for an existing document.
+   */
+  enableDocIndexing: (id: string, shouldIndex: boolean, opts?: UpdateOpts) => Promise<void>
+  /**
    * Query the index for the total number of documents matching the query parameters.
    */
   queryCount: (query: BaseQuery) => Promise<number>
@@ -135,6 +139,19 @@ export function createContext(params: ContextParams): Context {
       })
       await doc!.replace(content, { shouldIndex: shouldIndex !== false })
       return doc
+    },
+    enableDocIndexing: async <Content extends Record<string, any> = Record<string, any>>(
+      id: string,
+      shouldIndex: boolean,
+      opts?: UpdateOpts,
+    ): Promise<void> => {
+      const controller = getViewerID()
+      if (controller == null) {
+        throw new Error('Document can only be hidden with an authenticated account')
+      }
+
+      const doc = await loader.load<Content>({ id })
+      await doc.shouldIndex(shouldIndex, opts)
     },
     queryCount: async (query: BaseQuery): Promise<number> => {
       return await ceramic.index.count(query)

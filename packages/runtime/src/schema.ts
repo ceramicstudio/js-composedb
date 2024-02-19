@@ -1363,6 +1363,24 @@ class SchemaBuilder {
         return { document: await ctx.loader.update(input.id, input.content, input.options) }
       },
     })
+
+    this.#mutations[`enableIndexing${name}`] = mutationWithClientMutationId({
+      name: `EnableIndexing${name}`,
+      inputFields: () => ({
+        id: { type: new GraphQLNonNull(GraphQLID) },
+        shouldIndex: { type: new GraphQLNonNull(GraphQLBoolean) },
+      }),
+      outputFields: () => ({
+        ...queryFields,
+        document: { type: this.#types[name] },
+      }),
+      mutateAndGetPayload: async (input: { id: string; shouldIndex: boolean }, ctx: Context) => {
+        if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
+          throw new Error('Ceramic instance is not authenticated')
+        }
+        return { document: await ctx.enableDocIndexing(input.id, input.shouldIndex) }
+      },
+    })
   }
 
   _createSchema(definitions: SharedDefinitions) {
