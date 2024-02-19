@@ -1374,7 +1374,7 @@ class SchemaBuilder {
         ...queryFields,
         document: { type: this.#types[name] },
       }),
-      mutateAndGetPayload: async (input: { id: string; options?: UpdateOpts }, ctx: Context) => {
+      mutateAndGetPayload: async (input: { id: string; shouldIndex: boolean }, ctx: Context) => {
         if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
           throw new Error('Ceramic instance is not authenticated')
         }
