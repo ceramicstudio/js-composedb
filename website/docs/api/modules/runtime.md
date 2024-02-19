@@ -33,6 +33,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `ceramic` | `CeramicAPI` | Ceramic client instance used internally. |
+| `enableDocIndexing` | (`id`: `string`, `shouldIndex`: `boolean`, `opts?`: `UpdateOpts`) => `Promise`\<`void`\> | Enable indexing for an existing document. |
 | `getViewerID` | () => `string` \| ``null`` | ID of the current viewer (authenticated DID), if set. |
 | `isAuthenticated` | () => `boolean` | Returns whether the Ceramic client instance used internally is authenticated or not. When not authenticated, mutations will fail. |
 | `loadDoc` | \<Content\>(`id`: `string` \| `CommitID` \| `StreamID`, `fresh?`: `boolean`) => `Promise`\<`ModelInstanceDocument`\<`Content`\> \| ``null``\> | Load a document by ID, using the cache if possible. |
