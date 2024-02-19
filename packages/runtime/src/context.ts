@@ -74,7 +74,7 @@ export type Context = {
   /**
    * Enable indexing for an existing document.
    */
-  enableDocIndexing: (model: string, opts?: UpdateOpts) => Promise<void>
+  enableDocIndexing: (id: string, opts?: UpdateOpts) => Promise<void>
   /**
    * Query the index for the total number of documents matching the query parameters.
    */
