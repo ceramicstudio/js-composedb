@@ -119,7 +119,7 @@ export function createContext(params: ContextParams): Context {
         ...opts,
         onlyIndexed: false,
       })
-      await doc!.replace(content, typeof shouldIndex === 'undefined' ? undefined : { shouldIndex })
+      await doc!.replace(content, { shouldIndex: shouldIndex !== false })
       return doc
     },
     upsertSet: async <Content extends Record<string, any> = Record<string, any>>(
@@ -137,7 +137,7 @@ export function createContext(params: ContextParams): Context {
         ...opts,
         onlyIndexed: false,
       })
-      await doc!.replace(content, typeof shouldIndex === 'undefined' ? undefined : { shouldIndex })
+      await doc!.replace(content, { shouldIndex: shouldIndex !== false })
       return doc
     },
     enableDocIndexing: async <Content extends Record<string, any> = Record<string, any>>(

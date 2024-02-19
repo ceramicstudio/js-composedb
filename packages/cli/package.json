@@ -80,7 +80,7 @@
     "@composedb/devtools-node": "workspace:^",
     "@composedb/runtime": "workspace:^",
     "@oclif/core": "^3.19.2",
-    "@oclif/plugin-help": "^6.0.12",
+    "@oclif/plugin-help": "^6.0.13",
     "@oclif/plugin-version": "^2.0.12",
     "cli-table3": "^0.6.3",
     "did-resolver": "^4.1.0",
@@ -107,7 +107,7 @@
     "ajv": "^8.12.0",
     "execa": "^8.0.1",
     "jest-dev-server": "^10.0.0",
-    "oclif": "^4.4.12",
+    "oclif": "^4.4.16",
     "strip-ansi": "~7.1.0"
   },
   "jest": {

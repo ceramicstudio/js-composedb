@@ -132,6 +132,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
+| `immutable?` | `boolean` |
 | `required` | `boolean` |
 
 ___
@@ -216,6 +217,7 @@ ___
 | `accountRelation` | `ModelAccountRelationV2` |
 | `action` | ``"create"`` |
 | `description` | `string` |
+| `immutableFields` | `string`[] |
 | `implements` | `string`[] |
 | `interface` | `boolean` |
 | `relations` | `ModelRelationsDefinitionV2` |
@@ -299,3 +301,19 @@ ___
 #### Returns
 
 [`AbstractCompositeDefinition`](devtools.md#abstractcompositedefinition)
+
+___
+
+### isRelationViewDefinition
+
+▸ **isRelationViewDefinition**(`view`): view is MapIn\<Object, $TypeOf\> \| MapIn\<Object, $TypeOf\> \| MapIn\<Object, $TypeOf\> \| MapIn\<Object, $TypeOf\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `view` | `MapIn`\<{}, `$TypeOf`\> \| `MapIn`\<{}, `$TypeOf`\> \| `MapIn`\<{}, `$TypeOf`\> \| `MapIn`\<{}, `$TypeOf`\> \| `MapIn`\<{}, `$TypeOf`\> \| `MapIn`\<{}, `$TypeOf`\> |
+
+#### Returns
+
+view is MapIn\<Object, $TypeOf\> \| MapIn\<Object, $TypeOf\> \| MapIn\<Object, $TypeOf\> \| MapIn\<Object, $TypeOf\>
