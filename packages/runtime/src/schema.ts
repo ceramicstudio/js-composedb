@@ -1378,7 +1378,7 @@ class SchemaBuilder {
         if (ctx.ceramic.did == null || !ctx.ceramic.did.authenticated) {
           throw new Error('Ceramic instance is not authenticated')
         }
-        return { document: await ctx.enableDocIndexing(input.id, input.options) }
+        return { document: await ctx.enableDocIndexing(input.id, input.shouldIndex) }
       },
     })
   }
