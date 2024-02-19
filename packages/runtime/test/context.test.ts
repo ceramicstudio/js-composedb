@@ -172,7 +172,7 @@ describe('context', () => {
       const ceramic = {} as unknown as CeramicAPI
       const context = createContext({ ceramic, loader })
 
-      await expect(context.enableDocIndexing('testID')).rejects.toThrow(
+      await expect(context.enableDocIndexing('testID', false)).rejects.toThrow(
         'Document can only be hidden with an authenticated account',
       )
       expect(loadSingle).not.toHaveBeenCalled()
@@ -191,7 +191,7 @@ describe('context', () => {
       const ceramic = { did: { id: viewerID } } as unknown as CeramicAPI
       const context = createContext({ ceramic, loader })
 
-      await expect(context.enableDocIndexing(model)).resolves.toBeUndefined()
+      await expect(context.enableDocIndexing(model, false)).resolves.toBeUndefined()
 
       expect(load).toHaveBeenCalledWith(key)
       expect(shouldIndex).toHaveBeenCalledWith(false, undefined)

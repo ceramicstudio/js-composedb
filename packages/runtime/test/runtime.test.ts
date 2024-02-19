@@ -485,7 +485,7 @@ describe('runtime', () => {
       }`
     const res = await runtime.executeQuery<{ enableIndexingPost: { document: { id: string } } }>(
       enableIndexingPostMutation,
-      { input: { id } },
+      { input: { id, shouldIndex: false } },
     )
 
     expect(res.errors).toBeUndefined()

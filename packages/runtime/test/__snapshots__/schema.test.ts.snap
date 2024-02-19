@@ -208,16 +208,8 @@ type EnableIndexingFavoritePayload {
 
 input EnableIndexingFavoriteInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
-}
-
-input EnableIndexingOptionsInput {
-  """Reference a specific and unique event stream"""
-  streamID: String
-
-  """Inform indexers if they should index this document or not"""
-  shouldIndexField: Boolean
 }"
 `;
 
@@ -1611,16 +1603,8 @@ type EnableIndexingMyImagePayload {
 
 input EnableIndexingMyImageInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
-}
-
-input EnableIndexingOptionsInput {
-  """Reference a specific and unique event stream"""
-  streamID: String
-
-  """Inform indexers if they should index this document or not"""
-  shouldIndexField: Boolean
 }
 
 type CreateMyAudioPayload {
@@ -1691,7 +1675,7 @@ type EnableIndexingMyAudioPayload {
 
 input EnableIndexingMyAudioInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
 }
 
@@ -1767,7 +1751,7 @@ type EnableIndexingMyVideoPayload {
 
 input EnableIndexingMyVideoInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
 }
 
@@ -1837,7 +1821,7 @@ type EnableIndexingMyMediaCollectionItemPayload {
 
 input EnableIndexingMyMediaCollectionItemInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
 }
 
@@ -1907,7 +1891,7 @@ type EnableIndexingMyMediaCollectionPayload {
 
 input EnableIndexingMyMediaCollectionInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
 }"
 `;
@@ -2258,16 +2242,8 @@ type EnableIndexingNoteBookPayload {
 
 input EnableIndexingNoteBookInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
-}
-
-input EnableIndexingOptionsInput {
-  """Reference a specific and unique event stream"""
-  streamID: String
-
-  """Inform indexers if they should index this document or not"""
-  shouldIndexField: Boolean
 }
 
 type CreateNotePayload {
@@ -2338,7 +2314,7 @@ type EnableIndexingNotePayload {
 
 input EnableIndexingNoteInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
 }"
 `;
@@ -2692,16 +2668,8 @@ type EnableIndexingPostPayload {
 
 input EnableIndexingPostInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
-}
-
-input EnableIndexingOptionsInput {
-  """Reference a specific and unique event stream"""
-  streamID: String
-
-  """Inform indexers if they should index this document or not"""
-  shouldIndexField: Boolean
 }
 
 type CreateCommentPayload {
@@ -2768,7 +2736,7 @@ type EnableIndexingCommentPayload {
 
 input EnableIndexingCommentInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
 }"
 `;
@@ -3171,16 +3139,8 @@ type EnableIndexingGenericProfilePayload {
 
 input EnableIndexingGenericProfileInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
-}
-
-input EnableIndexingOptionsInput {
-  """Reference a specific and unique event stream"""
-  streamID: String
-
-  """Inform indexers if they should index this document or not"""
-  shouldIndexField: Boolean
 }
 
 type SetSocialProfilePayload {
@@ -3270,7 +3230,7 @@ type EnableIndexingSocialProfilePayload {
 
 input EnableIndexingSocialProfileInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
 }
 
@@ -3365,7 +3325,7 @@ type EnableIndexingPersonProfilePayload {
 
 input EnableIndexingPersonProfileInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
 }"
 `;
@@ -4088,16 +4048,8 @@ type EnableIndexingTextPostPayload {
 
 input EnableIndexingTextPostInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
-}
-
-input EnableIndexingOptionsInput {
-  """Reference a specific and unique event stream"""
-  streamID: String
-
-  """Inform indexers if they should index this document or not"""
-  shouldIndexField: Boolean
 }
 
 type SetLikePayload {
@@ -4167,7 +4119,7 @@ type EnableIndexingLikePayload {
 
 input EnableIndexingLikeInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
 }
 
@@ -4234,7 +4186,7 @@ type EnableIndexingTagPayload {
 
 input EnableIndexingTagInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
 }
 
@@ -4296,7 +4248,7 @@ type EnableIndexingPostTagPayload {
 
 input EnableIndexingPostTagInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
 }
 
@@ -4363,7 +4315,7 @@ type EnableIndexingFollowsPayload {
 
 input EnableIndexingFollowsInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
 }"
 `;
@@ -4715,15 +4667,7 @@ type EnableIndexingExtraScalarsPayload {
 
 input EnableIndexingExtraScalarsInput {
   id: ID!
-  options: EnableIndexingOptionsInput
+  shouldIndex: Boolean!
   clientMutationId: String
-}
-
-input EnableIndexingOptionsInput {
-  """Reference a specific and unique event stream"""
-  streamID: String
-
-  """Inform indexers if they should index this document or not"""
-  shouldIndexField: Boolean
 }"
 `;

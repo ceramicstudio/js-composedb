@@ -1,4 +1,4 @@
-import type { BaseQuery, QueryFilters, Sorting, UpdateOpts } from '@ceramicnetwork/common'
+import type { BaseQuery, QueryFilters, Sorting } from '@ceramicnetwork/common'
 import type { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { CeramicCommitID, getScalar } from '@composedb/graphql-scalars'
 import type { UpdateDocOptions } from '@composedb/loader'
@@ -1368,7 +1368,7 @@ class SchemaBuilder {
       name: `EnableIndexing${name}`,
       inputFields: () => ({
         id: { type: new GraphQLNonNull(GraphQLID) },
-        shouldIndex { type: new GraphQLNonNull(GraphQLBoolean) },
+        shouldIndex: { type: new GraphQLNonNull(GraphQLBoolean) },
       }),
       outputFields: () => ({
         ...queryFields,
