@@ -950,7 +950,7 @@ describe('runtime', () => {
     }>(setFavorite, { input: { content: { docID: post2ID, tag: 'posts' } } })
     await expect(queryViewerFavorites()).resolves.toMatchSnapshot()
 
-    const unsetRes = await runtime.executeQuery(
+    await runtime.executeQuery(
       `
       mutation UnsetFavorite($input: UpdateFavoriteInput!) {
         updateFavorite(input: $input) {
