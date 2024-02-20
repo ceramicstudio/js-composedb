@@ -164,21 +164,87 @@ describe('social network', () => {
       }>(`query { viewer { tagList(first: 2) { edges { node { id } } } } }`)
       const tagIDs = userTagsResult.data!.viewer.tagList.edges.map((e) => e.node.id)
 
-      await runtime.executeQuery(`
+      const res = await runtime.executeQuery<{
+        like1: { document: { postID: string } }
+        like2: { document: { postID: string } }
+        postTag1: { document: { postID: string; tagID: string } }
+        postTag2: { document: { postID: string; tagID: string } }
+        postTag3: { document: { postID: string; tagID: string } }
+      }>(`
         mutation addTagsAndLikes {
-          like1: setLike(input: { content: { postID: "${postIDs[offset]}" } }) { document { id } }
-          like2: setLike(input: { content: { postID: "${postIDs[offset + 1]}" } }) { document { id } }
-          setPostTag1: setPostTag(input: { content: { postID: "${postIDs[offset]}", tagID: "${tagIDs[0]}" } }) { document { id } }
-          setPostTag2: setPostTag(input: { content: { postID: "${postIDs[offset]}", tagID: "${tagIDs[1]}" } }) { document { id } }
-          setPostTag3: setPostTag(input: { content: { postID: "${postIDs[offset + 1]}", tagID: "${tagIDs[1]}" } }) { document { id } }
+          like1: setLike(input: { content: { postID: "${postIDs[offset]}" } }) { document { postID } }
+          like2: setLike(input: { content: { postID: "${postIDs[offset + 1]}" } }) { document { postID } }
+          postTag1: setPostTag(input: { content: { postID: "${postIDs[offset]}", tagID: "${tagIDs[0]}" } }) { document { postID tagID } }
+          postTag2: setPostTag(input: { content: { postID: "${postIDs[offset]}", tagID: "${tagIDs[1]}" } }) { document { postID tagID } }
+          postTag3: setPostTag(input: { content: { postID: "${postIDs[offset + 1]}", tagID: "${tagIDs[1]}" } }) { document { postID tagID } }
         }
       `)
+      expect(res.data!.like1.document.postID).toBeDefined()
+      expect(res.data!.like2.document.postID).toBeDefined()
+      expect(res.data!.postTag1.document.postID).toBeDefined()
+      expect(res.data!.postTag1.document.tagID).toBeDefined()
+      expect(res.data!.postTag2.document.postID).toBeDefined()
+      expect(res.data!.postTag2.document.tagID).toBeDefined()
+      expect(res.data!.postTag3.document.postID).toBeDefined()
+      expect(res.data!.postTag3.document.tagID).toBeDefined()
     }
 
     // /!\ Calls need to be made sequentially as the DID used for signing gets changed
     await likeAndTag(user1)
     await likeAndTag(user2, 1)
     await likeAndTag(user3, 2)
+
+    // Check likes exist in index
+    const likeModelID = composite.getModelID('Like')!
+    await expect(ceramic.index.count({ model: likeModelID })).resolves.toBe(6)
+    await expect(
+      ceramic.index.count({
+        model: likeModelID,
+        account: user1.id,
+        queryFilters: { where: { postID: { equalTo: postIDs[0] } } },
+      }),
+    ).resolves.toBe(1)
+    await expect(
+      ceramic.index.count({
+        model: likeModelID,
+        account: user1.id,
+        queryFilters: { where: { postID: { equalTo: postIDs[1] } } },
+      }),
+    ).resolves.toBe(1)
+    await expect(
+      ceramic.index.count({
+        model: likeModelID,
+        account: user2.id,
+        queryFilters: { where: { postID: { equalTo: postIDs[1] } } },
+      }),
+    ).resolves.toBe(1)
+    await expect(
+      ceramic.index.count({
+        model: likeModelID,
+        account: user2.id,
+        queryFilters: { where: { postID: { equalTo: postIDs[2] } } },
+      }),
+    ).resolves.toBe(1)
+    await expect(
+      ceramic.index.count({
+        model: likeModelID,
+        account: user3.id,
+        queryFilters: { where: { postID: { equalTo: postIDs[2] } } },
+      }),
+    ).resolves.toBe(1)
+    await expect(
+      ceramic.index.count({
+        model: likeModelID,
+        account: user3.id,
+        queryFilters: { where: { postID: { equalTo: postIDs[3] } } },
+      }),
+    ).resolves.toBe(1)
+
+    // Check postTags exist in index
+    const postTagModelID = composite.getModelID('PostTag')!
+    await expect(ceramic.index.count({ model: postTagModelID })).resolves.toBe(9)
+    const postTags = await ceramic.index.query({ model: postTagModelID, first: 10 })
+    expect(postTags.edges).toHaveLength(9)
 
     await expect(
       runtime.executeQuery(`

@@ -907,6 +907,23 @@ describe('runtime', () => {
     const post1ID = createdPosts.data!.post1.document.id
     const post2ID = createdPosts.data!.post2.document.id
 
+    async function queryViewerFavorites() {
+      return await runtime.executeQuery(`
+        query {
+          viewer {
+            favoriteList(first: 10) {
+              edges {
+                node {
+                  doc { ... on Post { title } }
+                  tag
+                }
+              }
+            }
+          }
+        }
+      `)
+    }
+
     const setFavorite = `
       mutation SetFavorite($input: SetFavoriteInput!) {
         setFavorite(input: $input) {
@@ -918,20 +935,6 @@ describe('runtime', () => {
               }
             }
           }
-          viewer {
-            favoriteList(first: 10) {
-              edges {
-                node {
-                  doc {
-                    ... on Post {
-                      title
-                    }
-                  }
-                  tag
-                }
-              }
-            }
-          }
         }
       }
     `
@@ -939,40 +942,25 @@ describe('runtime', () => {
     const favorite1Res = await runtime.executeQuery<{
       setFavorite: { document: { id: string }; viewer: any }
     }>(setFavorite, { input: { content: { docID: post1ID, tag: 'posts' } } })
-    expect(favorite1Res.data?.setFavorite.viewer).toMatchSnapshot()
+    await expect(queryViewerFavorites()).resolves.toMatchSnapshot()
     const favorite1ID = favorite1Res.data?.setFavorite.document.id
 
-    const favorite2Res = await runtime.executeQuery<{
+    await runtime.executeQuery<{
       setFavorite: { document: { id: string }; viewer: any }
-    }>(setFavorite, {
-      input: { content: { docID: post2ID, tag: 'posts' } },
-    })
-    expect(favorite2Res.data?.setFavorite.viewer).toMatchSnapshot()
+    }>(setFavorite, { input: { content: { docID: post2ID, tag: 'posts' } } })
+    await expect(queryViewerFavorites()).resolves.toMatchSnapshot()
 
     const unsetRes = await runtime.executeQuery(
       `
       mutation UnsetFavorite($input: UpdateFavoriteInput!) {
         updateFavorite(input: $input) {
-          viewer {
-            favoriteList(first: 10) {
-              edges {
-                node {
-                  doc {
-                    ... on Post {
-                      title
-                    }
-                  }
-                  tag
-                }
-              }
-            }
-          }
+          document { id }
         }
       }
       `,
       { input: { id: favorite1ID, content: {}, options: { shouldIndex: false } } },
     )
-    expect(unsetRes.data).toMatchSnapshot()
+    await expect(queryViewerFavorites()).resolves.toMatchSnapshot()
   }, 30000)
 
   test('runtime operations on models with immutable field', async () => {
