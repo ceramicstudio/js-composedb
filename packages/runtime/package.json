@@ -56,6 +56,8 @@
     "caip": "^1.1.0",
     "dids": "^5.0.2",
     "jest-environment-composedb": "workspace:^",
+    "key-did-provider-ed25519": "^4.0.2",
+    "key-did-resolver": "^4.0.0",
     "multiformats": "^13.1.0"
   },
   "jest": {

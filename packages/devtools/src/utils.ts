@@ -42,6 +42,17 @@ export async function promiseMap<
   )
 }
 
+/** @internal */
+export function sortKeys<T extends Record<string, unknown>>(object: T): T {
+  return Object.keys(object)
+    .sort()
+    .reduce((acc, key) => {
+      // @ts-ignore
+      acc[key] = object[key]
+      return acc
+    }, {} as T)
+}
+
 type RelationViewType = ModelRelationViewDefinitionV2['type']
 
 const RELATION_VIEW_SOURCES: Record<RelationViewType, RuntimeRelationSource> = {

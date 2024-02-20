@@ -83,7 +83,7 @@ importers:
         version: 5.0.1-rc.0(typescript@5.3.3)
       '@ceramicnetwork/cli':
         specifier: ^5.0.1-rc.0
-        version: 5.0.1-rc.0(@polkadot/util@12.6.2)(@types/express@4.17.21)(pg@8.11.3)(typescript@5.3.3)
+        version: 5.0.1-rc.0(@polkadot/util@7.9.2)(@types/express@4.17.21)(pg@8.11.3)(typescript@5.3.3)
       '@ceramicnetwork/http-client':
         specifier: ^5.0.1-rc.0
         version: 5.0.1-rc.0(typescript@5.3.3)
@@ -392,7 +392,7 @@ importers:
     dependencies:
       '@ceramicnetwork/core':
         specifier: ^5.0.1-rc.0
-        version: 5.0.1-rc.0(@polkadot/util@12.6.2)(typescript@5.3.3)
+        version: 5.0.1-rc.0(@polkadot/util@7.9.2)(typescript@5.3.3)
       dids:
         specifier: ^5.0.2
         version: 5.0.2(typescript@5.3.3)
@@ -500,6 +500,12 @@ importers:
       jest-environment-composedb:
         specifier: workspace:^
         version: link:../jest-environment-composedb
+      key-did-provider-ed25519:
+        specifier: ^4.0.2
+        version: 4.0.2(typescript@5.3.3)
+      key-did-resolver:
+        specifier: ^4.0.0
+        version: 4.0.0
       multiformats:
         specifier: ^13.1.0
         version: 13.1.0
@@ -547,7 +553,7 @@ importers:
         version: 5.0.1-rc.0(typescript@5.3.3)
       '@ceramicnetwork/core':
         specifier: ^5.0.1-rc.0
-        version: 5.0.1-rc.0(@polkadot/util@12.6.2)(typescript@5.3.3)
+        version: 5.0.1-rc.0(@polkadot/util@7.9.2)(typescript@5.3.3)
       '@ceramicnetwork/http-client':
         specifier: ^5.0.1-rc.0
         version: 5.0.1-rc.0(typescript@5.3.3)
@@ -568,7 +574,7 @@ importers:
     dependencies:
       '@ceramicnetwork/cli':
         specifier: ^5.0.1-rc.0
-        version: 5.0.1-rc.0(@polkadot/util@12.6.2)(@types/express@4.17.21)(pg@8.11.3)(typescript@5.3.3)
+        version: 5.0.1-rc.0(@polkadot/util@7.9.2)(@types/express@4.17.21)(pg@8.11.3)(typescript@5.3.3)
       '@ceramicnetwork/common':
         specifier: ^5.0.1-rc.0
         version: 5.0.1-rc.0(typescript@5.3.3)
@@ -607,7 +613,7 @@ importers:
         version: 2.1.0
       graphiql:
         specifier: ^3.1.1
-        version: 3.1.1(@codemirror/language@6.10.1)(@types/react@18.2.55)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 3.1.1(@codemirror/language@6.0.0)(@types/react@18.2.55)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
       graphql:
         specifier: ^16.8.1
         version: 16.8.1
@@ -3031,7 +3037,7 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/blockchain-utils-validation@5.0.1-rc.0(@polkadot/util@12.6.2)(typescript@5.3.3):
+  /@ceramicnetwork/blockchain-utils-validation@5.0.1-rc.0(@polkadot/util@7.9.2)(typescript@5.3.3):
     resolution: {integrity: sha512-UHKspw8bWyfZT8tWdwU2p9jTBWcLg3NktwfxognjDCwioszdKVsEx/9UtYCcq1bHXCZNatkeQJ8k8f5Bv6C1wA==}
     dependencies:
       '@ceramicnetwork/blockchain-utils-linking': 5.0.0(typescript@5.3.3)
@@ -3040,7 +3046,7 @@ packages:
       '@ethersproject/providers': 5.7.2
       '@ethersproject/wallet': 5.7.0
       '@noble/curves': 1.3.0
-      '@polkadot/util-crypto': 7.9.2(@polkadot/util@12.6.2)
+      '@polkadot/util-crypto': 7.9.2(@polkadot/util@7.9.2)
       '@smontero/eosio-signing-tools': 0.0.6
       '@taquito/utils': 11.2.0
       '@tendermint/sig': 0.6.0
@@ -3058,7 +3064,7 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/cli@5.0.1-rc.0(@polkadot/util@12.6.2)(@types/express@4.17.21)(pg@8.11.3)(typescript@5.3.3):
+  /@ceramicnetwork/cli@5.0.1-rc.0(@polkadot/util@7.9.2)(@types/express@4.17.21)(pg@8.11.3)(typescript@5.3.3):
     resolution: {integrity: sha512-or0lmmjUpMCv27JjvCFHY32Of3uXDKAlqm+SVxllhDQhAH/xkSOWZEEeBqtODKAW57OI2wGrdR+ox5BVquuAaA==}
     engines: {node: '>=20.8'}
     hasBin: true
@@ -3067,7 +3073,7 @@ packages:
       '@ceramicnetwork/3id-did-resolver': 5.0.1-rc.0(typescript@5.3.3)
       '@ceramicnetwork/codecs': 4.0.1-rc.0(typescript@5.3.3)
       '@ceramicnetwork/common': 5.0.1-rc.0(typescript@5.3.3)
-      '@ceramicnetwork/core': 5.0.1-rc.0(@polkadot/util@12.6.2)(typescript@5.3.3)
+      '@ceramicnetwork/core': 5.0.1-rc.0(@polkadot/util@7.9.2)(typescript@5.3.3)
       '@ceramicnetwork/http-client': 5.0.1-rc.0(typescript@5.3.3)
       '@ceramicnetwork/indexing': 4.0.1-rc.0(pg@8.11.3)(sqlite3@5.1.7)(typescript@5.3.3)
       '@ceramicnetwork/ipfs-daemon': 5.0.1-rc.0(typescript@5.3.3)
@@ -3162,7 +3168,7 @@ packages:
       - utf-8-validate
       - zod
 
-  /@ceramicnetwork/core@5.0.1-rc.0(@polkadot/util@12.6.2)(typescript@5.3.3):
+  /@ceramicnetwork/core@5.0.1-rc.0(@polkadot/util@7.9.2)(typescript@5.3.3):
     resolution: {integrity: sha512-XnTDLzc3Z0E61cykXE+Tdk2hiE+2QfIw6kn67uTrGdsY2Q/2GgMb0IqAIA5NLMKgP5/ubX7hF2NYcuDQkkmfng==}
     engines: {node: '>=20.8'}
     dependencies:
@@ -3177,7 +3183,7 @@ packages:
       '@ceramicnetwork/pinning-aggregation': 5.0.1-rc.0
       '@ceramicnetwork/pinning-ipfs-backend': 5.0.1-rc.0
       '@ceramicnetwork/stream-caip10-link': 5.0.1-rc.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-caip10-link-handler': 5.0.1-rc.0(@polkadot/util@12.6.2)(typescript@5.3.3)
+      '@ceramicnetwork/stream-caip10-link-handler': 5.0.1-rc.0(@polkadot/util@7.9.2)(typescript@5.3.3)
       '@ceramicnetwork/stream-model': 4.0.1-rc.0(typescript@5.3.3)
       '@ceramicnetwork/stream-model-handler': 4.0.1-rc.0(typescript@5.3.3)
       '@ceramicnetwork/stream-model-instance': 4.0.1-rc.0(typescript@5.3.3)
@@ -3373,10 +3379,10 @@ packages:
       - supports-color
     dev: false
 
-  /@ceramicnetwork/stream-caip10-link-handler@5.0.1-rc.0(@polkadot/util@12.6.2)(typescript@5.3.3):
+  /@ceramicnetwork/stream-caip10-link-handler@5.0.1-rc.0(@polkadot/util@7.9.2)(typescript@5.3.3):
     resolution: {integrity: sha512-dgcbGxRsr1kPW0ZznrkzNioUPqNUbflIIyS5ofr9h4CV3bxEIss0/6udKAo2fDsJmiXpqscRC11FOpGrcwGnzQ==}
     dependencies:
-      '@ceramicnetwork/blockchain-utils-validation': 5.0.1-rc.0(@polkadot/util@12.6.2)(typescript@5.3.3)
+      '@ceramicnetwork/blockchain-utils-validation': 5.0.1-rc.0(@polkadot/util@7.9.2)(typescript@5.3.3)
       '@ceramicnetwork/common': 5.0.1-rc.0(typescript@5.3.3)
       '@ceramicnetwork/stream-caip10-link': 5.0.1-rc.0(typescript@5.3.3)
       '@ceramicnetwork/stream-handler-common': 4.0.1-rc.0(typescript@5.3.3)
@@ -3811,8 +3817,8 @@ packages:
       prettier: 2.8.8
     dev: true
 
-  /@codemirror/language@6.10.1:
-    resolution: {integrity: sha512-5GrXzrhq6k+gL5fjkAwt90nYDmjlzTIJV8THnxNFtNKWotMIlzzN+CpqxqwXOECnUdOndmSeWntVrVcv5axWRQ==}
+  /@codemirror/language@6.0.0:
+    resolution: {integrity: sha512-rtjk5ifyMzOna1c7PBu7J1VCt0PvA5wy3o8eMVnxMKb7z8KA7JFecvD04dSn14vj/bBaAbqRsGed5OjtofEnLA==}
     dependencies:
       '@codemirror/state': 6.4.0
       '@codemirror/view': 6.24.0
@@ -4738,7 +4744,7 @@ packages:
     peerDependencies:
       react: '*'
     dependencies:
-      '@types/react': 18.2.53
+      '@types/react': 18.2.55
       prop-types: 15.8.1
       react: 18.2.0
 
@@ -5359,7 +5365,7 @@ packages:
   /@gar/promisify@1.1.3:
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
 
-  /@graphiql/react@0.20.3(@codemirror/language@6.10.1)(@types/react@18.2.55)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0):
+  /@graphiql/react@0.20.3(@codemirror/language@6.0.0)(@types/react@18.2.55)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-LHEiWQPABflTyRJZBZB50WSlrWER4RtlWg9XV1+D4yZQ3+6GbLM7X1zYf4D/TQ6AJB/vLZQHEnbhS0LuKcNqfA==}
     peerDependencies:
       graphql: ^15.5.0 || ^16.0.0
@@ -5375,7 +5381,7 @@ packages:
       '@types/codemirror': 5.60.15
       clsx: 1.2.1
       codemirror: 5.65.16
-      codemirror-graphql: 2.0.10(@codemirror/language@6.10.1)(codemirror@5.65.16)(graphql@16.8.1)
+      codemirror-graphql: 2.0.10(@codemirror/language@6.0.0)(codemirror@5.65.16)(graphql@16.8.1)
       copy-to-clipboard: 3.3.3
       framer-motion: 6.5.1(react-dom@18.2.0)(react@18.2.0)
       graphql: 16.8.1
@@ -8097,7 +8103,7 @@ packages:
       '@babel/runtime': 7.23.9
     dev: false
 
-  /@polkadot/util-crypto@7.9.2(@polkadot/util@12.6.2):
+  /@polkadot/util-crypto@7.9.2(@polkadot/util@7.9.2):
     resolution: {integrity: sha512-nNwqUwP44eCH9jKKcPie+IHLKkg9LMe6H7hXo91hy3AtoslnNrT51tP3uAm5yllhLvswJfnAgnlHq7ybCgqeFw==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
@@ -8105,8 +8111,8 @@ packages:
     dependencies:
       '@babel/runtime': 7.23.9
       '@polkadot/networks': 7.9.2
-      '@polkadot/util': 12.6.2
-      '@polkadot/wasm-crypto': 4.6.1(@polkadot/util@12.6.2)(@polkadot/x-randomvalues@7.9.2)
+      '@polkadot/util': 7.9.2
+      '@polkadot/wasm-crypto': 4.6.1(@polkadot/util@7.9.2)(@polkadot/x-randomvalues@7.9.2)
       '@polkadot/x-randomvalues': 7.9.2
       blakejs: 1.2.1
       bn.js: 4.12.0
@@ -8121,40 +8127,40 @@ packages:
       xxhashjs: 0.2.2
     dev: false
 
-  /@polkadot/util@12.6.2:
-    resolution: {integrity: sha512-l8TubR7CLEY47240uki0TQzFvtnxFIO7uI/0GoWzpYD/O62EIAMRsuY01N4DuwgKq2ZWD59WhzsLYmA5K6ksdw==}
-    engines: {node: '>=18'}
+  /@polkadot/util@7.9.2:
+    resolution: {integrity: sha512-6ABY6ErgkCsM4C6+X+AJSY4pBGwbKlHZmUtHftaiTvbaj4XuA4nTo3GU28jw8wY0Jh2cJZJvt6/BJ5GVkm5tBA==}
+    engines: {node: '>=14.0.0'}
     dependencies:
-      '@polkadot/x-bigint': 12.6.2
-      '@polkadot/x-global': 12.6.2
-      '@polkadot/x-textdecoder': 12.6.2
-      '@polkadot/x-textencoder': 12.6.2
-      '@types/bn.js': 5.1.5
-      bn.js: 5.2.1
-      tslib: 2.6.2
+      '@babel/runtime': 7.23.9
+      '@polkadot/x-textdecoder': 7.9.2
+      '@polkadot/x-textencoder': 7.9.2
+      '@types/bn.js': 4.11.6
+      bn.js: 4.12.0
+      camelcase: 6.3.0
+      ip-regex: 4.3.0
     dev: false
 
-  /@polkadot/wasm-crypto-asmjs@4.6.1(@polkadot/util@12.6.2):
+  /@polkadot/wasm-crypto-asmjs@4.6.1(@polkadot/util@7.9.2):
     resolution: {integrity: sha512-1oHQjz2oEO1kCIcQniOP+dZ9N2YXf2yCLHLsKaKSvfXiWaetVCaBNB8oIHIVYvuLnVc8qlMi66O6xc1UublHsw==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       '@polkadot/util': '*'
     dependencies:
       '@babel/runtime': 7.23.9
-      '@polkadot/util': 12.6.2
+      '@polkadot/util': 7.9.2
     dev: false
 
-  /@polkadot/wasm-crypto-wasm@4.6.1(@polkadot/util@12.6.2):
+  /@polkadot/wasm-crypto-wasm@4.6.1(@polkadot/util@7.9.2):
     resolution: {integrity: sha512-NI3JVwmLjrSYpSVuhu0yeQYSlsZrdpK41UC48sY3kyxXC71pi6OVePbtHS1K3xh3FFmDd9srSchExi3IwzKzMw==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       '@polkadot/util': '*'
     dependencies:
       '@babel/runtime': 7.23.9
-      '@polkadot/util': 12.6.2
+      '@polkadot/util': 7.9.2
     dev: false
 
-  /@polkadot/wasm-crypto@4.6.1(@polkadot/util@12.6.2)(@polkadot/x-randomvalues@7.9.2):
+  /@polkadot/wasm-crypto@4.6.1(@polkadot/util@7.9.2)(@polkadot/x-randomvalues@7.9.2):
     resolution: {integrity: sha512-2wEftBDxDG+TN8Ah6ogtvzjdZdcF0mAjU4UNNOfpmkBCxQYZOrAHB8HXhzo3noSsKkLX7PDX57NxvJ9OhoTAjw==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
@@ -8162,25 +8168,10 @@ packages:
       '@polkadot/x-randomvalues': '*'
     dependencies:
       '@babel/runtime': 7.23.9
-      '@polkadot/util': 12.6.2
-      '@polkadot/wasm-crypto-asmjs': 4.6.1(@polkadot/util@12.6.2)
-      '@polkadot/wasm-crypto-wasm': 4.6.1(@polkadot/util@12.6.2)
+      '@polkadot/util': 7.9.2
+      '@polkadot/wasm-crypto-asmjs': 4.6.1(@polkadot/util@7.9.2)
+      '@polkadot/wasm-crypto-wasm': 4.6.1(@polkadot/util@7.9.2)
       '@polkadot/x-randomvalues': 7.9.2
-    dev: false
-
-  /@polkadot/x-bigint@12.6.2:
-    resolution: {integrity: sha512-HSIk60uFPX4GOFZSnIF7VYJz7WZA7tpFJsne7SzxOooRwMTWEtw3fUpFy5cYYOeLh17/kHH1Y7SVcuxzVLc74Q==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@polkadot/x-global': 12.6.2
-      tslib: 2.6.2
-    dev: false
-
-  /@polkadot/x-global@12.6.2:
-    resolution: {integrity: sha512-a8d6m+PW98jmsYDtAWp88qS4dl8DyqUBsd0S+WgyfSMtpEXu6v9nXDgPZgwF5xdDvXhm+P0ZfVkVTnIGrScb5g==}
-    engines: {node: '>=18'}
-    dependencies:
-      tslib: 2.6.2
     dev: false
 
   /@polkadot/x-global@7.9.2:
@@ -8198,20 +8189,20 @@ packages:
       '@polkadot/x-global': 7.9.2
     dev: false
 
-  /@polkadot/x-textdecoder@12.6.2:
-    resolution: {integrity: sha512-M1Bir7tYvNappfpFWXOJcnxUhBUFWkUFIdJSyH0zs5LmFtFdbKAeiDXxSp2Swp5ddOZdZgPac294/o2TnQKN1w==}
-    engines: {node: '>=18'}
+  /@polkadot/x-textdecoder@7.9.2:
+    resolution: {integrity: sha512-wfwbSHXPhrOAl12QvlIOGNkMH/N/h8PId2ytIjvM/8zPPFB5Il6DWSFLtVapOGEpIFjEWbd5t8Td4pHBVXIEbg==}
+    engines: {node: '>=14.0.0'}
     dependencies:
-      '@polkadot/x-global': 12.6.2
-      tslib: 2.6.2
+      '@babel/runtime': 7.23.9
+      '@polkadot/x-global': 7.9.2
     dev: false
 
-  /@polkadot/x-textencoder@12.6.2:
-    resolution: {integrity: sha512-4N+3UVCpI489tUJ6cv3uf0PjOHvgGp9Dl+SZRLgFGt9mvxnvpW/7+XBADRMtlG4xi5gaRK7bgl5bmY6OMDsNdw==}
-    engines: {node: '>=18'}
+  /@polkadot/x-textencoder@7.9.2:
+    resolution: {integrity: sha512-A19wwYINuZwU2dUyQ/mMzB0ISjyfc4cISfL4zCMUAVgj7xVoXMYV2GfjNdMpA8Wsjch3su6pxLbtJ2wU03sRTQ==}
+    engines: {node: '>=14.0.0'}
     dependencies:
-      '@polkadot/x-global': 12.6.2
-      tslib: 2.6.2
+      '@babel/runtime': 7.23.9
+      '@polkadot/x-global': 7.9.2
     dev: false
 
   /@protobufjs/aspromise@1.1.2:
@@ -10233,6 +10224,12 @@ packages:
     resolution: {integrity: sha512-WXCyOcRtH37HAUkpXhUduaxdm82b4GSlyTqajXviN4EfiuPgNYR109xMCKvpl6zPIpua0DGlMEDCq+g8EdoheQ==}
     dependencies:
       '@babel/types': 7.23.9
+
+  /@types/bn.js@4.11.6:
+    resolution: {integrity: sha512-pqr857jrp2kPuO9uRjZ3PwnJTjoQy+fcdxvBTvHm6dkmEL9q+hDD/2j/0ELOBPtPnS8LjCX0gI9nbl8lVkadpg==}
+    dependencies:
+      '@types/node': 20.11.19
+    dev: false
 
   /@types/bn.js@5.1.5:
     resolution: {integrity: sha512-V46N0zwKRF5Q00AZ6hWtN0T8gGmDUaUzLWQvHFo5yThtVwK/VCenFY3wXVbOvNfajEpsTfQM4IN9k/d6gUVX3A==}
@@ -13249,14 +13246,14 @@ packages:
   /codeco@1.2.0:
     resolution: {integrity: sha512-SHTBW7QsiDtHGqEyhX10gZesmWlWV00gXteFyU2xLqyZmy658/+HlPyXG5EvY05+csQNWjBIfGg2mZrklR1RtQ==}
 
-  /codemirror-graphql@2.0.10(@codemirror/language@6.10.1)(codemirror@5.65.16)(graphql@16.8.1):
+  /codemirror-graphql@2.0.10(@codemirror/language@6.0.0)(codemirror@5.65.16)(graphql@16.8.1):
     resolution: {integrity: sha512-rC9NxibCsSzWtCQjHLfwKCkyYdGv2BT/BCgyDoKPrc/e7aGiyLyeT0fB60d+0imwlvhX3lIHncl6JMz2YxQ/jg==}
     peerDependencies:
       '@codemirror/language': 6.0.0
       codemirror: ^5.65.3
       graphql: ^15.5.0 || ^16.0.0
     dependencies:
-      '@codemirror/language': 6.10.1
+      '@codemirror/language': 6.0.0
       '@types/codemirror': 0.0.90
       codemirror: 5.65.16
       graphql: 16.8.1
@@ -16782,14 +16779,14 @@ packages:
   /graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
 
-  /graphiql@3.1.1(@codemirror/language@6.10.1)(@types/react@18.2.55)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0):
+  /graphiql@3.1.1(@codemirror/language@6.0.0)(@types/react@18.2.55)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-FMNa981Wj8JBJJRTdryNyrVteigS8B7q+Q1fh1rW4IsFPaXNIs1VMs8kwqIZ8zERj4Fc64Ea750g3n6r2w9Zcg==}
     peerDependencies:
       graphql: ^15.5.0 || ^16.0.0
       react: ^16.8.0 || ^17 || ^18
       react-dom: ^16.8.0 || ^17 || ^18
     dependencies:
-      '@graphiql/react': 0.20.3(@codemirror/language@6.10.1)(@types/react@18.2.55)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
+      '@graphiql/react': 0.20.3(@codemirror/language@6.0.0)(@types/react@18.2.55)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
       '@graphiql/toolkit': 0.9.1(graphql@16.8.1)
       graphql: 16.8.1
       graphql-language-service: 5.2.0(graphql@16.8.1)
@@ -17680,6 +17677,11 @@ packages:
       jsbn: 1.1.0
       sprintf-js: 1.1.3
     dev: true
+
+  /ip-regex@4.3.0:
+    resolution: {integrity: sha512-B9ZWJxHHOHUhUjCPrMpLD4xEq35bUTClHM1S6CBU5ixQnkZmwipwgc96vAd7AAGM9TGHvJR+Uss+/Ak6UphK+Q==}
+    engines: {node: '>=8'}
+    dev: false
 
   /ip-regex@5.0.0:
     resolution: {integrity: sha512-fOCG6lhoKKakwv+C6KdsOnGvgXnmgfmp0myi3bcNwj3qfwPAxRKWEuFhvEFF7ceYIz6+1jRZ+yguLFAmUNPEfw==}
@@ -20171,17 +20173,15 @@ packages:
       - typescript
       - utf-8-validate
       - zod
-    dev: false
 
   /key-did-resolver@4.0.0:
     resolution: {integrity: sha512-+U2nd/0rjO4Yqe2hnHBD7ygcLRfT43Oje9IIjv1BlBi0lopwxZpIFQ7GekguOHK02r+JGdl8mpJVNHs5lvXVOA==}
     engines: {node: '>=14.14'}
     dependencies:
       '@noble/curves': 1.3.0
-      multiformats: 13.0.1
+      multiformats: 13.1.0
       uint8arrays: 5.0.2
       varint: 6.0.0
-    dev: false
 
   /keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}

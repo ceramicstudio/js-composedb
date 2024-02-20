@@ -202,17 +202,23 @@ function assertValidSetRelationReference(
   property: string,
 ) {
   if (refModel.version === '1.0' || refModel.accountRelation.type !== 'set') {
-    throw new Error(`Invalid view referencing model ${refModelID}: expected "set" account relation`)
+    throw new Error(
+      `Invalid view referencing model ${refModelID} on model ${modelID}: expected "set" account relation`,
+    )
   }
   if (!refModel.accountRelation.fields.includes(property)) {
     throw new Error(
-      `Invalid property ${property} set for view to model ${refModelID}: ${property} is not defined as a "set" account relation field`,
+      `Invalid property ${property} set for view on model ${modelID}: ${property} is not defined as a "set" account relation field`,
     )
   }
   const relation = refModel.relations?.[property]
-  if (relation == null || relation.type !== 'document' || relation.model !== modelID) {
+  if (
+    relation == null ||
+    relation.type !== 'document' ||
+    (relation.model !== null && relation.model !== refModelID)
+  ) {
     throw new Error(
-      `Invalid property ${property} set for view to model ${refModelID}: ${property} must define a relation to model ${modelID}`,
+      `Invalid property ${property} set for view on model ${modelID}: ${property} must define a relation to model ${refModelID}`,
     )
   }
 }
@@ -341,6 +347,7 @@ export async function createIntermediaryCompositeDefinition(
         if (id == null) {
           throw new Error(`ID not found for referenced model ${view.model}`)
         }
+        view.model = id
         if (view.type === 'relationSetFrom') {
           const refModel = definition.models[id]
           if (refModel == null) {
@@ -348,7 +355,6 @@ export async function createIntermediaryCompositeDefinition(
           }
           assertValidSetRelationReference(modelID, id, refModel, view.property)
         }
-        view.model = id
       }
     }
   }

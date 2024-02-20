@@ -33,6 +33,7 @@ type Like @createModel(
 ) {
   postID: StreamID! @documentReference(model: "Node")
   post: Node @relationDocument(property: "postID")
+  date: Date
 }
 
 type Like @createModel(
@@ -67,6 +68,7 @@ type PostTag @createModel(
   post: Node! @relationDocument(property: "postID")
   tagID: StreamID! @documentReference(model: "Node")
   tag: Node! @relationDocument(property: "tagID")
+  date: Date
 }
 
 type Follows @createModel(description: "Follow an account", accountRelation: SET, accountRelationFields: ["following"])

@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'node:path'
 import { Ceramic } from '@ceramicnetwork/core'
 import { DID } from 'dids'
 import { create } from 'ipfs-core'

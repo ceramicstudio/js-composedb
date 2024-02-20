@@ -787,6 +787,11 @@ exports[`Runtime format Social network kitchen sink 1`] = `
       },
     },
     "Like": {
+      "date": {
+        "immutable": false,
+        "required": false,
+        "type": "date",
+      },
       "post": {
         "relation": {
           "model": null,
@@ -869,6 +874,11 @@ exports[`Runtime format Social network kitchen sink 1`] = `
       },
     },
     "PostTag": {
+      "date": {
+        "immutable": false,
+        "required": false,
+        "type": "date",
+      },
       "post": {
         "relation": {
           "model": null,
