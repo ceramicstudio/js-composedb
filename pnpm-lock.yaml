@@ -2980,7 +2980,7 @@ packages:
       '@ceramicnetwork/stream-tile': 5.0.1-rc.0(typescript@5.3.3)
       '@ceramicnetwork/streamid': 5.0.0
       least-recent: 1.0.3
-      multiformats: 13.0.1
+      multiformats: 13.1.0
       uint8arrays: 5.0.2
     transitivePeerDependencies:
       - bufferutil
@@ -3158,7 +3158,7 @@ packages:
       jet-logger: 1.2.2
       lodash.clonedeep: 4.5.0
       logfmt: 1.4.0
-      multiformats: 13.0.1
+      multiformats: 13.1.0
       rxjs: 7.8.1
       uint8arrays: 5.0.2
     transitivePeerDependencies:
@@ -3555,9 +3555,9 @@ packages:
     dependencies:
       '@ipld/dag-cbor': 7.0.3
       '@stablelib/sha256': 1.0.1
-      cborg: 4.0.8
+      cborg: 4.0.9
       mapmoize: 1.2.1
-      multiformats: 13.0.1
+      multiformats: 13.1.0
       uint8arrays: 5.0.2
       varint: 6.0.0
 
@@ -10234,7 +10234,7 @@ packages:
   /@types/bn.js@5.1.5:
     resolution: {integrity: sha512-V46N0zwKRF5Q00AZ6hWtN0T8gGmDUaUzLWQvHFo5yThtVwK/VCenFY3wXVbOvNfajEpsTfQM4IN9k/d6gUVX3A==}
     dependencies:
-      '@types/node': 18.19.17
+      '@types/node': 20.11.19
 
   /@types/body-parser@1.19.5:
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
@@ -12880,6 +12880,7 @@ packages:
   /cborg@4.0.8:
     resolution: {integrity: sha512-/6QDK0Hw//cV4YNWZZjdIUMFNw0DZmb56jdVGJPwXP7874gSN0AMYqM07mVKpAm+6Nn7U8lvYFzPgBGatC+5xw==}
     hasBin: true
+    dev: false
 
   /cborg@4.0.9:
     resolution: {integrity: sha512-xAuZbCDUOZxCe/ZJuIrnlG1Bk1R0qhwCXdnPYxVmqBSqm9M3BeE3G6Qoj5Zq+8epas36bT3vjiInDTJ6BVH6Rg==}

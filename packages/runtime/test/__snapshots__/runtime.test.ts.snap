@@ -581,57 +581,49 @@ input EnableIndexingPostInput {
 
 exports[`runtime SET account relation support 2`] = `
 {
-  "data": {
-    "viewer": {
-      "favoriteList": {
-        "edges": [
-          {
-            "node": {
-              "doc": {
-                "title": "Test post 1",
-              },
-              "tag": "posts",
-            },
+  "favoriteList": {
+    "edges": [
+      {
+        "node": {
+          "doc": {
+            "title": "Test post 1",
           },
-        ],
+          "tag": "posts",
+        },
       },
-    },
+    ],
   },
 }
 `;
 
 exports[`runtime SET account relation support 3`] = `
 {
-  "data": {
-    "viewer": {
-      "favoriteList": {
-        "edges": [
-          {
-            "node": {
-              "doc": {
-                "title": "Test post 1",
-              },
-              "tag": "posts",
-            },
+  "favoriteList": {
+    "edges": [
+      {
+        "node": {
+          "doc": {
+            "title": "Test post 1",
           },
-          {
-            "node": {
-              "doc": {
-                "title": "Test post 2",
-              },
-              "tag": "posts",
-            },
-          },
-        ],
+          "tag": "posts",
+        },
       },
-    },
+      {
+        "node": {
+          "doc": {
+            "title": "Test post 2",
+          },
+          "tag": "posts",
+        },
+      },
+    ],
   },
 }
 `;
 
 exports[`runtime SET account relation support 4`] = `
 {
-  "data": {
+  "updateFavorite": {
     "viewer": {
       "favoriteList": {
         "edges": [

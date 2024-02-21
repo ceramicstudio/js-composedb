@@ -58,7 +58,7 @@ async function loadCommits(
   id: string | StreamID,
 ): Promise<Array<SignedCommitContainer>> {
   const commits = await ceramic.loadStreamCommits(id)
-  return commits.map((c) => c.value as Record<string, any>).filter(isSignedCommitContainer)
+  return commits.map((c) => c.value as Record<string, unknown>).filter(isSignedCommitContainer)
 }
 
 function executeCreateFactory(

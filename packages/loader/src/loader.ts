@@ -158,7 +158,7 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
   /**
    * Create a new ModelInstanceDocument and add it to the cache, if enabled.
    */
-  async create<T extends Record<string, any> = Record<string, any>>(
+  async create<T extends Record<string, unknown> = Record<string, unknown>>(
     model: string | StreamID,
     content: T,
     { controller, shouldIndex, ...options }: CreateOptions = {},
@@ -181,7 +181,7 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
   /**
    * Load a ModelInstanceDocument from the cache (if enabled) or remotely.
    */
-  async load<T extends Record<string, any> = Record<string, any>>(
+  async load<T extends Record<string, unknown> = Record<string, unknown>>(
     key: LoadKey,
   ): Promise<ModelInstanceDocument<T>> {
     return (await super.load(key)) as ModelInstanceDocument<T>
@@ -190,7 +190,7 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
   /**
    * Load a deterministic stream and add it to the cache.
    */
-  async _loadDeterministic<T extends Record<string, any> = Record<string, any>>(
+  async _loadDeterministic<T extends Record<string, unknown> = Record<string, unknown>>(
     meta: GenesisMetadata,
     options: DeterministicLoadOptions = {},
   ): Promise<ModelInstanceDocument<T> | null> {
@@ -203,7 +203,7 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
   /**
    * Create or load a deterministic ModelInstanceDocument and cache it.
    */
-  async loadSingle<T extends Record<string, any> = Record<string, any>>(
+  async loadSingle<T extends Record<string, unknown> = Record<string, unknown>>(
     controller: string,
     model: string | StreamID,
     options?: DeterministicLoadOptions,
@@ -215,7 +215,7 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
    * Create or load a deterministic ModelInstanceDocument using the SET account
    * relation and cache it.
    */
-  async loadSet<T extends Record<string, any> = Record<string, any>>(
+  async loadSet<T extends Record<string, unknown> = Record<string, unknown>>(
     controller: string,
     model: string | StreamID,
     unique: Array<string>,
@@ -227,7 +227,7 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
   /**
    * Update a ModelInstanceDocument after loading the stream remotely, bypassing the cache.
    */
-  async update<T extends Record<string, any> = Record<string, any>>(
+  async update<T extends Record<string, unknown> = Record<string, unknown>>(
     streamID: string | StreamID,
     content: T,
     { replace, shouldIndex, version, ...options }: UpdateOptions = {},

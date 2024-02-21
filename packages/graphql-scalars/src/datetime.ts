@@ -150,7 +150,7 @@ export const GraphQLTime = new GraphQLScalarType({
     'the `full-time` format outlined in section 5.6 of the RFC 3339' +
     'profile of the ISO 8601 standard for representation of dates and ' +
     'times using the Gregorian calendar.',
-  serialize(value: any): string {
+  serialize(value: unknown): string {
     if (value instanceof Date) {
       const dateTimeString = value.toISOString()
       return dateTimeString.substring(dateTimeString.indexOf('T') + 1)
@@ -167,7 +167,7 @@ export const GraphQLTime = new GraphQLScalarType({
       )
     }
   },
-  parseValue(value: any) {
+  parseValue(value: unknown) {
     if (!(typeof value === 'string')) {
       throw new TypeError(`Time cannot represent non string type ${JSON.stringify(value)}`)
     }

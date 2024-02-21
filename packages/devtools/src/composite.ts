@@ -333,7 +333,7 @@ export class Composite {
       version: Composite.VERSION,
       models: {},
     }
-    const commits: Record<string, any> = {}
+    const commits: Record<string, Array<SignedCommitContainer>> = {}
 
     await Promise.all(
       params.models.map(async (id) => {
@@ -343,13 +343,10 @@ export class Composite {
         ])
         definition.models[id] = model.content
         commits[id] = streamCommits
-          .map((c) => c.value as Record<string, any>)
+          .map((c) => c.value as Record<string, unknown>)
           .filter(isSignedCommitContainer)
         for (const commit of commits[id]) {
-          await assertSupportedReadModelController(
-            model,
-            commit as unknown as SignedCommitContainer,
-          )
+          await assertSupportedReadModelController(model, commit)
         }
       }),
     )

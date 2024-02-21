@@ -279,7 +279,7 @@ class SchemaBuilder {
   // Internal records
   #types: Record<string, GraphQLEnumType | GraphQLInterfaceType | GraphQLObjectType> = { SortOrder }
   #inputObjects: Record<string, GraphQLInputObjectType> = { ...valueFilterInputs }
-  #mutations: Record<string, GraphQLFieldConfig<any, Context>> = {}
+  #mutations: Record<string, GraphQLFieldConfig<unknown, Context>> = {}
   // Internal mapping of model IDs to object names
   #modelAliases: Record<string, string>
 
@@ -712,7 +712,11 @@ class SchemaBuilder {
         return {
           type,
           args: connectionArgs,
-          resolve: (_doc, _args: ConnectionArguments, _ctx): Promise<Connection<any> | null> => {
+          resolve: (
+            _doc,
+            _args: ConnectionArguments,
+            _ctx,
+          ): Promise<Connection<unknown> | null> => {
             throw new Error('Not implemented')
           },
         }
@@ -1417,7 +1421,7 @@ class SchemaBuilder {
           _,
           { filters, ...args }: ConnectionQueryArguments,
           ctx,
-        ): Promise<Connection<any> | null> => {
+        ): Promise<Connection<unknown> | null> => {
           if (filters != null) {
             assertValidQueryFilters(filters)
           }
