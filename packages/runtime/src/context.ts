@@ -48,7 +48,7 @@ export type Context = {
   /**
    * Load a document by ID, using the cache if possible.
    */
-  loadDoc: <Content extends Record<string, any>>(
+  loadDoc: <Content extends Record<string, unknown>>(
     id: string | CommitID | StreamID,
     fresh?: boolean,
   ) => Promise<ModelInstanceDocument<Content> | null>
@@ -56,7 +56,7 @@ export type Context = {
    * Create or update a document using the SINGLE account relation with the
    * given model and content.
    */
-  upsertSingle: <Content extends Record<string, any>>(
+  upsertSingle: <Content extends Record<string, unknown>>(
     model: string,
     content: Content,
     options?: UpsertOptions,
@@ -65,7 +65,7 @@ export type Context = {
    * Create or update a document using the SET account relation with the given
    * model, content and unique fields value.
    */
-  upsertSet: <Content extends Record<string, any>>(
+  upsertSet: <Content extends Record<string, unknown>>(
     model: string,
     unique: Array<string>,
     content: Content,
@@ -95,7 +95,7 @@ export function createContext(params: ContextParams): Context {
     loader,
     getViewerID,
     isAuthenticated: (): boolean => ceramic.did?.authenticated ?? false,
-    loadDoc: async <Content extends Record<string, any> = Record<string, any>>(
+    loadDoc: async <Content extends Record<string, unknown> = Record<string, unknown>>(
       id: string | CommitID | StreamID,
       fresh = false,
     ): Promise<ModelInstanceDocument<Content> | null> => {
@@ -105,7 +105,7 @@ export function createContext(params: ContextParams): Context {
       }
       return await loader.load<Content>(key)
     },
-    upsertSingle: async <Content extends Record<string, any> = Record<string, any>>(
+    upsertSingle: async <Content extends Record<string, unknown> = Record<string, unknown>>(
       model: string,
       content: Content,
       options: UpsertOptions = {},
@@ -122,7 +122,7 @@ export function createContext(params: ContextParams): Context {
       await doc!.replace(content, typeof shouldIndex === 'undefined' ? undefined : { shouldIndex })
       return doc
     },
-    upsertSet: async <Content extends Record<string, any> = Record<string, any>>(
+    upsertSet: async <Content extends Record<string, unknown> = Record<string, unknown>>(
       model: string,
       unique: Array<string>,
       content: Content,
@@ -140,7 +140,7 @@ export function createContext(params: ContextParams): Context {
       await doc!.replace(content, typeof shouldIndex === 'undefined' ? undefined : { shouldIndex })
       return doc
     },
-    enableDocIndexing: async <Content extends Record<string, any> = Record<string, any>>(
+    enableDocIndexing: async <Content extends Record<string, unknown> = Record<string, unknown>>(
       id: string,
       shouldIndex: boolean,
       opts?: UpdateOpts,

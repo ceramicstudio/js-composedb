@@ -16,6 +16,22 @@ exports[`runtime SET account relation support 1`] = `
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
+  commentIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: CommentFiltersInput
+    sorting: CommentSortingInput
+  ): CommentConnection
+  commentCount(filters: CommentFiltersInput): Int!
   favoriteIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -46,22 +62,6 @@ exports[`runtime SET account relation support 1`] = `
     sorting: PostSortingInput
   ): PostConnection
   postCount(filters: PostFiltersInput): Int!
-  commentIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: CommentFiltersInput
-    sorting: CommentSortingInput
-  ): CommentConnection
-  commentCount(filters: CommentFiltersInput): Int!
 }
 
 """An object with an ID"""
@@ -78,6 +78,22 @@ type CeramicAccount implements Node {
   Whether the Ceramic instance is currently authenticated with this account or not
   """
   isViewer: Boolean!
+  commentList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: CommentFiltersInput
+    sorting: CommentSortingInput
+  ): CommentConnection
+  commentListCount(filters: CommentFiltersInput): Int!
   favorite(with: WithFavoriteInput!): Favorite
   favoriteList(
     """Returns the items in the list that come after the specified cursor."""
@@ -109,47 +125,15 @@ type CeramicAccount implements Node {
     sorting: PostSortingInput
   ): PostConnection
   postListCount(filters: PostFiltersInput): Int!
-  commentList(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: CommentFiltersInput
-    sorting: CommentSortingInput
-  ): CommentConnection
-  commentListCount(filters: CommentFiltersInput): Int!
-}
-
-type Favorite implements Node {
-  id: ID!
-  tag: String!
-  note: String
-  docID: CeramicStreamID!
-  doc: Node
-}
-
-"""A Ceramic Stream ID"""
-scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
-
-input WithFavoriteInput {
-  docID: CeramicStreamID!
-  tag: String!
 }
 
 """A connection to a list of items."""
-type FavoriteConnection {
+type CommentConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [FavoriteEdge]
+  edges: [CommentEdge]
 }
 
 """Information about pagination in a connection."""
@@ -168,31 +152,29 @@ type PageInfo {
 }
 
 """An edge in a connection."""
-type FavoriteEdge {
+type CommentEdge {
   """The item at the end of the edge"""
-  node: Favorite
+  node: Comment
 
   """A cursor for use in pagination"""
   cursor: String!
 }
 
-"""A connection to a list of items."""
-type PostConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
+type Comment implements Node {
+  id: ID!
+  text: String!
+  postID: CeramicStreamID!
+  post: Post
 
-  """A list of edges."""
-  edges: [PostEdge]
+  """Account controlling the document"""
+  author: CeramicAccount!
+
+  """Current version of the document"""
+  version: CeramicCommitID!
 }
 
-"""An edge in a connection."""
-type PostEdge {
-  """The item at the end of the edge"""
-  node: Post
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
+"""A Ceramic Stream ID"""
+scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
 
 type Post implements Node {
   id: ID!
@@ -277,37 +259,6 @@ input StringValueFilterInput {
   greaterThanOrEqualTo: String
 }
 
-"""A connection to a list of items."""
-type CommentConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [CommentEdge]
-}
-
-"""An edge in a connection."""
-type CommentEdge {
-  """The item at the end of the edge"""
-  node: Comment
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-type Comment implements Node {
-  id: ID!
-  text: String!
-  postID: CeramicStreamID!
-  post: Post
-
-  """Account controlling the document"""
-  author: CeramicAccount!
-
-  """Current version of the document"""
-  version: CeramicCommitID!
-}
-
 input CommentSortingInput {
   text: SortOrder
 }
@@ -315,6 +266,55 @@ input CommentSortingInput {
 enum SortOrder {
   ASC
   DESC
+}
+
+"""A connection to a list of items."""
+type FavoriteConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [FavoriteEdge]
+}
+
+"""An edge in a connection."""
+type FavoriteEdge {
+  """The item at the end of the edge"""
+  node: Favorite
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Favorite implements Node {
+  id: ID!
+  tag: String!
+  note: String
+  docID: CeramicStreamID!
+  doc: Node
+}
+
+input WithFavoriteInput {
+  docID: CeramicStreamID!
+  tag: String!
+}
+
+"""A connection to a list of items."""
+type PostConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PostEdge]
+}
+
+"""An edge in a connection."""
+type PostEdge {
+  """The item at the end of the edge"""
+  node: Post
+
+  """A cursor for use in pagination"""
+  cursor: String!
 }
 
 input PostFiltersInput {
@@ -333,15 +333,101 @@ input PostSortingInput {
 }
 
 type Mutation {
+  createComment(input: CreateCommentInput!): CreateCommentPayload
+  updateComment(input: UpdateCommentInput!): UpdateCommentPayload
+  enableIndexingComment(input: EnableIndexingCommentInput!): EnableIndexingCommentPayload
   setFavorite(input: SetFavoriteInput!): SetFavoritePayload
   updateFavorite(input: UpdateFavoriteInput!): UpdateFavoritePayload
   enableIndexingFavorite(input: EnableIndexingFavoriteInput!): EnableIndexingFavoritePayload
   createPost(input: CreatePostInput!): CreatePostPayload
   updatePost(input: UpdatePostInput!): UpdatePostPayload
   enableIndexingPost(input: EnableIndexingPostInput!): EnableIndexingPostPayload
-  createComment(input: CreateCommentInput!): CreateCommentPayload
-  updateComment(input: UpdateCommentInput!): UpdateCommentPayload
-  enableIndexingComment(input: EnableIndexingCommentInput!): EnableIndexingCommentPayload
+}
+
+type CreateCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Comment!
+  clientMutationId: String
+}
+
+input CreateCommentInput {
+  content: CommentInput!
+  options: CreateOptionsInput
+  clientMutationId: String
+}
+
+input CommentInput {
+  text: String!
+  postID: CeramicStreamID!
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+}
+
+type UpdateCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Comment!
+  clientMutationId: String
+}
+
+input UpdateCommentInput {
+  id: ID!
+  options: UpdateOptionsInput
+  content: PartialCommentInput!
+  clientMutationId: String
+}
+
+input UpdateOptionsInput {
+  """
+  Fully replace the document contents instead of performing a shallow merge
+  """
+  replace: Boolean = false
+
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
+  """Only perform mutation if the document matches the provided version"""
+  version: CeramicCommitID
+}
+
+input PartialCommentInput {
+  text: String
+  postID: CeramicStreamID
+}
+
+type EnableIndexingCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Comment
+  clientMutationId: String
+}
+
+input EnableIndexingCommentInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }
 
 type SetFavoritePayload {
@@ -399,19 +485,6 @@ input UpdateFavoriteInput {
   clientMutationId: String
 }
 
-input UpdateOptionsInput {
-  """
-  Fully replace the document contents instead of performing a shallow merge
-  """
-  replace: Boolean = false
-
-  """Inform indexers if they should index this document or not"""
-  shouldIndex: Boolean
-
-  """Only perform mutation if the document matches the provided version"""
-  version: CeramicCommitID
-}
-
 input PartialFavoriteInput {
   note: String
 }
@@ -460,11 +533,6 @@ input PostInput {
   title: String!
 }
 
-input CreateOptionsInput {
-  """Inform indexers if they should index this document or not"""
-  shouldIndex: Boolean
-}
-
 type UpdatePostPayload {
   """Fetches an object given its ID"""
   node(
@@ -505,74 +573,6 @@ type EnableIndexingPostPayload {
 }
 
 input EnableIndexingPostInput {
-  id: ID!
-  shouldIndex: Boolean!
-  clientMutationId: String
-}
-
-type CreateCommentPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: Comment!
-  clientMutationId: String
-}
-
-input CreateCommentInput {
-  content: CommentInput!
-  options: CreateOptionsInput
-  clientMutationId: String
-}
-
-input CommentInput {
-  text: String!
-  postID: CeramicStreamID!
-}
-
-type UpdateCommentPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: Comment!
-  clientMutationId: String
-}
-
-input UpdateCommentInput {
-  id: ID!
-  options: UpdateOptionsInput
-  content: PartialCommentInput!
-  clientMutationId: String
-}
-
-input PartialCommentInput {
-  text: String
-  postID: CeramicStreamID
-}
-
-type EnableIndexingCommentPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: Comment
-  clientMutationId: String
-}
-
-input EnableIndexingCommentInput {
   id: ID!
   shouldIndex: Boolean!
   clientMutationId: String
@@ -684,22 +684,6 @@ exports[`runtime create and query post with comments 1`] = `
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  postIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: PostFiltersInput
-    sorting: PostSortingInput
-  ): PostConnection
-  postCount(filters: PostFiltersInput): Int!
   commentIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -716,6 +700,22 @@ exports[`runtime create and query post with comments 1`] = `
     sorting: CommentSortingInput
   ): CommentConnection
   commentCount(filters: CommentFiltersInput): Int!
+  postIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostFiltersInput
+    sorting: PostSortingInput
+  ): PostConnection
+  postCount(filters: PostFiltersInput): Int!
 }
 
 """An object with an ID"""
@@ -732,22 +732,6 @@ type CeramicAccount implements Node {
   Whether the Ceramic instance is currently authenticated with this account or not
   """
   isViewer: Boolean!
-  postList(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: PostFiltersInput
-    sorting: PostSortingInput
-  ): PostConnection
-  postListCount(filters: PostFiltersInput): Int!
   commentList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -764,15 +748,31 @@ type CeramicAccount implements Node {
     sorting: CommentSortingInput
   ): CommentConnection
   commentListCount(filters: CommentFiltersInput): Int!
+  postList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostFiltersInput
+    sorting: PostSortingInput
+  ): PostConnection
+  postListCount(filters: PostFiltersInput): Int!
 }
 
 """A connection to a list of items."""
-type PostConnection {
+type CommentConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [PostEdge]
+  edges: [CommentEdge]
 }
 
 """Information about pagination in a connection."""
@@ -791,13 +791,29 @@ type PageInfo {
 }
 
 """An edge in a connection."""
-type PostEdge {
+type CommentEdge {
   """The item at the end of the edge"""
-  node: Post
+  node: Comment
 
   """A cursor for use in pagination"""
   cursor: String!
 }
+
+type Comment implements Node {
+  id: ID!
+  text: String!
+  postID: CeramicStreamID!
+  post: Post
+
+  """Account controlling the document"""
+  author: CeramicAccount!
+
+  """Current version of the document"""
+  version: CeramicCommitID!
+}
+
+"""A Ceramic Stream ID"""
+scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
 
 type Post implements Node {
   id: ID!
@@ -866,40 +882,6 @@ input StringValueFilterInput {
   greaterThanOrEqualTo: String
 }
 
-"""A connection to a list of items."""
-type CommentConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [CommentEdge]
-}
-
-"""An edge in a connection."""
-type CommentEdge {
-  """The item at the end of the edge"""
-  node: Comment
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-type Comment implements Node {
-  id: ID!
-  text: String!
-  postID: CeramicStreamID!
-  post: Post
-
-  """Account controlling the document"""
-  author: CeramicAccount!
-
-  """Current version of the document"""
-  version: CeramicCommitID!
-}
-
-"""A Ceramic Stream ID"""
-scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
-
 input CommentSortingInput {
   text: SortOrder
 }
@@ -907,6 +889,24 @@ input CommentSortingInput {
 enum SortOrder {
   ASC
   DESC
+}
+
+"""A connection to a list of items."""
+type PostConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PostEdge]
+}
+
+"""An edge in a connection."""
+type PostEdge {
+  """The item at the end of the edge"""
+  node: Post
+
+  """A cursor for use in pagination"""
+  cursor: String!
 }
 
 input PostFiltersInput {
@@ -925,12 +925,98 @@ input PostSortingInput {
 }
 
 type Mutation {
-  createPost(input: CreatePostInput!): CreatePostPayload
-  updatePost(input: UpdatePostInput!): UpdatePostPayload
-  enableIndexingPost(input: EnableIndexingPostInput!): EnableIndexingPostPayload
   createComment(input: CreateCommentInput!): CreateCommentPayload
   updateComment(input: UpdateCommentInput!): UpdateCommentPayload
   enableIndexingComment(input: EnableIndexingCommentInput!): EnableIndexingCommentPayload
+  createPost(input: CreatePostInput!): CreatePostPayload
+  updatePost(input: UpdatePostInput!): UpdatePostPayload
+  enableIndexingPost(input: EnableIndexingPostInput!): EnableIndexingPostPayload
+}
+
+type CreateCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Comment!
+  clientMutationId: String
+}
+
+input CreateCommentInput {
+  content: CommentInput!
+  options: CreateOptionsInput
+  clientMutationId: String
+}
+
+input CommentInput {
+  text: String!
+  postID: CeramicStreamID!
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+}
+
+type UpdateCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Comment!
+  clientMutationId: String
+}
+
+input UpdateCommentInput {
+  id: ID!
+  options: UpdateOptionsInput
+  content: PartialCommentInput!
+  clientMutationId: String
+}
+
+input UpdateOptionsInput {
+  """
+  Fully replace the document contents instead of performing a shallow merge
+  """
+  replace: Boolean = false
+
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
+  """Only perform mutation if the document matches the provided version"""
+  version: CeramicCommitID
+}
+
+input PartialCommentInput {
+  text: String
+  postID: CeramicStreamID
+}
+
+type EnableIndexingCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Comment
+  clientMutationId: String
+}
+
+input EnableIndexingCommentInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }
 
 type CreatePostPayload {
@@ -958,11 +1044,6 @@ input PostInput {
   title: String!
 }
 
-input CreateOptionsInput {
-  """Inform indexers if they should index this document or not"""
-  shouldIndex: Boolean
-}
-
 type UpdatePostPayload {
   """Fetches an object given its ID"""
   node(
@@ -981,19 +1062,6 @@ input UpdatePostInput {
   options: UpdateOptionsInput
   content: PartialPostInput!
   clientMutationId: String
-}
-
-input UpdateOptionsInput {
-  """
-  Fully replace the document contents instead of performing a shallow merge
-  """
-  replace: Boolean = false
-
-  """Inform indexers if they should index this document or not"""
-  shouldIndex: Boolean
-
-  """Only perform mutation if the document matches the provided version"""
-  version: CeramicCommitID
 }
 
 input PartialPostInput {
@@ -1016,74 +1084,6 @@ type EnableIndexingPostPayload {
 }
 
 input EnableIndexingPostInput {
-  id: ID!
-  shouldIndex: Boolean!
-  clientMutationId: String
-}
-
-type CreateCommentPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: Comment!
-  clientMutationId: String
-}
-
-input CreateCommentInput {
-  content: CommentInput!
-  options: CreateOptionsInput
-  clientMutationId: String
-}
-
-input CommentInput {
-  text: String!
-  postID: CeramicStreamID!
-}
-
-type UpdateCommentPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: Comment!
-  clientMutationId: String
-}
-
-input UpdateCommentInput {
-  id: ID!
-  options: UpdateOptionsInput
-  content: PartialCommentInput!
-  clientMutationId: String
-}
-
-input PartialCommentInput {
-  text: String
-  postID: CeramicStreamID
-}
-
-type EnableIndexingCommentPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: Comment
-  clientMutationId: String
-}
-
-input EnableIndexingCommentInput {
   id: ID!
   shouldIndex: Boolean!
   clientMutationId: String
@@ -1529,22 +1529,6 @@ exports[`runtime runtime operations on models with immutable field 1`] = `
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  testInterfaceIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: TestInterfaceFiltersInput
-    sorting: TestInterfaceSortingInput
-  ): TestInterfaceConnection
-  testInterfaceCount(filters: TestInterfaceFiltersInput): Int!
   postIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -1561,6 +1545,22 @@ exports[`runtime runtime operations on models with immutable field 1`] = `
     sorting: PostSortingInput
   ): PostConnection
   postCount(filters: PostFiltersInput): Int!
+  testInterfaceIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: TestInterfaceFiltersInput
+    sorting: TestInterfaceSortingInput
+  ): TestInterfaceConnection
+  testInterfaceCount(filters: TestInterfaceFiltersInput): Int!
 }
 
 """An object with an ID"""
@@ -1577,22 +1577,6 @@ type CeramicAccount implements Node {
   Whether the Ceramic instance is currently authenticated with this account or not
   """
   isViewer: Boolean!
-  testInterfaceList(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: TestInterfaceFiltersInput
-    sorting: TestInterfaceSortingInput
-  ): TestInterfaceConnection
-  testInterfaceListCount(filters: TestInterfaceFiltersInput): Int!
   postList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -1609,15 +1593,31 @@ type CeramicAccount implements Node {
     sorting: PostSortingInput
   ): PostConnection
   postListCount(filters: PostFiltersInput): Int!
+  testInterfaceList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: TestInterfaceFiltersInput
+    sorting: TestInterfaceSortingInput
+  ): TestInterfaceConnection
+  testInterfaceListCount(filters: TestInterfaceFiltersInput): Int!
 }
 
 """A connection to a list of items."""
-type TestInterfaceConnection {
+type PostConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [TestInterfaceEdge]
+  edges: [PostEdge]
 }
 
 """Information about pagination in a connection."""
@@ -1633,60 +1633,6 @@ type PageInfo {
 
   """When paginating forwards, the cursor to continue."""
   endCursor: String
-}
-
-"""An edge in a connection."""
-type TestInterfaceEdge {
-  """The item at the end of the edge"""
-  node: TestInterface
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-interface TestInterface {
-  testField: String
-}
-
-input TestInterfaceFiltersInput {
-  where: TestInterfaceObjectFilterInput
-  and: [TestInterfaceFiltersInput!]
-  or: [TestInterfaceFiltersInput!]
-  not: TestInterfaceFiltersInput
-}
-
-input TestInterfaceObjectFilterInput {
-  testField: StringValueFilterInput
-}
-
-input StringValueFilterInput {
-  isNull: Boolean
-  equalTo: String
-  notEqualTo: String
-  in: [String!]
-  notIn: [String!]
-  lessThan: String
-  lessThanOrEqualTo: String
-  greaterThan: String
-  greaterThanOrEqualTo: String
-}
-
-input TestInterfaceSortingInput {
-  testField: SortOrder
-}
-
-enum SortOrder {
-  ASC
-  DESC
-}
-
-"""A connection to a list of items."""
-type PostConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [PostEdge]
 }
 
 """An edge in a connection."""
@@ -1709,6 +1655,11 @@ type Post implements Node & TestInterface {
   author: CeramicAccount!
 }
 
+interface TestInterface implements Node {
+  id: ID!
+  testField: String
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the \`date-time\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
@@ -1725,8 +1676,58 @@ input PostObjectFilterInput {
   title: StringValueFilterInput
 }
 
+input StringValueFilterInput {
+  isNull: Boolean
+  equalTo: String
+  notEqualTo: String
+  in: [String!]
+  notIn: [String!]
+  lessThan: String
+  lessThanOrEqualTo: String
+  greaterThan: String
+  greaterThanOrEqualTo: String
+}
+
 input PostSortingInput {
   title: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+"""A connection to a list of items."""
+type TestInterfaceConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TestInterfaceEdge]
+}
+
+"""An edge in a connection."""
+type TestInterfaceEdge {
+  """The item at the end of the edge"""
+  node: TestInterface
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input TestInterfaceFiltersInput {
+  where: TestInterfaceObjectFilterInput
+  and: [TestInterfaceFiltersInput!]
+  or: [TestInterfaceFiltersInput!]
+  not: TestInterfaceFiltersInput
+}
+
+input TestInterfaceObjectFilterInput {
+  testField: StringValueFilterInput
+}
+
+input TestInterfaceSortingInput {
+  testField: SortOrder
 }
 
 type Mutation {

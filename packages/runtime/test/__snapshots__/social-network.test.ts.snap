@@ -1,0 +1,2471 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`social network add followers 1`] = `
+{
+  "data": {
+    "followsCount": 10,
+    "user1": {
+      "followers": 3,
+      "following": 3,
+    },
+    "user2": {
+      "followers": 2,
+      "following": 2,
+    },
+    "user3": {
+      "followers": 2,
+      "following": 1,
+    },
+    "user4": {
+      "followers": 3,
+      "following": 1,
+    },
+    "user5": {
+      "followers": 0,
+      "following": 3,
+    },
+  },
+}
+`;
+
+exports[`social network create posts and tags 1`] = `
+{
+  "data": {
+    "tagIndex": {
+      "edges": [
+        {
+          "node": {
+            "name": "Ceramic",
+          },
+        },
+        {
+          "node": {
+            "name": "ComposeDB",
+          },
+        },
+        {
+          "node": {
+            "name": "Hello",
+          },
+        },
+        {
+          "node": {
+            "name": "Random",
+          },
+        },
+        {
+          "node": {
+            "name": "Ceramic",
+          },
+        },
+        {
+          "node": {
+            "name": "Hello",
+          },
+        },
+      ],
+    },
+    "textPostIndex": {
+      "edges": [
+        {
+          "node": {
+            "date": "2024-02-01T01:10:00Z",
+            "text": "Hello world",
+          },
+        },
+        {
+          "node": {
+            "date": "2024-02-03T09:30:00Z",
+            "text": "ComposeDB on Ceramic",
+          },
+        },
+        {
+          "node": {
+            "date": "2024-02-07T06:15:00Z",
+            "text": "Testing ComposeDB",
+          },
+        },
+        {
+          "node": {
+            "date": "2024-02-10T01:10:00Z",
+            "text": "Hello there",
+          },
+        },
+        {
+          "node": {
+            "date": "2024-02-13T09:30:00Z",
+            "text": "Hello again",
+          },
+        },
+        {
+          "node": {
+            "date": "2024-02-16T06:15:00Z",
+            "text": "Whats up?",
+          },
+        },
+        {
+          "node": {
+            "date": "2024-02-02T01:10:00Z",
+            "text": "Hello",
+          },
+        },
+        {
+          "node": {
+            "date": "2024-02-05T09:30:00Z",
+            "text": "Ceramic rocks",
+          },
+        },
+        {
+          "node": {
+            "date": "2024-02-10T06:15:00Z",
+            "text": "Ceramic is great",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`social network generates the GraphQL schema 1`] = `
+"type Query {
+  """Fetches objects given their IDs"""
+  nodes(
+    """The IDs of objects"""
+    ids: [ID!]!
+  ): [Node]!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  followsIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: FollowsFiltersInput
+    sorting: FollowsSortingInput
+  ): FollowsConnection
+  followsCount(filters: FollowsFiltersInput): Int!
+  likeIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): LikeConnection
+  likeCount: Int!
+  postIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostFiltersInput
+    sorting: PostSortingInput
+  ): PostConnection
+  postCount(filters: PostFiltersInput): Int!
+  postTagIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostTagFiltersInput
+    sorting: PostTagSortingInput
+  ): PostTagConnection
+  postTagCount(filters: PostTagFiltersInput): Int!
+  tagIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): TagConnection
+  tagCount: Int!
+  textPostIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): TextPostConnection
+  textPostCount: Int!
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+type CeramicAccount implements Node {
+  """Globally unique identifier of the account (DID string)"""
+  id: ID!
+
+  """
+  Whether the Ceramic instance is currently authenticated with this account or not
+  """
+  isViewer: Boolean!
+  followingOfFollows(
+    """Account defining the relation"""
+    account: ID!
+  ): Follows
+  followingOfFollowsList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: FollowsFiltersInput
+    sorting: FollowsSortingInput
+  ): FollowsConnection
+  followingOfFollowsListCount(filters: FollowsFiltersInput): Int!
+  follows(with: WithFollowsInput!): Follows
+  followsList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: FollowsFiltersInput
+    sorting: FollowsSortingInput
+  ): FollowsConnection
+  followsListCount(filters: FollowsFiltersInput): Int!
+  like(with: WithLikeInput!): Like
+  likeList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): LikeConnection
+  likeListCount: Int!
+  postList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostFiltersInput
+    sorting: PostSortingInput
+  ): PostConnection
+  postListCount(filters: PostFiltersInput): Int!
+  postTag(with: WithPostTagInput!): PostTag
+  postTagList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostTagFiltersInput
+    sorting: PostTagSortingInput
+  ): PostTagConnection
+  postTagListCount(filters: PostTagFiltersInput): Int!
+  tag(with: WithTagInput!): Tag
+  tagList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): TagConnection
+  tagListCount: Int!
+  textPostList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): TextPostConnection
+  textPostListCount: Int!
+}
+
+type Follows implements Node {
+  id: ID!
+  date: Date
+  following: CeramicAccount!
+
+  """Account controlling the document"""
+  follower: CeramicAccount!
+}
+
+"""
+A date string, such as 2007-12-03, compliant with the \`full-date\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+"""A connection to a list of items."""
+type FollowsConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [FollowsEdge]
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""An edge in a connection."""
+type FollowsEdge {
+  """The item at the end of the edge"""
+  node: Follows
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input FollowsFiltersInput {
+  where: FollowsObjectFilterInput
+  and: [FollowsFiltersInput!]
+  or: [FollowsFiltersInput!]
+  not: FollowsFiltersInput
+}
+
+input FollowsObjectFilterInput {
+  date: StringValueFilterInput
+}
+
+input StringValueFilterInput {
+  isNull: Boolean
+  equalTo: String
+  notEqualTo: String
+  in: [String!]
+  notIn: [String!]
+  lessThan: String
+  lessThanOrEqualTo: String
+  greaterThan: String
+  greaterThanOrEqualTo: String
+}
+
+input FollowsSortingInput {
+  date: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+input WithFollowsInput {
+  following: DID!
+}
+
+"""
+A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
+"""
+scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
+
+type Like implements Node {
+  id: ID!
+  date: Date
+  postID: CeramicStreamID!
+  post: Node
+}
+
+"""A Ceramic Stream ID"""
+scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
+
+input WithLikeInput {
+  postID: CeramicStreamID!
+}
+
+"""A connection to a list of items."""
+type LikeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [LikeEdge]
+}
+
+"""An edge in a connection."""
+type LikeEdge {
+  """The item at the end of the edge"""
+  node: Like
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+"""A connection to a list of items."""
+type PostConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PostEdge]
+}
+
+"""An edge in a connection."""
+type PostEdge {
+  """The item at the end of the edge"""
+  node: Post
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+interface Post implements Node {
+  id: ID!
+  date: DateTime!
+  threadID: CeramicStreamID
+  like(
+    """Account defining the relation"""
+    account: ID!
+  ): Like
+  postTag(
+    """Account defining the relation"""
+    account: ID!
+    with: WithPostIDPostTagInput!
+  ): PostTag
+  postTags(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: PostTagFiltersInput
+    sorting: PostTagSortingInput
+  ): PostTagConnection!
+  likesCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+  ): Int!
+  threadPost: Node
+  postTagsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: PostTagFiltersInput
+  ): Int!
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the \`date-time\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+type PostTag implements Node {
+  id: ID!
+  date: Date
+  tagID: CeramicStreamID!
+  postID: CeramicStreamID!
+  tag: Node
+  post: Node
+}
+
+input WithPostIDPostTagInput {
+  tagID: CeramicStreamID!
+}
+
+"""A connection to a list of items."""
+type PostTagConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PostTagEdge]
+}
+
+"""An edge in a connection."""
+type PostTagEdge {
+  """The item at the end of the edge"""
+  node: PostTag
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input PostTagFiltersInput {
+  where: PostTagObjectFilterInput
+  and: [PostTagFiltersInput!]
+  or: [PostTagFiltersInput!]
+  not: PostTagFiltersInput
+}
+
+input PostTagObjectFilterInput {
+  tagID: StringValueFilterInput
+  postID: StringValueFilterInput
+}
+
+input PostTagSortingInput {
+  tagID: SortOrder
+  postID: SortOrder
+}
+
+input PostFiltersInput {
+  where: PostObjectFilterInput
+  and: [PostFiltersInput!]
+  or: [PostFiltersInput!]
+  not: PostFiltersInput
+}
+
+input PostObjectFilterInput {
+  date: StringValueFilterInput
+  threadID: StringValueFilterInput
+}
+
+input PostSortingInput {
+  date: SortOrder
+  threadID: SortOrder
+}
+
+input WithPostTagInput {
+  postID: CeramicStreamID!
+  tagID: CeramicStreamID!
+}
+
+type Tag implements Node {
+  id: ID!
+  name: String!
+  description: String
+  postTag(
+    """Account defining the relation"""
+    account: ID!
+    with: WithTagIDPostTagInput!
+  ): PostTag
+  postTags(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: PostTagFiltersInput
+    sorting: PostTagSortingInput
+  ): PostTagConnection!
+  postTagsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: PostTagFiltersInput
+  ): Int!
+}
+
+input WithTagIDPostTagInput {
+  postID: CeramicStreamID!
+}
+
+input WithTagInput {
+  name: String!
+}
+
+"""A connection to a list of items."""
+type TagConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TagEdge]
+}
+
+"""An edge in a connection."""
+type TagEdge {
+  """The item at the end of the edge"""
+  node: Tag
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+"""A connection to a list of items."""
+type TextPostConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TextPostEdge]
+}
+
+"""An edge in a connection."""
+type TextPostEdge {
+  """The item at the end of the edge"""
+  node: TextPost
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type TextPost implements Node & Post {
+  id: ID!
+  date: DateTime!
+  text: String!
+  threadID: CeramicStreamID
+  like(
+    """Account defining the relation"""
+    account: ID!
+  ): Like
+  postTag(
+    """Account defining the relation"""
+    account: ID!
+    with: WithPostIDPostTagInput!
+  ): PostTag
+  postTags(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: PostTagFiltersInput
+    sorting: PostTagSortingInput
+  ): PostTagConnection!
+  likesCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+  ): Int!
+  threadPost: Node
+  postTagsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: PostTagFiltersInput
+  ): Int!
+}
+
+type Mutation {
+  setFollows(input: SetFollowsInput!): SetFollowsPayload
+  updateFollows(input: UpdateFollowsInput!): UpdateFollowsPayload
+  enableIndexingFollows(input: EnableIndexingFollowsInput!): EnableIndexingFollowsPayload
+  setLike(input: SetLikeInput!): SetLikePayload
+  updateLike(input: UpdateLikeInput!): UpdateLikePayload
+  enableIndexingLike(input: EnableIndexingLikeInput!): EnableIndexingLikePayload
+  setPostTag(input: SetPostTagInput!): SetPostTagPayload
+  updatePostTag(input: UpdatePostTagInput!): UpdatePostTagPayload
+  enableIndexingPostTag(input: EnableIndexingPostTagInput!): EnableIndexingPostTagPayload
+  setTag(input: SetTagInput!): SetTagPayload
+  updateTag(input: UpdateTagInput!): UpdateTagPayload
+  enableIndexingTag(input: EnableIndexingTagInput!): EnableIndexingTagPayload
+  createTextPost(input: CreateTextPostInput!): CreateTextPostPayload
+  updateTextPost(input: UpdateTextPostInput!): UpdateTextPostPayload
+  enableIndexingTextPost(input: EnableIndexingTextPostInput!): EnableIndexingTextPostPayload
+}
+
+type SetFollowsPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Follows!
+  clientMutationId: String
+}
+
+input SetFollowsInput {
+  content: FollowsInput!
+  options: SetOptionsInput
+  clientMutationId: String
+}
+
+input FollowsInput {
+  date: Date
+  following: DID!
+}
+
+input SetOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
+  """
+  Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds
+  """
+  syncTimeout: Int
+}
+
+type UpdateFollowsPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Follows!
+  clientMutationId: String
+}
+
+input UpdateFollowsInput {
+  id: ID!
+  options: UpdateOptionsInput
+  content: PartialFollowsInput!
+  clientMutationId: String
+}
+
+input UpdateOptionsInput {
+  """
+  Fully replace the document contents instead of performing a shallow merge
+  """
+  replace: Boolean = false
+
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
+  """Only perform mutation if the document matches the provided version"""
+  version: CeramicCommitID
+}
+
+"""A Ceramic Commit ID"""
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
+
+input PartialFollowsInput {
+  date: Date
+}
+
+type EnableIndexingFollowsPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Follows
+  clientMutationId: String
+}
+
+input EnableIndexingFollowsInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
+type SetLikePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Like!
+  clientMutationId: String
+}
+
+input SetLikeInput {
+  content: LikeInput!
+  options: SetOptionsInput
+  clientMutationId: String
+}
+
+input LikeInput {
+  date: Date
+  postID: CeramicStreamID!
+}
+
+type UpdateLikePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Like!
+  clientMutationId: String
+}
+
+input UpdateLikeInput {
+  id: ID!
+  options: UpdateOptionsInput
+  content: PartialLikeInput!
+  clientMutationId: String
+}
+
+input PartialLikeInput {
+  date: Date
+}
+
+type EnableIndexingLikePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Like
+  clientMutationId: String
+}
+
+input EnableIndexingLikeInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
+type SetPostTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: PostTag!
+  clientMutationId: String
+}
+
+input SetPostTagInput {
+  content: PostTagInput!
+  options: SetOptionsInput
+  clientMutationId: String
+}
+
+input PostTagInput {
+  date: Date
+  tagID: CeramicStreamID!
+  postID: CeramicStreamID!
+}
+
+type UpdatePostTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: PostTag!
+  clientMutationId: String
+}
+
+input UpdatePostTagInput {
+  id: ID!
+  options: UpdateOptionsInput
+  content: PartialPostTagInput!
+  clientMutationId: String
+}
+
+input PartialPostTagInput {
+  date: Date
+}
+
+type EnableIndexingPostTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: PostTag
+  clientMutationId: String
+}
+
+input EnableIndexingPostTagInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
+type SetTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Tag!
+  clientMutationId: String
+}
+
+input SetTagInput {
+  content: TagInput!
+  options: SetOptionsInput
+  clientMutationId: String
+}
+
+input TagInput {
+  name: String!
+  description: String
+}
+
+type UpdateTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Tag!
+  clientMutationId: String
+}
+
+input UpdateTagInput {
+  id: ID!
+  options: UpdateOptionsInput
+  content: PartialTagInput!
+  clientMutationId: String
+}
+
+input PartialTagInput {
+  description: String
+}
+
+type EnableIndexingTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Tag
+  clientMutationId: String
+}
+
+input EnableIndexingTagInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
+type CreateTextPostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: TextPost!
+  clientMutationId: String
+}
+
+input CreateTextPostInput {
+  content: TextPostInput!
+  options: CreateOptionsInput
+  clientMutationId: String
+}
+
+input TextPostInput {
+  date: DateTime!
+  text: String!
+  threadID: CeramicStreamID
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+}
+
+type UpdateTextPostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: TextPost!
+  clientMutationId: String
+}
+
+input UpdateTextPostInput {
+  id: ID!
+  options: UpdateOptionsInput
+  content: PartialTextPostInput!
+  clientMutationId: String
+}
+
+input PartialTextPostInput {
+  date: DateTime
+  text: String
+  threadID: CeramicStreamID
+}
+
+type EnableIndexingTextPostPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: TextPost
+  clientMutationId: String
+}
+
+input EnableIndexingTextPostInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}"
+`;
+
+exports[`social network tag and like posts 1`] = `
+{
+  "data": {
+    "likeCount": 6,
+    "postTagCount": 9,
+    "tagIndex": {
+      "edges": [
+        {
+          "node": {
+            "name": "Ceramic",
+            "postTags": {
+              "edges": [
+                {
+                  "node": {
+                    "post": {
+                      "text": "Hello world",
+                    },
+                  },
+                },
+              ],
+            },
+            "postTagsCount": 1,
+            "user1Post1": {
+              "post": {
+                "text": "Hello world",
+              },
+            },
+            "user1Post2": {
+              "post": null,
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": null,
+            },
+            "user2Post3": {
+              "post": null,
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": null,
+            },
+          },
+        },
+        {
+          "node": {
+            "name": "ComposeDB",
+            "postTags": {
+              "edges": [
+                {
+                  "node": {
+                    "post": {
+                      "text": "Hello world",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "post": {
+                      "text": "ComposeDB on Ceramic",
+                    },
+                  },
+                },
+              ],
+            },
+            "postTagsCount": 2,
+            "user1Post1": {
+              "post": {
+                "text": "Hello world",
+              },
+            },
+            "user1Post2": {
+              "post": {
+                "text": "ComposeDB on Ceramic",
+              },
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": null,
+            },
+            "user2Post3": {
+              "post": null,
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": null,
+            },
+          },
+        },
+        {
+          "node": {
+            "name": "Hello",
+            "postTags": {
+              "edges": [
+                {
+                  "node": {
+                    "post": {
+                      "text": "ComposeDB on Ceramic",
+                    },
+                  },
+                },
+              ],
+            },
+            "postTagsCount": 1,
+            "user1Post1": {
+              "post": null,
+            },
+            "user1Post2": {
+              "post": null,
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": {
+                "text": "ComposeDB on Ceramic",
+              },
+            },
+            "user2Post3": {
+              "post": null,
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": null,
+            },
+          },
+        },
+        {
+          "node": {
+            "name": "Random",
+            "postTags": {
+              "edges": [
+                {
+                  "node": {
+                    "post": {
+                      "text": "ComposeDB on Ceramic",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "post": {
+                      "text": "Testing ComposeDB",
+                    },
+                  },
+                },
+              ],
+            },
+            "postTagsCount": 2,
+            "user1Post1": {
+              "post": null,
+            },
+            "user1Post2": {
+              "post": null,
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": {
+                "text": "ComposeDB on Ceramic",
+              },
+            },
+            "user2Post3": {
+              "post": {
+                "text": "Testing ComposeDB",
+              },
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": null,
+            },
+          },
+        },
+        {
+          "node": {
+            "name": "Ceramic",
+            "postTags": {
+              "edges": [
+                {
+                  "node": {
+                    "post": {
+                      "text": "Testing ComposeDB",
+                    },
+                  },
+                },
+              ],
+            },
+            "postTagsCount": 1,
+            "user1Post1": {
+              "post": null,
+            },
+            "user1Post2": {
+              "post": null,
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": null,
+            },
+            "user2Post3": {
+              "post": null,
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": {
+                "text": "Testing ComposeDB",
+              },
+            },
+          },
+        },
+        {
+          "node": {
+            "name": "Hello",
+            "postTags": {
+              "edges": [
+                {
+                  "node": {
+                    "post": {
+                      "text": "Testing ComposeDB",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "post": {
+                      "text": "Hello there",
+                    },
+                  },
+                },
+              ],
+            },
+            "postTagsCount": 2,
+            "user1Post1": {
+              "post": null,
+            },
+            "user1Post2": {
+              "post": null,
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": null,
+            },
+            "user2Post3": {
+              "post": null,
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": {
+                "text": "Testing ComposeDB",
+              },
+            },
+          },
+        },
+      ],
+    },
+    "textPostIndex": {
+      "edges": [
+        {
+          "node": {
+            "allTags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Ceramic",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "ComposeDB",
+                    },
+                  },
+                },
+              ],
+            },
+            "likesCount": 1,
+            "postTagsCount": 2,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Ceramic",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "ComposeDB",
+                    },
+                  },
+                },
+              ],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "ComposeDB",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Hello",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Random",
+                    },
+                  },
+                },
+              ],
+            },
+            "likesCount": 2,
+            "postTagsCount": 3,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "ComposeDB",
+                    },
+                  },
+                },
+              ],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Hello",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Random",
+                    },
+                  },
+                },
+              ],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Random",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Ceramic",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Hello",
+                    },
+                  },
+                },
+              ],
+            },
+            "likesCount": 2,
+            "postTagsCount": 3,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Random",
+                    },
+                  },
+                },
+              ],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Ceramic",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Hello",
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Hello",
+                    },
+                  },
+                },
+              ],
+            },
+            "likesCount": 1,
+            "postTagsCount": 1,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Hello",
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [],
+            },
+            "likesCount": 0,
+            "postTagsCount": 0,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [],
+            },
+            "likesCount": 0,
+            "postTagsCount": 0,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [],
+            },
+            "likesCount": 0,
+            "postTagsCount": 0,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [],
+            },
+            "likesCount": 0,
+            "postTagsCount": 0,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [],
+            },
+            "likesCount": 0,
+            "postTagsCount": 0,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`social network untag and unlike posts 1`] = `
+{
+  "data": {
+    "likeCount": 4,
+    "postTagCount": 7,
+    "tagIndex": {
+      "edges": [
+        {
+          "node": {
+            "name": "Ceramic",
+            "postTags": {
+              "edges": [],
+            },
+            "postTagsCount": 0,
+            "user1Post1": null,
+            "user1Post2": {
+              "post": null,
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": null,
+            },
+            "user2Post3": {
+              "post": null,
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": null,
+            },
+          },
+        },
+        {
+          "node": {
+            "name": "ComposeDB",
+            "postTags": {
+              "edges": [
+                {
+                  "node": {
+                    "post": {
+                      "text": "Hello world",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "post": {
+                      "text": "ComposeDB on Ceramic",
+                    },
+                  },
+                },
+              ],
+            },
+            "postTagsCount": 2,
+            "user1Post1": {
+              "post": {
+                "text": "Hello world",
+              },
+            },
+            "user1Post2": {
+              "post": {
+                "text": "ComposeDB on Ceramic",
+              },
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": null,
+            },
+            "user2Post3": {
+              "post": null,
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": null,
+            },
+          },
+        },
+        {
+          "node": {
+            "name": "Hello",
+            "postTags": {
+              "edges": [],
+            },
+            "postTagsCount": 0,
+            "user1Post1": {
+              "post": null,
+            },
+            "user1Post2": {
+              "post": null,
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": null,
+            "user2Post3": {
+              "post": null,
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": null,
+            },
+          },
+        },
+        {
+          "node": {
+            "name": "Random",
+            "postTags": {
+              "edges": [
+                {
+                  "node": {
+                    "post": {
+                      "text": "ComposeDB on Ceramic",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "post": {
+                      "text": "Testing ComposeDB",
+                    },
+                  },
+                },
+              ],
+            },
+            "postTagsCount": 2,
+            "user1Post1": {
+              "post": null,
+            },
+            "user1Post2": {
+              "post": null,
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": {
+                "text": "ComposeDB on Ceramic",
+              },
+            },
+            "user2Post3": {
+              "post": {
+                "text": "Testing ComposeDB",
+              },
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": null,
+            },
+          },
+        },
+        {
+          "node": {
+            "name": "Ceramic",
+            "postTags": {
+              "edges": [
+                {
+                  "node": {
+                    "post": {
+                      "text": "Testing ComposeDB",
+                    },
+                  },
+                },
+              ],
+            },
+            "postTagsCount": 1,
+            "user1Post1": {
+              "post": null,
+            },
+            "user1Post2": {
+              "post": null,
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": null,
+            },
+            "user2Post3": {
+              "post": null,
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": {
+                "text": "Testing ComposeDB",
+              },
+            },
+          },
+        },
+        {
+          "node": {
+            "name": "Hello",
+            "postTags": {
+              "edges": [
+                {
+                  "node": {
+                    "post": {
+                      "text": "Testing ComposeDB",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "post": {
+                      "text": "Hello there",
+                    },
+                  },
+                },
+              ],
+            },
+            "postTagsCount": 2,
+            "user1Post1": {
+              "post": null,
+            },
+            "user1Post2": {
+              "post": null,
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": null,
+            },
+            "user2Post3": {
+              "post": null,
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": {
+                "text": "Testing ComposeDB",
+              },
+            },
+          },
+        },
+      ],
+    },
+    "textPostIndex": {
+      "edges": [
+        {
+          "node": {
+            "allTags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "ComposeDB",
+                    },
+                  },
+                },
+              ],
+            },
+            "likesCount": 0,
+            "postTagsCount": 1,
+            "user1Like": null,
+            "user1Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "ComposeDB",
+                    },
+                  },
+                },
+              ],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "ComposeDB",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Random",
+                    },
+                  },
+                },
+              ],
+            },
+            "likesCount": 1,
+            "postTagsCount": 2,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "ComposeDB",
+                    },
+                  },
+                },
+              ],
+            },
+            "user2Like": null,
+            "user2Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Random",
+                    },
+                  },
+                },
+              ],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Random",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Ceramic",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Hello",
+                    },
+                  },
+                },
+              ],
+            },
+            "likesCount": 2,
+            "postTagsCount": 3,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Random",
+                    },
+                  },
+                },
+              ],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Ceramic",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Hello",
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Hello",
+                    },
+                  },
+                },
+              ],
+            },
+            "likesCount": 1,
+            "postTagsCount": 1,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Hello",
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [],
+            },
+            "likesCount": 0,
+            "postTagsCount": 0,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [],
+            },
+            "likesCount": 0,
+            "postTagsCount": 0,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [],
+            },
+            "likesCount": 0,
+            "postTagsCount": 0,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [],
+            },
+            "likesCount": 0,
+            "postTagsCount": 0,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [],
+            },
+            "likesCount": 0,
+            "postTagsCount": 0,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+      ],
+    },
+  },
+}
+`;

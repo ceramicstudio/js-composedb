@@ -229,102 +229,6 @@ exports[`schema media interfaces 1`] = `
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  mediaMetadataIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: MediaMetadataFiltersInput
-    sorting: MediaMetadataSortingInput
-  ): MediaMetadataConnection
-  mediaMetadataCount(filters: MediaMetadataFiltersInput): Int!
-  collectionItemIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: CollectionItemFiltersInput
-    sorting: CollectionItemSortingInput
-  ): CollectionItemConnection
-  collectionItemCount(filters: CollectionItemFiltersInput): Int!
-  collectionIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: CollectionFiltersInput
-    sorting: CollectionSortingInput
-  ): CollectionConnection
-  collectionCount(filters: CollectionFiltersInput): Int!
-  visualMediaIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: VisualMediaFiltersInput
-    sorting: VisualMediaSortingInput
-  ): VisualMediaConnection
-  visualMediaCount(filters: VisualMediaFiltersInput): Int!
-  timeMediaIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: TimeMediaFiltersInput
-    sorting: TimeMediaSortingInput
-  ): TimeMediaConnection
-  timeMediaCount(filters: TimeMediaFiltersInput): Int!
-  imageMediaIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: ImageMediaFiltersInput
-    sorting: ImageMediaSortingInput
-  ): ImageMediaConnection
-  imageMediaCount(filters: ImageMediaFiltersInput): Int!
   audioMediaIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -341,7 +245,7 @@ exports[`schema media interfaces 1`] = `
     sorting: AudioMediaSortingInput
   ): AudioMediaConnection
   audioMediaCount(filters: AudioMediaFiltersInput): Int!
-  videoMediaIndex(
+  collectionIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
 
@@ -353,11 +257,11 @@ exports[`schema media interfaces 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
-    filters: VideoMediaFiltersInput
-    sorting: VideoMediaSortingInput
-  ): VideoMediaConnection
-  videoMediaCount(filters: VideoMediaFiltersInput): Int!
-  myImageIndex(
+    filters: CollectionFiltersInput
+    sorting: CollectionSortingInput
+  ): CollectionConnection
+  collectionCount(filters: CollectionFiltersInput): Int!
+  collectionItemIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
 
@@ -369,10 +273,42 @@ exports[`schema media interfaces 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
-    filters: MyImageFiltersInput
-    sorting: MyImageSortingInput
-  ): MyImageConnection
-  myImageCount(filters: MyImageFiltersInput): Int!
+    filters: CollectionItemFiltersInput
+    sorting: CollectionItemSortingInput
+  ): CollectionItemConnection
+  collectionItemCount(filters: CollectionItemFiltersInput): Int!
+  imageMediaIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: ImageMediaFiltersInput
+    sorting: ImageMediaSortingInput
+  ): ImageMediaConnection
+  imageMediaCount(filters: ImageMediaFiltersInput): Int!
+  mediaMetadataIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: MediaMetadataFiltersInput
+    sorting: MediaMetadataSortingInput
+  ): MediaMetadataConnection
+  mediaMetadataCount(filters: MediaMetadataFiltersInput): Int!
   myAudioIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -389,7 +325,7 @@ exports[`schema media interfaces 1`] = `
     sorting: MyAudioSortingInput
   ): MyAudioConnection
   myAudioCount(filters: MyAudioFiltersInput): Int!
-  myVideoIndex(
+  myImageIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
 
@@ -401,26 +337,10 @@ exports[`schema media interfaces 1`] = `
 
     """Returns the last n items from the list."""
     last: Int
-    filters: MyVideoFiltersInput
-    sorting: MyVideoSortingInput
-  ): MyVideoConnection
-  myVideoCount(filters: MyVideoFiltersInput): Int!
-  myMediaCollectionItemIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: MyMediaCollectionItemFiltersInput
-    sorting: MyMediaCollectionItemSortingInput
-  ): MyMediaCollectionItemConnection
-  myMediaCollectionItemCount(filters: MyMediaCollectionItemFiltersInput): Int!
+    filters: MyImageFiltersInput
+    sorting: MyImageSortingInput
+  ): MyImageConnection
+  myImageCount(filters: MyImageFiltersInput): Int!
   myMediaCollectionIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -437,6 +357,86 @@ exports[`schema media interfaces 1`] = `
     sorting: MyMediaCollectionSortingInput
   ): MyMediaCollectionConnection
   myMediaCollectionCount(filters: MyMediaCollectionFiltersInput): Int!
+  myMediaCollectionItemIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: MyMediaCollectionItemFiltersInput
+    sorting: MyMediaCollectionItemSortingInput
+  ): MyMediaCollectionItemConnection
+  myMediaCollectionItemCount(filters: MyMediaCollectionItemFiltersInput): Int!
+  myVideoIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: MyVideoFiltersInput
+    sorting: MyVideoSortingInput
+  ): MyVideoConnection
+  myVideoCount(filters: MyVideoFiltersInput): Int!
+  timeMediaIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: TimeMediaFiltersInput
+    sorting: TimeMediaSortingInput
+  ): TimeMediaConnection
+  timeMediaCount(filters: TimeMediaFiltersInput): Int!
+  videoMediaIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: VideoMediaFiltersInput
+    sorting: VideoMediaSortingInput
+  ): VideoMediaConnection
+  videoMediaCount(filters: VideoMediaFiltersInput): Int!
+  visualMediaIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: VisualMediaFiltersInput
+    sorting: VisualMediaSortingInput
+  ): VisualMediaConnection
+  visualMediaCount(filters: VisualMediaFiltersInput): Int!
 }
 
 """An object with an ID"""
@@ -453,7 +453,7 @@ type CeramicAccount implements Node {
   Whether the Ceramic instance is currently authenticated with this account or not
   """
   isViewer: Boolean!
-  mediaMetadataList(
+  audioMediaList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
 
@@ -465,10 +465,10 @@ type CeramicAccount implements Node {
 
     """Returns the last n items from the list."""
     last: Int
-    filters: MediaMetadataFiltersInput
-    sorting: MediaMetadataSortingInput
-  ): MediaMetadataConnection
-  mediaMetadataListCount(filters: MediaMetadataFiltersInput): Int!
+    filters: AudioMediaFiltersInput
+    sorting: AudioMediaSortingInput
+  ): AudioMediaConnection
+  audioMediaListCount(filters: AudioMediaFiltersInput): Int!
   collectionItemList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -501,38 +501,6 @@ type CeramicAccount implements Node {
     sorting: CollectionSortingInput
   ): CollectionConnection
   collectionListCount(filters: CollectionFiltersInput): Int!
-  visualMediaList(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: VisualMediaFiltersInput
-    sorting: VisualMediaSortingInput
-  ): VisualMediaConnection
-  visualMediaListCount(filters: VisualMediaFiltersInput): Int!
-  timeMediaList(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: TimeMediaFiltersInput
-    sorting: TimeMediaSortingInput
-  ): TimeMediaConnection
-  timeMediaListCount(filters: TimeMediaFiltersInput): Int!
   imageMediaList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -549,7 +517,7 @@ type CeramicAccount implements Node {
     sorting: ImageMediaSortingInput
   ): ImageMediaConnection
   imageMediaListCount(filters: ImageMediaFiltersInput): Int!
-  audioMediaList(
+  mediaMetadataList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
 
@@ -561,42 +529,10 @@ type CeramicAccount implements Node {
 
     """Returns the last n items from the list."""
     last: Int
-    filters: AudioMediaFiltersInput
-    sorting: AudioMediaSortingInput
-  ): AudioMediaConnection
-  audioMediaListCount(filters: AudioMediaFiltersInput): Int!
-  videoMediaList(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: VideoMediaFiltersInput
-    sorting: VideoMediaSortingInput
-  ): VideoMediaConnection
-  videoMediaListCount(filters: VideoMediaFiltersInput): Int!
-  myImageList(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: MyImageFiltersInput
-    sorting: MyImageSortingInput
-  ): MyImageConnection
-  myImageListCount(filters: MyImageFiltersInput): Int!
+    filters: MediaMetadataFiltersInput
+    sorting: MediaMetadataSortingInput
+  ): MediaMetadataConnection
+  mediaMetadataListCount(filters: MediaMetadataFiltersInput): Int!
   myAudioList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -613,7 +549,7 @@ type CeramicAccount implements Node {
     sorting: MyAudioSortingInput
   ): MyAudioConnection
   myAudioListCount(filters: MyAudioFiltersInput): Int!
-  myVideoList(
+  myImageList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
 
@@ -625,10 +561,10 @@ type CeramicAccount implements Node {
 
     """Returns the last n items from the list."""
     last: Int
-    filters: MyVideoFiltersInput
-    sorting: MyVideoSortingInput
-  ): MyVideoConnection
-  myVideoListCount(filters: MyVideoFiltersInput): Int!
+    filters: MyImageFiltersInput
+    sorting: MyImageSortingInput
+  ): MyImageConnection
+  myImageListCount(filters: MyImageFiltersInput): Int!
   myMediaCollectionItemList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -661,15 +597,79 @@ type CeramicAccount implements Node {
     sorting: MyMediaCollectionSortingInput
   ): MyMediaCollectionConnection
   myMediaCollectionListCount(filters: MyMediaCollectionFiltersInput): Int!
+  myVideoList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: MyVideoFiltersInput
+    sorting: MyVideoSortingInput
+  ): MyVideoConnection
+  myVideoListCount(filters: MyVideoFiltersInput): Int!
+  timeMediaList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: TimeMediaFiltersInput
+    sorting: TimeMediaSortingInput
+  ): TimeMediaConnection
+  timeMediaListCount(filters: TimeMediaFiltersInput): Int!
+  videoMediaList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: VideoMediaFiltersInput
+    sorting: VideoMediaSortingInput
+  ): VideoMediaConnection
+  videoMediaListCount(filters: VideoMediaFiltersInput): Int!
+  visualMediaList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: VisualMediaFiltersInput
+    sorting: VisualMediaSortingInput
+  ): VisualMediaConnection
+  visualMediaListCount(filters: VisualMediaFiltersInput): Int!
 }
 
 """A connection to a list of items."""
-type MediaMetadataConnection {
+type AudioMediaConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [MediaMetadataEdge]
+  edges: [AudioMediaEdge]
 }
 
 """Information about pagination in a connection."""
@@ -688,15 +688,47 @@ type PageInfo {
 }
 
 """An edge in a connection."""
-type MediaMetadataEdge {
+type AudioMediaEdge {
   """The item at the end of the edge"""
-  node: MediaMetadata
+  node: AudioMedia
 
   """A cursor for use in pagination"""
   cursor: String!
 }
 
-interface MediaMetadata {
+interface AudioMedia implements Node & MediaMetadata & TimeMedia {
+  id: ID!
+  src: String!
+  size: Int
+  duration: Duration!
+  info: MediaInfo
+  collectionItems(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+    sorting: CollectionItemSortingInput
+  ): CollectionItemConnection!
+  collectionItemsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+  ): Int!
+}
+
+interface MediaMetadata implements Node {
+  id: ID!
   src: String!
   size: Int
   info: MediaInfo
@@ -748,7 +780,8 @@ type CollectionItemEdge {
   cursor: String!
 }
 
-interface CollectionItem {
+interface CollectionItem implements Node {
+  id: ID!
   collectionID: CeramicStreamID!
   itemID: CeramicStreamID!
   collection: Node
@@ -792,16 +825,25 @@ enum SortOrder {
   DESC
 }
 
-input MediaMetadataFiltersInput {
-  where: MediaMetadataObjectFilterInput
-  and: [MediaMetadataFiltersInput!]
-  or: [MediaMetadataFiltersInput!]
-  not: MediaMetadataFiltersInput
+interface TimeMedia implements Node {
+  id: ID!
+  duration: Duration!
 }
 
-input MediaMetadataObjectFilterInput {
+"\\n    A string representing a duration conforming to the ISO8601 standard,\\n    such as: P1W1DT13H23M34S\\n    P is the duration designator (for period) placed at the start of the duration representation.\\n    Y is the year designator that follows the value for the number of years.\\n    M is the month designator that follows the value for the number of months.\\n    W is the week designator that follows the value for the number of weeks.\\n    D is the day designator that follows the value for the number of days.\\n    T is the time designator that precedes the time components of the representation.\\n    H is the hour designator that follows the value for the number of hours.\\n    M is the minute designator that follows the value for the number of minutes.\\n    S is the second designator that follows the value for the number of seconds.\\n\\n    Note the time designator, T, that precedes the time value.\\n\\n    Matches moment.js, Luxon and DateFns implementations\\n    ,/. is valid for decimal places and +/- is a valid prefix\\n  "
+scalar Duration
+
+input AudioMediaFiltersInput {
+  where: AudioMediaObjectFilterInput
+  and: [AudioMediaFiltersInput!]
+  or: [AudioMediaFiltersInput!]
+  not: AudioMediaFiltersInput
+}
+
+input AudioMediaObjectFilterInput {
   src: StringValueFilterInput
   size: IntValueFilterInput
+  duration: StringValueFilterInput
 }
 
 input IntValueFilterInput {
@@ -816,9 +858,10 @@ input IntValueFilterInput {
   greaterThanOrEqualTo: Int
 }
 
-input MediaMetadataSortingInput {
+input AudioMediaSortingInput {
   src: SortOrder
   size: SortOrder
+  duration: SortOrder
 }
 
 """A connection to a list of items."""
@@ -839,7 +882,8 @@ type CollectionEdge {
   cursor: String!
 }
 
-interface Collection {
+interface Collection implements Node {
+  id: ID!
   name: String!
   description: String
   items(
@@ -885,86 +929,6 @@ input CollectionSortingInput {
 }
 
 """A connection to a list of items."""
-type VisualMediaConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [VisualMediaEdge]
-}
-
-"""An edge in a connection."""
-type VisualMediaEdge {
-  """The item at the end of the edge"""
-  node: VisualMedia
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-interface VisualMedia {
-  width: Int!
-  height: Int!
-}
-
-input VisualMediaFiltersInput {
-  where: VisualMediaObjectFilterInput
-  and: [VisualMediaFiltersInput!]
-  or: [VisualMediaFiltersInput!]
-  not: VisualMediaFiltersInput
-}
-
-input VisualMediaObjectFilterInput {
-  width: IntValueFilterInput
-  height: IntValueFilterInput
-}
-
-input VisualMediaSortingInput {
-  width: SortOrder
-  height: SortOrder
-}
-
-"""A connection to a list of items."""
-type TimeMediaConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [TimeMediaEdge]
-}
-
-"""An edge in a connection."""
-type TimeMediaEdge {
-  """The item at the end of the edge"""
-  node: TimeMedia
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-interface TimeMedia {
-  duration: Duration!
-}
-
-"\\n    A string representing a duration conforming to the ISO8601 standard,\\n    such as: P1W1DT13H23M34S\\n    P is the duration designator (for period) placed at the start of the duration representation.\\n    Y is the year designator that follows the value for the number of years.\\n    M is the month designator that follows the value for the number of months.\\n    W is the week designator that follows the value for the number of weeks.\\n    D is the day designator that follows the value for the number of days.\\n    T is the time designator that precedes the time components of the representation.\\n    H is the hour designator that follows the value for the number of hours.\\n    M is the minute designator that follows the value for the number of minutes.\\n    S is the second designator that follows the value for the number of seconds.\\n\\n    Note the time designator, T, that precedes the time value.\\n\\n    Matches moment.js, Luxon and DateFns implementations\\n    ,/. is valid for decimal places and +/- is a valid prefix\\n  "
-scalar Duration
-
-input TimeMediaFiltersInput {
-  where: TimeMediaObjectFilterInput
-  and: [TimeMediaFiltersInput!]
-  or: [TimeMediaFiltersInput!]
-  not: TimeMediaFiltersInput
-}
-
-input TimeMediaObjectFilterInput {
-  duration: StringValueFilterInput
-}
-
-input TimeMediaSortingInput {
-  duration: SortOrder
-}
-
-"""A connection to a list of items."""
 type ImageMediaConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
@@ -982,217 +946,7 @@ type ImageMediaEdge {
   cursor: String!
 }
 
-interface ImageMedia implements MediaMetadata & VisualMedia {
-  src: String!
-  size: Int
-  width: Int!
-  height: Int!
-  info: MediaInfo
-  collectionItems(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-
-    """Returns only documents created by the provided account"""
-    account: ID
-    filters: CollectionItemFiltersInput
-    sorting: CollectionItemSortingInput
-  ): CollectionItemConnection!
-  collectionItemsCount(
-    """Counts only documents created by the provided account"""
-    account: ID
-    filters: CollectionItemFiltersInput
-  ): Int!
-}
-
-input ImageMediaFiltersInput {
-  where: ImageMediaObjectFilterInput
-  and: [ImageMediaFiltersInput!]
-  or: [ImageMediaFiltersInput!]
-  not: ImageMediaFiltersInput
-}
-
-input ImageMediaObjectFilterInput {
-  src: StringValueFilterInput
-  size: IntValueFilterInput
-  width: IntValueFilterInput
-  height: IntValueFilterInput
-}
-
-input ImageMediaSortingInput {
-  src: SortOrder
-  size: SortOrder
-  width: SortOrder
-  height: SortOrder
-}
-
-"""A connection to a list of items."""
-type AudioMediaConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [AudioMediaEdge]
-}
-
-"""An edge in a connection."""
-type AudioMediaEdge {
-  """The item at the end of the edge"""
-  node: AudioMedia
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-interface AudioMedia implements MediaMetadata & TimeMedia {
-  src: String!
-  size: Int
-  duration: Duration!
-  info: MediaInfo
-  collectionItems(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-
-    """Returns only documents created by the provided account"""
-    account: ID
-    filters: CollectionItemFiltersInput
-    sorting: CollectionItemSortingInput
-  ): CollectionItemConnection!
-  collectionItemsCount(
-    """Counts only documents created by the provided account"""
-    account: ID
-    filters: CollectionItemFiltersInput
-  ): Int!
-}
-
-input AudioMediaFiltersInput {
-  where: AudioMediaObjectFilterInput
-  and: [AudioMediaFiltersInput!]
-  or: [AudioMediaFiltersInput!]
-  not: AudioMediaFiltersInput
-}
-
-input AudioMediaObjectFilterInput {
-  src: StringValueFilterInput
-  size: IntValueFilterInput
-  duration: StringValueFilterInput
-}
-
-input AudioMediaSortingInput {
-  src: SortOrder
-  size: SortOrder
-  duration: SortOrder
-}
-
-"""A connection to a list of items."""
-type VideoMediaConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [VideoMediaEdge]
-}
-
-"""An edge in a connection."""
-type VideoMediaEdge {
-  """The item at the end of the edge"""
-  node: VideoMedia
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-interface VideoMedia implements MediaMetadata & VisualMedia & TimeMedia {
-  src: String!
-  size: Int
-  duration: Duration!
-  width: Int!
-  height: Int!
-  info: MediaInfo
-  collectionItems(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-
-    """Returns only documents created by the provided account"""
-    account: ID
-    filters: CollectionItemFiltersInput
-    sorting: CollectionItemSortingInput
-  ): CollectionItemConnection!
-  collectionItemsCount(
-    """Counts only documents created by the provided account"""
-    account: ID
-    filters: CollectionItemFiltersInput
-  ): Int!
-}
-
-input VideoMediaFiltersInput {
-  where: VideoMediaObjectFilterInput
-  and: [VideoMediaFiltersInput!]
-  or: [VideoMediaFiltersInput!]
-  not: VideoMediaFiltersInput
-}
-
-input VideoMediaObjectFilterInput {
-  src: StringValueFilterInput
-  size: IntValueFilterInput
-  duration: StringValueFilterInput
-  width: IntValueFilterInput
-  height: IntValueFilterInput
-}
-
-input VideoMediaSortingInput {
-  src: SortOrder
-  size: SortOrder
-  duration: SortOrder
-  width: SortOrder
-  height: SortOrder
-}
-
-"""A connection to a list of items."""
-type MyImageConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [MyImageEdge]
-}
-
-"""An edge in a connection."""
-type MyImageEdge {
-  """The item at the end of the edge"""
-  node: MyImage
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-type MyImage implements Node & ImageMedia & MediaMetadata & VisualMedia {
+interface ImageMedia implements Node & MediaMetadata & VisualMedia {
   id: ID!
   src: String!
   size: Int
@@ -1224,23 +978,66 @@ type MyImage implements Node & ImageMedia & MediaMetadata & VisualMedia {
   ): Int!
 }
 
-input MyImageFiltersInput {
-  where: MyImageObjectFilterInput
-  and: [MyImageFiltersInput!]
-  or: [MyImageFiltersInput!]
-  not: MyImageFiltersInput
+interface VisualMedia implements Node {
+  id: ID!
+  width: Int!
+  height: Int!
 }
 
-input MyImageObjectFilterInput {
+input ImageMediaFiltersInput {
+  where: ImageMediaObjectFilterInput
+  and: [ImageMediaFiltersInput!]
+  or: [ImageMediaFiltersInput!]
+  not: ImageMediaFiltersInput
+}
+
+input ImageMediaObjectFilterInput {
   src: StringValueFilterInput
+  size: IntValueFilterInput
   width: IntValueFilterInput
   height: IntValueFilterInput
 }
 
-input MyImageSortingInput {
+input ImageMediaSortingInput {
   src: SortOrder
+  size: SortOrder
   width: SortOrder
   height: SortOrder
+}
+
+"""A connection to a list of items."""
+type MediaMetadataConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [MediaMetadataEdge]
+}
+
+"""An edge in a connection."""
+type MediaMetadataEdge {
+  """The item at the end of the edge"""
+  node: MediaMetadata
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input MediaMetadataFiltersInput {
+  where: MediaMetadataObjectFilterInput
+  and: [MediaMetadataFiltersInput!]
+  or: [MediaMetadataFiltersInput!]
+  not: MediaMetadataFiltersInput
+}
+
+input MediaMetadataObjectFilterInput {
+  src: StringValueFilterInput
+  size: IntValueFilterInput
+}
+
+input MediaMetadataSortingInput {
+  src: SortOrder
+  size: SortOrder
 }
 
 """A connection to a list of items."""
@@ -1308,28 +1105,27 @@ input MyAudioSortingInput {
 }
 
 """A connection to a list of items."""
-type MyVideoConnection {
+type MyImageConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [MyVideoEdge]
+  edges: [MyImageEdge]
 }
 
 """An edge in a connection."""
-type MyVideoEdge {
+type MyImageEdge {
   """The item at the end of the edge"""
-  node: MyVideo
+  node: MyImage
 
   """A cursor for use in pagination"""
   cursor: String!
 }
 
-type MyVideo implements Node & VideoMedia & MediaMetadata & VisualMedia & TimeMedia {
+type MyImage implements Node & ImageMedia & MediaMetadata & VisualMedia {
   id: ID!
   src: String!
   size: Int
-  duration: Duration!
   width: Int!
   height: Int!
   info: MediaInfo
@@ -1358,23 +1154,21 @@ type MyVideo implements Node & VideoMedia & MediaMetadata & VisualMedia & TimeMe
   ): Int!
 }
 
-input MyVideoFiltersInput {
-  where: MyVideoObjectFilterInput
-  and: [MyVideoFiltersInput!]
-  or: [MyVideoFiltersInput!]
-  not: MyVideoFiltersInput
+input MyImageFiltersInput {
+  where: MyImageObjectFilterInput
+  and: [MyImageFiltersInput!]
+  or: [MyImageFiltersInput!]
+  not: MyImageFiltersInput
 }
 
-input MyVideoObjectFilterInput {
+input MyImageObjectFilterInput {
   src: StringValueFilterInput
-  duration: StringValueFilterInput
   width: IntValueFilterInput
   height: IntValueFilterInput
 }
 
-input MyVideoSortingInput {
+input MyImageSortingInput {
   src: SortOrder
-  duration: SortOrder
   width: SortOrder
   height: SortOrder
 }
@@ -1489,22 +1283,334 @@ input MyMediaCollectionSortingInput {
   createdAt: SortOrder
 }
 
+"""A connection to a list of items."""
+type MyVideoConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [MyVideoEdge]
+}
+
+"""An edge in a connection."""
+type MyVideoEdge {
+  """The item at the end of the edge"""
+  node: MyVideo
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type MyVideo implements Node & VideoMedia & MediaMetadata & VisualMedia & TimeMedia {
+  id: ID!
+  src: String!
+  size: Int
+  duration: Duration!
+  width: Int!
+  height: Int!
+  info: MediaInfo
+  collectionItems(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+    sorting: CollectionItemSortingInput
+  ): CollectionItemConnection!
+  collectionItemsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+  ): Int!
+}
+
+interface VideoMedia implements Node & MediaMetadata & VisualMedia & TimeMedia {
+  id: ID!
+  src: String!
+  size: Int
+  duration: Duration!
+  width: Int!
+  height: Int!
+  info: MediaInfo
+  collectionItems(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+    sorting: CollectionItemSortingInput
+  ): CollectionItemConnection!
+  collectionItemsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: CollectionItemFiltersInput
+  ): Int!
+}
+
+input MyVideoFiltersInput {
+  where: MyVideoObjectFilterInput
+  and: [MyVideoFiltersInput!]
+  or: [MyVideoFiltersInput!]
+  not: MyVideoFiltersInput
+}
+
+input MyVideoObjectFilterInput {
+  src: StringValueFilterInput
+  duration: StringValueFilterInput
+  width: IntValueFilterInput
+  height: IntValueFilterInput
+}
+
+input MyVideoSortingInput {
+  src: SortOrder
+  duration: SortOrder
+  width: SortOrder
+  height: SortOrder
+}
+
+"""A connection to a list of items."""
+type TimeMediaConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TimeMediaEdge]
+}
+
+"""An edge in a connection."""
+type TimeMediaEdge {
+  """The item at the end of the edge"""
+  node: TimeMedia
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input TimeMediaFiltersInput {
+  where: TimeMediaObjectFilterInput
+  and: [TimeMediaFiltersInput!]
+  or: [TimeMediaFiltersInput!]
+  not: TimeMediaFiltersInput
+}
+
+input TimeMediaObjectFilterInput {
+  duration: StringValueFilterInput
+}
+
+input TimeMediaSortingInput {
+  duration: SortOrder
+}
+
+"""A connection to a list of items."""
+type VideoMediaConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [VideoMediaEdge]
+}
+
+"""An edge in a connection."""
+type VideoMediaEdge {
+  """The item at the end of the edge"""
+  node: VideoMedia
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input VideoMediaFiltersInput {
+  where: VideoMediaObjectFilterInput
+  and: [VideoMediaFiltersInput!]
+  or: [VideoMediaFiltersInput!]
+  not: VideoMediaFiltersInput
+}
+
+input VideoMediaObjectFilterInput {
+  src: StringValueFilterInput
+  size: IntValueFilterInput
+  duration: StringValueFilterInput
+  width: IntValueFilterInput
+  height: IntValueFilterInput
+}
+
+input VideoMediaSortingInput {
+  src: SortOrder
+  size: SortOrder
+  duration: SortOrder
+  width: SortOrder
+  height: SortOrder
+}
+
+"""A connection to a list of items."""
+type VisualMediaConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [VisualMediaEdge]
+}
+
+"""An edge in a connection."""
+type VisualMediaEdge {
+  """The item at the end of the edge"""
+  node: VisualMedia
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input VisualMediaFiltersInput {
+  where: VisualMediaObjectFilterInput
+  and: [VisualMediaFiltersInput!]
+  or: [VisualMediaFiltersInput!]
+  not: VisualMediaFiltersInput
+}
+
+input VisualMediaObjectFilterInput {
+  width: IntValueFilterInput
+  height: IntValueFilterInput
+}
+
+input VisualMediaSortingInput {
+  width: SortOrder
+  height: SortOrder
+}
+
 type Mutation {
-  createMyImage(input: CreateMyImageInput!): CreateMyImagePayload
-  updateMyImage(input: UpdateMyImageInput!): UpdateMyImagePayload
-  enableIndexingMyImage(input: EnableIndexingMyImageInput!): EnableIndexingMyImagePayload
   createMyAudio(input: CreateMyAudioInput!): CreateMyAudioPayload
   updateMyAudio(input: UpdateMyAudioInput!): UpdateMyAudioPayload
   enableIndexingMyAudio(input: EnableIndexingMyAudioInput!): EnableIndexingMyAudioPayload
-  createMyVideo(input: CreateMyVideoInput!): CreateMyVideoPayload
-  updateMyVideo(input: UpdateMyVideoInput!): UpdateMyVideoPayload
-  enableIndexingMyVideo(input: EnableIndexingMyVideoInput!): EnableIndexingMyVideoPayload
-  createMyMediaCollectionItem(input: CreateMyMediaCollectionItemInput!): CreateMyMediaCollectionItemPayload
-  updateMyMediaCollectionItem(input: UpdateMyMediaCollectionItemInput!): UpdateMyMediaCollectionItemPayload
-  enableIndexingMyMediaCollectionItem(input: EnableIndexingMyMediaCollectionItemInput!): EnableIndexingMyMediaCollectionItemPayload
+  createMyImage(input: CreateMyImageInput!): CreateMyImagePayload
+  updateMyImage(input: UpdateMyImageInput!): UpdateMyImagePayload
+  enableIndexingMyImage(input: EnableIndexingMyImageInput!): EnableIndexingMyImagePayload
   createMyMediaCollection(input: CreateMyMediaCollectionInput!): CreateMyMediaCollectionPayload
   updateMyMediaCollection(input: UpdateMyMediaCollectionInput!): UpdateMyMediaCollectionPayload
   enableIndexingMyMediaCollection(input: EnableIndexingMyMediaCollectionInput!): EnableIndexingMyMediaCollectionPayload
+  createMyMediaCollectionItem(input: CreateMyMediaCollectionItemInput!): CreateMyMediaCollectionItemPayload
+  updateMyMediaCollectionItem(input: UpdateMyMediaCollectionItemInput!): UpdateMyMediaCollectionItemPayload
+  enableIndexingMyMediaCollectionItem(input: EnableIndexingMyMediaCollectionItemInput!): EnableIndexingMyMediaCollectionItemPayload
+  createMyVideo(input: CreateMyVideoInput!): CreateMyVideoPayload
+  updateMyVideo(input: UpdateMyVideoInput!): UpdateMyVideoPayload
+  enableIndexingMyVideo(input: EnableIndexingMyVideoInput!): EnableIndexingMyVideoPayload
+}
+
+type CreateMyAudioPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyAudio!
+  clientMutationId: String
+}
+
+input CreateMyAudioInput {
+  content: MyAudioInput!
+  options: CreateOptionsInput
+  clientMutationId: String
+}
+
+input MyAudioInput {
+  src: String!
+  size: Int
+  duration: Duration!
+  info: MediaInfoInput
+}
+
+input MediaInfoInput {
+  title: String!
+  tag: String
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+}
+
+type UpdateMyAudioPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyAudio!
+  clientMutationId: String
+}
+
+input UpdateMyAudioInput {
+  id: ID!
+  options: UpdateOptionsInput
+  content: PartialMyAudioInput!
+  clientMutationId: String
+}
+
+input UpdateOptionsInput {
+  """
+  Fully replace the document contents instead of performing a shallow merge
+  """
+  replace: Boolean = false
+
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
+  """Only perform mutation if the document matches the provided version"""
+  version: CeramicCommitID
+}
+
+"""A Ceramic Commit ID"""
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
+
+input PartialMyAudioInput {
+  src: String
+  size: Int
+  duration: Duration
+  info: MediaInfoInput
+}
+
+type EnableIndexingMyAudioPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyAudio
+  clientMutationId: String
+}
+
+input EnableIndexingMyAudioInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }
 
 type CreateMyImagePayload {
@@ -1534,16 +1640,6 @@ input MyImageInput {
   info: MediaInfoInput
 }
 
-input MediaInfoInput {
-  title: String!
-  tag: String
-}
-
-input CreateOptionsInput {
-  """Inform indexers if they should index this document or not"""
-  shouldIndex: Boolean
-}
-
 type UpdateMyImagePayload {
   """Fetches an object given its ID"""
   node(
@@ -1563,22 +1659,6 @@ input UpdateMyImageInput {
   content: PartialMyImageInput!
   clientMutationId: String
 }
-
-input UpdateOptionsInput {
-  """
-  Fully replace the document contents instead of performing a shallow merge
-  """
-  replace: Boolean = false
-
-  """Inform indexers if they should index this document or not"""
-  shouldIndex: Boolean
-
-  """Only perform mutation if the document matches the provided version"""
-  version: CeramicCommitID
-}
-
-"""A Ceramic Commit ID"""
-scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
 
 input PartialMyImageInput {
   src: String
@@ -1607,7 +1687,7 @@ input EnableIndexingMyImageInput {
   clientMutationId: String
 }
 
-type CreateMyAudioPayload {
+type CreateMyMediaCollectionPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -1616,24 +1696,23 @@ type CreateMyAudioPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: MyAudio!
+  document: MyMediaCollection!
   clientMutationId: String
 }
 
-input CreateMyAudioInput {
-  content: MyAudioInput!
+input CreateMyMediaCollectionInput {
+  content: MyMediaCollectionInput!
   options: CreateOptionsInput
   clientMutationId: String
 }
 
-input MyAudioInput {
-  src: String!
-  size: Int
-  duration: Duration!
-  info: MediaInfoInput
+input MyMediaCollectionInput {
+  name: String!
+  description: String
+  createdAt: DateTime!
 }
 
-type UpdateMyAudioPayload {
+type UpdateMyMediaCollectionPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -1642,25 +1721,24 @@ type UpdateMyAudioPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: MyAudio!
+  document: MyMediaCollection!
   clientMutationId: String
 }
 
-input UpdateMyAudioInput {
+input UpdateMyMediaCollectionInput {
   id: ID!
   options: UpdateOptionsInput
-  content: PartialMyAudioInput!
+  content: PartialMyMediaCollectionInput!
   clientMutationId: String
 }
 
-input PartialMyAudioInput {
-  src: String
-  size: Int
-  duration: Duration
-  info: MediaInfoInput
+input PartialMyMediaCollectionInput {
+  name: String
+  description: String
+  createdAt: DateTime
 }
 
-type EnableIndexingMyAudioPayload {
+type EnableIndexingMyMediaCollectionPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -1669,11 +1747,81 @@ type EnableIndexingMyAudioPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: MyAudio
+  document: MyMediaCollection
   clientMutationId: String
 }
 
-input EnableIndexingMyAudioInput {
+input EnableIndexingMyMediaCollectionInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
+type CreateMyMediaCollectionItemPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyMediaCollectionItem!
+  clientMutationId: String
+}
+
+input CreateMyMediaCollectionItemInput {
+  content: MyMediaCollectionItemInput!
+  options: CreateOptionsInput
+  clientMutationId: String
+}
+
+input MyMediaCollectionItemInput {
+  collectionID: CeramicStreamID!
+  itemID: CeramicStreamID!
+  createdAt: DateTime!
+}
+
+type UpdateMyMediaCollectionItemPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyMediaCollectionItem!
+  clientMutationId: String
+}
+
+input UpdateMyMediaCollectionItemInput {
+  id: ID!
+  options: UpdateOptionsInput
+  content: PartialMyMediaCollectionItemInput!
+  clientMutationId: String
+}
+
+input PartialMyMediaCollectionItemInput {
+  collectionID: CeramicStreamID
+  itemID: CeramicStreamID
+  createdAt: DateTime
+}
+
+type EnableIndexingMyMediaCollectionItemPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: MyMediaCollectionItem
+  clientMutationId: String
+}
+
+input EnableIndexingMyMediaCollectionItemInput {
   id: ID!
   shouldIndex: Boolean!
   clientMutationId: String
@@ -1753,146 +1901,6 @@ input EnableIndexingMyVideoInput {
   id: ID!
   shouldIndex: Boolean!
   clientMutationId: String
-}
-
-type CreateMyMediaCollectionItemPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: MyMediaCollectionItem!
-  clientMutationId: String
-}
-
-input CreateMyMediaCollectionItemInput {
-  content: MyMediaCollectionItemInput!
-  options: CreateOptionsInput
-  clientMutationId: String
-}
-
-input MyMediaCollectionItemInput {
-  collectionID: CeramicStreamID!
-  itemID: CeramicStreamID!
-  createdAt: DateTime!
-}
-
-type UpdateMyMediaCollectionItemPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: MyMediaCollectionItem!
-  clientMutationId: String
-}
-
-input UpdateMyMediaCollectionItemInput {
-  id: ID!
-  options: UpdateOptionsInput
-  content: PartialMyMediaCollectionItemInput!
-  clientMutationId: String
-}
-
-input PartialMyMediaCollectionItemInput {
-  collectionID: CeramicStreamID
-  itemID: CeramicStreamID
-  createdAt: DateTime
-}
-
-type EnableIndexingMyMediaCollectionItemPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: MyMediaCollectionItem
-  clientMutationId: String
-}
-
-input EnableIndexingMyMediaCollectionItemInput {
-  id: ID!
-  shouldIndex: Boolean!
-  clientMutationId: String
-}
-
-type CreateMyMediaCollectionPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: MyMediaCollection!
-  clientMutationId: String
-}
-
-input CreateMyMediaCollectionInput {
-  content: MyMediaCollectionInput!
-  options: CreateOptionsInput
-  clientMutationId: String
-}
-
-input MyMediaCollectionInput {
-  name: String!
-  description: String
-  createdAt: DateTime!
-}
-
-type UpdateMyMediaCollectionPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: MyMediaCollection!
-  clientMutationId: String
-}
-
-input UpdateMyMediaCollectionInput {
-  id: ID!
-  options: UpdateOptionsInput
-  content: PartialMyMediaCollectionInput!
-  clientMutationId: String
-}
-
-input PartialMyMediaCollectionInput {
-  name: String
-  description: String
-  createdAt: DateTime
-}
-
-type EnableIndexingMyMediaCollectionPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: MyMediaCollection
-  clientMutationId: String
-}
-
-input EnableIndexingMyMediaCollectionInput {
-  id: ID!
-  shouldIndex: Boolean!
-  clientMutationId: String
 }"
 `;
 
@@ -1912,22 +1920,6 @@ exports[`schema note with enum support 1`] = `
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  noteBookIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: NoteBookFiltersInput
-    sorting: NoteBookSortingInput
-  ): NoteBookConnection
-  noteBookCount(filters: NoteBookFiltersInput): Int!
   noteIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -1944,6 +1936,22 @@ exports[`schema note with enum support 1`] = `
     sorting: NoteSortingInput
   ): NoteConnection
   noteCount(filters: NoteFiltersInput): Int!
+  noteBookIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: NoteBookFiltersInput
+    sorting: NoteBookSortingInput
+  ): NoteBookConnection
+  noteBookCount(filters: NoteBookFiltersInput): Int!
 }
 
 """An object with an ID"""
@@ -2154,96 +2162,12 @@ input NoteBookSortingInput {
 }
 
 type Mutation {
-  createNoteBook(input: CreateNoteBookInput!): CreateNoteBookPayload
-  updateNoteBook(input: UpdateNoteBookInput!): UpdateNoteBookPayload
-  enableIndexingNoteBook(input: EnableIndexingNoteBookInput!): EnableIndexingNoteBookPayload
   createNote(input: CreateNoteInput!): CreateNotePayload
   updateNote(input: UpdateNoteInput!): UpdateNotePayload
   enableIndexingNote(input: EnableIndexingNoteInput!): EnableIndexingNotePayload
-}
-
-type CreateNoteBookPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: NoteBook!
-  clientMutationId: String
-}
-
-input CreateNoteBookInput {
-  content: NoteBookInput!
-  options: CreateOptionsInput
-  clientMutationId: String
-}
-
-input NoteBookInput {
-  title: String!
-}
-
-input CreateOptionsInput {
-  """Inform indexers if they should index this document or not"""
-  shouldIndex: Boolean
-}
-
-type UpdateNoteBookPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: NoteBook!
-  clientMutationId: String
-}
-
-input UpdateNoteBookInput {
-  id: ID!
-  options: UpdateOptionsInput
-  content: PartialNoteBookInput!
-  clientMutationId: String
-}
-
-input UpdateOptionsInput {
-  """
-  Fully replace the document contents instead of performing a shallow merge
-  """
-  replace: Boolean = false
-
-  """Inform indexers if they should index this document or not"""
-  shouldIndex: Boolean
-
-  """Only perform mutation if the document matches the provided version"""
-  version: CeramicCommitID
-}
-
-input PartialNoteBookInput {
-  title: String
-}
-
-type EnableIndexingNoteBookPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: NoteBook
-  clientMutationId: String
-}
-
-input EnableIndexingNoteBookInput {
-  id: ID!
-  shouldIndex: Boolean!
-  clientMutationId: String
+  createNoteBook(input: CreateNoteBookInput!): CreateNoteBookPayload
+  updateNoteBook(input: UpdateNoteBookInput!): UpdateNoteBookPayload
+  enableIndexingNoteBook(input: EnableIndexingNoteBookInput!): EnableIndexingNoteBookPayload
 }
 
 type CreateNotePayload {
@@ -2272,6 +2196,11 @@ input NoteInput {
   text: String!
 }
 
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+}
+
 type UpdateNotePayload {
   """Fetches an object given its ID"""
   node(
@@ -2290,6 +2219,19 @@ input UpdateNoteInput {
   options: UpdateOptionsInput
   content: PartialNoteInput!
   clientMutationId: String
+}
+
+input UpdateOptionsInput {
+  """
+  Fully replace the document contents instead of performing a shallow merge
+  """
+  replace: Boolean = false
+
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
+  """Only perform mutation if the document matches the provided version"""
+  version: CeramicCommitID
 }
 
 input PartialNoteInput {
@@ -2316,6 +2258,72 @@ input EnableIndexingNoteInput {
   id: ID!
   shouldIndex: Boolean!
   clientMutationId: String
+}
+
+type CreateNoteBookPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: NoteBook!
+  clientMutationId: String
+}
+
+input CreateNoteBookInput {
+  content: NoteBookInput!
+  options: CreateOptionsInput
+  clientMutationId: String
+}
+
+input NoteBookInput {
+  title: String!
+}
+
+type UpdateNoteBookPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: NoteBook!
+  clientMutationId: String
+}
+
+input UpdateNoteBookInput {
+  id: ID!
+  options: UpdateOptionsInput
+  content: PartialNoteBookInput!
+  clientMutationId: String
+}
+
+input PartialNoteBookInput {
+  title: String
+}
+
+type EnableIndexingNoteBookPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: NoteBook
+  clientMutationId: String
+}
+
+input EnableIndexingNoteBookInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }"
 `;
 
@@ -2335,22 +2343,6 @@ exports[`schema post and comments with relations 1`] = `
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  postIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: PostFiltersInput
-    sorting: PostSortingInput
-  ): PostConnection
-  postCount(filters: PostFiltersInput): Int!
   commentIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -2367,6 +2359,22 @@ exports[`schema post and comments with relations 1`] = `
     sorting: CommentSortingInput
   ): CommentConnection
   commentCount(filters: CommentFiltersInput): Int!
+  postIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostFiltersInput
+    sorting: PostSortingInput
+  ): PostConnection
+  postCount(filters: PostFiltersInput): Int!
 }
 
 """An object with an ID"""
@@ -2383,22 +2391,6 @@ type CeramicAccount implements Node {
   Whether the Ceramic instance is currently authenticated with this account or not
   """
   isViewer: Boolean!
-  postList(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: PostFiltersInput
-    sorting: PostSortingInput
-  ): PostConnection
-  postListCount(filters: PostFiltersInput): Int!
   commentList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -2415,15 +2407,31 @@ type CeramicAccount implements Node {
     sorting: CommentSortingInput
   ): CommentConnection
   commentListCount(filters: CommentFiltersInput): Int!
+  postList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostFiltersInput
+    sorting: PostSortingInput
+  ): PostConnection
+  postListCount(filters: PostFiltersInput): Int!
 }
 
 """A connection to a list of items."""
-type PostConnection {
+type CommentConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [PostEdge]
+  edges: [CommentEdge]
 }
 
 """Information about pagination in a connection."""
@@ -2442,13 +2450,32 @@ type PageInfo {
 }
 
 """An edge in a connection."""
-type PostEdge {
+type CommentEdge {
   """The item at the end of the edge"""
-  node: Post
+  node: Comment
 
   """A cursor for use in pagination"""
   cursor: String!
 }
+
+type Comment implements Node {
+  id: ID!
+  postID: CeramicStreamID!
+  text: String!
+
+  """Account controlling the document"""
+  author: CeramicAccount!
+
+  """Current version of the document"""
+  version: CeramicCommitID!
+  post: Post
+}
+
+"""A Ceramic Stream ID"""
+scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
+
+"""A Ceramic Commit ID"""
+scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
 
 type Post implements Node {
   id: ID!
@@ -2491,9 +2518,6 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the \`da
 """
 scalar DateTime
 
-"""A Ceramic Commit ID"""
-scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
-
 input CommentFiltersInput {
   where: CommentObjectFilterInput
   and: [CommentFiltersInput!]
@@ -2517,40 +2541,6 @@ input StringValueFilterInput {
   greaterThanOrEqualTo: String
 }
 
-"""A connection to a list of items."""
-type CommentConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [CommentEdge]
-}
-
-"""An edge in a connection."""
-type CommentEdge {
-  """The item at the end of the edge"""
-  node: Comment
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-type Comment implements Node {
-  id: ID!
-  postID: CeramicStreamID!
-  text: String!
-
-  """Account controlling the document"""
-  author: CeramicAccount!
-
-  """Current version of the document"""
-  version: CeramicCommitID!
-  post: Post
-}
-
-"""A Ceramic Stream ID"""
-scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
-
 input CommentSortingInput {
   text: SortOrder
 }
@@ -2558,6 +2548,24 @@ input CommentSortingInput {
 enum SortOrder {
   ASC
   DESC
+}
+
+"""A connection to a list of items."""
+type PostConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PostEdge]
+}
+
+"""An edge in a connection."""
+type PostEdge {
+  """The item at the end of the edge"""
+  node: Post
+
+  """A cursor for use in pagination"""
+  cursor: String!
 }
 
 input PostFiltersInput {
@@ -2576,12 +2584,98 @@ input PostSortingInput {
 }
 
 type Mutation {
-  createPost(input: CreatePostInput!): CreatePostPayload
-  updatePost(input: UpdatePostInput!): UpdatePostPayload
-  enableIndexingPost(input: EnableIndexingPostInput!): EnableIndexingPostPayload
   createComment(input: CreateCommentInput!): CreateCommentPayload
   updateComment(input: UpdateCommentInput!): UpdateCommentPayload
   enableIndexingComment(input: EnableIndexingCommentInput!): EnableIndexingCommentPayload
+  createPost(input: CreatePostInput!): CreatePostPayload
+  updatePost(input: UpdatePostInput!): UpdatePostPayload
+  enableIndexingPost(input: EnableIndexingPostInput!): EnableIndexingPostPayload
+}
+
+type CreateCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Comment!
+  clientMutationId: String
+}
+
+input CreateCommentInput {
+  content: CommentInput!
+  options: CreateOptionsInput
+  clientMutationId: String
+}
+
+input CommentInput {
+  postID: CeramicStreamID!
+  text: String!
+}
+
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+}
+
+type UpdateCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Comment!
+  clientMutationId: String
+}
+
+input UpdateCommentInput {
+  id: ID!
+  options: UpdateOptionsInput
+  content: PartialCommentInput!
+  clientMutationId: String
+}
+
+input UpdateOptionsInput {
+  """
+  Fully replace the document contents instead of performing a shallow merge
+  """
+  replace: Boolean = false
+
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+
+  """Only perform mutation if the document matches the provided version"""
+  version: CeramicCommitID
+}
+
+input PartialCommentInput {
+  postID: CeramicStreamID
+  text: String
+}
+
+type EnableIndexingCommentPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Comment
+  clientMutationId: String
+}
+
+input EnableIndexingCommentInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }
 
 type CreatePostPayload {
@@ -2609,11 +2703,6 @@ input PostInput {
   text: String!
 }
 
-input CreateOptionsInput {
-  """Inform indexers if they should index this document or not"""
-  shouldIndex: Boolean
-}
-
 type UpdatePostPayload {
   """Fetches an object given its ID"""
   node(
@@ -2632,19 +2721,6 @@ input UpdatePostInput {
   options: UpdateOptionsInput
   content: PartialPostInput!
   clientMutationId: String
-}
-
-input UpdateOptionsInput {
-  """
-  Fully replace the document contents instead of performing a shallow merge
-  """
-  replace: Boolean = false
-
-  """Inform indexers if they should index this document or not"""
-  shouldIndex: Boolean
-
-  """Only perform mutation if the document matches the provided version"""
-  version: CeramicCommitID
 }
 
 input PartialPostInput {
@@ -2667,74 +2743,6 @@ type EnableIndexingPostPayload {
 }
 
 input EnableIndexingPostInput {
-  id: ID!
-  shouldIndex: Boolean!
-  clientMutationId: String
-}
-
-type CreateCommentPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: Comment!
-  clientMutationId: String
-}
-
-input CreateCommentInput {
-  content: CommentInput!
-  options: CreateOptionsInput
-  clientMutationId: String
-}
-
-input CommentInput {
-  postID: CeramicStreamID!
-  text: String!
-}
-
-type UpdateCommentPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: Comment!
-  clientMutationId: String
-}
-
-input UpdateCommentInput {
-  id: ID!
-  options: UpdateOptionsInput
-  content: PartialCommentInput!
-  clientMutationId: String
-}
-
-input PartialCommentInput {
-  postID: CeramicStreamID
-  text: String
-}
-
-type EnableIndexingCommentPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: Comment
-  clientMutationId: String
-}
-
-input EnableIndexingCommentInput {
   id: ID!
   shouldIndex: Boolean!
   clientMutationId: String
@@ -2773,22 +2781,6 @@ exports[`schema profiles with SINGLE account relation 1`] = `
     sorting: GenericProfileSortingInput
   ): GenericProfileConnection
   genericProfileCount(filters: GenericProfileFiltersInput): Int!
-  socialProfileIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: SocialProfileFiltersInput
-    sorting: SocialProfileSortingInput
-  ): SocialProfileConnection
-  socialProfileCount(filters: SocialProfileFiltersInput): Int!
   personProfileIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -2805,6 +2797,22 @@ exports[`schema profiles with SINGLE account relation 1`] = `
     sorting: PersonProfileSortingInput
   ): PersonProfileConnection
   personProfileCount(filters: PersonProfileFiltersInput): Int!
+  socialProfileIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: SocialProfileFiltersInput
+    sorting: SocialProfileSortingInput
+  ): SocialProfileConnection
+  socialProfileCount(filters: SocialProfileFiltersInput): Int!
 }
 
 """An object with an ID"""
@@ -2822,8 +2830,8 @@ type CeramicAccount implements Node {
   """
   isViewer: Boolean!
   genericProfile: GenericProfile
-  socialProfile: SocialProfile
   personProfile: PersonProfile
+  socialProfile: SocialProfile
 }
 
 type GenericProfile implements Node {
@@ -2845,14 +2853,6 @@ type ImageMetadata {
   size: Int
 }
 
-type SocialProfile implements Node {
-  id: ID!
-  description: String
-  emoji: String
-  background: ImageSources
-  url: String
-}
-
 type PersonProfile implements Node {
   id: ID!
   birthDate: Date
@@ -2870,6 +2870,14 @@ scalar Date
 
 """A country code as defined by ISO 3166-1 alpha-2"""
 scalar CountryCode
+
+type SocialProfile implements Node {
+  id: ID!
+  description: String
+  emoji: String
+  background: ImageSources
+  url: String
+}
 
 """A connection to a list of items."""
 type GenericProfileConnection {
@@ -2937,39 +2945,6 @@ enum SortOrder {
 }
 
 """A connection to a list of items."""
-type SocialProfileConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [SocialProfileEdge]
-}
-
-"""An edge in a connection."""
-type SocialProfileEdge {
-  """The item at the end of the edge"""
-  node: SocialProfile
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-input SocialProfileFiltersInput {
-  where: SocialProfileObjectFilterInput
-  and: [SocialProfileFiltersInput!]
-  or: [SocialProfileFiltersInput!]
-  not: SocialProfileFiltersInput
-}
-
-input SocialProfileObjectFilterInput {
-  url: StringValueFilterInput
-}
-
-input SocialProfileSortingInput {
-  url: SortOrder
-}
-
-"""A connection to a list of items."""
 type PersonProfileConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
@@ -3002,19 +2977,52 @@ input PersonProfileSortingInput {
   residenceCountry: SortOrder
 }
 
+"""A connection to a list of items."""
+type SocialProfileConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [SocialProfileEdge]
+}
+
+"""An edge in a connection."""
+type SocialProfileEdge {
+  """The item at the end of the edge"""
+  node: SocialProfile
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input SocialProfileFiltersInput {
+  where: SocialProfileObjectFilterInput
+  and: [SocialProfileFiltersInput!]
+  or: [SocialProfileFiltersInput!]
+  not: SocialProfileFiltersInput
+}
+
+input SocialProfileObjectFilterInput {
+  url: StringValueFilterInput
+}
+
+input SocialProfileSortingInput {
+  url: SortOrder
+}
+
 type Mutation {
   setGenericProfile(input: SetGenericProfileInput!): SetGenericProfilePayload
   createGenericProfile(input: CreateGenericProfileInput!): CreateGenericProfilePayload @deprecated(reason: "Replaced by the setGenericProfile mutation, createGenericProfile will be removed in a future version of ComposeDB.")
   updateGenericProfile(input: UpdateGenericProfileInput!): UpdateGenericProfilePayload
   enableIndexingGenericProfile(input: EnableIndexingGenericProfileInput!): EnableIndexingGenericProfilePayload
-  setSocialProfile(input: SetSocialProfileInput!): SetSocialProfilePayload
-  createSocialProfile(input: CreateSocialProfileInput!): CreateSocialProfilePayload @deprecated(reason: "Replaced by the setSocialProfile mutation, createSocialProfile will be removed in a future version of ComposeDB.")
-  updateSocialProfile(input: UpdateSocialProfileInput!): UpdateSocialProfilePayload
-  enableIndexingSocialProfile(input: EnableIndexingSocialProfileInput!): EnableIndexingSocialProfilePayload
   setPersonProfile(input: SetPersonProfileInput!): SetPersonProfilePayload
   createPersonProfile(input: CreatePersonProfileInput!): CreatePersonProfilePayload @deprecated(reason: "Replaced by the setPersonProfile mutation, createPersonProfile will be removed in a future version of ComposeDB.")
   updatePersonProfile(input: UpdatePersonProfileInput!): UpdatePersonProfilePayload
   enableIndexingPersonProfile(input: EnableIndexingPersonProfileInput!): EnableIndexingPersonProfilePayload
+  setSocialProfile(input: SetSocialProfileInput!): SetSocialProfilePayload
+  createSocialProfile(input: CreateSocialProfileInput!): CreateSocialProfilePayload @deprecated(reason: "Replaced by the setSocialProfile mutation, createSocialProfile will be removed in a future version of ComposeDB.")
+  updateSocialProfile(input: UpdateSocialProfileInput!): UpdateSocialProfilePayload
+  enableIndexingSocialProfile(input: EnableIndexingSocialProfileInput!): EnableIndexingSocialProfilePayload
 }
 
 type SetGenericProfilePayload {
@@ -3143,97 +3151,6 @@ input EnableIndexingGenericProfileInput {
   clientMutationId: String
 }
 
-type SetSocialProfilePayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: SocialProfile!
-  clientMutationId: String
-}
-
-input SetSocialProfileInput {
-  content: SocialProfileInput!
-  options: SetOptionsInput
-  clientMutationId: String
-}
-
-input SocialProfileInput {
-  description: String
-  emoji: String
-  background: ImageSourcesInput
-  url: String
-}
-
-type CreateSocialProfilePayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: SocialProfile!
-  clientMutationId: String
-}
-
-input CreateSocialProfileInput {
-  content: SocialProfileInput!
-  options: SetOptionsInput
-  clientMutationId: String
-}
-
-type UpdateSocialProfilePayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: SocialProfile!
-  clientMutationId: String
-}
-
-input UpdateSocialProfileInput {
-  id: ID!
-  options: UpdateOptionsInput
-  content: PartialSocialProfileInput!
-  clientMutationId: String
-}
-
-input PartialSocialProfileInput {
-  description: String
-  emoji: String
-  background: ImageSourcesInput
-  url: String
-}
-
-type EnableIndexingSocialProfilePayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: SocialProfile
-  clientMutationId: String
-}
-
-input EnableIndexingSocialProfileInput {
-  id: ID!
-  shouldIndex: Boolean!
-  clientMutationId: String
-}
-
 type SetPersonProfilePayload {
   """Fetches an object given its ID"""
   node(
@@ -3327,6 +3244,97 @@ input EnableIndexingPersonProfileInput {
   id: ID!
   shouldIndex: Boolean!
   clientMutationId: String
+}
+
+type SetSocialProfilePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: SocialProfile!
+  clientMutationId: String
+}
+
+input SetSocialProfileInput {
+  content: SocialProfileInput!
+  options: SetOptionsInput
+  clientMutationId: String
+}
+
+input SocialProfileInput {
+  description: String
+  emoji: String
+  background: ImageSourcesInput
+  url: String
+}
+
+type CreateSocialProfilePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: SocialProfile!
+  clientMutationId: String
+}
+
+input CreateSocialProfileInput {
+  content: SocialProfileInput!
+  options: SetOptionsInput
+  clientMutationId: String
+}
+
+type UpdateSocialProfilePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: SocialProfile!
+  clientMutationId: String
+}
+
+input UpdateSocialProfileInput {
+  id: ID!
+  options: UpdateOptionsInput
+  content: PartialSocialProfileInput!
+  clientMutationId: String
+}
+
+input PartialSocialProfileInput {
+  description: String
+  emoji: String
+  background: ImageSourcesInput
+  url: String
+}
+
+type EnableIndexingSocialProfilePayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: SocialProfile
+  clientMutationId: String
+}
+
+input EnableIndexingSocialProfileInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
 }"
 `;
 
@@ -3346,80 +3354,6 @@ exports[`schema social network schema kitchen sink 1`] = `
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  postIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: PostFiltersInput
-    sorting: PostSortingInput
-  ): PostConnection
-  postCount(filters: PostFiltersInput): Int!
-  textPostIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-  ): TextPostConnection
-  textPostCount: Int!
-  likeIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-  ): LikeConnection
-  likeCount: Int!
-  tagIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-  ): TagConnection
-  tagCount: Int!
-  postTagIndex(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: PostTagFiltersInput
-    sorting: PostTagSortingInput
-  ): PostTagConnection
-  postTagCount(filters: PostTagFiltersInput): Int!
   followsIndex(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -3436,6 +3370,80 @@ exports[`schema social network schema kitchen sink 1`] = `
     sorting: FollowsSortingInput
   ): FollowsConnection
   followsCount(filters: FollowsFiltersInput): Int!
+  likeIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): LikeConnection
+  likeCount: Int!
+  postIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostFiltersInput
+    sorting: PostSortingInput
+  ): PostConnection
+  postCount(filters: PostFiltersInput): Int!
+  postTagIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostTagFiltersInput
+    sorting: PostTagSortingInput
+  ): PostTagConnection
+  postTagCount(filters: PostTagFiltersInput): Int!
+  tagIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): TagConnection
+  tagCount: Int!
+  textPostIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): TextPostConnection
+  textPostCount: Int!
 }
 
 """An object with an ID"""
@@ -3452,83 +3460,10 @@ type CeramicAccount implements Node {
   Whether the Ceramic instance is currently authenticated with this account or not
   """
   isViewer: Boolean!
-  postList(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: PostFiltersInput
-    sorting: PostSortingInput
-  ): PostConnection
-  postListCount(filters: PostFiltersInput): Int!
-  textPostList(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-  ): TextPostConnection
-  textPostListCount: Int!
-  like(with: WithLikeInput!): Like
-  likeList(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-  ): LikeConnection
-  likeListCount: Int!
-  tag(with: WithTagInput!): Tag
-  tagList(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-  ): TagConnection
-  tagListCount: Int!
-  postTag(with: WithPostTagInput!): PostTag
-  postTagList(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-    filters: PostTagFiltersInput
-    sorting: PostTagSortingInput
-  ): PostTagConnection
-  postTagListCount(filters: PostTagFiltersInput): Int!
+  followingOfFollows(
+    """Account defining the relation"""
+    account: ID!
+  ): Follows
   followingOfFollowsList(
     """Returns the items in the list that come after the specified cursor."""
     after: String
@@ -3545,10 +3480,6 @@ type CeramicAccount implements Node {
     sorting: FollowsSortingInput
   ): FollowsConnection
   followingOfFollowsListCount(filters: FollowsFiltersInput): Int!
-  followingOfFollows(
-    """Account defining the relation"""
-    account: ID!
-  ): Follows
   follows(with: WithFollowsInput!): Follows
   followsList(
     """Returns the items in the list that come after the specified cursor."""
@@ -3566,15 +3497,106 @@ type CeramicAccount implements Node {
     sorting: FollowsSortingInput
   ): FollowsConnection
   followsListCount(filters: FollowsFiltersInput): Int!
+  like(with: WithLikeInput!): Like
+  likeList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): LikeConnection
+  likeListCount: Int!
+  postList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostFiltersInput
+    sorting: PostSortingInput
+  ): PostConnection
+  postListCount(filters: PostFiltersInput): Int!
+  postTag(with: WithPostTagInput!): PostTag
+  postTagList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+    filters: PostTagFiltersInput
+    sorting: PostTagSortingInput
+  ): PostTagConnection
+  postTagListCount(filters: PostTagFiltersInput): Int!
+  tag(with: WithTagInput!): Tag
+  tagList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): TagConnection
+  tagListCount: Int!
+  textPostList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): TextPostConnection
+  textPostListCount: Int!
 }
 
+type Follows implements Node {
+  id: ID!
+  following: CeramicAccount!
+  date: Date
+
+  """Account controlling the document"""
+  follower: CeramicAccount!
+}
+
+"""
+A date string, such as 2007-12-03, compliant with the \`full-date\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
 """A connection to a list of items."""
-type PostConnection {
+type FollowsConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [PostEdge]
+  edges: [FollowsEdge]
 }
 
 """Information about pagination in a connection."""
@@ -3593,6 +3615,97 @@ type PageInfo {
 }
 
 """An edge in a connection."""
+type FollowsEdge {
+  """The item at the end of the edge"""
+  node: Follows
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input FollowsFiltersInput {
+  where: FollowsObjectFilterInput
+  and: [FollowsFiltersInput!]
+  or: [FollowsFiltersInput!]
+  not: FollowsFiltersInput
+}
+
+input FollowsObjectFilterInput {
+  date: StringValueFilterInput
+}
+
+input StringValueFilterInput {
+  isNull: Boolean
+  equalTo: String
+  notEqualTo: String
+  in: [String!]
+  notIn: [String!]
+  lessThan: String
+  lessThanOrEqualTo: String
+  greaterThan: String
+  greaterThanOrEqualTo: String
+}
+
+input FollowsSortingInput {
+  date: SortOrder
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+input WithFollowsInput {
+  following: DID!
+}
+
+"""
+A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
+"""
+scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
+
+type Like implements Node {
+  id: ID!
+  postID: CeramicStreamID!
+  date: Date
+  post: Node
+}
+
+"""A Ceramic Stream ID"""
+scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
+
+input WithLikeInput {
+  postID: CeramicStreamID!
+}
+
+"""A connection to a list of items."""
+type LikeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [LikeEdge]
+}
+
+"""An edge in a connection."""
+type LikeEdge {
+  """The item at the end of the edge"""
+  node: Like
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+"""A connection to a list of items."""
+type PostConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PostEdge]
+}
+
+"""An edge in a connection."""
 type PostEdge {
   """The item at the end of the edge"""
   node: Post
@@ -3601,7 +3714,8 @@ type PostEdge {
   cursor: String!
 }
 
-interface Post {
+interface Post implements Node {
+  id: ID!
   date: DateTime!
   threadID: CeramicStreamID
   threadPost: Node
@@ -3648,19 +3762,11 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the \`da
 """
 scalar DateTime
 
-"""A Ceramic Stream ID"""
-scalar CeramicStreamID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#streamid")
-
-type Like implements Node {
-  id: ID!
-  postID: CeramicStreamID!
-  post: Node
-}
-
 type PostTag implements Node {
   id: ID!
   postID: CeramicStreamID!
   tagID: CeramicStreamID!
+  date: Date
   post: Node
   tag: Node
 }
@@ -3699,26 +3805,9 @@ input PostTagObjectFilterInput {
   tagID: StringValueFilterInput
 }
 
-input StringValueFilterInput {
-  isNull: Boolean
-  equalTo: String
-  notEqualTo: String
-  in: [String!]
-  notIn: [String!]
-  lessThan: String
-  lessThanOrEqualTo: String
-  greaterThan: String
-  greaterThanOrEqualTo: String
-}
-
 input PostTagSortingInput {
   postID: SortOrder
   tagID: SortOrder
-}
-
-enum SortOrder {
-  ASC
-  DESC
 }
 
 input PostFiltersInput {
@@ -3736,6 +3825,71 @@ input PostObjectFilterInput {
 input PostSortingInput {
   date: SortOrder
   threadID: SortOrder
+}
+
+input WithPostTagInput {
+  postID: CeramicStreamID!
+  tagID: CeramicStreamID!
+}
+
+type Tag implements Node {
+  id: ID!
+  name: String!
+  description: String
+  postTag(
+    """Account defining the relation"""
+    account: ID!
+    with: WithTagIDPostTagInput!
+  ): PostTag
+  postTags(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+
+    """Returns only documents created by the provided account"""
+    account: ID
+    filters: PostTagFiltersInput
+    sorting: PostTagSortingInput
+  ): PostTagConnection!
+  postTagsCount(
+    """Counts only documents created by the provided account"""
+    account: ID
+    filters: PostTagFiltersInput
+  ): Int!
+}
+
+input WithTagIDPostTagInput {
+  postID: CeramicStreamID!
+}
+
+input WithTagInput {
+  name: String!
+}
+
+"""A connection to a list of items."""
+type TagConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TagEdge]
+}
+
+"""An edge in a connection."""
+type TagEdge {
+  """The item at the end of the edge"""
+  node: Tag
+
+  """A cursor for use in pagination"""
+  cursor: String!
 }
 
 """A connection to a list of items."""
@@ -3800,168 +3954,25 @@ type TextPost implements Node & Post {
   ): Int!
 }
 
-input WithLikeInput {
-  postID: CeramicStreamID!
-}
-
-"""A connection to a list of items."""
-type LikeConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [LikeEdge]
-}
-
-"""An edge in a connection."""
-type LikeEdge {
-  """The item at the end of the edge"""
-  node: Like
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-type Tag implements Node {
-  id: ID!
-  name: String!
-  description: String
-  postTag(
-    """Account defining the relation"""
-    account: ID!
-    with: WithTagIDPostTagInput!
-  ): PostTag
-  postTags(
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-
-    """Returns only documents created by the provided account"""
-    account: ID
-    filters: PostTagFiltersInput
-    sorting: PostTagSortingInput
-  ): PostTagConnection!
-  postTagsCount(
-    """Counts only documents created by the provided account"""
-    account: ID
-    filters: PostTagFiltersInput
-  ): Int!
-}
-
-input WithTagIDPostTagInput {
-  postID: CeramicStreamID!
-}
-
-input WithTagInput {
-  name: String!
-}
-
-"""A connection to a list of items."""
-type TagConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [TagEdge]
-}
-
-"""An edge in a connection."""
-type TagEdge {
-  """The item at the end of the edge"""
-  node: Tag
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-input WithPostTagInput {
-  postID: CeramicStreamID!
-  tagID: CeramicStreamID!
-}
-
-"""A connection to a list of items."""
-type FollowsConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [FollowsEdge]
-}
-
-"""An edge in a connection."""
-type FollowsEdge {
-  """The item at the end of the edge"""
-  node: Follows
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-type Follows implements Node {
-  id: ID!
-  following: CeramicAccount!
-  date: Date
-
-  """Account controlling the document"""
-  follower: CeramicAccount!
-}
-
-"""
-A date string, such as 2007-12-03, compliant with the \`full-date\` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-"""
-scalar Date
-
-input FollowsFiltersInput {
-  where: FollowsObjectFilterInput
-  and: [FollowsFiltersInput!]
-  or: [FollowsFiltersInput!]
-  not: FollowsFiltersInput
-}
-
-input FollowsObjectFilterInput {
-  date: StringValueFilterInput
-}
-
-input FollowsSortingInput {
-  date: SortOrder
-}
-
-input WithFollowsInput {
-  following: DID!
-}
-
-"""
-A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/.
-"""
-scalar DID @specifiedBy(url: "https://www.w3.org/TR/did-core/")
-
 type Mutation {
-  createTextPost(input: CreateTextPostInput!): CreateTextPostPayload
-  updateTextPost(input: UpdateTextPostInput!): UpdateTextPostPayload
-  enableIndexingTextPost(input: EnableIndexingTextPostInput!): EnableIndexingTextPostPayload
-  setLike(input: SetLikeInput!): SetLikePayload
-  updateLike(input: UpdateLikeInput!): UpdateLikePayload
-  enableIndexingLike(input: EnableIndexingLikeInput!): EnableIndexingLikePayload
-  setTag(input: SetTagInput!): SetTagPayload
-  updateTag(input: UpdateTagInput!): UpdateTagPayload
-  enableIndexingTag(input: EnableIndexingTagInput!): EnableIndexingTagPayload
-  setPostTag(input: SetPostTagInput!): SetPostTagPayload
-  updatePostTag(input: UpdatePostTagInput!): UpdatePostTagPayload
-  enableIndexingPostTag(input: EnableIndexingPostTagInput!): EnableIndexingPostTagPayload
   setFollows(input: SetFollowsInput!): SetFollowsPayload
   updateFollows(input: UpdateFollowsInput!): UpdateFollowsPayload
   enableIndexingFollows(input: EnableIndexingFollowsInput!): EnableIndexingFollowsPayload
+  setLike(input: SetLikeInput!): SetLikePayload
+  updateLike(input: UpdateLikeInput!): UpdateLikePayload
+  enableIndexingLike(input: EnableIndexingLikeInput!): EnableIndexingLikePayload
+  setPostTag(input: SetPostTagInput!): SetPostTagPayload
+  updatePostTag(input: UpdatePostTagInput!): UpdatePostTagPayload
+  enableIndexingPostTag(input: EnableIndexingPostTagInput!): EnableIndexingPostTagPayload
+  setTag(input: SetTagInput!): SetTagPayload
+  updateTag(input: UpdateTagInput!): UpdateTagPayload
+  enableIndexingTag(input: EnableIndexingTagInput!): EnableIndexingTagPayload
+  createTextPost(input: CreateTextPostInput!): CreateTextPostPayload
+  updateTextPost(input: UpdateTextPostInput!): UpdateTextPostPayload
+  enableIndexingTextPost(input: EnableIndexingTextPostInput!): EnableIndexingTextPostPayload
 }
 
-type CreateTextPostPayload {
+type SetFollowsPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -3970,28 +3981,32 @@ type CreateTextPostPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: TextPost!
+  document: Follows!
   clientMutationId: String
 }
 
-input CreateTextPostInput {
-  content: TextPostInput!
-  options: CreateOptionsInput
+input SetFollowsInput {
+  content: FollowsInput!
+  options: SetOptionsInput
   clientMutationId: String
 }
 
-input TextPostInput {
-  date: DateTime!
-  threadID: CeramicStreamID
-  text: String!
+input FollowsInput {
+  following: DID!
+  date: Date
 }
 
-input CreateOptionsInput {
+input SetOptionsInput {
   """Inform indexers if they should index this document or not"""
   shouldIndex: Boolean
+
+  """
+  Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds
+  """
+  syncTimeout: Int
 }
 
-type UpdateTextPostPayload {
+type UpdateFollowsPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -4000,14 +4015,14 @@ type UpdateTextPostPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: TextPost!
+  document: Follows!
   clientMutationId: String
 }
 
-input UpdateTextPostInput {
+input UpdateFollowsInput {
   id: ID!
   options: UpdateOptionsInput
-  content: PartialTextPostInput!
+  content: PartialFollowsInput!
   clientMutationId: String
 }
 
@@ -4027,13 +4042,11 @@ input UpdateOptionsInput {
 """A Ceramic Commit ID"""
 scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-59#commitid")
 
-input PartialTextPostInput {
-  date: DateTime
-  threadID: CeramicStreamID
-  text: String
+input PartialFollowsInput {
+  date: Date
 }
 
-type EnableIndexingTextPostPayload {
+type EnableIndexingFollowsPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -4042,11 +4055,11 @@ type EnableIndexingTextPostPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: TextPost
+  document: Follows
   clientMutationId: String
 }
 
-input EnableIndexingTextPostInput {
+input EnableIndexingFollowsInput {
   id: ID!
   shouldIndex: Boolean!
   clientMutationId: String
@@ -4073,16 +4086,7 @@ input SetLikeInput {
 
 input LikeInput {
   postID: CeramicStreamID!
-}
-
-input SetOptionsInput {
-  """Inform indexers if they should index this document or not"""
-  shouldIndex: Boolean
-
-  """
-  Maximum amount of time to lookup the stream over the network, in seconds - see https://developers.ceramic.network/reference/typescript/interfaces/_ceramicnetwork_common.CreateOpts.html#syncTimeoutSeconds
-  """
-  syncTimeout: Int
+  date: Date
 }
 
 type UpdateLikePayload {
@@ -4101,7 +4105,12 @@ type UpdateLikePayload {
 input UpdateLikeInput {
   id: ID!
   options: UpdateOptionsInput
+  content: PartialLikeInput!
   clientMutationId: String
+}
+
+input PartialLikeInput {
+  date: Date
 }
 
 type EnableIndexingLikePayload {
@@ -4118,6 +4127,74 @@ type EnableIndexingLikePayload {
 }
 
 input EnableIndexingLikeInput {
+  id: ID!
+  shouldIndex: Boolean!
+  clientMutationId: String
+}
+
+type SetPostTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: PostTag!
+  clientMutationId: String
+}
+
+input SetPostTagInput {
+  content: PostTagInput!
+  options: SetOptionsInput
+  clientMutationId: String
+}
+
+input PostTagInput {
+  postID: CeramicStreamID!
+  tagID: CeramicStreamID!
+  date: Date
+}
+
+type UpdatePostTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: PostTag!
+  clientMutationId: String
+}
+
+input UpdatePostTagInput {
+  id: ID!
+  options: UpdateOptionsInput
+  content: PartialPostTagInput!
+  clientMutationId: String
+}
+
+input PartialPostTagInput {
+  date: Date
+}
+
+type EnableIndexingPostTagPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: PostTag
+  clientMutationId: String
+}
+
+input EnableIndexingPostTagInput {
   id: ID!
   shouldIndex: Boolean!
   clientMutationId: String
@@ -4190,7 +4267,7 @@ input EnableIndexingTagInput {
   clientMutationId: String
 }
 
-type SetPostTagPayload {
+type CreateTextPostPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -4199,22 +4276,28 @@ type SetPostTagPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: PostTag!
+  document: TextPost!
   clientMutationId: String
 }
 
-input SetPostTagInput {
-  content: PostTagInput!
-  options: SetOptionsInput
+input CreateTextPostInput {
+  content: TextPostInput!
+  options: CreateOptionsInput
   clientMutationId: String
 }
 
-input PostTagInput {
-  postID: CeramicStreamID!
-  tagID: CeramicStreamID!
+input TextPostInput {
+  date: DateTime!
+  threadID: CeramicStreamID
+  text: String!
 }
 
-type UpdatePostTagPayload {
+input CreateOptionsInput {
+  """Inform indexers if they should index this document or not"""
+  shouldIndex: Boolean
+}
+
+type UpdateTextPostPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -4223,17 +4306,24 @@ type UpdatePostTagPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: PostTag!
+  document: TextPost!
   clientMutationId: String
 }
 
-input UpdatePostTagInput {
+input UpdateTextPostInput {
   id: ID!
   options: UpdateOptionsInput
+  content: PartialTextPostInput!
   clientMutationId: String
 }
 
-type EnableIndexingPostTagPayload {
+input PartialTextPostInput {
+  date: DateTime
+  threadID: CeramicStreamID
+  text: String
+}
+
+type EnableIndexingTextPostPayload {
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -4242,78 +4332,11 @@ type EnableIndexingPostTagPayload {
 
   """Account currently authenticated on the Ceramic instance, if set"""
   viewer: CeramicAccount
-  document: PostTag
+  document: TextPost
   clientMutationId: String
 }
 
-input EnableIndexingPostTagInput {
-  id: ID!
-  shouldIndex: Boolean!
-  clientMutationId: String
-}
-
-type SetFollowsPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: Follows!
-  clientMutationId: String
-}
-
-input SetFollowsInput {
-  content: FollowsInput!
-  options: SetOptionsInput
-  clientMutationId: String
-}
-
-input FollowsInput {
-  following: DID!
-  date: Date
-}
-
-type UpdateFollowsPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: Follows!
-  clientMutationId: String
-}
-
-input UpdateFollowsInput {
-  id: ID!
-  options: UpdateOptionsInput
-  content: PartialFollowsInput!
-  clientMutationId: String
-}
-
-input PartialFollowsInput {
-  date: Date
-}
-
-type EnableIndexingFollowsPayload {
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-
-  """Account currently authenticated on the Ceramic instance, if set"""
-  viewer: CeramicAccount
-  document: Follows
-  clientMutationId: String
-}
-
-input EnableIndexingFollowsInput {
+input EnableIndexingTextPostInput {
   id: ID!
   shouldIndex: Boolean!
   clientMutationId: String

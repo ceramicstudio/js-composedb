@@ -32,36 +32,37 @@ export function getViewerID(request: Request): string | null | undefined {
   return request.headers.get(VIEWER_ID_HEADER)
 }
 
-export type HandlerParams<ServerContext extends Record<string, any> = Record<string, any>> = {
-  /**
-   * Optional cache for documents.
-   */
-  cache?: DocumentCache
-  /**
-   * Ceramic client instance or HTTP URL.
-   */
-  ceramic: CeramicAPI | string
-  /**
-   * Runtime composite definition, created using the {@linkcode devtools.Composite Composite}
-   * development tools.
-   */
-  definition?: RuntimeCompositeDefinition
-  /**
-   * {@link https://the-guild.dev/graphql/yoga-server/docs Yoga server} options.
-   */
-  options?: YogaServerOptions<ServerContext, Context>
-  /**
-   * GraphQL Schema to use, ignores the `definition` parameter if provided.
-   */
-  schema?: GraphQLSchema
-}
+export type HandlerParams<ServerContext extends Record<string, unknown> = Record<string, unknown>> =
+  {
+    /**
+     * Optional cache for documents.
+     */
+    cache?: DocumentCache
+    /**
+     * Ceramic client instance or HTTP URL.
+     */
+    ceramic: CeramicAPI | string
+    /**
+     * Runtime composite definition, created using the {@linkcode devtools.Composite Composite}
+     * development tools.
+     */
+    definition?: RuntimeCompositeDefinition
+    /**
+     * {@link https://the-guild.dev/graphql/yoga-server/docs Yoga server} options.
+     */
+    options?: YogaServerOptions<ServerContext, Context>
+    /**
+     * GraphQL Schema to use, ignores the `definition` parameter if provided.
+     */
+    schema?: GraphQLSchema
+  }
 
 /**
  * Create a {@link https://the-guild.dev/graphql/yoga-server/docs Yoga server} handling GraphQL requests.
  */
-export function createHandler<ServerContext extends Record<string, any> = Record<string, any>>(
-  params: HandlerParams<ServerContext>,
-): YogaServerInstance<ServerContext, Context> {
+export function createHandler<
+  ServerContext extends Record<string, unknown> = Record<string, unknown>,
+>(params: HandlerParams<ServerContext>): YogaServerInstance<ServerContext, Context> {
   const { cache, ceramic, definition, options, schema } = params
   const client = typeof ceramic === 'string' ? new CeramicClient(ceramic) : ceramic
 
@@ -81,7 +82,7 @@ export type GraphQLServer = {
   stop: () => Promise<void>
 }
 
-export type GraphQLParams<ServerContext extends Record<string, any> = Record<string, any>> =
+export type GraphQLParams<ServerContext extends Record<string, unknown> = Record<string, unknown>> =
   HandlerParams<ServerContext> & {
     port?: number | Array<number>
   }
@@ -90,7 +91,7 @@ export type GraphQLParams<ServerContext extends Record<string, any> = Record<str
  * Start a local GraphQL server.
  */
 export async function startGraphQLServer<
-  ServerContext extends Record<string, any> = Record<string, any>,
+  ServerContext extends Record<string, unknown> = Record<string, unknown>,
 >(params: GraphQLParams<ServerContext>): Promise<GraphQLServer> {
   const handler = createHandler<ServerContext>(params)
   // eslint-disable-next-line @typescript-eslint/no-misused-promises

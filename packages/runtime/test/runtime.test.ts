@@ -937,13 +937,13 @@ describe('runtime', () => {
     `
 
     const favorite1Res = await runtime.executeQuery<{
-      setFavorite: { document: { id: string }; viewer: any }
+      setFavorite: { document: { id: string }; viewer: unknown }
     }>(setFavorite, { input: { content: { docID: post1ID, tag: 'posts' } } })
     expect(favorite1Res.data?.setFavorite.viewer).toMatchSnapshot()
     const favorite1ID = favorite1Res.data?.setFavorite.document.id
 
     const favorite2Res = await runtime.executeQuery<{
-      setFavorite: { document: { id: string }; viewer: any }
+      setFavorite: { document: { id: string }; viewer: unknown }
     }>(setFavorite, {
       input: { content: { docID: post2ID, tag: 'posts' } },
     })

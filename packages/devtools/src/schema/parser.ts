@@ -395,7 +395,7 @@ export class SchemaParser {
     fieldName: string,
     type: GraphQLType,
     directives: Array<DirectiveAnnotation>,
-    objectFields: GraphQLFieldMap<any, any>,
+    objectFields: GraphQLFieldMap<unknown, unknown>,
   ): ViewFieldDefinition | void {
     for (const directive of directives) {
       switch (directive.name) {

@@ -31,8 +31,7 @@ export async function promiseMap<
   V extends M[keyof M] = M[keyof M],
   R = unknown,
 >(inputs: M, callFunc: (input: V) => Promise<R>): Promise<Record<keyof M, R>> {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  const results = await Promise.all(Object.values(inputs).map((value) => callFunc(value as any)))
+  const results = await Promise.all(Object.values(inputs).map((value) => callFunc(value as V)))
   return Object.keys(inputs).reduce(
     (acc, key, i) => {
       acc[key as keyof M] = results[i]
@@ -40,6 +39,17 @@ export async function promiseMap<
     },
     {} as Record<keyof M, R>,
   )
+}
+
+/** @internal */
+export function sortKeys<T extends Record<string, unknown>>(object: T): T {
+  return Object.keys(object)
+    .sort()
+    .reduce((acc, key) => {
+      // @ts-ignore
+      acc[key] = object[key]
+      return acc
+    }, {} as T)
 }
 
 type RelationViewType = ModelRelationViewDefinitionV2['type']

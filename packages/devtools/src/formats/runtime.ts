@@ -23,7 +23,7 @@ import { JsonReference } from 'json-ptr'
 
 import { type ScalarTitle, SCALAR_RUNTIME_TYPES } from '../schema/scalars.js'
 import type { AnySchema, ScalarSchema } from '../types.js'
-import { viewDefinitionToRuntime } from '../utils.js'
+import { sortKeys, viewDefinitionToRuntime } from '../utils.js'
 
 type EnumSchema = JSONSchema.String & { title: string; enum: Array<string> }
 
@@ -402,5 +402,11 @@ export function createRuntimeDefinition(
     }
   }
 
-  return runtime
+  return {
+    ...runtime,
+    models: sortKeys(runtime.models),
+    objects: sortKeys(runtime.objects),
+    enums: sortKeys(runtime.enums),
+    accountData: sortKeys(runtime.accountData),
+  }
 }

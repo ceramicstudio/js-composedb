@@ -279,7 +279,7 @@ class SchemaBuilder {
   // Internal records
   #types: Record<string, GraphQLEnumType | GraphQLInterfaceType | GraphQLObjectType> = { SortOrder }
   #inputObjects: Record<string, GraphQLInputObjectType> = { ...valueFilterInputs }
-  #mutations: Record<string, GraphQLFieldConfig<any, Context>> = {}
+  #mutations: Record<string, GraphQLFieldConfig<unknown, Context>> = {}
   // Internal mapping of model IDs to object names
   #modelAliases: Record<string, string>
 
@@ -489,7 +489,11 @@ class SchemaBuilder {
     return { ...nodeDefs, accountObject, queryFields }
   }
 
-  _resolveInterfaces(modelName: string, ids: Array<string> = []): Array<GraphQLInterfaceType> {
+  _resolveInterfaces(
+    node: GraphQLInterfaceType,
+    modelName: string,
+    ids: Array<string> = [],
+  ): Array<GraphQLInterfaceType> {
     const allInterfaces = ids.flatMap((id) => {
       const name = this.#modelAliases[id]
       if (name == null) {
@@ -505,7 +509,7 @@ class SchemaBuilder {
       }
       return [type].concat(type.getInterfaces())
     })
-    return Array.from(new Set(allInterfaces))
+    return Array.from(new Set([node, ...allInterfaces]))
   }
 
   _buildEnums() {
@@ -543,9 +547,15 @@ class SchemaBuilder {
   _buildInterfaceObjectType({ model, definitions, name, fields }: BuildModelObjectParams) {
     this.#types[name] = new GraphQLInterfaceType({
       name,
-      interfaces: () => this._resolveInterfaces(name, model.implements),
+      interfaces: () => this._resolveInterfaces(definitions.nodeInterface, name, model.implements),
       fields: () => {
-        const config: GraphQLFieldConfigMap<ModelInstanceDocument, Context> = {}
+        const config: GraphQLFieldConfigMap<ModelInstanceDocument, Context> = {
+          id: {
+            // Use GraphQLID here for Relay compliance
+            type: new GraphQLNonNull(GraphQLID),
+            resolve: (doc) => doc.id.toString(),
+          },
+        }
         for (const [key, field] of Object.entries(fields)) {
           switch (field.type) {
             case 'meta':
@@ -585,9 +595,7 @@ class SchemaBuilder {
   _buildDocumentObjectType({ model, definitions, name, fields }: BuildModelObjectParams) {
     this.#types[name] = new GraphQLObjectType<ModelInstanceDocument>({
       name,
-      interfaces: () => {
-        return [definitions.nodeInterface].concat(this._resolveInterfaces(name, model.implements))
-      },
+      interfaces: () => this._resolveInterfaces(definitions.nodeInterface, name, model.implements),
       isTypeOf: (value: ModelInstanceDocument) => {
         return value.metadata.model.toString() === model.id
       },
@@ -704,7 +712,11 @@ class SchemaBuilder {
         return {
           type,
           args: connectionArgs,
-          resolve: (_doc, _args: ConnectionArguments, _ctx): Promise<Connection<any> | null> => {
+          resolve: (
+            _doc,
+            _args: ConnectionArguments,
+            _ctx,
+          ): Promise<Connection<unknown> | null> => {
             throw new Error('Not implemented')
           },
         }
@@ -1409,7 +1421,7 @@ class SchemaBuilder {
           _,
           { filters, ...args }: ConnectionQueryArguments,
           ctx,
-        ): Promise<Connection<any> | null> => {
+        ): Promise<Connection<unknown> | null> => {
           if (filters != null) {
             assertValidQueryFilters(filters)
           }

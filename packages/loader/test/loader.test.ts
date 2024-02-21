@@ -287,7 +287,7 @@ describe('loader', () => {
         const cacheMap = new Map<string, Promise<ModelInstanceDocument>>()
         const cacheDelete = jest.fn((key: string) => cacheMap.delete(key))
         const cacheSet = jest.fn(
-          (key: string, value: Promise<ModelInstanceDocument<Record<string, any>>>) => {
+          (key: string, value: Promise<ModelInstanceDocument<Record<string, unknown>>>) => {
             return cacheMap.set(key, value)
           },
         )
