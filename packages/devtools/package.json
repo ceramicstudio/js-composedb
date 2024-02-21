@@ -39,8 +39,8 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/common": "^5.0.1-rc.0",
-    "@ceramicnetwork/stream-model": "^4.0.1-rc.0",
+    "@ceramicnetwork/common": "^5.1.0-rc.0",
+    "@ceramicnetwork/stream-model": "^4.0.1-rc.1",
     "@ceramicnetwork/streamid": "^5.0.0",
     "@composedb/graphql-scalars": "workspace:^",
     "@didtools/cacao": "^3.0.1",

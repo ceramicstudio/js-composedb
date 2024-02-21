@@ -1832,8 +1832,8 @@ exports[`social network tag and like posts 1`] = `
 exports[`social network untag and unlike posts 1`] = `
 {
   "data": {
-    "likeCount": 25,
-    "postTagCount": 53,
+    "likeCount": 4,
+    "postTagCount": 7,
     "tagIndex": {
       "edges": [
         {
