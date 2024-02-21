@@ -1135,6 +1135,8 @@ input EnableIndexingTextPostInput {
 exports[`social network tag and like posts 1`] = `
 {
   "data": {
+    "likeCount": 6,
+    "postTagCount": 9,
     "tagIndex": {
       "edges": [
         {
@@ -1554,6 +1556,647 @@ exports[`social network tag and like posts 1`] = `
                     },
                   },
                 },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Random",
+                    },
+                  },
+                },
+              ],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Random",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Ceramic",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Hello",
+                    },
+                  },
+                },
+              ],
+            },
+            "likesCount": 2,
+            "postTagsCount": 3,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Random",
+                    },
+                  },
+                },
+              ],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Ceramic",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Hello",
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Hello",
+                    },
+                  },
+                },
+              ],
+            },
+            "likesCount": 1,
+            "postTagsCount": 1,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Hello",
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [],
+            },
+            "likesCount": 0,
+            "postTagsCount": 0,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [],
+            },
+            "likesCount": 0,
+            "postTagsCount": 0,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [],
+            },
+            "likesCount": 0,
+            "postTagsCount": 0,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [],
+            },
+            "likesCount": 0,
+            "postTagsCount": 0,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [],
+            },
+            "likesCount": 0,
+            "postTagsCount": 0,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`social network untag and unlike posts 1`] = `
+{
+  "data": {
+    "likeCount": 25,
+    "postTagCount": 53,
+    "tagIndex": {
+      "edges": [
+        {
+          "node": {
+            "name": "Ceramic",
+            "postTags": {
+              "edges": [],
+            },
+            "postTagsCount": 0,
+            "user1Post1": null,
+            "user1Post2": {
+              "post": null,
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": null,
+            },
+            "user2Post3": {
+              "post": null,
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": null,
+            },
+          },
+        },
+        {
+          "node": {
+            "name": "ComposeDB",
+            "postTags": {
+              "edges": [
+                {
+                  "node": {
+                    "post": {
+                      "text": "Hello world",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "post": {
+                      "text": "ComposeDB on Ceramic",
+                    },
+                  },
+                },
+              ],
+            },
+            "postTagsCount": 2,
+            "user1Post1": {
+              "post": {
+                "text": "Hello world",
+              },
+            },
+            "user1Post2": {
+              "post": {
+                "text": "ComposeDB on Ceramic",
+              },
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": null,
+            },
+            "user2Post3": {
+              "post": null,
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": null,
+            },
+          },
+        },
+        {
+          "node": {
+            "name": "Hello",
+            "postTags": {
+              "edges": [],
+            },
+            "postTagsCount": 0,
+            "user1Post1": {
+              "post": null,
+            },
+            "user1Post2": {
+              "post": null,
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": null,
+            "user2Post3": {
+              "post": null,
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": null,
+            },
+          },
+        },
+        {
+          "node": {
+            "name": "Random",
+            "postTags": {
+              "edges": [
+                {
+                  "node": {
+                    "post": {
+                      "text": "ComposeDB on Ceramic",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "post": {
+                      "text": "Testing ComposeDB",
+                    },
+                  },
+                },
+              ],
+            },
+            "postTagsCount": 2,
+            "user1Post1": {
+              "post": null,
+            },
+            "user1Post2": {
+              "post": null,
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": {
+                "text": "ComposeDB on Ceramic",
+              },
+            },
+            "user2Post3": {
+              "post": {
+                "text": "Testing ComposeDB",
+              },
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": null,
+            },
+          },
+        },
+        {
+          "node": {
+            "name": "Ceramic",
+            "postTags": {
+              "edges": [
+                {
+                  "node": {
+                    "post": {
+                      "text": "Testing ComposeDB",
+                    },
+                  },
+                },
+              ],
+            },
+            "postTagsCount": 1,
+            "user1Post1": {
+              "post": null,
+            },
+            "user1Post2": {
+              "post": null,
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": null,
+            },
+            "user2Post3": {
+              "post": null,
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": {
+                "text": "Testing ComposeDB",
+              },
+            },
+          },
+        },
+        {
+          "node": {
+            "name": "Hello",
+            "postTags": {
+              "edges": [
+                {
+                  "node": {
+                    "post": {
+                      "text": "Testing ComposeDB",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "post": {
+                      "text": "Hello there",
+                    },
+                  },
+                },
+              ],
+            },
+            "postTagsCount": 2,
+            "user1Post1": {
+              "post": null,
+            },
+            "user1Post2": {
+              "post": null,
+            },
+            "user1Post3": {
+              "post": null,
+            },
+            "user2Post1": {
+              "post": null,
+            },
+            "user2Post2": {
+              "post": null,
+            },
+            "user2Post3": {
+              "post": null,
+            },
+            "user3Post1": {
+              "post": null,
+            },
+            "user3Post2": {
+              "post": null,
+            },
+            "user3Post3": {
+              "post": {
+                "text": "Testing ComposeDB",
+              },
+            },
+          },
+        },
+      ],
+    },
+    "textPostIndex": {
+      "edges": [
+        {
+          "node": {
+            "allTags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "ComposeDB",
+                    },
+                  },
+                },
+              ],
+            },
+            "likesCount": 0,
+            "postTagsCount": 1,
+            "user1Like": null,
+            "user1Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "ComposeDB",
+                    },
+                  },
+                },
+              ],
+            },
+            "user2Like": {
+              "date": null,
+            },
+            "user2Tags": {
+              "edges": [],
+            },
+            "user3Like": {
+              "date": null,
+            },
+            "user3Tags": {
+              "edges": [],
+            },
+          },
+        },
+        {
+          "node": {
+            "allTags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "ComposeDB",
+                    },
+                  },
+                },
+                {
+                  "node": {
+                    "tag": {
+                      "name": "Random",
+                    },
+                  },
+                },
+              ],
+            },
+            "likesCount": 1,
+            "postTagsCount": 2,
+            "user1Like": {
+              "date": null,
+            },
+            "user1Tags": {
+              "edges": [
+                {
+                  "node": {
+                    "tag": {
+                      "name": "ComposeDB",
+                    },
+                  },
+                },
+              ],
+            },
+            "user2Like": null,
+            "user2Tags": {
+              "edges": [
                 {
                   "node": {
                     "tag": {

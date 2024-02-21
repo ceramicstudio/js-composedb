@@ -164,7 +164,7 @@ describe('social network', () => {
       }>(`query { viewer { tagList(first: 2) { edges { node { id } } } } }`)
       const tagIDs = userTagsResult.data!.viewer.tagList.edges.map((e) => e.node.id)
 
-      const res = await runtime.executeQuery<{
+      await runtime.executeQuery<{
         like1: { document: { postID: string } }
         like2: { document: { postID: string } }
         postTag1: { document: { postID: string; tagID: string } }
@@ -174,19 +174,15 @@ describe('social network', () => {
         mutation addTagsAndLikes {
           like1: setLike(input: { content: { postID: "${postIDs[offset]}" } }) { document { postID } }
           like2: setLike(input: { content: { postID: "${postIDs[offset + 1]}" } }) { document { postID } }
+          # Duplicate to check SET behavior
+          like3: setLike(input: { content: { postID: "${postIDs[offset + 1]}" } }) { document { postID } }
           postTag1: setPostTag(input: { content: { postID: "${postIDs[offset]}", tagID: "${tagIDs[0]}" } }) { document { postID tagID } }
           postTag2: setPostTag(input: { content: { postID: "${postIDs[offset]}", tagID: "${tagIDs[1]}" } }) { document { postID tagID } }
           postTag3: setPostTag(input: { content: { postID: "${postIDs[offset + 1]}", tagID: "${tagIDs[1]}" } }) { document { postID tagID } }
+          # Duplicate to check SET behavior
+          postTag4: setPostTag(input: { content: { postID: "${postIDs[offset + 1]}", tagID: "${tagIDs[1]}" } }) { document { postID tagID } }
         }
       `)
-      expect(res.data!.like1.document.postID).toBeDefined()
-      expect(res.data!.like2.document.postID).toBeDefined()
-      expect(res.data!.postTag1.document.postID).toBeDefined()
-      expect(res.data!.postTag1.document.tagID).toBeDefined()
-      expect(res.data!.postTag2.document.postID).toBeDefined()
-      expect(res.data!.postTag2.document.tagID).toBeDefined()
-      expect(res.data!.postTag3.document.postID).toBeDefined()
-      expect(res.data!.postTag3.document.tagID).toBeDefined()
     }
 
     // /!\ Calls need to be made sequentially as the DID used for signing gets changed
@@ -194,79 +190,14 @@ describe('social network', () => {
     await likeAndTag(user2, 1)
     await likeAndTag(user3, 2)
 
-    // Check likes exist in index
-    const likeModelID = composite.getModelID('Like')!
-    await expect(ceramic.index.count({ model: likeModelID })).resolves.toBe(6)
-    await expect(
-      ceramic.index.count({
-        model: likeModelID,
-        account: user1.id,
-        queryFilters: { where: { postID: { equalTo: postIDs[0] } } },
-      }),
-    ).resolves.toBe(1)
-    await expect(
-      ceramic.index.count({
-        model: likeModelID,
-        account: user1.id,
-        queryFilters: { where: { postID: { equalTo: postIDs[1] } } },
-      }),
-    ).resolves.toBe(1)
-    await expect(
-      ceramic.index.count({
-        model: likeModelID,
-        account: user2.id,
-        queryFilters: { where: { postID: { equalTo: postIDs[1] } } },
-      }),
-    ).resolves.toBe(1)
-    await expect(
-      ceramic.index.count({
-        model: likeModelID,
-        account: user2.id,
-        queryFilters: { where: { postID: { equalTo: postIDs[2] } } },
-      }),
-    ).resolves.toBe(1)
-    await expect(
-      ceramic.index.count({
-        model: likeModelID,
-        account: user3.id,
-        queryFilters: { where: { postID: { equalTo: postIDs[2] } } },
-      }),
-    ).resolves.toBe(1)
-    await expect(
-      ceramic.index.count({
-        model: likeModelID,
-        account: user3.id,
-        queryFilters: { where: { postID: { equalTo: postIDs[3] } } },
-      }),
-    ).resolves.toBe(1)
-
-    // Check postTags exist in index
-    const postTagModelID = composite.getModelID('PostTag')!
-    await expect(ceramic.index.count({ model: postTagModelID })).resolves.toBe(9)
-    const postTags = await ceramic.index.query({ model: postTagModelID, first: 10 })
-    expect(postTags.edges).toHaveLength(9)
-
     await expect(
       runtime.executeQuery(`
       fragment TagOfPostTag on PostTag { tag { ...on Tag { name } } }
       fragment TextOfPostTag on PostTag { post { ...on TextPost { text } } }
 
       query {
-        textPostIndex(first: 10) { 
-          edges { 
-            node { 
-              likesCount
-              postTagsCount
-              user1Like: like(account: "${user1.id}") { date }
-              user2Like: like(account: "${user2.id}") { date }
-              user3Like: like(account: "${user3.id}") { date }
-              allTags: postTags(first: 10) { edges { node { ...TagOfPostTag } } }
-              user1Tags: postTags(account: "${user1.id}", first: 10) { edges { node { ...TagOfPostTag } } }
-              user2Tags: postTags(account: "${user2.id}", first: 10) { edges { node { ...TagOfPostTag } } }
-              user3Tags: postTags(account: "${user3.id}", first: 10) { edges { node { ...TagOfPostTag } } }
-            }
-          }
-        }
+        likeCount
+        postTagCount
         tagIndex(first: 10) { 
           edges { 
             node { 
@@ -285,6 +216,108 @@ describe('social network', () => {
             } 
           } 
         }
+        textPostIndex(first: 10) { 
+          edges { 
+            node { 
+              likesCount
+              postTagsCount
+              user1Like: like(account: "${user1.id}") { date }
+              user2Like: like(account: "${user2.id}") { date }
+              user3Like: like(account: "${user3.id}") { date }
+              allTags: postTags(first: 10) { edges { node { ...TagOfPostTag } } }
+              user1Tags: postTags(account: "${user1.id}", first: 10) { edges { node { ...TagOfPostTag } } }
+              user2Tags: postTags(account: "${user2.id}", first: 10) { edges { node { ...TagOfPostTag } } }
+              user3Tags: postTags(account: "${user3.id}", first: 10) { edges { node { ...TagOfPostTag } } }
+            }
+          }
+        }
+        
+      }
+    `),
+    ).resolves.toMatchSnapshot()
+  })
+
+  test('untag and unlike posts', async () => {
+    const postsResult = await runtime.executeQuery<{
+      postIndex: { edges: Array<{ node: { id: string } }> }
+    }>(`query { postIndex(last: 10) { edges { node { id } } } }`)
+    const postIDs = postsResult.data!.postIndex.edges.map((e) => e.node.id)
+
+    async function unlikeAndUntag(user: DID) {
+      ceramic.did = user
+      const userResult = await runtime.executeQuery<{
+        viewer: {
+          likeList: { edges: Array<{ node: { id: string } }> }
+          postTagList: { edges: Array<{ node: { id: string } }> }
+        }
+      }>(`
+        query {
+          viewer {
+            likeList(first: 1) { edges { node { id } } } 
+            postTagList(first: 1) { edges { node { id } } } 
+          } 
+        }
+      `)
+      const likeID = userResult.data!.viewer.likeList.edges[0].node.id
+      const postTagID = userResult.data!.viewer.postTagList.edges[0].node.id
+
+      await runtime.executeQuery<{
+        like: { document: { postID: string } }
+        postTag: { document: { postID: string; tagID: string } }
+      }>(`
+        mutation removeTagsAndLikes {
+          like: enableIndexingLike(input: { id: "${likeID}", shouldIndex: false }) { document { postID } }
+          postTag: enableIndexingPostTag(input: { id: "${postTagID}", shouldIndex: false }) { document { postID tagID } }
+        }
+      `)
+    }
+
+    // /!\ Calls need to be made sequentially as the DID used for signing gets changed
+    await unlikeAndUntag(user1)
+    await unlikeAndUntag(user2)
+
+    await expect(
+      runtime.executeQuery(`
+      fragment TagOfPostTag on PostTag { tag { ...on Tag { name } } }
+      fragment TextOfPostTag on PostTag { post { ...on TextPost { text } } }
+
+      query {
+        likeCount
+        postTagCount
+        tagIndex(first: 10) { 
+          edges { 
+            node { 
+              name
+              postTagsCount
+              postTags(first: 10) { edges { node { ...TextOfPostTag } } }
+              user1Post1: postTag(account: "${user1.id}", with: { postID: "${postIDs[0]}" }) { ...TextOfPostTag }
+              user1Post2: postTag(account: "${user1.id}", with: { postID: "${postIDs[1]}" }) { ...TextOfPostTag }
+              user1Post3: postTag(account: "${user1.id}", with: { postID: "${postIDs[2]}" }) { ...TextOfPostTag }
+              user2Post1: postTag(account: "${user2.id}", with: { postID: "${postIDs[0]}" }) { ...TextOfPostTag }
+              user2Post2: postTag(account: "${user2.id}", with: { postID: "${postIDs[1]}" }) { ...TextOfPostTag }
+              user2Post3: postTag(account: "${user2.id}", with: { postID: "${postIDs[2]}" }) { ...TextOfPostTag }
+              user3Post1: postTag(account: "${user3.id}", with: { postID: "${postIDs[0]}" }) { ...TextOfPostTag }
+              user3Post2: postTag(account: "${user3.id}", with: { postID: "${postIDs[1]}" }) { ...TextOfPostTag }
+              user3Post3: postTag(account: "${user3.id}", with: { postID: "${postIDs[2]}" }) { ...TextOfPostTag }
+            } 
+          } 
+        }
+        textPostIndex(first: 10) { 
+          edges { 
+            node { 
+              likesCount
+              postTagsCount
+              user1Like: like(account: "${user1.id}") { date }
+              user2Like: like(account: "${user2.id}") { date }
+              user3Like: like(account: "${user3.id}") { date }
+              allTags: postTags(first: 10) { edges { node { ...TagOfPostTag } } }
+              user1Tags: postTags(account: "${user1.id}", first: 10) { edges { node { ...TagOfPostTag } } }
+              user2Tags: postTags(account: "${user2.id}", first: 10) { edges { node { ...TagOfPostTag } } }
+              user3Tags: postTags(account: "${user3.id}", first: 10) { edges { node { ...TagOfPostTag } } }
+            }
+          }
+        }
+        
       }
     `),
     ).resolves.toMatchSnapshot()
