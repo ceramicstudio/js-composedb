@@ -1159,30 +1159,14 @@ exports[`social network tag and like posts 1`] = `
                 "text": "Hello world",
               },
             },
-            "user1Post2": {
-              "post": null,
-            },
-            "user1Post3": {
-              "post": null,
-            },
-            "user2Post1": {
-              "post": null,
-            },
-            "user2Post2": {
-              "post": null,
-            },
-            "user2Post3": {
-              "post": null,
-            },
-            "user3Post1": {
-              "post": null,
-            },
-            "user3Post2": {
-              "post": null,
-            },
-            "user3Post3": {
-              "post": null,
-            },
+            "user1Post2": null,
+            "user1Post3": null,
+            "user2Post1": null,
+            "user2Post2": null,
+            "user2Post3": null,
+            "user3Post1": null,
+            "user3Post2": null,
+            "user3Post3": null,
           },
         },
         {
@@ -1217,27 +1201,13 @@ exports[`social network tag and like posts 1`] = `
                 "text": "ComposeDB on Ceramic",
               },
             },
-            "user1Post3": {
-              "post": null,
-            },
-            "user2Post1": {
-              "post": null,
-            },
-            "user2Post2": {
-              "post": null,
-            },
-            "user2Post3": {
-              "post": null,
-            },
-            "user3Post1": {
-              "post": null,
-            },
-            "user3Post2": {
-              "post": null,
-            },
-            "user3Post3": {
-              "post": null,
-            },
+            "user1Post3": null,
+            "user2Post1": null,
+            "user2Post2": null,
+            "user2Post3": null,
+            "user3Post1": null,
+            "user3Post2": null,
+            "user3Post3": null,
           },
         },
         {
@@ -1255,35 +1225,19 @@ exports[`social network tag and like posts 1`] = `
               ],
             },
             "postTagsCount": 1,
-            "user1Post1": {
-              "post": null,
-            },
-            "user1Post2": {
-              "post": null,
-            },
-            "user1Post3": {
-              "post": null,
-            },
-            "user2Post1": {
-              "post": null,
-            },
+            "user1Post1": null,
+            "user1Post2": null,
+            "user1Post3": null,
+            "user2Post1": null,
             "user2Post2": {
               "post": {
                 "text": "ComposeDB on Ceramic",
               },
             },
-            "user2Post3": {
-              "post": null,
-            },
-            "user3Post1": {
-              "post": null,
-            },
-            "user3Post2": {
-              "post": null,
-            },
-            "user3Post3": {
-              "post": null,
-            },
+            "user2Post3": null,
+            "user3Post1": null,
+            "user3Post2": null,
+            "user3Post3": null,
           },
         },
         {
@@ -1308,18 +1262,10 @@ exports[`social network tag and like posts 1`] = `
               ],
             },
             "postTagsCount": 2,
-            "user1Post1": {
-              "post": null,
-            },
-            "user1Post2": {
-              "post": null,
-            },
-            "user1Post3": {
-              "post": null,
-            },
-            "user2Post1": {
-              "post": null,
-            },
+            "user1Post1": null,
+            "user1Post2": null,
+            "user1Post3": null,
+            "user2Post1": null,
             "user2Post2": {
               "post": {
                 "text": "ComposeDB on Ceramic",
@@ -1330,15 +1276,9 @@ exports[`social network tag and like posts 1`] = `
                 "text": "Testing ComposeDB",
               },
             },
-            "user3Post1": {
-              "post": null,
-            },
-            "user3Post2": {
-              "post": null,
-            },
-            "user3Post3": {
-              "post": null,
-            },
+            "user3Post1": null,
+            "user3Post2": null,
+            "user3Post3": null,
           },
         },
         {
@@ -1356,30 +1296,14 @@ exports[`social network tag and like posts 1`] = `
               ],
             },
             "postTagsCount": 1,
-            "user1Post1": {
-              "post": null,
-            },
-            "user1Post2": {
-              "post": null,
-            },
-            "user1Post3": {
-              "post": null,
-            },
-            "user2Post1": {
-              "post": null,
-            },
-            "user2Post2": {
-              "post": null,
-            },
-            "user2Post3": {
-              "post": null,
-            },
-            "user3Post1": {
-              "post": null,
-            },
-            "user3Post2": {
-              "post": null,
-            },
+            "user1Post1": null,
+            "user1Post2": null,
+            "user1Post3": null,
+            "user2Post1": null,
+            "user2Post2": null,
+            "user2Post3": null,
+            "user3Post1": null,
+            "user3Post2": null,
             "user3Post3": {
               "post": {
                 "text": "Testing ComposeDB",
@@ -1409,30 +1333,14 @@ exports[`social network tag and like posts 1`] = `
               ],
             },
             "postTagsCount": 2,
-            "user1Post1": {
-              "post": null,
-            },
-            "user1Post2": {
-              "post": null,
-            },
-            "user1Post3": {
-              "post": null,
-            },
-            "user2Post1": {
-              "post": null,
-            },
-            "user2Post2": {
-              "post": null,
-            },
-            "user2Post3": {
-              "post": null,
-            },
-            "user3Post1": {
-              "post": null,
-            },
-            "user3Post2": {
-              "post": null,
-            },
+            "user1Post1": null,
+            "user1Post2": null,
+            "user1Post3": null,
+            "user2Post1": null,
+            "user2Post2": null,
+            "user2Post3": null,
+            "user3Post1": null,
+            "user3Post2": null,
             "user3Post3": {
               "post": {
                 "text": "Testing ComposeDB",
@@ -1487,15 +1395,11 @@ exports[`social network tag and like posts 1`] = `
                 },
               ],
             },
-            "user2Like": {
-              "date": null,
-            },
+            "user2Like": null,
             "user2Tags": {
               "edges": [],
             },
-            "user3Like": {
-              "date": null,
-            },
+            "user3Like": null,
             "user3Tags": {
               "edges": [],
             },
@@ -1565,9 +1469,7 @@ exports[`social network tag and like posts 1`] = `
                 },
               ],
             },
-            "user3Like": {
-              "date": null,
-            },
+            "user3Like": null,
             "user3Tags": {
               "edges": [],
             },
@@ -1602,9 +1504,7 @@ exports[`social network tag and like posts 1`] = `
             },
             "likesCount": 2,
             "postTagsCount": 3,
-            "user1Like": {
-              "date": null,
-            },
+            "user1Like": null,
             "user1Tags": {
               "edges": [],
             },
@@ -1660,15 +1560,11 @@ exports[`social network tag and like posts 1`] = `
             },
             "likesCount": 1,
             "postTagsCount": 1,
-            "user1Like": {
-              "date": null,
-            },
+            "user1Like": null,
             "user1Tags": {
               "edges": [],
             },
-            "user2Like": {
-              "date": null,
-            },
+            "user2Like": null,
             "user2Tags": {
               "edges": [],
             },
@@ -1695,21 +1591,15 @@ exports[`social network tag and like posts 1`] = `
             },
             "likesCount": 0,
             "postTagsCount": 0,
-            "user1Like": {
-              "date": null,
-            },
+            "user1Like": null,
             "user1Tags": {
               "edges": [],
             },
-            "user2Like": {
-              "date": null,
-            },
+            "user2Like": null,
             "user2Tags": {
               "edges": [],
             },
-            "user3Like": {
-              "date": null,
-            },
+            "user3Like": null,
             "user3Tags": {
               "edges": [],
             },
@@ -1722,21 +1612,15 @@ exports[`social network tag and like posts 1`] = `
             },
             "likesCount": 0,
             "postTagsCount": 0,
-            "user1Like": {
-              "date": null,
-            },
+            "user1Like": null,
             "user1Tags": {
               "edges": [],
             },
-            "user2Like": {
-              "date": null,
-            },
+            "user2Like": null,
             "user2Tags": {
               "edges": [],
             },
-            "user3Like": {
-              "date": null,
-            },
+            "user3Like": null,
             "user3Tags": {
               "edges": [],
             },
@@ -1749,21 +1633,15 @@ exports[`social network tag and like posts 1`] = `
             },
             "likesCount": 0,
             "postTagsCount": 0,
-            "user1Like": {
-              "date": null,
-            },
+            "user1Like": null,
             "user1Tags": {
               "edges": [],
             },
-            "user2Like": {
-              "date": null,
-            },
+            "user2Like": null,
             "user2Tags": {
               "edges": [],
             },
-            "user3Like": {
-              "date": null,
-            },
+            "user3Like": null,
             "user3Tags": {
               "edges": [],
             },
@@ -1776,21 +1654,15 @@ exports[`social network tag and like posts 1`] = `
             },
             "likesCount": 0,
             "postTagsCount": 0,
-            "user1Like": {
-              "date": null,
-            },
+            "user1Like": null,
             "user1Tags": {
               "edges": [],
             },
-            "user2Like": {
-              "date": null,
-            },
+            "user2Like": null,
             "user2Tags": {
               "edges": [],
             },
-            "user3Like": {
-              "date": null,
-            },
+            "user3Like": null,
             "user3Tags": {
               "edges": [],
             },
@@ -1803,21 +1675,15 @@ exports[`social network tag and like posts 1`] = `
             },
             "likesCount": 0,
             "postTagsCount": 0,
-            "user1Like": {
-              "date": null,
-            },
+            "user1Like": null,
             "user1Tags": {
               "edges": [],
             },
-            "user2Like": {
-              "date": null,
-            },
+            "user2Like": null,
             "user2Tags": {
               "edges": [],
             },
-            "user3Like": {
-              "date": null,
-            },
+            "user3Like": null,
             "user3Tags": {
               "edges": [],
             },
@@ -1844,30 +1710,14 @@ exports[`social network untag and unlike posts 1`] = `
             },
             "postTagsCount": 0,
             "user1Post1": null,
-            "user1Post2": {
-              "post": null,
-            },
-            "user1Post3": {
-              "post": null,
-            },
-            "user2Post1": {
-              "post": null,
-            },
-            "user2Post2": {
-              "post": null,
-            },
-            "user2Post3": {
-              "post": null,
-            },
-            "user3Post1": {
-              "post": null,
-            },
-            "user3Post2": {
-              "post": null,
-            },
-            "user3Post3": {
-              "post": null,
-            },
+            "user1Post2": null,
+            "user1Post3": null,
+            "user2Post1": null,
+            "user2Post2": null,
+            "user2Post3": null,
+            "user3Post1": null,
+            "user3Post2": null,
+            "user3Post3": null,
           },
         },
         {
@@ -1902,27 +1752,13 @@ exports[`social network untag and unlike posts 1`] = `
                 "text": "ComposeDB on Ceramic",
               },
             },
-            "user1Post3": {
-              "post": null,
-            },
-            "user2Post1": {
-              "post": null,
-            },
-            "user2Post2": {
-              "post": null,
-            },
-            "user2Post3": {
-              "post": null,
-            },
-            "user3Post1": {
-              "post": null,
-            },
-            "user3Post2": {
-              "post": null,
-            },
-            "user3Post3": {
-              "post": null,
-            },
+            "user1Post3": null,
+            "user2Post1": null,
+            "user2Post2": null,
+            "user2Post3": null,
+            "user3Post1": null,
+            "user3Post2": null,
+            "user3Post3": null,
           },
         },
         {
@@ -1932,31 +1768,15 @@ exports[`social network untag and unlike posts 1`] = `
               "edges": [],
             },
             "postTagsCount": 0,
-            "user1Post1": {
-              "post": null,
-            },
-            "user1Post2": {
-              "post": null,
-            },
-            "user1Post3": {
-              "post": null,
-            },
-            "user2Post1": {
-              "post": null,
-            },
+            "user1Post1": null,
+            "user1Post2": null,
+            "user1Post3": null,
+            "user2Post1": null,
             "user2Post2": null,
-            "user2Post3": {
-              "post": null,
-            },
-            "user3Post1": {
-              "post": null,
-            },
-            "user3Post2": {
-              "post": null,
-            },
-            "user3Post3": {
-              "post": null,
-            },
+            "user2Post3": null,
+            "user3Post1": null,
+            "user3Post2": null,
+            "user3Post3": null,
           },
         },
         {
@@ -1981,18 +1801,10 @@ exports[`social network untag and unlike posts 1`] = `
               ],
             },
             "postTagsCount": 2,
-            "user1Post1": {
-              "post": null,
-            },
-            "user1Post2": {
-              "post": null,
-            },
-            "user1Post3": {
-              "post": null,
-            },
-            "user2Post1": {
-              "post": null,
-            },
+            "user1Post1": null,
+            "user1Post2": null,
+            "user1Post3": null,
+            "user2Post1": null,
             "user2Post2": {
               "post": {
                 "text": "ComposeDB on Ceramic",
@@ -2003,15 +1815,9 @@ exports[`social network untag and unlike posts 1`] = `
                 "text": "Testing ComposeDB",
               },
             },
-            "user3Post1": {
-              "post": null,
-            },
-            "user3Post2": {
-              "post": null,
-            },
-            "user3Post3": {
-              "post": null,
-            },
+            "user3Post1": null,
+            "user3Post2": null,
+            "user3Post3": null,
           },
         },
         {
@@ -2029,30 +1835,14 @@ exports[`social network untag and unlike posts 1`] = `
               ],
             },
             "postTagsCount": 1,
-            "user1Post1": {
-              "post": null,
-            },
-            "user1Post2": {
-              "post": null,
-            },
-            "user1Post3": {
-              "post": null,
-            },
-            "user2Post1": {
-              "post": null,
-            },
-            "user2Post2": {
-              "post": null,
-            },
-            "user2Post3": {
-              "post": null,
-            },
-            "user3Post1": {
-              "post": null,
-            },
-            "user3Post2": {
-              "post": null,
-            },
+            "user1Post1": null,
+            "user1Post2": null,
+            "user1Post3": null,
+            "user2Post1": null,
+            "user2Post2": null,
+            "user2Post3": null,
+            "user3Post1": null,
+            "user3Post2": null,
             "user3Post3": {
               "post": {
                 "text": "Testing ComposeDB",
@@ -2082,30 +1872,14 @@ exports[`social network untag and unlike posts 1`] = `
               ],
             },
             "postTagsCount": 2,
-            "user1Post1": {
-              "post": null,
-            },
-            "user1Post2": {
-              "post": null,
-            },
-            "user1Post3": {
-              "post": null,
-            },
-            "user2Post1": {
-              "post": null,
-            },
-            "user2Post2": {
-              "post": null,
-            },
-            "user2Post3": {
-              "post": null,
-            },
-            "user3Post1": {
-              "post": null,
-            },
-            "user3Post2": {
-              "post": null,
-            },
+            "user1Post1": null,
+            "user1Post2": null,
+            "user1Post3": null,
+            "user2Post1": null,
+            "user2Post2": null,
+            "user2Post3": null,
+            "user3Post1": null,
+            "user3Post2": null,
             "user3Post3": {
               "post": {
                 "text": "Testing ComposeDB",
@@ -2144,15 +1918,11 @@ exports[`social network untag and unlike posts 1`] = `
                 },
               ],
             },
-            "user2Like": {
-              "date": null,
-            },
+            "user2Like": null,
             "user2Tags": {
               "edges": [],
             },
-            "user3Like": {
-              "date": null,
-            },
+            "user3Like": null,
             "user3Tags": {
               "edges": [],
             },
@@ -2206,9 +1976,7 @@ exports[`social network untag and unlike posts 1`] = `
                 },
               ],
             },
-            "user3Like": {
-              "date": null,
-            },
+            "user3Like": null,
             "user3Tags": {
               "edges": [],
             },
@@ -2243,9 +2011,7 @@ exports[`social network untag and unlike posts 1`] = `
             },
             "likesCount": 2,
             "postTagsCount": 3,
-            "user1Like": {
-              "date": null,
-            },
+            "user1Like": null,
             "user1Tags": {
               "edges": [],
             },
@@ -2301,15 +2067,11 @@ exports[`social network untag and unlike posts 1`] = `
             },
             "likesCount": 1,
             "postTagsCount": 1,
-            "user1Like": {
-              "date": null,
-            },
+            "user1Like": null,
             "user1Tags": {
               "edges": [],
             },
-            "user2Like": {
-              "date": null,
-            },
+            "user2Like": null,
             "user2Tags": {
               "edges": [],
             },
@@ -2336,21 +2098,15 @@ exports[`social network untag and unlike posts 1`] = `
             },
             "likesCount": 0,
             "postTagsCount": 0,
-            "user1Like": {
-              "date": null,
-            },
+            "user1Like": null,
             "user1Tags": {
               "edges": [],
             },
-            "user2Like": {
-              "date": null,
-            },
+            "user2Like": null,
             "user2Tags": {
               "edges": [],
             },
-            "user3Like": {
-              "date": null,
-            },
+            "user3Like": null,
             "user3Tags": {
               "edges": [],
             },
@@ -2363,21 +2119,15 @@ exports[`social network untag and unlike posts 1`] = `
             },
             "likesCount": 0,
             "postTagsCount": 0,
-            "user1Like": {
-              "date": null,
-            },
+            "user1Like": null,
             "user1Tags": {
               "edges": [],
             },
-            "user2Like": {
-              "date": null,
-            },
+            "user2Like": null,
             "user2Tags": {
               "edges": [],
             },
-            "user3Like": {
-              "date": null,
-            },
+            "user3Like": null,
             "user3Tags": {
               "edges": [],
             },
@@ -2390,21 +2140,15 @@ exports[`social network untag and unlike posts 1`] = `
             },
             "likesCount": 0,
             "postTagsCount": 0,
-            "user1Like": {
-              "date": null,
-            },
+            "user1Like": null,
             "user1Tags": {
               "edges": [],
             },
-            "user2Like": {
-              "date": null,
-            },
+            "user2Like": null,
             "user2Tags": {
               "edges": [],
             },
-            "user3Like": {
-              "date": null,
-            },
+            "user3Like": null,
             "user3Tags": {
               "edges": [],
             },
@@ -2417,21 +2161,15 @@ exports[`social network untag and unlike posts 1`] = `
             },
             "likesCount": 0,
             "postTagsCount": 0,
-            "user1Like": {
-              "date": null,
-            },
+            "user1Like": null,
             "user1Tags": {
               "edges": [],
             },
-            "user2Like": {
-              "date": null,
-            },
+            "user2Like": null,
             "user2Tags": {
               "edges": [],
             },
-            "user3Like": {
-              "date": null,
-            },
+            "user3Like": null,
             "user3Tags": {
               "edges": [],
             },
@@ -2444,21 +2182,15 @@ exports[`social network untag and unlike posts 1`] = `
             },
             "likesCount": 0,
             "postTagsCount": 0,
-            "user1Like": {
-              "date": null,
-            },
+            "user1Like": null,
             "user1Tags": {
               "edges": [],
             },
-            "user2Like": {
-              "date": null,
-            },
+            "user2Like": null,
             "user2Tags": {
               "edges": [],
             },
-            "user3Like": {
-              "date": null,
-            },
+            "user3Like": null,
             "user3Tags": {
               "edges": [],
             },

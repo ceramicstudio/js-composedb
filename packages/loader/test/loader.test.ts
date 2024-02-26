@@ -223,7 +223,7 @@ describe('loader', () => {
       expect(multiQuery).not.toHaveBeenCalled()
     })
 
-    test('loadSingle() method calls ModelInstanceDocument.single() and adds the stream to the cache', async () => {
+    test('loadSingle() method loads deterministic documents using the SINGLE account relation', async () => {
       const metadata = { controller: 'did:test:123', model: testStreamID }
       const loadKey = await createDeterministicKey(metadata)
       const { id, genesis } = loadKey
@@ -252,7 +252,7 @@ describe('loader', () => {
       expect(multiQuery).toHaveBeenCalledTimes(1)
     })
 
-    test('loadSet() method calls ModelInstanceDocument.set() and adds the stream to the cache', async () => {
+    test('loadSet() method loads deterministic documents using the SET account relation', async () => {
       const metadata = { controller: 'did:test:123', model: testStreamID }
       const unique = ['foo']
       const loadKey = await createDeterministicKey({ ...metadata, unique })
