@@ -26,7 +26,9 @@ export type CreateOptions = CreateOpts & {
   shouldIndex?: boolean
 }
 
-export type DeterministicLoadOptions = CreateOptions & {
+export type DeterministicLoadOptions = CreateOpts & {
+  controller?: string
+  ignoreEmpty?: boolean
   onlyIndexed?: boolean
 }
 
@@ -197,7 +199,10 @@ export class DocumentLoader extends DataLoader<LoadKey, ModelInstanceDocument, s
     const opts = { ...DEFAULT_DETERMINISTIC_OPTIONS, ...options }
     const key = await this._getDeterministicKey(meta)
     const doc = await this.load<T>({ ...key, opts })
-    return options.onlyIndexed === false || doc.metadata.shouldIndex !== false ? doc : null
+    return (options.onlyIndexed === false || doc.metadata.shouldIndex !== false) &&
+      (!options.ignoreEmpty || doc.content != null)
+      ? doc
+      : null
   }
 
   /**
