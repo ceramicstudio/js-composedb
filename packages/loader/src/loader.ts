@@ -27,7 +27,6 @@ export type CreateOptions = CreateOpts & {
 }
 
 export type DeterministicLoadOptions = CreateOpts & {
-  controller?: string
   ignoreEmpty?: boolean
   onlyIndexed?: boolean
 }
