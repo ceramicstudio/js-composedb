@@ -5,14 +5,14 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@ceramicnetwork/3id-did-resolver': ^5.1.1-nightly.20240226002553.0
-  '@ceramicnetwork/cli': ^5.2.0-nightly.20240226002553.0
-  '@ceramicnetwork/common': ^5.1.1-nightly.20240226002553.0
-  '@ceramicnetwork/core': ^5.2.0-nightly.20240226002553.0
-  '@ceramicnetwork/http-client': ^5.1.1-nightly.20240226002553.0
-  '@ceramicnetwork/stream-model': ^4.1.1-nightly.20240226002553.0
-  '@ceramicnetwork/stream-model-instance': ^4.1.1-nightly.20240226002553.0
-  '@ceramicnetwork/streamid': ^5.0.1-nightly.20240226002553.0
+  '@ceramicnetwork/3id-did-resolver': ^5.2.0-rc.0
+  '@ceramicnetwork/cli': ^5.2.0-rc.0
+  '@ceramicnetwork/common': ^5.1.0
+  '@ceramicnetwork/core': ^5.2.0-rc.0
+  '@ceramicnetwork/http-client': ^5.2.0-rc.0
+  '@ceramicnetwork/stream-model': ^4.1.0
+  '@ceramicnetwork/stream-model-instance': ^4.2.0-rc.0
+  '@ceramicnetwork/streamid': ^5.0.0
 
 importers:
 
@@ -79,23 +79,23 @@ importers:
   packages/cli:
     dependencies:
       '@ceramicnetwork/3id-did-resolver':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.2.0-rc.0
+        version: 5.2.0-rc.0(typescript@5.3.3)
       '@ceramicnetwork/cli':
-        specifier: ^5.2.0-nightly.20240226002553.0
-        version: 5.2.0-nightly.20240226002553.0(@polkadot/util@7.9.2)(@types/express@4.17.21)(pg@8.11.3)(typescript@5.3.3)
+        specifier: ^5.2.0-rc.0
+        version: 5.2.0-rc.0(@polkadot/util@7.9.2)(@types/express@4.17.21)(pg@8.11.3)(typescript@5.3.3)
       '@ceramicnetwork/http-client':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.2.0-rc.0
+        version: 5.2.0-rc.0(typescript@5.3.3)
       '@ceramicnetwork/stream-model':
-        specifier: ^4.1.1-nightly.20240226002553.0
-        version: 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^4.1.0
+        version: 4.1.0(typescript@5.3.3)
       '@ceramicnetwork/stream-model-instance':
-        specifier: ^4.1.1-nightly.20240226002553.0
-        version: 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^4.2.0-rc.0
+        version: 4.2.0-rc.0(typescript@5.3.3)
       '@ceramicnetwork/streamid':
-        specifier: ^5.0.1-nightly.20240226002553.0
-        version: 5.0.1-nightly.20240226002553.0
+        specifier: ^5.0.0
+        version: 5.0.0
       '@composedb/client':
         specifier: workspace:^
         version: link:../client
@@ -155,8 +155,8 @@ importers:
         version: 5.0.2
     devDependencies:
       '@ceramicnetwork/common':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.1.0
+        version: 5.1.0(typescript@5.3.3)
       '@composedb/types':
         specifier: workspace:^
         version: link:../types
@@ -197,14 +197,14 @@ importers:
   packages/client:
     dependencies:
       '@ceramicnetwork/http-client':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.2.0-rc.0
+        version: 5.2.0-rc.0(typescript@5.3.3)
       '@ceramicnetwork/stream-model':
-        specifier: ^4.1.1-nightly.20240226002553.0
-        version: 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^4.1.0
+        version: 4.1.0(typescript@5.3.3)
       '@ceramicnetwork/stream-model-instance':
-        specifier: ^4.1.1-nightly.20240226002553.0
-        version: 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^4.2.0-rc.0
+        version: 4.2.0-rc.0(typescript@5.3.3)
       '@composedb/constants':
         specifier: workspace:^
         version: link:../constants
@@ -234,8 +234,8 @@ importers:
         version: 0.10.0(graphql@16.8.1)
     devDependencies:
       '@ceramicnetwork/common':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.1.0
+        version: 5.1.0(typescript@5.3.3)
       '@composedb/devtools':
         specifier: workspace:^
         version: link:../devtools
@@ -260,14 +260,14 @@ importers:
   packages/devtools:
     dependencies:
       '@ceramicnetwork/common':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.1.0
+        version: 5.1.0(typescript@5.3.3)
       '@ceramicnetwork/stream-model':
-        specifier: ^4.1.1-nightly.20240226002553.0
-        version: 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^4.1.0
+        version: 4.1.0(typescript@5.3.3)
       '@ceramicnetwork/streamid':
-        specifier: ^5.0.1-nightly.20240226002553.0
-        version: 5.0.1-nightly.20240226002553.0
+        specifier: ^5.0.0
+        version: 5.0.0
       '@composedb/graphql-scalars':
         specifier: workspace:^
         version: link:../graphql-scalars
@@ -339,8 +339,8 @@ importers:
   packages/devtools-node:
     dependencies:
       '@ceramicnetwork/http-client':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.2.0-rc.0
+        version: 5.2.0-rc.0(typescript@5.3.3)
       '@composedb/client':
         specifier: workspace:^
         version: link:../client
@@ -370,8 +370,8 @@ importers:
   packages/graphql-scalars:
     dependencies:
       '@ceramicnetwork/streamid':
-        specifier: ^5.0.1-nightly.20240226002553.0
-        version: 5.0.1-nightly.20240226002553.0
+        specifier: ^5.0.0
+        version: 5.0.0
       '@composedb/types':
         specifier: workspace:^
         version: link:../types
@@ -391,8 +391,8 @@ importers:
   packages/jest-environment-composedb:
     dependencies:
       '@ceramicnetwork/core':
-        specifier: ^5.2.0-nightly.20240226002553.0
-        version: 5.2.0-nightly.20240226002553.0(@polkadot/util@7.9.2)(typescript@5.3.3)
+        specifier: ^5.2.0-rc.0
+        version: 5.2.0-rc.0(@polkadot/util@7.9.2)(typescript@5.3.3)
       dids:
         specifier: ^5.0.2
         version: 5.0.2(typescript@5.3.3)
@@ -418,18 +418,18 @@ importers:
   packages/loader:
     dependencies:
       '@ceramicnetwork/stream-model-instance':
-        specifier: ^4.1.1-nightly.20240226002553.0
-        version: 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^4.2.0-rc.0
+        version: 4.2.0-rc.0(typescript@5.3.3)
       '@ceramicnetwork/streamid':
-        specifier: ^5.0.1-nightly.20240226002553.0
-        version: 5.0.1-nightly.20240226002553.0
+        specifier: ^5.0.0
+        version: 5.0.0
       dataloader:
         specifier: ^2.2.2
         version: 2.2.2
     devDependencies:
       '@ceramicnetwork/common':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.1.0
+        version: 5.1.0(typescript@5.3.3)
       '@composedb/devtools':
         specifier: workspace:^
         version: link:../devtools
@@ -449,17 +449,17 @@ importers:
   packages/runtime:
     dependencies:
       '@ceramicnetwork/http-client':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.2.0-rc.0
+        version: 5.2.0-rc.0(typescript@5.3.3)
       '@ceramicnetwork/stream-model':
-        specifier: ^4.1.1-nightly.20240226002553.0
-        version: 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^4.1.0
+        version: 4.1.0(typescript@5.3.3)
       '@ceramicnetwork/stream-model-instance':
-        specifier: ^4.1.1-nightly.20240226002553.0
-        version: 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^4.2.0-rc.0
+        version: 4.2.0-rc.0(typescript@5.3.3)
       '@ceramicnetwork/streamid':
-        specifier: ^5.0.1-nightly.20240226002553.0
-        version: 5.0.1-nightly.20240226002553.0
+        specifier: ^5.0.0
+        version: 5.0.0
       '@composedb/graphql-scalars':
         specifier: workspace:^
         version: link:../graphql-scalars
@@ -474,8 +474,8 @@ importers:
         version: 0.10.0(graphql@16.8.1)
     devDependencies:
       '@ceramicnetwork/common':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.1.0
+        version: 5.1.0(typescript@5.3.3)
       '@composedb/devtools':
         specifier: workspace:^
         version: link:../devtools
@@ -507,8 +507,8 @@ importers:
   packages/server:
     dependencies:
       '@ceramicnetwork/http-client':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.2.0-rc.0
+        version: 5.2.0-rc.0(typescript@5.3.3)
       '@composedb/constants':
         specifier: workspace:^
         version: link:../constants
@@ -526,8 +526,8 @@ importers:
         version: 5.1.1(graphql@16.8.1)
     devDependencies:
       '@ceramicnetwork/common':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.1.0
+        version: 5.1.0(typescript@5.3.3)
       '@composedb/loader':
         specifier: workspace:^
         version: link:../loader
@@ -543,20 +543,20 @@ importers:
   packages/types:
     dependencies:
       '@ceramicnetwork/common':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.1.0
+        version: 5.1.0(typescript@5.3.3)
       '@ceramicnetwork/core':
-        specifier: ^5.2.0-nightly.20240226002553.0
-        version: 5.2.0-nightly.20240226002553.0(@polkadot/util@7.9.2)(typescript@5.3.3)
+        specifier: ^5.2.0-rc.0
+        version: 5.2.0-rc.0(@polkadot/util@7.9.2)(typescript@5.3.3)
       '@ceramicnetwork/http-client':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.2.0-rc.0
+        version: 5.2.0-rc.0(typescript@5.3.3)
       '@ceramicnetwork/stream-model':
-        specifier: ^4.1.1-nightly.20240226002553.0
-        version: 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^4.1.0
+        version: 4.1.0(typescript@5.3.3)
       '@ceramicnetwork/stream-model-instance':
-        specifier: ^4.1.1-nightly.20240226002553.0
-        version: 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^4.2.0-rc.0
+        version: 4.2.0-rc.0(typescript@5.3.3)
       dids:
         specifier: ^5.0.2
         version: 5.0.2(typescript@5.3.3)
@@ -567,14 +567,14 @@ importers:
   website:
     dependencies:
       '@ceramicnetwork/cli':
-        specifier: ^5.2.0-nightly.20240226002553.0
-        version: 5.2.0-nightly.20240226002553.0(@polkadot/util@7.9.2)(@types/express@4.17.21)(pg@8.11.3)(typescript@5.3.3)
+        specifier: ^5.2.0-rc.0
+        version: 5.2.0-rc.0(@polkadot/util@7.9.2)(@types/express@4.17.21)(pg@8.11.3)(typescript@5.3.3)
       '@ceramicnetwork/common':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.1.0
+        version: 5.1.0(typescript@5.3.3)
       '@ceramicnetwork/http-client':
-        specifier: ^5.1.1-nightly.20240226002553.0
-        version: 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+        specifier: ^5.2.0-rc.0
+        version: 5.2.0-rc.0(typescript@5.3.3)
       '@composedb/client':
         specifier: workspace:^
         version: link:../packages/client
@@ -2967,12 +2967,12 @@ packages:
   /@bcoe/v8-coverage@0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  /@ceramicnetwork/3id-did-resolver@5.1.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-OPNAvTPmjAOziUb3f5+tfuqBg6YGHSmEE5Us2k3hWDAiyeXd9Wo5n4+fgRQn+uhGF9uZtD/H4ChH5sGQ8l5ybA==}
+  /@ceramicnetwork/3id-did-resolver@5.2.0-rc.0(typescript@5.3.3):
+    resolution: {integrity: sha512-mqTuXT/lda4QxxbRDOGOHPZVJ+gBuEGG1a/aRbHIN4saT2AS/amUTLzZsC+1tYEQZERejeG4cf1r7LmVnwvxpA==}
     dependencies:
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-tile': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-tile': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/streamid': 5.0.0
       least-recent: 1.0.3
       multiformats: 13.1.0
       uint8arrays: 5.0.2
@@ -2984,10 +2984,10 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/anchor-listener@4.1.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-B2hXV3OmKjihN3Ak19XNINVz10iFbruir4DeYX0C2T0Ov4AKca+AYef1fRvkMz7zv9VOHFw0f3GmSABumDYJZg==}
+  /@ceramicnetwork/anchor-listener@4.1.0(typescript@5.3.3):
+    resolution: {integrity: sha512-x+jXMAkOaaNTXIJ7WzP+lEL6VdBs6Z4Xx2JrYoO1cDJjhO0Kdc/JDZljJlDecN6keRBlaXvU3QJdKRyY2CoeFA==}
     dependencies:
-      '@ceramicnetwork/anchor-utils': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
+      '@ceramicnetwork/anchor-utils': 4.1.0(typescript@5.3.3)
       '@ethersproject/providers': 5.7.2
       rxjs: 7.8.1
     transitivePeerDependencies:
@@ -2998,10 +2998,10 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/anchor-utils@4.1.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-yCX/kkrjsiotCPVNoCuIpN7s0EmjZnVYcNAaiKqXaJRAfKZseTXHR1d2Vs/FExsKd1Xq4gRzhM+UcuczKqWYOA==}
+  /@ceramicnetwork/anchor-utils@4.1.0(typescript@5.3.3):
+    resolution: {integrity: sha512-wcx2bOFzmclJRYsYI506OPUeMHdwbKkDX+5V8mkHTwuA+CQn0QNf6Wl7AUUu5Tq0P/S9mcGDh5x4+MmS2Izhcw==}
     dependencies:
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
       '@ethersproject/abi': 5.7.0
       multiformats: 13.1.0
       uint8arrays: 5.0.2
@@ -3013,10 +3013,10 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/blockchain-utils-linking@5.0.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-9bHMtEDo3wdvpYilhWKyATnWXeF1sItD4KCSItWC9UKgivCUxS4gJPLPeCEePNvVF28cca1JCKO2VTL+9bkKYg==}
+  /@ceramicnetwork/blockchain-utils-linking@5.0.0(typescript@5.3.3):
+    resolution: {integrity: sha512-9WzcRioVzbaxkA9+YTCa+UiOqJnprrK5r3BopPE7gDVk69vpdoEYjf3kP+gmHSQyFUFArwSO9vuYbJ8JQr1k0A==}
     dependencies:
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/streamid': 5.0.0
       '@didtools/cacao': 3.0.1(typescript@5.3.3)
       '@stablelib/random': 1.0.2
       '@stablelib/sha256': 1.0.1
@@ -3031,11 +3031,11 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/blockchain-utils-validation@5.1.1-nightly.20240226002553.0(@polkadot/util@7.9.2)(typescript@5.3.3):
-    resolution: {integrity: sha512-VvSteYeWWVZ6SvAoZhVjf0dOiyMwt4+kpYz94tqtZ+4747FbCYgmLZi0yRxS8m91BRO5jJ9zQHHBuIw+QaZ/CA==}
+  /@ceramicnetwork/blockchain-utils-validation@5.1.0(@polkadot/util@7.9.2)(typescript@5.3.3):
+    resolution: {integrity: sha512-Fq9f4tg1IH/B/I4sXv8vEV8ZGojBSA6FyERk3wSDijSIF6q53IOoKs8mGUVqB2zRfhc7pRx17PrGog9IfsDy1w==}
     dependencies:
-      '@ceramicnetwork/blockchain-utils-linking': 5.0.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+      '@ceramicnetwork/blockchain-utils-linking': 5.0.0(typescript@5.3.3)
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
       '@ethersproject/contracts': 5.7.0
       '@ethersproject/providers': 5.7.2
       '@ethersproject/wallet': 5.7.0
@@ -3058,23 +3058,23 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/cli@5.2.0-nightly.20240226002553.0(@polkadot/util@7.9.2)(@types/express@4.17.21)(pg@8.11.3)(typescript@5.3.3):
-    resolution: {integrity: sha512-+mprDbG028qMSFG3e9AQGNU/92ptK0C5Hy47Xt7Vr/6i0EYwp6C8XbWaksDSkXlXfeB0RGjCE8Ry/faiWenekA==}
+  /@ceramicnetwork/cli@5.2.0-rc.0(@polkadot/util@7.9.2)(@types/express@4.17.21)(pg@8.11.3)(typescript@5.3.3):
+    resolution: {integrity: sha512-6pp1DVCK5G+cmVmKFA9WgEhSkvimDR2joNwtD30uOflqocDWf47CFAgQ2Ix3UjdHVcwSB2aoIx4mtEuHIiZ8TA==}
     engines: {node: '>=20.8'}
     hasBin: true
     dependencies:
       '@awaitjs/express': 0.9.0(@types/express@4.17.21)(express@4.18.2)
-      '@ceramicnetwork/3id-did-resolver': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/codecs': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/core': 5.2.0-nightly.20240226002553.0(@polkadot/util@7.9.2)(typescript@5.3.3)
-      '@ceramicnetwork/http-client': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/indexing': 4.2.0-nightly.20240226002553.0(pg@8.11.3)(sqlite3@5.1.7)(typescript@5.3.3)
-      '@ceramicnetwork/ipfs-daemon': 5.2.0-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/logger': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/3id-did-resolver': 5.2.0-rc.0(typescript@5.3.3)
+      '@ceramicnetwork/codecs': 4.1.0(typescript@5.3.3)
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/core': 5.2.0-rc.0(@polkadot/util@7.9.2)(typescript@5.3.3)
+      '@ceramicnetwork/http-client': 5.2.0-rc.0(typescript@5.3.3)
+      '@ceramicnetwork/indexing': 4.2.0-rc.0(pg@8.11.3)(sqlite3@5.1.7)(typescript@5.3.3)
+      '@ceramicnetwork/ipfs-daemon': 5.2.0-rc.0(typescript@5.3.3)
+      '@ceramicnetwork/logger': 5.0.0
       '@ceramicnetwork/observability': 1.4.4
-      '@ceramicnetwork/stream-tile': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/stream-tile': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/streamid': 5.0.0
       '@stablelib/random': 1.0.2
       aws-sdk: 2.1563.0
       commander: 9.5.0
@@ -3118,11 +3118,11 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/codecs@4.1.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-2uI+hpvgvaH1DbERG40SLN0DfkWkDAikheTJEk9ck2XHLvl2F54pf93nrSy7xfnEm7/aY1HNNpz/H5V7laap3g==}
+  /@ceramicnetwork/codecs@4.1.0(typescript@5.3.3):
+    resolution: {integrity: sha512-A8AGQ8m+Kvl4T7hLY0bsOgjoO9Lsyn4WJ9VJ1mUEsRaDpFwfTrREEWmf6WmCOE9OwpdNXk2/8dDQIj0l/GSpmQ==}
     dependencies:
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/streamid': 5.0.0
       cartonne: 3.0.1
       codeco: 1.2.1
       dag-jose: 4.0.0
@@ -3136,10 +3136,10 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/common@5.1.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-aMwSbU+/p4Jwka9pa0ZUcHljcRnsEkE3GWLFwoVzdjCTN5IEFEzs8JXuIhSnwCSRiBLmsp2uDZrrk1X1zkGG9g==}
+  /@ceramicnetwork/common@5.1.0(typescript@5.3.3):
+    resolution: {integrity: sha512-thgtcfVYML2JRjU/HXe6kkq54rhnp6wRqRs47UG24aoYxj8cnPRwaDdJWn03n0r1elRH9FNIeOr5NiZkqnkI8Q==}
     dependencies:
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/streamid': 5.0.0
       '@didtools/cacao': 3.0.1(typescript@5.3.3)
       '@didtools/pkh-ethereum': 0.2.1
       '@didtools/pkh-solana': 0.2.0(typescript@5.3.3)
@@ -3163,29 +3163,29 @@ packages:
       - utf-8-validate
       - zod
 
-  /@ceramicnetwork/core@5.2.0-nightly.20240226002553.0(@polkadot/util@7.9.2)(typescript@5.3.3):
-    resolution: {integrity: sha512-k7OpRs0Vbua136DpqdxwkxykXdQZeR59SAoBwhGOtrPGrvh2d11q9ymI8/w3Oi0s1XFMHvN3UwpY/n9Iip4YAw==}
+  /@ceramicnetwork/core@5.2.0-rc.0(@polkadot/util@7.9.2)(typescript@5.3.3):
+    resolution: {integrity: sha512-4kSptmkm6jp0DRXfklmtZMWuB9EclZ7L7BEZ81UmCwRNF5l2EyFeIdiFM+A9jDuzGGUe/Y5DYPrwyU/g7qqLNw==}
     engines: {node: '>=20.8'}
     dependencies:
-      '@ceramicnetwork/anchor-listener': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/anchor-utils': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/codecs': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/indexing': 4.2.0-nightly.20240226002553.0(pg@8.11.3)(sqlite3@5.1.7)(typescript@5.3.3)
-      '@ceramicnetwork/ipfs-topology': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/job-queue': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
+      '@ceramicnetwork/anchor-listener': 4.1.0(typescript@5.3.3)
+      '@ceramicnetwork/anchor-utils': 4.1.0(typescript@5.3.3)
+      '@ceramicnetwork/codecs': 4.1.0(typescript@5.3.3)
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/indexing': 4.2.0-rc.0(pg@8.11.3)(sqlite3@5.1.7)(typescript@5.3.3)
+      '@ceramicnetwork/ipfs-topology': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/job-queue': 4.2.0-rc.0(typescript@5.3.3)
       '@ceramicnetwork/observability': 1.4.4
-      '@ceramicnetwork/pinning-aggregation': 5.1.1-nightly.20240226002553.0
-      '@ceramicnetwork/pinning-ipfs-backend': 5.1.1-nightly.20240226002553.0
-      '@ceramicnetwork/stream-caip10-link': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-caip10-link-handler': 5.2.0-nightly.20240226002553.0(@polkadot/util@7.9.2)(typescript@5.3.3)
-      '@ceramicnetwork/stream-model': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-model-handler': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-model-instance': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-model-instance-handler': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-tile': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-tile-handler': 5.2.0-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/pinning-aggregation': 5.1.0
+      '@ceramicnetwork/pinning-ipfs-backend': 5.1.0
+      '@ceramicnetwork/stream-caip10-link': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-caip10-link-handler': 5.2.0-rc.0(@polkadot/util@7.9.2)(typescript@5.3.3)
+      '@ceramicnetwork/stream-model': 4.1.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-model-handler': 4.2.0-rc.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-model-instance': 4.2.0-rc.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-model-instance-handler': 4.2.0-rc.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-tile': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-tile-handler': 5.2.0-rc.0(typescript@5.3.3)
+      '@ceramicnetwork/streamid': 5.0.0
       '@ceramicnetwork/wasm-bloom-filter': 0.1.0
       '@datastructures-js/priority-queue': 6.3.1
       '@ethersproject/providers': 5.7.2
@@ -3232,15 +3232,15 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/http-client@5.1.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-ed2+Pu6bJzzymPucOmqBF40FfVdRMB0ymlmeSuSQH1NCZHHztmatxUEJPXTNlogFqpjUwl9JaVyUuqUwudBSVQ==}
+  /@ceramicnetwork/http-client@5.2.0-rc.0(typescript@5.3.3):
+    resolution: {integrity: sha512-BZAmWlatrr1oSZHIRY3rYmDfl+08b9D1Am54eqpKkBsJVBrTxwDVA7DIDnVg251luzTLXGLkt+hNtNCnvhiyYQ==}
     dependencies:
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-caip10-link': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-model': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-model-instance': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-tile': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-caip10-link': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-model': 4.1.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-model-instance': 4.2.0-rc.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-tile': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/streamid': 5.0.0
       '@scarf/scarf': 1.3.0
       query-string: 7.1.3
       rxjs: 7.8.1
@@ -3252,15 +3252,15 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/indexing@4.2.0-nightly.20240226002553.0(pg@8.11.3)(sqlite3@5.1.7)(typescript@5.3.3):
-    resolution: {integrity: sha512-VtEP0yOO2hmdZ25n0OWywurh2YQPoHNQVE9jkaL13X43j2ErAbOFTUPLpw11DXTiP+HIb5Q7IOqM8jqn8NrA/g==}
+  /@ceramicnetwork/indexing@4.2.0-rc.0(pg@8.11.3)(sqlite3@5.1.7)(typescript@5.3.3):
+    resolution: {integrity: sha512-v86H9KKluL6BUJaF11Nj+GV0QivydLY0YzKUzrGJ9Q5NPOmpLOkEv0u5hUx3ZHpwyLOa447TPmC+yrWEJNOrRw==}
     dependencies:
-      '@ceramicnetwork/anchor-listener': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/anchor-utils': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/job-queue': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-model': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/anchor-listener': 4.1.0(typescript@5.3.3)
+      '@ceramicnetwork/anchor-utils': 4.1.0(typescript@5.3.3)
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/job-queue': 4.2.0-rc.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-model': 4.1.0(typescript@5.3.3)
+      '@ceramicnetwork/streamid': 5.0.0
       '@ethersproject/providers': 5.7.2
       knex: 2.5.1(pg@8.11.3)(sqlite3@5.1.7)
       lodash.clonedeep: 4.5.0
@@ -3285,12 +3285,12 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/ipfs-daemon@5.2.0-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-GLcgOQ60ebGXL1QMkAHNwvSxRF2L+DWdqI8rKJbAb1xa6/tjtwpdmq6nJgWYvlrAWOFPmyXgBFJI3rOH9Bpw+A==}
+  /@ceramicnetwork/ipfs-daemon@5.2.0-rc.0(typescript@5.3.3):
+    resolution: {integrity: sha512-GQzzDaooP7GN05UKc2g4wjEICwv/nsSpcjW0wKcaLWXRnFpgfGtSp/WopzoffolJjoSl0xp3/rMrwwRWtBT+4A==}
     hasBin: true
     dependencies:
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/ipfs-topology': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/ipfs-topology': 5.1.0(typescript@5.3.3)
       express: 4.18.2
       get-port: 7.0.0
       go-ipfs: 0.18.1
@@ -3308,10 +3308,10 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/ipfs-topology@5.1.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-gccHh64iudC8kuE5xeXtF5pZ8+w8NCD3JzYMGieC90htpgb7db7Q4JZwqzRCeCp3jnIcRla3fgv3doeOykXPRg==}
+  /@ceramicnetwork/ipfs-topology@5.1.0(typescript@5.3.3):
+    resolution: {integrity: sha512-En/eUpVyh5DoN+u9AaNAfoE/u3wxRxMcmeMz4GK5WE3Gxm8KJzegigBFvwCTFzUhWr+H8Pv7i0pZOZcYCtVpfw==}
     dependencies:
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -3320,10 +3320,10 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/job-queue@4.1.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-fIXUp951xntgq487cJAHHD9XmsV5WWdgbIKW1qjLTajS3zA1NOiQGzkrpXc/CxcIznI/LRtiE/Ck2xOn06oqIA==}
+  /@ceramicnetwork/job-queue@4.2.0-rc.0(typescript@5.3.3):
+    resolution: {integrity: sha512-McLOBsffKFxlVjZmMmPT3bME+4mSebAk4MwpHoTfCevUZ+NuiS/46teB5FJ8XOdpt4Vj7FEDJksEcXmxEaM2fA==}
     dependencies:
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
       pg: 8.11.3
       pg-boss: 8.4.2
       rxjs: 7.8.1
@@ -3336,8 +3336,8 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/logger@5.0.1-nightly.20240226002553.0:
-    resolution: {integrity: sha512-+rO3/lq2f7FslXei3MGCxz5lYKC03gQPZZI+TnSBJQNBe8ZQhZ+kDUVi/hYyBVTcJ2m0Dr1UQBrzoY8jkjzfnw==}
+  /@ceramicnetwork/logger@5.0.0:
+    resolution: {integrity: sha512-migKFIIWNSP8Tu09v8YNTDbxs0jtEMX4tiXqSkwySczmW/J/yMJWBGXbcasxQdmiphBoXFituTbW+jFVQkeTxg==}
     dependencies:
       rotating-file-stream: 3.2.1
     dev: false
@@ -3356,15 +3356,15 @@ packages:
       '@types/node': 20.11.19
     dev: false
 
-  /@ceramicnetwork/pinning-aggregation@5.1.1-nightly.20240226002553.0:
-    resolution: {integrity: sha512-qYLW2Tzbcf0Yq5bUgbuaAH+Rj2PWmbAF930bOzD+qToybAg5OQYErdjT2+Mq7N1oRU/7AzHKPj7LfisGFSm07Q==}
+  /@ceramicnetwork/pinning-aggregation@5.1.0:
+    resolution: {integrity: sha512-DkYNc2CbTn6Xkse3SRMcfJeGWWGG8ap1upZxft+vHVAVkq0CwVbKd7iobujlq486nQokeG5YC/9+SoT+jKxp6w==}
     dependencies:
       '@stablelib/sha256': 1.0.1
       uint8arrays: 5.0.2
     dev: false
 
-  /@ceramicnetwork/pinning-ipfs-backend@5.1.1-nightly.20240226002553.0:
-    resolution: {integrity: sha512-WNIk8jfh47V3mcFpTd3eEk9e3iipRz5NLzSKfnh09YHNxM4pB31wU59aS0FE2qN4KEyFeVvlyyKYmh0F7PBhwA==}
+  /@ceramicnetwork/pinning-ipfs-backend@5.1.0:
+    resolution: {integrity: sha512-t5nVwzfkNza5dyQKZnGjETEsqP8pwYQgXyR1D9cQHn69C3mzDOZrXMVn0/KgL5kTR8gPLN8iibpLR4q6tmJQrA==}
     dependencies:
       '@stablelib/sha256': 1.0.1
       ipfs-http-client: 60.0.1
@@ -3374,13 +3374,13 @@ packages:
       - supports-color
     dev: false
 
-  /@ceramicnetwork/stream-caip10-link-handler@5.2.0-nightly.20240226002553.0(@polkadot/util@7.9.2)(typescript@5.3.3):
-    resolution: {integrity: sha512-owvuNoWv6LY+acKiIj5PdopA9fGGrhc10TaYTBZ/XeiqJNFponueiWcK7vrTLOTCsEn6K1wOsLETzKIM1Pj2Pw==}
+  /@ceramicnetwork/stream-caip10-link-handler@5.2.0-rc.0(@polkadot/util@7.9.2)(typescript@5.3.3):
+    resolution: {integrity: sha512-oMylBrX4iKdjacIyUfLAa/bDZZ7S9amos2bRAePRtg8XxuTA+CcNK0KrRJ6fGEgBRmTBNNPKEWFHtniEISJCaQ==}
     dependencies:
-      '@ceramicnetwork/blockchain-utils-validation': 5.1.1-nightly.20240226002553.0(@polkadot/util@7.9.2)(typescript@5.3.3)
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-caip10-link': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-handler-common': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
+      '@ceramicnetwork/blockchain-utils-validation': 5.1.0(@polkadot/util@7.9.2)(typescript@5.3.3)
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-caip10-link': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-handler-common': 4.1.0(typescript@5.3.3)
     transitivePeerDependencies:
       - '@polkadot/util'
       - bufferutil
@@ -3391,11 +3391,11 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/stream-caip10-link@5.1.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-p9y0Y9s71nSVYuqPoXI3i9og76Q/+VhFwdcQDXNSmMH+lGpDNA/T7ldozCYqoVvnyyhN54atbKRegWthXL77iA==}
+  /@ceramicnetwork/stream-caip10-link@5.1.0(typescript@5.3.3):
+    resolution: {integrity: sha512-gqbOn4cFecsn5+Co1hOStq/yYnNGL4ibV3MOuQnRdelTEMCsL9ru1v7p497wPkcyDKjymYUtKcIoT1OkAjHU8g==}
     dependencies:
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/streamid': 5.0.0
       caip: 1.1.0
       did-resolver: 4.1.0
       lodash.clonedeep: 4.5.0
@@ -3407,11 +3407,11 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/stream-handler-common@4.1.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-yzDFup4rSOc8Z+cBH+e56gIVPATaIgHsX+SJV7oerpcc0xRraNgG3dG22v0c83hF4K/eQRl7W5menqVLbrDC6w==}
+  /@ceramicnetwork/stream-handler-common@4.1.0(typescript@5.3.3):
+    resolution: {integrity: sha512-oRaDb2LG4dUCy/O2LQhDqQUDAcOEN4Q2wFG4a1LRhwVBHnVo9b/ov8L2vPb56yLEbHmIAoMsb70oGOy/p5NL+w==}
     dependencies:
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/streamid': 5.0.0
       lodash.clonedeep: 4.5.0
     transitivePeerDependencies:
       - bufferutil
@@ -3421,13 +3421,13 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/stream-model-handler@4.1.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-yeBEi9Uo7f9hnx2AQR0Qkg2fkomT2E3Z+NJdZQbSl22w6hwYIR78LUF5K8uD+hlbFDXCVyN9jge5VupomIWXUg==}
+  /@ceramicnetwork/stream-model-handler@4.2.0-rc.0(typescript@5.3.3):
+    resolution: {integrity: sha512-n4sbhJdTF5xuJxJmE4Er1pxr7kK208NdX1dNVG2JiW5SruPDPubnHKjjv0mVjZpSpmnUYMBTnjgPeAasNX9teQ==}
     dependencies:
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-handler-common': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-model': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-handler-common': 4.1.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-model': 4.1.0(typescript@5.3.3)
+      '@ceramicnetwork/streamid': 5.0.0
       ajv: 8.12.0
       ajv-formats: 2.1.1(ajv@8.12.0)
       fast-json-patch: 3.1.1
@@ -3443,13 +3443,13 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/stream-model-instance-handler@4.1.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-MBPAgVnEH4OV/De+sgDopeaXh8eRd6WAgzi9pe0NTpSycIM/3pgg5jW8aoiHOE0eK160v/b0xcc4KafprrroYw==}
+  /@ceramicnetwork/stream-model-instance-handler@4.2.0-rc.0(typescript@5.3.3):
+    resolution: {integrity: sha512-Y4lhFJ/UwJlpRkYlzCQkv5zoTgFHS2K0NzP/VeEZNA/tWhxyPE6moAIKKOYOdJZVnZUeMv7GbHwUH1QhQo/eoA==}
     dependencies:
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-handler-common': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-model-instance': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-handler-common': 4.1.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-model-instance': 4.2.0-rc.0(typescript@5.3.3)
+      '@ceramicnetwork/streamid': 5.0.0
       ajv: 8.12.0
       ajv-formats: 2.1.1(ajv@8.12.0)
       fast-json-patch: 3.1.1
@@ -3464,11 +3464,11 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/stream-model-instance@4.1.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-vcqNNYeM6Y/fq123S2Xf/usCFTpP6pyaI1acRDIqeOp2P7QR0Ey2mZCr/qwD8IjPSFrcSLOujaou3W1NmH24PQ==}
+  /@ceramicnetwork/stream-model-instance@4.2.0-rc.0(typescript@5.3.3):
+    resolution: {integrity: sha512-1ZgY6r1R623joYksotEtHhang+LHrT9GUquQEbMzOiKQ/eN+3zQ6jGkfuhFGT26YLNg5CWvi9bY9lJqL7tvOtA==}
     dependencies:
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/streamid': 5.0.0
       '@ipld/dag-cbor': 7.0.3
       '@stablelib/random': 1.0.2
       fast-json-patch: 3.1.1
@@ -3482,12 +3482,12 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/stream-model@4.1.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-pp13yUVG4plugNXfz6jsKYG1G7nx3Zxqhy9GhvYLxLmIZfCCBJ+aPp0b8ZwaXCOkGUpPhFGcUQCGem8h3S6avQ==}
+  /@ceramicnetwork/stream-model@4.1.0(typescript@5.3.3):
+    resolution: {integrity: sha512-CC6SJ3ha2nEiOFUxQmcfhNiXtUhtVVo0JBeRk30fYLovY6OdgUgslrGFFdksJTXBEDnDZ9r2rx507r2kYkEfTg==}
     dependencies:
-      '@ceramicnetwork/codecs': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/codecs': 4.1.0(typescript@5.3.3)
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/streamid': 5.0.0
       '@ipld/dag-cbor': 7.0.3
       '@stablelib/random': 1.0.2
       ajv: 8.12.0
@@ -3505,13 +3505,13 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/stream-tile-handler@5.2.0-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-HtQY+GHUGkswJ/rkemEpmURgw4/yHzHJfgBvlgzVcVP0tJxZDEAaVEUhIQ8GrGb9ZH29WnnHBP5V5hkNYgo3Cg==}
+  /@ceramicnetwork/stream-tile-handler@5.2.0-rc.0(typescript@5.3.3):
+    resolution: {integrity: sha512-V8q5cHQdgUqdAG1Omw8RnOrllK4VdbRbbEJnzKLTiyXNafUiaB4d7W4X8r97SlepXbLsMJVZHw1H/ijX92rD/g==}
     dependencies:
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-handler-common': 4.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/stream-tile': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-handler-common': 4.1.0(typescript@5.3.3)
+      '@ceramicnetwork/stream-tile': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/streamid': 5.0.0
       ajv: 8.12.0
       ajv-formats: 2.1.1(ajv@8.12.0)
       fast-json-patch: 3.1.1
@@ -3526,11 +3526,11 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/stream-tile@5.1.1-nightly.20240226002553.0(typescript@5.3.3):
-    resolution: {integrity: sha512-fKP6/fsU6Oa50rVWGfwH8otKiB5G4lQFYuQfFNR3+dJo16fnE77l/KBJdURm1dgQ+8XfODn3HrqbBBvpa1rTwQ==}
+  /@ceramicnetwork/stream-tile@5.1.0(typescript@5.3.3):
+    resolution: {integrity: sha512-BkIZ51Us3FnobikhrptTzMx2k1WO1YuXzdvOezboGG7wJO/mhG8LAqIj0FIyu5uvkLDgx1Wpdp2WGdon721myQ==}
     dependencies:
-      '@ceramicnetwork/common': 5.1.1-nightly.20240226002553.0(typescript@5.3.3)
-      '@ceramicnetwork/streamid': 5.0.1-nightly.20240226002553.0
+      '@ceramicnetwork/common': 5.1.0(typescript@5.3.3)
+      '@ceramicnetwork/streamid': 5.0.0
       '@ipld/dag-cbor': 7.0.3
       '@stablelib/random': 1.0.2
       dids: 5.0.2(typescript@5.3.3)
@@ -3545,8 +3545,8 @@ packages:
       - zod
     dev: false
 
-  /@ceramicnetwork/streamid@5.0.1-nightly.20240226002553.0:
-    resolution: {integrity: sha512-cJ/GqMyixTqXKBON6EYm9Hed0R+LHEFZ4b1nX51nYe6vdt2qZQI8qpL/6p8KAIB+qfCzJNdSZjAgrH30egF1gQ==}
+  /@ceramicnetwork/streamid@5.0.0:
+    resolution: {integrity: sha512-BerENlA/dRIZNjCDeJSZfluCx69coZFbhmjzPwe8G1NZtdWGX/4NECq6a9xzrxxRJ3jNPcXFabYb94Mp1diMWA==}
     dependencies:
       '@ipld/dag-cbor': 7.0.3
       '@stablelib/sha256': 1.0.1
