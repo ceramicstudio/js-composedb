@@ -41,9 +41,7 @@
   "dependencies": {
     "@ceramicnetwork/stream-model-instance": "^4.0.1-rc.1",
     "@ceramicnetwork/streamid": "^5.0.0",
-    "@ipld/dag-cbor": "^9.2.0",
-    "dataloader": "^2.2.2",
-    "multiformats": "^13.1.0"
+    "dataloader": "^2.2.2"
   },
   "devDependencies": {
     "@ceramicnetwork/common": "^5.1.0-rc.0",

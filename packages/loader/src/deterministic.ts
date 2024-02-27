@@ -1,9 +1,6 @@
 import type { GenesisCommit, GenesisHeader } from '@ceramicnetwork/common'
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { StreamID } from '@ceramicnetwork/streamid'
-import * as codec from '@ipld/dag-cbor'
-import { CID } from 'multiformats/cid'
-import { sha256 } from 'multiformats/hashes/sha2'
 
 import type { LoadKey } from './types.js'
 
@@ -26,21 +23,12 @@ export function createDeterministicGenesis(meta: GenesisMetadata): GenesisCommit
 }
 
 /**
- * Create a StreamID from a GenesisCommit.
- */
-export async function createGenesisID(genesis: GenesisCommit): Promise<StreamID> {
-  const bytes = codec.encode(genesis)
-  const digest = await sha256.digest(bytes)
-  const cid = CID.createV1(codec.code, digest)
-  return new StreamID(ModelInstanceDocument.STREAM_TYPE_ID, cid)
-}
-
-/**
  * Create a LoadKey for a deterministic stream.
  */
 export async function createDeterministicKey(meta: GenesisMetadata): Promise<LoadKey> {
   const genesis = createDeterministicGenesis(meta)
-  return { id: await createGenesisID(genesis), genesis }
+  const id = await StreamID.fromGenesis(ModelInstanceDocument.STREAM_TYPE_ID, genesis)
+  return { id, genesis }
 }
 
 /**

@@ -383,7 +383,10 @@ class SchemaBuilder {
               config[alias] = {
                 type: this.#types[reference.name],
                 resolve: async (account, _, ctx): Promise<ModelInstanceDocument | null> => {
-                  return await ctx.loader.loadSingle(account, model.id)
+                  return await ctx.loader.loadSingle(account, model.id, {
+                    ignoreEmpty: true,
+                    onlyIndexed: true,
+                  })
                 },
               }
               break
@@ -413,7 +416,10 @@ class SchemaBuilder {
                     const value = args.with[field]
                     return value ? String(value) : ''
                   })
-                  return await ctx.loader.loadSet(account, model.id, unique)
+                  return await ctx.loader.loadSet(account, model.id, unique, {
+                    ignoreEmpty: true,
+                    onlyIndexed: true,
+                  })
                 },
               }
               break
@@ -459,7 +465,10 @@ class SchemaBuilder {
                     const value = args.with[field]
                     return value ? String(value) : ''
                   })
-                  return await ctx.loader.loadSet(refAccount, model.id, unique)
+                  return await ctx.loader.loadSet(refAccount, model.id, unique, {
+                    ignoreEmpty: true,
+                    onlyIndexed: true,
+                  })
                 },
               }
 
@@ -956,7 +965,10 @@ class SchemaBuilder {
               const value = args.with[field]
               return value ? String(value) : ''
             })
-            return await ctx.loader.loadSet(account, model.id, unique)
+            return await ctx.loader.loadSet(account, model.id, unique, {
+              ignoreEmpty: true,
+              onlyIndexed: true,
+            })
           },
         }
       }
