@@ -1,6 +1,6 @@
 {
   "name": "@composedb/cli",
-  "version": "0.7.0-rc.3",
+  "version": "0.7.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://composedb.js.org",
@@ -69,17 +69,17 @@
     ]
   },
   "dependencies": {
-    "@ceramicnetwork/3id-did-resolver": "^5.0.1-rc.1",
-    "@ceramicnetwork/cli": "^5.1.0-rc.1",
-    "@ceramicnetwork/http-client": "^5.0.1-rc.1",
-    "@ceramicnetwork/stream-model": "^4.0.1-rc.1",
-    "@ceramicnetwork/stream-model-instance": "^4.0.1-rc.1",
+    "@ceramicnetwork/3id-did-resolver": "^5.2.0",
+    "@ceramicnetwork/cli": "^5.2.0",
+    "@ceramicnetwork/http-client": "^5.2.0",
+    "@ceramicnetwork/stream-model": "^4.1.0",
+    "@ceramicnetwork/stream-model-instance": "^4.2.0",
     "@ceramicnetwork/streamid": "^5.0.0",
     "@composedb/client": "workspace:^",
     "@composedb/devtools": "workspace:^",
     "@composedb/devtools-node": "workspace:^",
     "@composedb/runtime": "workspace:^",
-    "@oclif/core": "^3.19.4",
+    "@oclif/core": "^3.19.7",
     "@oclif/plugin-help": "^6.0.13",
     "@oclif/plugin-version": "^2.0.12",
     "cli-table3": "^0.6.3",
@@ -96,18 +96,18 @@
     "uint8arrays": "^5.0.2"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^5.1.0-rc.0",
+    "@ceramicnetwork/common": "^5.1.0",
     "@composedb/types": "workspace:^",
     "@swc-node/register": "^1.8.0",
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^29.5.12",
     "@types/listr": "^0.14.9",
-    "@types/node": "^20.11.19",
+    "@types/node": "^20.11.20",
     "@types/update-notifier": "^6.0.8",
     "ajv": "^8.12.0",
     "execa": "^8.0.1",
     "jest-dev-server": "^10.0.0",
-    "oclif": "^4.4.17",
+    "oclif": "^4.4.19",
     "strip-ansi": "~7.1.0"
   },
   "jest": {

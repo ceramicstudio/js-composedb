@@ -60,7 +60,7 @@ ___
 
 ### DeterministicLoadOptions
 
-Ƭ **DeterministicLoadOptions**: `CreateOpts` & \{ `ignoreEmpty?`: `boolean` ; `onlyIndexed?`: `boolean`  }
+Ƭ **DeterministicLoadOptions**: [`CreateOptions`](loader.md#createoptions) & \{ `onlyIndexed?`: `boolean`  }
 
 ___
 

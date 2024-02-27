@@ -63,6 +63,7 @@ const RELATION_VIEW_SOURCES: Record<RelationViewType, RuntimeRelationSource> = {
 
 const RELATION_VIEW_TYPES = Object.keys(RELATION_VIEW_SOURCES)
 
+/** @internal */
 export function isRelationViewDefinition(
   view: ModelViewDefinitionV2,
 ): view is ModelRelationViewDefinitionV2 {

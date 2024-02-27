@@ -1,6 +1,6 @@
 {
   "name": "@composedb/graphql-scalars",
-  "version": "0.7.0-rc.3",
+  "version": "0.7.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://composedb.js.org",
@@ -41,7 +41,7 @@
     "@composedb/types": "workspace:^",
     "caip": "^1.1.0",
     "graphql": "^16.8.1",
-    "graphql-scalars": "^1.22.4",
+    "graphql-scalars": "^1.22.5",
     "multiformats": "^13.1.0"
   }
 }
