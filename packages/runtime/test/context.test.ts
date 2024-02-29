@@ -98,7 +98,7 @@ describe('context', () => {
 
     test('uses the single() method of the loader and sets contents', async () => {
       const replace = jest.fn()
-      const expectedDoc = { replace }
+      const expectedDoc = { replace, state$: { value: { content: null } } }
       const single = jest.fn(() => expectedDoc)
       const loader = { single } as unknown as DocumentLoader
       const ceramic = { did: { id: 'did:test:123' } } as unknown as CeramicApi
@@ -112,7 +112,7 @@ describe('context', () => {
 
     test('uses the single() method of the loader with options', async () => {
       const replace = jest.fn()
-      const expectedDoc = { replace }
+      const expectedDoc = { replace, state$: { value: { content: null } } }
       const single = jest.fn(() => expectedDoc)
       const loader = { single } as unknown as DocumentLoader
       const ceramic = { did: { id: 'did:test:123' } } as unknown as CeramicApi

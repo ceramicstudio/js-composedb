@@ -126,6 +126,12 @@ export function createContext(params: ContextParams): Context {
         throw new Error('Document can only be created with an authenticated account')
       }
       const doc = await loader.single<Content>(controller, model, options)
+      // Hacky workaround to support updating the doc when content is `null`
+      if (doc.content == null) {
+        // eslint-disable-next-line
+        // @ts-ignore internal state
+        doc.state$.value.content = {}
+      }
       await doc.replace(content)
       return doc
     },

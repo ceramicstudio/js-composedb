@@ -699,7 +699,7 @@ describe('runtime', () => {
                     ...on MediaMetadata {
                       src
                     }
-                  } 
+                  }
                 }
               }
             }
@@ -715,7 +715,7 @@ describe('runtime', () => {
                     ...on Collection {
                       name
                     }
-                  } 
+                  }
                 }
               }
             }
