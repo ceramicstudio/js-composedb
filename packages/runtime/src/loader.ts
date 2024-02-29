@@ -169,7 +169,7 @@ export class DocumentLoader extends DataLoader<DocID, ModelInstanceDocument> {
     if (version != null && stream.commitId.toString() !== version) {
       throw new Error('Stream version mismatch')
     }
-    const newContent = replace ? content : { ...stream.content, ...content }
+    const newContent = replace ? content : { ...(stream.content ?? {}), ...content }
     await stream.replace(newContent, options)
     return stream
   }

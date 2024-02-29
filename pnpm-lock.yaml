@@ -87,16 +87,16 @@ importers:
         specifier: ^2.17.0
         version: 2.17.0
       '@composedb/client':
-        specifier: workspace:^0.5.2
+        specifier: workspace:^0.5.3
         version: link:../client
       '@composedb/devtools':
         specifier: workspace:^0.5.1
         version: link:../devtools
       '@composedb/devtools-node':
-        specifier: workspace:^0.5.2
+        specifier: workspace:^0.5.3
         version: link:../devtools-node
       '@composedb/runtime':
-        specifier: workspace:^0.5.2
+        specifier: workspace:^0.5.3
         version: link:../runtime
       '@oclif/core':
         specifier: ^2.15.0
@@ -202,7 +202,7 @@ importers:
         specifier: workspace:^0.5.0
         version: link:../graphql-scalars
       '@composedb/runtime':
-        specifier: workspace:^0.5.2
+        specifier: workspace:^0.5.3
         version: link:../runtime
       '@graphql-tools/batch-execute':
         specifier: ^9.0.2
@@ -332,13 +332,13 @@ importers:
         specifier: ^2.32.0
         version: 2.32.0
       '@composedb/client':
-        specifier: workspace:^0.5.2
+        specifier: workspace:^0.5.3
         version: link:../client
       '@composedb/runtime':
-        specifier: workspace:^0.5.2
+        specifier: workspace:^0.5.3
         version: link:../runtime
       '@composedb/server':
-        specifier: workspace:^0.5.2
+        specifier: workspace:^0.5.3
         version: link:../server
       fs-extra:
         specifier: ^11.1.1
@@ -466,7 +466,7 @@ importers:
         specifier: workspace:^0.5.0
         version: link:../constants
       '@composedb/runtime':
-        specifier: workspace:^0.5.2
+        specifier: workspace:^0.5.3
         version: link:../runtime
       get-port:
         specifier: ^7.0.0
@@ -25668,9 +25668,6 @@ packages:
   /sqlite3@5.1.6:
     resolution: {integrity: sha512-olYkWoKFVNSSSQNvxVUfjiVbz3YtBwTJj+mfV5zpHmqW3sELx2Cf4QCdirMelhM5Zh+KDVaKgQHqCxrqiWHybw==}
     requiresBuild: true
-    peerDependenciesMeta:
-      node-gyp:
-        optional: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.11
       node-addon-api: 4.3.0
