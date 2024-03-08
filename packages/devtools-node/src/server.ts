@@ -79,6 +79,6 @@ export async function serveEncodedDefinition(
   params: ServeDefinitionParams,
 ): Promise<GraphQLServer> {
   const { path, ...rest } = params
-  const composite = await readEncodedComposite(params.ceramicURL, path)
+  const composite = await readEncodedComposite(params.ceramicURL, path, false)
   return await serveGraphQL({ ...rest, definition: composite.toRuntime() })
 }

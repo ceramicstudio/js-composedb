@@ -39,7 +39,7 @@ export default class CompositeExtractModel extends Command<Flags> {
         composite = await Composite.fromJSON({ ceramic: this.ceramic, definition })
         modelsToExtract = allArgs
       } else if (this.stdin === undefined && allArgs.length >= 2) {
-        composite = await readEncodedComposite(this.ceramic, allArgs[0])
+        composite = await readEncodedComposite(this.ceramic, allArgs[0], false)
         modelsToExtract = allArgs.splice(1)
       } else if (this.stdin !== undefined && allArgs.length < 1) {
         this.spinner.fail(

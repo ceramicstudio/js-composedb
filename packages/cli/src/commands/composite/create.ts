@@ -4,6 +4,7 @@ import { createComposite, writeEncodedComposite } from '@composedb/devtools-node
 
 type Flags = CommandFlags & {
   output?: string
+  deploy: boolean
 }
 
 export default class CreateComposite extends Command<Flags, { schemaFilePath: string }> {
@@ -23,12 +24,23 @@ export default class CreateComposite extends Command<Flags, { schemaFilePath: st
       char: 'o',
       description: 'path to the file where the composite representation should be saved',
     }),
+    deploy: Flags.boolean({
+      char: 'd',
+      description:
+        'Deploy the composite to the ceramic node, which will start indexing on the composite',
+      default: true,
+      allowNo: true,
+    }),
   }
 
   async run(): Promise<void> {
     try {
       this.spinner.start('Creating the composite...')
-      const composite = await createComposite(this.ceramic, this.args.schemaFilePath)
+      const composite = await createComposite(
+        this.ceramic,
+        this.args.schemaFilePath,
+        this.flags.deploy,
+      )
       if (this.flags.output != null) {
         const output = this.flags.output
         await writeEncodedComposite(composite, output)

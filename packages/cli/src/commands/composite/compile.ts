@@ -31,7 +31,7 @@ export default class CompositeCompile extends Command<Flags> {
         composite = await Composite.fromJSON({ ceramic: this.ceramic, definition })
         outputPaths = allArgs
       } else if (this.stdin === undefined && allArgs.length >= 2) {
-        composite = await readEncodedComposite(this.ceramic, allArgs[0])
+        composite = await readEncodedComposite(this.ceramic, allArgs[0], false)
         outputPaths = allArgs.splice(1)
       } else if (this.stdin !== undefined && allArgs.length < 1) {
         this.spinner.fail(
