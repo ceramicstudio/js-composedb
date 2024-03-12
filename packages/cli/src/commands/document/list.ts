@@ -8,7 +8,7 @@ import { StreamID } from '@ceramicnetwork/streamid'
 
 type PartialDocumentDefinition = {
   id: string
-  controller: string,
+  controller: string
   content: any
 }
 
@@ -105,7 +105,8 @@ export default class DocumentList extends Command<DocumentListFlags, { model: St
         const stream = ceramicIndexer.buildStreamFromState(edge.node)
         return {
           id: stream.id.toString(),
-          controller: stream.metadata.controller,
+          controller: stream.metadata.controller as string,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           content: stream.state.content,
         }
       })
