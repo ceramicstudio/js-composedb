@@ -1,4 +1,4 @@
-import { execa } from 'execa'
+import { execa, ExecaChildProcess } from 'execa'
 
 describe('graphql', () => {
   describe('graphql:schema', () => {
@@ -90,6 +90,93 @@ describe('graphql', () => {
       } finally {
         serverProcess.kill()
       }
+    }, 60000)
+  })
+  describe('graphql:execute', () => {
+    const seed = 'bd019adffe40658f2261bfe72589fdf6b57727fa3878574d4202c5776bb8b357'
+    test('graphql execute fails without query param', async () => {
+      try {
+        await execa('bin/run.js', ['graphql:execute'])
+        // The command should have failed and not gotten to this line
+        expect(false).toBe(true)
+      } catch (e) {
+        const proc = e as ExecaChildProcess
+        // In the case of execa the thrown error is actually the process.
+        // Allow conditional expect as we need to further expect properties of the thrown error.
+
+        // eslint-disable-next-line jest/no-conditional-expect
+        expect(proc.exitCode).not.toBe(0)
+        // eslint-disable-next-line jest/no-conditional-expect
+        expect(proc.stderr?.toString().includes('GraphQL query or mutation')).toBe(true)
+      }
+    }, 60000)
+
+    test('graphql execute runs', async () => {
+      // First deploy the composite
+      await execa('bin/run.js', [
+        'composite:deploy',
+        'test/mocks/encoded.composite.picture.post.json',
+        `--did-private-key=${seed}`,
+      ])
+
+      // Create a post
+      const mutation = await execa('bin/run.js', [
+        'graphql:execute',
+        '--runtimeDefinitionPath',
+        'test/mocks/runtime.composite.picture.post.json',
+        `--did-private-key=${seed}`,
+        `
+        mutation CreatePost($i: CreatePostInput!) {
+          createPost(input: $i) {
+            document {
+              text
+            }
+          }
+        }
+        `,
+        JSON.stringify({ i: { content: { text: 'test post' } } }),
+      ])
+      expect(mutation.stdout.toString()).toBe(`{
+  "data": {
+    "createPost": {
+      "document": {
+        "text": "test post"
+      }
+    }
+  }
+}`)
+
+      // Query the first post
+      const query = await execa('bin/run.js', [
+        'graphql:execute',
+        '--runtimeDefinitionPath',
+        'test/mocks/runtime.composite.picture.post.json',
+        `--did-private-key=${seed}`,
+        `
+        query GetPosts {
+          postIndex(first: 1) {
+            edges {
+              node {
+                text
+              }
+            }
+          }
+        }
+        `,
+      ])
+      expect(query.stdout.toString()).toBe(`{
+  "data": {
+    "postIndex": {
+      "edges": [
+        {
+          "node": {
+            "text": "test post"
+          }
+        }
+      ]
+    }
+  }
+}`)
     }, 60000)
   })
 })
