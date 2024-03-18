@@ -19,6 +19,7 @@ const TEST_DAEMON_CONFIG = {
     'admin-dids': [
       'did:key:z6Mkh3VVZHjMWmBFkmixiYsZmJYAEkASk4ScjZDkawn6Npcu', // used in composites.test.ts
       'did:key:z6MkpRhEWywReoFtQMQGqSmTu5mp9vQVok86Qha2sn6e32Db', // used in models.test.ts
+      'did:key:z6MkemC7PdH6hm6xJ764qN3xbWYyUfc8S2pgkDvYsBcLZUqw', // used in graphql.test.ts
     ],
     'cors-allowed-origins': [new RegExp('.*')],
   },
