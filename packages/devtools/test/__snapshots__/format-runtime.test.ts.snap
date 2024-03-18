@@ -43,6 +43,11 @@ exports[`Runtime format Favorite with SET account relation 1`] = `
         "required": true,
         "type": "streamid",
       },
+      "extra": {
+        "immutable": true,
+        "required": false,
+        "type": "string",
+      },
       "note": {
         "immutable": false,
         "required": false,

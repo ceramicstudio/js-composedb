@@ -1051,6 +1051,120 @@ describe('runtime', () => {
     )
   }, 60000)
 
+  test.only('SET account relation model with immutable field support', async () => {
+    const [favoriteComposite, postComposite] = await Promise.all([
+      Composite.create({ ceramic, schema: favoriteSchema }),
+      Composite.create({ ceramic, schema: postSchema }),
+    ])
+    const favoriteModelID = favoriteComposite.getModelID('Favorite')!
+    const postModelID = postComposite.getModelID('Post')!
+    const composite = Composite.from([favoriteComposite, postComposite], {
+      views: {
+        models: {
+          [postModelID]: {
+            favorites: { type: 'relationFrom', model: favoriteModelID, property: 'docID' },
+          },
+        },
+      },
+    })
+
+    const definition = composite.toRuntime()
+    expect(printGraphQLSchema(definition)).toMatchSnapshot()
+    const runtime = new ComposeRuntime({ ceramic, definition: composite.toRuntime() })
+
+    const createdPosts = await runtime.executeQuery<Record<string, { document: { id: string } }>>(
+      `
+      mutation CreatePosts(
+        $post1Input: CreatePostInput!,
+        $post2Input: CreatePostInput!) {
+        post1: createPost(input: $post1Input) {
+          document {
+            id
+          }
+        }
+        post2: createPost(input: $post2Input) {
+          document {
+            id
+          }
+        }
+      }
+      `,
+      {
+        post1Input: { content: { title: 'Test post 1', text: 'First post' } },
+        post2Input: { content: { title: 'Test post 2', text: 'Second post' } },
+      },
+    )
+    const post1ID = createdPosts.data!.post1.document.id
+    const post2ID = createdPosts.data!.post2.document.id
+
+    const setFavorite = `
+      mutation SetFavorite($input: SetFavoriteInput!) {
+        setFavorite(input: $input) {
+          document {
+            id
+            doc {
+              ... on Post {
+                title
+              }
+            }
+          }
+          viewer {
+            favoriteList(first: 10) {
+              edges {
+                node {
+                  doc {
+                    ... on Post {
+                      title
+                    }
+                  }
+                  tag
+                }
+              }
+            }
+          }
+        }
+      }
+    `
+
+    const favorite1Res = await runtime.executeQuery<{
+      setFavorite: { document: { id: string }; viewer: unknown }
+    }>(setFavorite, { input: { content: { docID: post1ID, tag: 'posts' } } })
+    expect(favorite1Res.data?.setFavorite.viewer).toMatchSnapshot()
+    const favorite1ID = favorite1Res.data?.setFavorite.document.id
+
+    const favorite2Res = await runtime.executeQuery<{
+      setFavorite: { document: { id: string }; viewer: unknown }
+    }>(setFavorite, {
+      input: { content: { docID: post2ID, tag: 'posts' } },
+    })
+    expect(favorite2Res.data?.setFavorite.viewer).toMatchSnapshot()
+
+    const unsetRes = await runtime.executeQuery(
+      `
+      mutation UnsetFavorite($input: UpdateFavoriteInput!) {
+        updateFavorite(input: $input) {
+          viewer {
+            favoriteList(first: 10) {
+              edges {
+                node {
+                  doc {
+                    ... on Post {
+                      title
+                    }
+                  }
+                  tag
+                }
+              }
+            }
+          }
+        }
+      }
+      `,
+      { input: { id: favorite1ID, content: {}, options: { shouldIndex: false } } },
+    )
+    expect(unsetRes.data).toMatchSnapshot()
+  }, 30000)
+
   test('toggling `shouldIndex` metadata', async () => {
     const composite = await Composite.create({
       ceramic,

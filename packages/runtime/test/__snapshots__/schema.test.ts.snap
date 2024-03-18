@@ -68,6 +68,7 @@ type Favorite implements Node {
   docID: CeramicStreamID!
   tag: String!
   note: String
+  extra: String
   doc: Node
 }
 
@@ -141,6 +142,7 @@ input FavoriteInput {
   docID: CeramicStreamID!
   tag: String!
   note: String
+  extra: String
 }
 
 input SetOptionsInput {
