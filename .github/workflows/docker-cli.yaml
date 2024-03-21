@@ -23,7 +23,9 @@ jobs:
 
       - name: Read package.json
         id: package-version
-        run: echo "::set-output name=version::$(jq -r '.version' ./packages/cli/package.json)"
+        run: |
+          set -x
+          echo "version=$(jq -r '.version' ./packages/cli/package.json)" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -40,7 +42,7 @@ jobs:
           context: .
           push: true
           build-args: |
-            VERSION=${{ steps.package-version.outputs.version }}
+            COMPOSEDB_CLI_VERSION=${{ steps.package-version.outputs.version }}
           tags: ${{ env.DOCKER_IMAGE }}:${{ steps.package-version.outputs.version }}
 
       - name: Push Docker image with latest tag (if default branch)
