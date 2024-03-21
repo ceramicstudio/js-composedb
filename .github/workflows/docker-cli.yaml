@@ -42,3 +42,9 @@ jobs:
           build-args: |
             VERSION=${{ steps.package-version.outputs.version }}
           tags: ${{ env.DOCKER_IMAGE }}:${{ steps.package-version.outputs.version }}
+
+      - name: Push Docker image with latest tag (if default branch)
+        if: github.event.inputs.branch == 'main'
+        run: |
+          docker tag ${{ env.DOCKER_IMAGE }}:${{ steps.extract_version.outputs.version }} ${{ env.DOCKER_IMAGE }}:latest
+          docker push ${{ env.DOCKER_IMAGE }}:latest
