@@ -14,12 +14,13 @@ When using the `@createModel` directive, two parameters must be provided:
 
 - `accountRelation`: the type of relation between documents created using the
   Model and the account controlling the document, which can be `SINGLE` for a
-  single document of the given Model (for example profile information), or
-  `LIST` (default) for a potentially infinite list of documents. When creating
+  single document of the given Model (for example profile information), can be
+  `LIST` (default) for a potentially infinite list of documents, or can be `SET` for when there can be only one instance of this model per account and value of the specified content 'accountRelationFields'. When creating
   interfaces, the `accountRelation` is ignored if provided.
 - `description`: a string describing the Model, to help with discovery.
 
-Example:
+Example for a `LIST` account relation:
+This allows a user to create any number of posts.
 
 ```graphql
 type Post @createModel(accountRelation: LIST, description: "A simple text post") {
@@ -28,6 +29,28 @@ type Post @createModel(accountRelation: LIST, description: "A simple text post")
   text: String! @string(maxLength: 500)
 }
 ```
+
+Examples for `SINGLE` and `SET` account relations:
+This allows a user to create a single picture per did, as well as to set an individual picture as favorite, they can have different pictures set as favorite, but only one `favorite` record for a did per picture.
+
+```graphql
+type Picture @createModel(description: "A model for pictures", accountRelation: SINGLE) {
+	src: String! @string(maxLength: 150)	
+	mimeType: String! @string(maxLength: 50)	
+	width: Int! @int(min: 1)	
+	height: Int! @int(min: 1)	
+	size: Int @int(min: 1)	
+}
+	
+type Favorite @createModel(description: "A set of favorite documents", accountRelation: SET, accountRelationFields: ["docID"]) {	
+	docID: StreamID! @documentReference(model: "Picture")	
+	doc: Node @relationDocument(property: "docID")	
+	note: String @string(maxLength: 500)
+}
+```
+:::caution
+Notice that when the account relation of a model is `SET` it is required to include `accountRelationFields` to specify which field is being used to create the set.
+:::
 
 ### `@loadModel`
 
@@ -127,6 +150,10 @@ Defines the required `maxLength: Int` and optional `minLength: Int` value for
 
 Defines the required `maxLength: Int` and optional `minLength: Int` numbers of
 items in a list.
+
+### `@immutable`
+
+Validates the field value remains unaltered, like a read-only value, and any efforts to edit it will result in an error prompt.
 
 ## Relations
 
