@@ -68,9 +68,6 @@ const config: Config = {
           trackingID: 'G-V2Y8T342EX',
           anonymizeIP: true,
         },
-        googleTagManager: {
-          containerId: 'GTM-TFSMT4ZD',
-        },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
