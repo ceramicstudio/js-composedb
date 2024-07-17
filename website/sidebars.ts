@@ -39,7 +39,6 @@ const sidebars: SidebarsConfig = {
         { type: 'doc', id: 'api/commands/cli.did', label: 'did commands' },
         { type: 'doc', id: 'api/commands/cli.composite', label: 'composite commands' },
         { type: 'doc', id: 'api/commands/cli.model', label: 'model commands' },
-        { type: 'doc', id: 'api/commands/cli.document', label: 'document commands' },
         { type: 'doc', id: 'api/commands/cli.graphql', label: 'graphql commands' },
       ],
     },

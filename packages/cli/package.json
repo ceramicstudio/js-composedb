@@ -1,6 +1,6 @@
 {
   "name": "@composedb/cli",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://composedb.js.org",
@@ -52,9 +52,6 @@
       },
       "model": {
         "description": "Create and interact with Model streams"
-      },
-      "document": {
-        "description": "Create and interact with Model Instance Document streams"
       },
       "composite": {
         "description": "Interact with Model streams via Composites"
