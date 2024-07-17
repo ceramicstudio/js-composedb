@@ -89,7 +89,7 @@ export class RuntimeModelBuilder {
     this.#modelIndices = params.indices
 
     const immutableFields = new Set(
-      params.definition.version === '1.0' ? [] : params.definition.immutableFields ?? [],
+      params.definition.version === '1.0' ? [] : (params.definition.immutableFields ?? []),
     )
     if (this.#modelAccountRelation.type === 'set') {
       // Add fields defined in the SET account relation as immutable
@@ -119,7 +119,7 @@ export class RuntimeModelBuilder {
       ? this.#commonEmbeds.includes(schema.title)
         ? schema.title
         : getName(schema.title, this.#modelName)
-      : params.ownName ?? this.#modelName
+      : (params.ownName ?? this.#modelName)
   }
 
   _getReferenceSchema<T extends AnySchema = AnySchema>(reference: string): T {

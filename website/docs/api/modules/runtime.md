@@ -33,14 +33,14 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `ceramic` | `CeramicAPI` | Ceramic client instance used internally. |
-| `enableDocIndexing` | (`id`: `string`, `shouldIndex`: `boolean`, `opts?`: `UpdateOpts`) => `Promise`\<`void`\> | Enable indexing for an existing document. |
-| `getViewerID` | () => `string` \| ``null`` | ID of the current viewer (authenticated DID), if set. |
-| `isAuthenticated` | () => `boolean` | Returns whether the Ceramic client instance used internally is authenticated or not. When not authenticated, mutations will fail. |
-| `loadDoc` | \<Content\>(`id`: `string` \| `CommitID` \| `StreamID`, `fresh?`: `boolean`) => `Promise`\<`ModelInstanceDocument`\<`Content`\> \| ``null``\> | Load a document by ID, using the cache if possible. |
+| `enableDocIndexing` | (`id`: `string`, `shouldIndex`: `boolean`, `opts?`: `UpdateOpts`) => `Promise`\<`void`\> | - |
+| `getViewerID` | () => `string` \| ``null`` | - |
+| `isAuthenticated` | () => `boolean` | - |
+| `loadDoc` | \<Content\>(`id`: `string` \| `CommitID` \| `StreamID`, `fresh?`: `boolean`) => `Promise`\<`ModelInstanceDocument`\<`Content`\> \| ``null``\> | - |
 | `loader` | `DocumentLoader` | Document loader instance used internally. |
-| `queryCount` | (`query`: `BaseQuery`) => `Promise`\<`number`\> | Query the index for the total number of documents matching the query parameters. |
-| `upsertSet` | \<Content\>(`model`: `string`, `unique`: `string`[], `content`: `Content`, `options?`: `UpsertOptions`) => `Promise`\<`ModelInstanceDocument`\<`Content`\> \| ``null``\> | Create or update a document using the SET account relation with the given model, content and unique fields value. |
-| `upsertSingle` | \<Content\>(`model`: `string`, `content`: `Content`, `options?`: `UpsertOptions`) => `Promise`\<`ModelInstanceDocument`\<`Content`\> \| ``null``\> | Create or update a document using the SINGLE account relation with the given model and content. |
+| `queryCount` | (`query`: `BaseQuery`) => `Promise`\<`number`\> | - |
+| `upsertSet` | \<Content\>(`model`: `string`, `unique`: `string`[], `content`: `Content`, `options?`: `UpsertOptions`) => `Promise`\<`ModelInstanceDocument`\<`Content`\> \| ``null``\> | - |
+| `upsertSingle` | \<Content\>(`model`: `string`, `content`: `Content`, `options?`: `UpsertOptions`) => `Promise`\<`ModelInstanceDocument`\<`Content`\> \| ``null``\> | - |
 
 ___
 

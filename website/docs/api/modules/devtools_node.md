@@ -57,7 +57,7 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `stop` | () => `Promise`\<`void`\> | Stop the server. |
+| `stop` | () => `Promise`\<`void`\> | - |
 | `url` | `string` | URL of the local GraphQL endpoint. |
 
 ## Functions
@@ -72,7 +72,7 @@ Create a Composite from a GraphQL schema path.
 
 | Name | Type |
 | :------ | :------ |
-| `ceramic` | `CeramicClient` |
+| `ceramic` | `CeramicAPI` |
 | `path` | [`PathInput`](devtools_node.md#pathinput) |
 
 #### Returns
@@ -91,7 +91,7 @@ Merge the encoded `source` composite(s) to the `destination` path.
 
 | Name | Type |
 | :------ | :------ |
-| `ceramic` | `string` \| `CeramicClient` |
+| `ceramic` | `string` \| `CeramicAPI` |
 | `source` | [`PathInput`](devtools_node.md#pathinput) \| [`PathInput`](devtools_node.md#pathinput)[] |
 | `destination` | [`PathInput`](devtools_node.md#pathinput) |
 
@@ -111,7 +111,7 @@ Create a Composite from a JSON-encoded definition path.
 
 | Name | Type |
 | :------ | :------ |
-| `ceramic` | `string` \| `CeramicClient` |
+| `ceramic` | `string` \| `CeramicAPI` |
 | `path` | [`PathInput`](devtools_node.md#pathinput) |
 | `index?` | `boolean` |
 
@@ -186,7 +186,7 @@ Write the runtime definition based on the encoded definition path.
 
 | Name | Type |
 | :------ | :------ |
-| `ceramic` | `string` \| `CeramicClient` |
+| `ceramic` | `string` \| `CeramicAPI` |
 | `definitionPath` | [`PathInput`](devtools_node.md#pathinput) |
 | `runtimePath` | [`PathInput`](devtools_node.md#pathinput) |
 | `schemaPath?` | [`PathInput`](devtools_node.md#pathinput) |

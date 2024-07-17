@@ -1,7 +1,11 @@
 import { CeramicClient } from '@ceramicnetwork/http-client'
 import { Composite } from '@composedb/devtools'
 import { printGraphQLSchema } from '@composedb/runtime'
-import type { EncodedCompositeDefinition, RuntimeCompositeDefinition } from '@composedb/types'
+import type {
+  CeramicAPI,
+  EncodedCompositeDefinition,
+  RuntimeCompositeDefinition,
+} from '@composedb/types'
 import fs from 'fs-extra'
 import { resolve } from 'path'
 import { cwd } from 'process'
@@ -25,7 +29,7 @@ export function getDirPath(path: PathInput): string {
 /**
  * Create a Composite from a GraphQL schema path.
  */
-export async function createComposite(ceramic: CeramicClient, path: PathInput): Promise<Composite> {
+export async function createComposite(ceramic: CeramicAPI, path: PathInput): Promise<Composite> {
   const file = await readFile(getFilePath(path))
   return await Composite.create({ ceramic, schema: file.toString() })
 }
@@ -34,7 +38,7 @@ export async function createComposite(ceramic: CeramicClient, path: PathInput): 
  * Create a Composite from a JSON-encoded definition path.
  */
 export async function readEncodedComposite(
-  ceramic: CeramicClient | string,
+  ceramic: CeramicAPI | string,
   path: PathInput,
   index?: boolean,
 ): Promise<Composite> {
@@ -107,7 +111,7 @@ export const definition: RuntimeCompositeDefinition = ${JSON.stringify(definitio
  * Write the runtime definition based on the encoded definition path.
  */
 export async function writeEncodedCompositeRuntime(
-  ceramic: CeramicClient | string,
+  ceramic: CeramicAPI | string,
   definitionPath: PathInput,
   runtimePath: PathInput,
   schemaPath?: PathInput,
@@ -124,7 +128,7 @@ export async function writeEncodedCompositeRuntime(
  * Merge the encoded `source` composite(s) to the `destination` path.
  */
 export async function mergeEncodedComposites(
-  ceramic: CeramicClient | string,
+  ceramic: CeramicAPI | string,
   source: PathInput | Array<PathInput>,
   destination: PathInput,
 ): Promise<string> {

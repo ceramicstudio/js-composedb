@@ -87,7 +87,7 @@ export function createContext(params: ContextParams): Context {
 
   function getViewerID(): string | null {
     const did = ceramic.did
-    return did ? (did.hasParent ? did.parent : did.id) : fallbackViewerID ?? null
+    return did ? (did.hasParent ? did.parent : did.id) : (fallbackViewerID ?? null)
   }
 
   return {
