@@ -288,7 +288,10 @@ export class SchemaParser {
         immutableFields: Array.from(
           new Set(
             Object.keys(object.properties)
-              .filter((key) => object.properties[key].immutable === true || object.properties[key].item && object.properties[key].item.immutable)
+              .filter((key) => {
+                const property = object.properties[key];
+                return property.immutable === true || ('item' in property && property.item && property.item.immutable)
+              })
               .concat(inheritedImmutableFields),
           ),
         ),
