@@ -989,12 +989,14 @@ describe('runtime', () => {
       title: String! @string(minLength: 10, maxLength: 100) @immutable
       text: String! @string(maxLength: 2000)
       testField: String @string(maxLength: 50) 
+      testList: [String] @string(maxLength: 5) @list(maxLength: 5) @immutable
     }
     `
     const originalTitle = 'An Original Post'
     const date = '2024-01-01T10:15:30Z'
     const text = 'First post content'
     const testField = 'A test field'
+    const testList = ['a', 'b', 'c']
 
     const composite = await Composite.create({ ceramic, schema: postWithImmutableFieldSchema })
     const definition = composite.toRuntime()
@@ -1022,6 +1024,7 @@ describe('runtime', () => {
             text,
             date,
             testField,
+            testList,
           },
         },
       },
@@ -1042,12 +1045,15 @@ describe('runtime', () => {
     }`
 
     const res2 = await runtime.executeQuery(updatePost, {
-      i: { id: docID, content: { title: 'A different title' } },
+      i: { id: docID, content: { title: 'A different title' }, testList: ['d', 'e'] },
     })
-
-    expect(res2.errors).toBeDefined()
+    
+    expect(res2.errors?.length).toBe(2)
     expect(res2.errors![0].message).toEqual(
       `Variable "$i" got invalid value { title: "A different title" } at "i.content"; Field "title" is not defined by type "PartialPostInput". Did you mean "date"?`,
+    )
+    expect(res2.errors![1].message).toContain(
+      `Field "testList" is not defined by type "UpdatePostInput"`,
     )
   }, 60000)
 

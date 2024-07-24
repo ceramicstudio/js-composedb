@@ -291,6 +291,7 @@ type Favorite implements Node {
   tag: String!
   note: String
   docID: CeramicStreamID!
+  extra: String
   doc: Node
 }
 
@@ -453,6 +454,7 @@ input FavoriteInput {
   tag: String!
   note: String
   docID: CeramicStreamID!
+  extra: String
 }
 
 input SetOptionsInput {
@@ -1649,6 +1651,7 @@ type Post implements Node & TestInterface {
   date: DateTime
   text: String!
   title: String!
+  testList: [String]
   testField: String
 
   """Account controlling the document"""
@@ -1759,6 +1762,7 @@ input PostInput {
   date: DateTime
   text: String!
   title: String!
+  testList: [String]
   testField: String
 }
 
@@ -1806,6 +1810,7 @@ scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-
 input PartialPostInput {
   date: DateTime
   text: String
+  testList: [String]
 }
 
 type EnableIndexingPostPayload {
