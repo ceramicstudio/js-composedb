@@ -48,9 +48,6 @@ jobs:
       
       - name: Install python-setuptools
         run: brew install python-setuptools
-      
-      - name: Verify installation
-        run: python3 -m easy_install --version
 
       - name: Install dependencies and build
         run: pnpm install --frozen-lockfile
