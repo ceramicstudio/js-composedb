@@ -975,7 +975,7 @@ describe('runtime', () => {
     expect(unsetRes.data).toMatchSnapshot()
   }, 30000)
 
-  test('runtime operations on models with immutable field random', async () => {
+  test('runtime operations on models with immutable field', async () => {
     const postWithImmutableFieldSchema = `
     interface TestInterface @createModel(description: "Test interface with immutable field") {
       testField: String @string(maxLength: 50) @immutable
