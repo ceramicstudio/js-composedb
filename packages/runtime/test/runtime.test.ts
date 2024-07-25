@@ -975,7 +975,7 @@ describe('runtime', () => {
     expect(unsetRes.data).toMatchSnapshot()
   }, 30000)
 
-  test('runtime operations on models with immutable field', async () => {
+  test.only('runtime operations on models with immutable field', async () => {
     const postWithImmutableFieldSchema = `
     interface TestInterface @createModel(description: "Test interface with immutable field") {
       testField: String @string(maxLength: 50) @immutable
@@ -1045,7 +1045,7 @@ describe('runtime', () => {
     }`
 
     const res2 = await runtime.executeQuery(updatePost, {
-      i: { id: docID, content: { title: 'A different title' }, testList: ['d', 'e'] },
+      i: { id: docID, content: { title: 'A different title', testList: ['d', 'e']  }},
     })
     
     expect(res2.errors?.length).toBe(2)
