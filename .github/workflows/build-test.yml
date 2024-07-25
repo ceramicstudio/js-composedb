@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         node: [20]
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macOS-latest]
 
     steps:
       - name: Checkout repository
@@ -42,17 +42,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Install Python dependencies on Ubuntu
-        if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y python3-distutils
-
       - name: Install Python dependencies on macOS
         if: runner.os == 'macos-latest'
         run: |
           brew install python@3.9
           /opt/homebrew/bin/python3.9 -m venv venv
           source venv/bin/activate
-          pip install distutils
+          pip install setuptools
 
       - name: Install dependencies and build
         run: pnpm install --frozen-lockfile
