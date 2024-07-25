@@ -291,7 +291,6 @@ type Favorite implements Node {
   tag: String!
   note: String
   docID: CeramicStreamID!
-  extra: String
   doc: Node
 }
 
@@ -454,7 +453,6 @@ input FavoriteInput {
   tag: String!
   note: String
   docID: CeramicStreamID!
-  extra: String
 }
 
 input SetOptionsInput {
@@ -1810,7 +1808,6 @@ scalar CeramicCommitID @specifiedBy(url: "https://cips.ceramic.network/CIPs/cip-
 input PartialPostInput {
   date: DateTime
   text: String
-  testList: [String]
 }
 
 type EnableIndexingPostPayload {

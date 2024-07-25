@@ -41,9 +41,6 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-
-      - name: Install Python dependencies
-        run: sudo apt-get install python3-distutils
         
       - name: Install dependencies and build
         run: pnpm install --frozen-lockfile

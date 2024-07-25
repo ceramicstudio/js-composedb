@@ -288,10 +288,7 @@ export class SchemaParser {
         immutableFields: Array.from(
           new Set(
             Object.keys(object.properties)
-              .filter((key) => {
-                const property = object.properties[key];
-                return property.immutable === true || ('item' in property && property.item && property.item.immutable)
-              })
+              .filter((key) => object.properties[key].immutable === true)
               .concat(inheritedImmutableFields),
           ),
         ),
@@ -328,7 +325,7 @@ export class SchemaParser {
 
     for (const [key, value] of Object.entries(objectFields)) {
       const directives = getDirectives(this.#schema, value)
-
+      const immutable = directives.some((item) => item.name === 'immutable')
       const [innerType, required] = isNonNullType(value.type)
         ? [value.type.ofType, true]
         : [value.type, false]
@@ -347,6 +344,7 @@ export class SchemaParser {
           key,
           innerType,
           required,
+          immutable,
           directives,
           hasCreateModel,
         )
@@ -520,6 +518,7 @@ export class SchemaParser {
     fieldName: string,
     type: GraphQLList<GraphQLType>,
     required: boolean,
+    immutable: boolean,
     directives: Array<DirectiveAnnotation>,
     hasCreateModel: boolean,
   ): DefinitionWithReferences<ListFieldDefinition> {
@@ -537,6 +536,7 @@ export class SchemaParser {
     const definition: ListFieldDefinition = {
       type: 'list',
       required,
+      immutable,
       item: item.definition,
       maxLength: list.args.maxLength as number,
     }
