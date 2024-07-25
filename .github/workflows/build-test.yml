@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         node: [20]
-        os: [ubuntu-latest, macOS-latest]
+        os: [ubuntu-latest, macos-latest]
 
     steps:
       - name: Checkout repository
@@ -47,12 +47,12 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y python3-distutils
 
       - name: Install Python dependencies on macOS
-        if: runner.os == 'macOS'
+        if: runner.os == 'macos-latest'
         run: |
           brew install python@3.9
-          python3 -m ensurepip
-          python3 -m pip install --upgrade pip
-          python3 -m pip install distutils
+          /opt/homebrew/bin/python3.9 -m venv venv
+          source venv/bin/activate
+          pip install distutils
 
       - name: Install dependencies and build
         run: pnpm install --frozen-lockfile
