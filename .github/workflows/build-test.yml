@@ -48,7 +48,11 @@ jobs:
 
       - name: Install Python dependencies on macOS
         if: runner.os == 'macOS'
-        run: brew install python@3.9
+        run: |
+          brew install python@3.9
+          python3 -m ensurepip
+          python3 -m pip install --upgrade pip
+          python3 -m pip install distutils
 
       - name: Install dependencies and build
         run: pnpm install --frozen-lockfile
