@@ -43,8 +43,9 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install Homebrew
-        run: | 
+        run: |
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          echo 'export PATH="/usr/local/bin:$PATH"' >> $GITHUB_ENV
       
       - name: Install python-setuptools
         run: brew install python-setuptools
