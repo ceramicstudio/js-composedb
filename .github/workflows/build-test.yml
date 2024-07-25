@@ -42,11 +42,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Install Python dependencies on macOS
-        if: runner.os == 'macos-latest'
-        run: |
-          brew install python@3.9
-          pip install setuptools
+      - name: Install python-setuptools
+        run: brew install python-setuptools
+      
+      - name: Verify installation
+        run: python3 -m easy_install --version
 
       - name: Install dependencies and build
         run: pnpm install --frozen-lockfile
