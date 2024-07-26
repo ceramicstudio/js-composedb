@@ -1,5 +1,15 @@
 # @composedb/runtime
 
+## 0.8.0
+
+### Minor Changes
+
+- Update dependencies for Ceramic v6
+- Fix support for creating models using immutable lists
+- Updated dependencies
+  - @composedb/graphql-scalars@0.8.0
+  - @composedb/loader@0.8.0
+
 ## 0.7.0
 
 ### Minor Changes

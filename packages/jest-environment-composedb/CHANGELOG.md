@@ -1,5 +1,12 @@
 # jest-environment-composedb
 
+## 0.8.0
+
+### Minor Changes
+
+- Update dependencies for Ceramic v6
+- Fix support for creating models using immutable lists
+
 ## 0.7.0
 
 ### Minor Changes

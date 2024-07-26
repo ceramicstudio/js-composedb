@@ -1,5 +1,17 @@
 # @composedb/cli
 
+## 0.8.0
+
+### Minor Changes
+
+- Update dependencies for Ceramic v6
+- Fix support for creating models using immutable lists
+- Updated dependencies
+  - @composedb/client@0.8.0
+  - @composedb/devtools@0.8.0
+  - @composedb/devtools-node@0.8.0
+  - @composedb/runtime@0.8.0
+
 ## 0.7.0
 
 ### Minor Changes
