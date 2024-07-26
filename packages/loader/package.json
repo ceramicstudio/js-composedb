@@ -1,6 +1,6 @@
 {
   "name": "@composedb/loader",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
@@ -33,22 +33,22 @@
     "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
     "build": "pnpm build:clean && pnpm build:types && pnpm build:js",
     "lint": "eslint src test --fix",
-    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test": "IPFS_FLAVOR=go node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
     "test:ci": "pnpm run test --ci --coverage",
     "prepare": "pnpm build",
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/stream-model-instance": "^4.2.0",
-    "@ceramicnetwork/streamid": "^5.0.0",
+    "@ceramicnetwork/stream-model-instance": "^5.1.0",
+    "@ceramicnetwork/streamid": "^5.5.0",
     "dataloader": "^2.2.2"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^5.1.0",
+    "@ceramicnetwork/common": "^6.1.0",
     "@composedb/devtools": "workspace:^",
     "@composedb/test-schemas": "workspace:^",
     "@composedb/types": "workspace:^",
-    "graphql-relay": "^0.10.0",
+    "graphql-relay": "^0.10.2",
     "jest-environment-composedb": "workspace:^"
   },
   "jest": {

@@ -1,0 +1,293 @@
+# Supported directives
+
+Directives provide extra metadata when declaring scalars, lists and shapes.
+
+## Model identification
+
+### `@createModel`
+
+The `@createModel` directive applies to shapes and interfaces, indicating they
+need to be created as a Model. A Composite must contain at least one Model to
+be valid, otherwise there would be nothing to interact with.
+
+When using the `@createModel` directive, two parameters must be provided:
+
+- `accountRelation`: the type of relation between documents created using the
+  Model and the account controlling the document, which can be `SINGLE` for a
+  single document of the given Model (for example profile information), `SET`
+  for multiple deterministic documents based on one or more content fields, or
+  `LIST` (default) for a potentially infinite list of documents. 
+- `description`: a string describing the Model, to help with discovery.
+- `accountRelationFields`: a list of content field names defining the `SET` account
+  relation. This argument is required when the `accountRelation` is `SET`. When creating interfaces, the `accountRelation` is ignored if provided.
+
+Example for a `LIST` account relation:
+This allows a user to create any number of posts.
+
+```graphql
+type Post @createModel(accountRelation: LIST, description: "A simple text post") {
+  author: DID! @documentAccount
+  title: String! @string(minLength: 10, maxLength: 100)
+  text: String! @string(maxLength: 500)
+}
+```
+
+Examples for `SINGLE` and `SET` account relations:
+This allows a user to create a single picture per did, as well as to set an individual picture as favorite, they can have different pictures set as favorite, but only one `favorite` record for a did per picture.
+
+```graphql
+type Picture @createModel(description: "A model for pictures", accountRelation: SINGLE) {
+	src: String! @string(maxLength: 150)	
+	mimeType: String! @string(maxLength: 50)	
+	width: Int! @int(min: 1)	
+	height: Int! @int(min: 1)	
+	size: Int @int(min: 1)	
+}
+	
+type Favorite @createModel(description: "A set of favorite documents", accountRelation: SET, accountRelationFields: ["docID"]) {	
+	docID: StreamID! @documentReference(model: "Picture")	
+	doc: Node @relationDocument(property: "docID")	
+	note: String @string(maxLength: 500)
+}
+```
+:::caution
+Notice that when the account relation of a model is `SET` it is required to include `accountRelationFields` to specify which field is being used to create the set.
+:::
+
+### `@loadModel`
+
+The `@loadModel` directive can be used to identify pre-existing models and use
+them in a schema, by providing the model stream ID with the `id` argument of the
+directive.
+
+:::caution
+
+When loading models, it is **not possible** to add extra content fields, but it
+is possible to add extra [views](#views).
+
+The GraphQL parser used by schemas does not allow empty types to be created. If
+needed, an `id: ID` field can be added, as shown in the examples below.
+
+:::
+
+```graphql
+# ❌ the following declaration will NOT work:
+type MyModel @loadModel(id: "<existing model stream ID>") {}
+
+# ✅ the following declaration will work:
+type MyModel @loadModel(id: "<existing model stream ID>") {
+  id: ID
+}
+
+# ✅ the following declaration will also work:
+type MyModel @loadModel(id: "<existing model stream ID>") {
+  owner: DID! @documentAccount
+}
+```
+
+## Indexing
+
+:::caution
+
+The indexing directive can only be set on types **defined as model**,
+identified using the [`@createModel`](#createmodel) or
+[`@loadModel`](#loadmodel) directive.
+The indexing directive cannot be used when defining interfaces, as interfaces
+themselves are not indexed, only the models implementing them.
+
+:::
+
+### `@createIndex`
+
+The `@createIndex` directive ensures content fields in a model are indexed in the underlying database and can be used for filtering and ordering.
+
+Example:
+
+```graphql
+type Post
+  @createModel(accountRelation: LIST, description: "A simple text post")
+  @createIndex(fields: [{ path: ["title"] }]) {
+  author: DID! @documentAccount
+  title: String! @string(minLength: 10, maxLength: 100)
+  publishedAt: DateTime
+  text: String! @string(maxLength: 500)
+}
+```
+
+The `@createIndex` directive can be used multiple times:
+
+```graphql
+type Post
+  @createModel(accountRelation: LIST, description: "A simple text post")
+  @createIndex(fields: [{ path: ["title"] }])
+  @createIndex(fields: [{ path: ["publishedAt"] }]) {
+  author: DID! @documentAccount
+  title: String! @string(minLength: 10, maxLength: 100)
+  publishedAt: DateTime
+  text: String! @string(maxLength: 500)
+}
+```
+
+## Type validation
+
+The following directives provide validation information on primitive scalars and
+lists:
+
+### `@int`
+
+Defines the optional `max: Int` and `min: Int` value for
+[`Int` scalars](./scalars.mdx#int).
+
+### `@float`
+
+Defines the optional `max: Float` and `min: Float` value for
+[`Float` scalars](./scalars.mdx#float).
+
+### `@string`
+
+Defines the required `maxLength: Int` and optional `minLength: Int` value for
+[`String` scalars](./scalars.mdx#string) and scalars extending `String`.
+
+### `@list`
+
+Defines the required `maxLength: Int` and optional `minLength: Int` numbers of
+items in a list.
+
+## Relations
+
+Relations support can be added on individual fields by specifying the type of
+reference the field can contain, using the following directives:
+
+:::caution
+
+Relation directives can only be set on fields **directly defined on a model**,
+identified using the [`@createModel`](#createmodel) or
+[`@loadModel`](#loadmodel) directive.
+
+:::
+
+### `@accountReference`
+
+Defines a relation to an account, using a [`DID` scalar](./scalars.mdx#did), making it accessible from the [`CeramicAccount` object](../runtime/schema.mdx#ceramicaccount-object).
+
+Example: `recipient: DID! @accountReference`.
+
+### `@documentReference`
+
+Defines a relation to a document, using a
+[`StreamID` scalar](./scalars.mdx#streamid) and a `model` argument containing the
+name of a model added in the schema using the [`@loadModel`](#loadmodel)
+directive or `Node` to reference a document of any model.
+
+Example:
+
+```graphql {2,6}
+type Post @loadModel(id: "<Post model stream ID>") {
+  id: ID!
+}
+
+type Comment @createModel(accountRelation: LIST, description: "A comment on a Post") {
+  postID: StreamID! @documentReference(model: "Post")
+  text: String! @string(maxLength: 500)
+}
+```
+
+## Views
+
+View directives represent read-only fields that are not stored in the contents
+of the stream, but in its [metadata](#document-metadata-views) or used to access
+[relations](#relation-views).
+
+:::caution
+
+View directives can only be set on fields **directly defined on a model**,
+identified using the [`@createModel`](#createmodel) or
+[`@loadModel`](#loadmodel) directive.
+
+:::
+
+## Document metadata views
+
+### `@documentAccount`
+
+Defines a field as being a view to the account controlling the document, using
+the [`DID` scalar type](./scalars.mdx#did).
+
+Example: `author: DID! @documentAccount`.
+
+### `@documentVersion`
+
+Defines a field as being a view to the current version of the document, using
+the [`CommitID` scalar type](./scalars.mdx#commitid).
+
+Example: `version: CommitID! @documentVersion`.
+
+### `@immutable`
+
+Defines a field value as unchangeable, like a read-only value, and any efforts to edit it will result in an error prompt.
+
+Example: `createdAt: DateTime! @immutable`
+
+## Relation views
+
+### `@relationDocument`
+
+Defines a field representing another document in the graph, that have its stream
+ID stored in another field of the current document, using a model identified by
+the `model` argument of the directive. The value `"Node"` can be used for the
+`model` argument to accept documents using any model.
+
+Example where `post` fields allows to access the post document the comment is
+made on, based on the `postID` value stored in the comment document:
+
+```graphql {6,7}
+type Post @loadModel(id: "<Post model stream ID>") {
+  id: ID!
+}
+
+type Comment @createModel(accountRelation: LIST, description: "A comment on a Post") {
+  postID: StreamID! @documentReference(model: "Post")
+  post: Post! @relationDocument(property: "postID")
+  text: String! @string(maxLength: 500)
+}
+```
+
+### `@relationFrom`
+
+Defines a field representing an inverse relation of documents pointing to the
+current document for a given `model` and `property` identified by the arguments
+of the directive.
+
+Example where a `comments` view is added to an existing Post model, using the
+Comment model described in the
+[`@relationDocument` directive example](#relationdocument):
+
+```graphql {6}
+type Comment @loadModel(id: "<Comment model stream ID>") {
+  id: ID!
+}
+
+type Post @loadModel(id: "<Post model stream ID>") {
+  comments: [Comment] @relationFrom(model: "Comment", property: "postID")
+}
+```
+
+### `@relationCountFrom`
+
+Defines a field representing the number of documents pointing to the current
+document for a given `model` and `property` identified by the arguments of the
+directive.
+
+Example where a `commentsCount` view is added to an existing Post model, using
+the Comment model described in the
+[`@relationDocument` directive example](#relationdocument):
+
+```graphql {6}
+type Comment @loadModel(id: "<Comment model stream ID>") {
+  id: ID!
+}
+
+type Post @loadModel(id: "<Post model stream ID>") {
+  commentsCount: Int! @relationCountFrom(model: "Comment", property: "postID")
+}
+```

@@ -57,14 +57,15 @@ export const SYNC_OPTION_FLAG = Flags.string({
 const readPipe: () => Promise<string | undefined> = () => {
   return new Promise((resolve) => {
     let data = ''
-    const stdin = process.openStdin()
+    const stdin = process.stdin
+    stdin.resume()
     const finish = () => {
       resolve(data.length > 0 ? data.trim() : undefined)
       stdin.pause()
     }
 
     stdin.setEncoding('utf-8')
-    stdin.on('data', (chunk) => {
+    stdin.on('data', (chunk: string) => {
       data += chunk
     })
 

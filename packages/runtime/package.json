@@ -1,6 +1,6 @@
 {
   "name": "@composedb/runtime",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "homepage": "https://github.com/ceramicstudio/js-composedb#readme",
@@ -33,32 +33,32 @@
     "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
     "build": "pnpm build:clean && pnpm build:types && pnpm build:js",
     "lint": "eslint src test --fix",
-    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test": "IPFS_FLAVOR=go node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
     "test:ci": "pnpm run test --ci --coverage",
     "prepare": "pnpm build",
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/http-client": "^5.2.0",
-    "@ceramicnetwork/stream-model": "^4.1.0",
-    "@ceramicnetwork/stream-model-instance": "^4.2.0",
-    "@ceramicnetwork/streamid": "^5.0.0",
+    "@ceramicnetwork/http-client": "^6.1.0",
+    "@ceramicnetwork/stream-model": "^5.1.0",
+    "@ceramicnetwork/stream-model-instance": "^5.1.0",
+    "@ceramicnetwork/streamid": "^5.5.0",
     "@composedb/graphql-scalars": "workspace:^",
     "@composedb/loader": "workspace:^",
-    "graphql": "^16.8.1",
-    "graphql-relay": "^0.10.0"
+    "graphql": "^16.9.0",
+    "graphql-relay": "^0.10.2"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^5.1.0",
+    "@ceramicnetwork/common": "^6.1.0",
     "@composedb/devtools": "workspace:^",
     "@composedb/test-schemas": "workspace:^",
     "@composedb/types": "workspace:^",
-    "caip": "^1.1.0",
+    "caip": "^1.1.1",
     "dids": "^5.0.2",
     "jest-environment-composedb": "workspace:^",
     "key-did-provider-ed25519": "^4.0.2",
     "key-did-resolver": "^4.0.0",
-    "multiformats": "^13.1.0"
+    "multiformats": "^13.1.3"
   },
   "jest": {
     "extensionsToTreatAsEsm": [
