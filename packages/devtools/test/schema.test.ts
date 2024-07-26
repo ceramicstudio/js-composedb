@@ -795,6 +795,7 @@ describe('schema parsing and compilation', () => {
       ) {
         uniqueValue: Int @immutable
         tag: String! @string(minLength: 1, maxLength: 100)
+        uniqueListValue: [Int] @list(maxLength: 5) @immutable
       }
       `),
     ).toMatchObject({
@@ -803,7 +804,7 @@ describe('schema parsing and compilation', () => {
           action: 'create',
           model: {
             name: 'ModelWithImmutableProp',
-            immutableFields: ['uniqueValue'],
+            immutableFields: ['uniqueValue', 'uniqueListValue'],
             accountRelation: { type: 'single' },
             description: 'Test model with an immutable int property',
             schema: {
