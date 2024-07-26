@@ -521,6 +521,7 @@ export class SchemaParser {
     hasCreateModel: boolean,
   ): DefinitionWithReferences<ListFieldDefinition> {
     const list = directives.find((d) => d.name === 'list')
+    const immutable = directives.some((item) => item.name === 'immutable')
     if (list == null) {
       throw new Error(`Missing @list directive on list field ${fieldName} of object ${objectName}`)
     }
@@ -534,6 +535,7 @@ export class SchemaParser {
     const definition: ListFieldDefinition = {
       type: 'list',
       required,
+      immutable,
       item: item.definition,
       maxLength: list.args.maxLength as number,
     }
