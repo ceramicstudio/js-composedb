@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[8256],{2256:e=>{e.exports=JSON.parse('{"title":"Public APIs","slug":"/category/public-apis","permalink":"/docs/0.7.x/category/public-apis","navigation":{"next":{"title":"Module: client","permalink":"/docs/0.7.x/api/modules/client"}}}')}}]);

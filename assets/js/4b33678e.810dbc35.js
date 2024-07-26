@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[7599],{7972:e=>{e.exports=JSON.parse('{"categoryGeneratedIndex":{"title":"Public APIs","slug":"/category/public-apis","permalink":"/docs/0.7.x/category/public-apis","sidebar":"api","navigation":{"next":{"title":"ComposeDB Client","permalink":"/docs/0.7.x/api/modules/client"}}}}')}}]);
